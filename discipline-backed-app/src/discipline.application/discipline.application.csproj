@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="Domain\Exceptions\" />
       <Folder Include="Features\" />
     </ItemGroup>
 
