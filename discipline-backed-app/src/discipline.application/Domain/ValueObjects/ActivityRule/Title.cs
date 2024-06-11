@@ -1,11 +1,23 @@
+using discipline.application.Domain.Exceptions;
+
 namespace discipline.application.Domain.ValueObjects.ActivityRule;
 
-public sealed record Title
+internal sealed record Title
 {
-    public string Value { get; }
+    private string Value { get; }
 
-    public Title(string value)
+    internal Title(string value)
     {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new EmptyActivityRuleTitleException();
+        }
         Value = value;
     }
+
+    public static implicit operator string(Title title)
+        => title.Value;
+
+    public static implicit operator Title(string value)
+        => new Title(value);
 }

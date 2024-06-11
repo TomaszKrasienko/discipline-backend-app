@@ -1,4 +1,4 @@
-namespace discipline.application.Domain;
+namespace discipline.application.Domain.Entities;
 
 public class ActivityItem
 {

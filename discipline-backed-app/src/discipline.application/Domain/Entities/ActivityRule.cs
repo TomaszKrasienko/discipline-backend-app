@@ -1,14 +1,14 @@
-using System.Dynamic;
+using discipline.application.Domain.ValueObjects.ActivityRule;
 using discipline.application.Domain.ValueObjects.SharedKernel;
 
 namespace discipline.application.Domain.Entities;
 
-public class ActivityRule
+internal sealed class ActivityRule
 {
     public EntityId Id { get; }
-    public string Title { get; private set; }
-    public string Mode { get; private set; }
-    public List<string> SelectedDays { get; private set; }
+    public Title Title { get; private set; }
+    public ActivityRule Mode { get; private set; }
+    public List<DayOfWeek> SelectedDays { get; private set; }
 
     private ActivityRule(EntityId id)
         => Id = id;
