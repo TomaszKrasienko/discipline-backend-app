@@ -13,11 +13,12 @@ public static class CreateActivityRule
 {
     public static WebApplication MapCreateActivityRule(this WebApplication app)
     {
-        app.MapPost("/activity-rule/create", async (CreateActivityRuleCommand command, ICqrsDispatcher dispatcher,
-            CancellationToken cancellationToken) 
+        app.MapPost("/activity-rule/create", async (CreateActivityRuleCommand command, HttpContext httpContext, 
+                    ICqrsDispatcher dispatcher, CancellationToken cancellationToken) 
                 => {
                         var activityRuleId = Guid.NewGuid();
                         await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
+                        //httpContext.Response.Headers.TryAdd()
                         return Results.CreatedAtRoute(GetActivityRuleById.Name, new {activityRuleId = activityRuleId}, null);
                     })
             .Produces(StatusCodes.Status201Created, typeof(void))
