@@ -3,8 +3,26 @@ using discipline.application.Domain.Repositories;
 using discipline.application.Exceptions;
 using discipline.application.Features.Base.Abstractions;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace discipline.application.Features.ActivityRules;
+
+public static class CreateActivityRule
+{
+    public static WebApplication MapCreateActivityRule(this WebApplication app)
+    {
+        app.MapPost("/activity-rule/create", async (CreateActivityRuleCommand command, ICqrsDispatcher dispatcher,
+            CancellationToken cancellationToken) =>
+        {
+            var activityRuleId = Guid.NewGuid();
+            await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
+            return Results.Ok();
+        });
+        return app;
+    }
+}
 
 public sealed record CreateActivityRuleCommand(Guid Id, string Title, string Mode,
     List<int> SelectedDays) : ICommand;
