@@ -1,10 +1,10 @@
 using discipline.application.Domain.Exceptions;
 
-namespace discipline.application.Domain.ValueObjects.ActivityRule;
+namespace discipline.application.Domain.ValueObjects.ActivityRules;
 
 internal sealed record Title
 {
-    private string Value { get; }
+    internal string Value { get; }
 
     internal Title(string value)
     {

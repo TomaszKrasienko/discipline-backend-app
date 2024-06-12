@@ -1,6 +1,6 @@
 using discipline.application.Domain.Exceptions;
 
-namespace discipline.application.Domain.ValueObjects.ActivityRule;
+namespace discipline.application.Domain.ValueObjects.ActivityRules;
 
 internal sealed record Mode
 {
@@ -15,7 +15,7 @@ internal sealed record Mode
         ["Custom"] = "Custom"
     };
 
-    public string Value { get; }
+    internal string Value { get; }
 
     internal Mode(string value)
     {
@@ -30,6 +30,12 @@ internal sealed record Mode
         }
         Value = value;
     }
+
+    internal static string EveryDayMode()
+        => "EveryDay";
+
+    internal static string CustomMode()
+        => "Custom";
 
     public static implicit operator string(Mode mode)
         => mode.Value;
