@@ -1,3 +1,4 @@
+using discipline.application.Domain.Repositories;
 using discipline.application.Features.Base.Abstractions;
 using FluentValidation;
 
@@ -28,7 +29,8 @@ internal sealed class CreateActivityRuleCommandValidator : AbstractValidator<Cre
     }
 }
 
-internal sealed class CreateActivityRuleCommandHandler : ICommandHandler<CreateActivityRuleCommand>
+internal sealed class CreateActivityRuleCommandHandler(
+    IActivityRuleRepository activityRuleRepository) : ICommandHandler<CreateActivityRuleCommand>
 {
     public Task HandleAsync(CreateActivityRuleCommand command, CancellationToken cancellationToken = default)
     {
