@@ -1,4 +1,6 @@
+using discipline.application.Domain.Entities;
 using discipline.application.Domain.Repositories;
+using discipline.application.Exceptions;
 using discipline.application.Features.Base.Abstractions;
 using FluentValidation;
 
@@ -32,8 +34,15 @@ internal sealed class CreateActivityRuleCommandValidator : AbstractValidator<Cre
 internal sealed class CreateActivityRuleCommandHandler(
     IActivityRuleRepository activityRuleRepository) : ICommandHandler<CreateActivityRuleCommand>
 {
-    public Task HandleAsync(CreateActivityRuleCommand command, CancellationToken cancellationToken = default)
+    public async Task HandleAsync(CreateActivityRuleCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var isExists = await activityRuleRepository.ExistsAsync(command.Title, cancellationToken);
+        if (isExists)
+        {
+            throw new ActivityRuleTitleAlreadyRegisteredException(command.Title);
+        }
+
+        var activity = ActivityRule.Create(command.Id, command.Title, command.Mode, command.SelectedDays);
+        await activityRuleRepository.AddAsync(activity, cancellationToken);
     }
 }
