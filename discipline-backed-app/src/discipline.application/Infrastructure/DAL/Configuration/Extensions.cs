@@ -15,7 +15,8 @@ internal static class Extensions
     internal static IServiceCollection AddDal(this IServiceCollection services, IConfiguration configuration)
         => services
             .AddPostgreSqlDbContext(configuration)
-            .AddServices();
+            .AddServices()
+            .AddInitializer(configuration);
 
     private static IServiceCollection AddPostgreSqlDbContext(this IServiceCollection services, IConfiguration configuration)
     {
@@ -28,4 +29,15 @@ internal static class Extensions
     private static IServiceCollection AddServices(this IServiceCollection services)
         => services
             .AddScoped<IActivityRuleRepository, PostgreSqlActivityRuleRepository>();
+
+    private static IServiceCollection AddInitializer(this IServiceCollection services, IConfiguration configuration)
+    {
+        var options = configuration.GetOptions<PostgresOptions>(SectionName);
+        if (options.WithMigration)
+        {
+            services.AddHostedService<DatabaseInitializer>();
+        }
+
+        return services;
+    }
 }
