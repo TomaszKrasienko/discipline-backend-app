@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="DTOs\" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.application.unit-tests"/>
+        <InternalsVisibleTo Include="discipline.api.integration-tests"/>
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Bogus" Version="35.5.1" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\discipline.application\discipline.application.csproj" />
+    </ItemGroup>
+</Project>

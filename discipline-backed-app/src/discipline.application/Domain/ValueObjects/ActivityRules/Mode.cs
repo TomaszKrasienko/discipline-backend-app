@@ -4,7 +4,7 @@ namespace discipline.application.Domain.ValueObjects.ActivityRules;
 
 internal sealed record Mode
 {
-    private readonly Dictionary<string, string> _availableModes = new Dictionary<string, string>
+    internal static readonly Dictionary<string, string> AvailableModes = new Dictionary<string, string>
     {
         ["EveryDay"] = "Every day",
         ["OnceAWeek"] = "Once a week", 
@@ -24,7 +24,7 @@ internal sealed record Mode
             throw new EmptyActivityRuleModeException();
         }
 
-        if (!_availableModes.ContainsKey(value))
+        if (!AvailableModes.ContainsKey(value))
         {
             throw new ModeUnavailableException(value);
         }

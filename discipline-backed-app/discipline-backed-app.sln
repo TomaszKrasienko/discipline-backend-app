@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.api", "src\disci
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.api.integration-tests", "tests\discipline.api.integration-tests\discipline.api.integration-tests.csproj", "{AB581722-0CD4-44A9-9174-D01F765AA02B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.tests.shared", "tests\discipline.tests.shared\discipline.tests.shared.csproj", "{8E72E6C5-8636-40D0-AB3C-2E8CF5A94971}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,7 @@ Global
 		{9E9E0A03-C173-42E2-B5ED-9AACC31DEEB6} = {38B7E47F-F007-4A05-A312-038E403A5CBD}
 		{F6B59A09-9EC3-40E1-BF39-5FF12C3E7EBA} = {7C4F4BBF-2BB7-4C11-B990-0D88460563F2}
 		{AB581722-0CD4-44A9-9174-D01F765AA02B} = {38B7E47F-F007-4A05-A312-038E403A5CBD}
+		{8E72E6C5-8636-40D0-AB3C-2E8CF5A94971} = {38B7E47F-F007-4A05-A312-038E403A5CBD}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4F722603-85E6-4ECE-AC31-61F7F4D8E4BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -40,5 +43,9 @@ Global
 		{AB581722-0CD4-44A9-9174-D01F765AA02B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB581722-0CD4-44A9-9174-D01F765AA02B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB581722-0CD4-44A9-9174-D01F765AA02B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E72E6C5-8636-40D0-AB3C-2E8CF5A94971}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E72E6C5-8636-40D0-AB3C-2E8CF5A94971}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E72E6C5-8636-40D0-AB3C-2E8CF5A94971}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E72E6C5-8636-40D0-AB3C-2E8CF5A94971}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
