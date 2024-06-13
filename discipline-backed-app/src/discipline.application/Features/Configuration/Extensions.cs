@@ -1,3 +1,4 @@
+using discipline.application.Features.ActivityRuleModes;
 using discipline.application.Features.ActivityRules;
 using discipline.application.Features.Base.Abstractions;
 using discipline.application.Features.Configuration.Base.Abstractions;
@@ -23,5 +24,6 @@ public static class Extensions
     public static WebApplication MapFeatures(this WebApplication app)
         => app
             .MapCreateActivityRule()
-            .MapGetActivityRuleById();
+            .MapGetActivityRuleById()
+            .MapGetActivityRuleModes();
 }
