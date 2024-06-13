@@ -2,6 +2,7 @@ using discipline.application.Configuration;
 using discipline.application.Domain.Repositories;
 using discipline.application.Infrastructure.DAL.Configuration.Options;
 using discipline.application.Infrastructure.DAL.Repositories;
+using discipline.application.Infrastructure.DAL.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,7 @@ internal static class Extensions
 
     private static IServiceCollection AddServices(this IServiceCollection services)
         => services
+            .AddScoped<IUnitOfWork, PostgresUnitOfWork>()
             .AddScoped<IActivityRuleRepository, PostgreSqlActivityRuleRepository>();
 
     private static IServiceCollection AddInitializer(this IServiceCollection services, IConfiguration configuration)

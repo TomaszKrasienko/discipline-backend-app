@@ -29,7 +29,7 @@ internal sealed class ActivityRuleTypeConfiguration : IEntityTypeConfiguration<A
         builder
             .Property(x => x.SelectedDays)
             .HasConversion(x => string.Join(",", x),
-                y => y.Split(",", StringSplitOptions.None)
+                y => string.IsNullOrWhiteSpace(y) ? null : y.Split(",", StringSplitOptions.None)
                     .Select(day => new SelectedDay(int.Parse(day))).ToList());
 
         builder

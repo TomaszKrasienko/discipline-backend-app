@@ -27,7 +27,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
         resourceId.ShouldNotBeNull();
         resourceId.ShouldNotBe(Guid.Empty);
 
-        var isActivityExists = await DbContext.ActivityRules.AnyAsync(x => x.Id.Value == resourceId);
+        var isActivityExists = await DbContext.ActivityRules.AnyAsync(x => x.Id.Equals(resourceId));
         isActivityExists.ShouldBeTrue();
     }
 }

@@ -11,9 +11,10 @@ public static class Extensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         => services
-            .AddHandlingException()
             .AddDal(configuration)
             .AddCqrs()
+            .AddHandlingException()
+            .AddCreatingTransaction()
             .AddSwaggerGen();
 
     public static WebApplication UseApplication(this WebApplication app)
