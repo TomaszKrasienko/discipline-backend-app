@@ -21,5 +21,7 @@ public static class Extensions
     }
     
     public static WebApplication MapFeatures(this WebApplication app)
-        => app.MapCreateActivityRule();
+        => app
+            .MapCreateActivityRule()
+            .MapGetActivityRuleById();
 }

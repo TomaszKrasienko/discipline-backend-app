@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Domain.ValueObjects.ActivityRules;
 using discipline.application.Features.ActivityRules;
+using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using Xunit;
 
@@ -21,5 +22,12 @@ public sealed class CreateActivityRuleTests : BaseTestsController
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        
+        var resourceId = GetResourceIdFromHeader(response);
+        resourceId.ShouldNotBeNull();
+        resourceId.ShouldNotBe(Guid.Empty);
+
+        var isActivityExists = await DbContext.ActivityRules.AnyAsync(x => x.Id.Value == resourceId);
+        isActivityExists.ShouldBeTrue();
     }
 }

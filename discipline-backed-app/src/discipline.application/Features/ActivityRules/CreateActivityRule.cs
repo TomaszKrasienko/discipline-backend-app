@@ -22,7 +22,7 @@ public static class CreateActivityRule
                         await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
                         httpContext.AddResourceIdHeader(activityRuleId);
                         return Results.CreatedAtRoute(GetActivityRuleById.Name, new {activityRuleId = activityRuleId}, null);
-                    })
+                })
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto));
         return app;

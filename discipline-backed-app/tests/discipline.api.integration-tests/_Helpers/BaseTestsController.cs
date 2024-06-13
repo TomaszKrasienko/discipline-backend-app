@@ -21,6 +21,27 @@ public abstract class BaseTestsController : IDisposable
    {
    }
    
+   protected virtual Guid? GetResourceIdFromHeader(HttpResponseMessage httpResponseMessage) 
+   {
+       if (httpResponseMessage is null)
+       {
+           throw new InvalidOperationException("Http response message is null");
+       }
+
+       if (!httpResponseMessage.Headers.TryGetValues("x-resource-id", out var value))
+       {
+           return null;
+       }
+
+       var stringId = value.Single();
+       if (!Guid.TryParse(stringId, out var id))
+       {
+           throw new InvalidOperationException("Resource id is not GUID type");
+       }
+
+       return id;
+   }
+   
    public void Dispose()
        => _testAppDb.Dispose();
 }
