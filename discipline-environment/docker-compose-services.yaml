@@ -8,7 +8,3 @@ services:
       - 6001:8080
     environment:
       - ASPNETCORE_ENVIRONMENT=docker
-
-volumes:
-  postgres:
-    driver: local
