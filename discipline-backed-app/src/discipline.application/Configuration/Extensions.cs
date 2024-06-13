@@ -1,4 +1,6 @@
+using discipline.application.Behaviours;
 using discipline.application.Features.Configuration;
+using discipline.application.Infrastructure.DAL.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,11 +11,15 @@ public static class Extensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         => services
+            .AddHandlingException()
+            .AddDal(configuration)
+            .AddCqrs()
             .AddSwaggerGen();
 
     public static WebApplication UseApplication(this WebApplication app)
         => app
             .UseUiDocumentation()
+            .UseHandlingException()
             .MapFeatures();
 
     private static WebApplication UseUiDocumentation(this WebApplication app)

@@ -6,7 +6,7 @@ using Xunit;
 
 namespace discipline.application.unit_tests.Behaviours;
 
-public sealed class AddingResourceIdHeaderTests
+public sealed class AddingResourceIdHeaderBehaviourTests
 {
     [Fact]
     public void AddResourceIdHeader_GivenId_ShouldAddToResponseHeader()
@@ -25,7 +25,7 @@ public sealed class AddingResourceIdHeaderTests
         httpContext.AddResourceIdHeader(id);
         
         //assert
-        headers.TryGetValue(AddingResourceIdHeader.HeaderName, out var value).ShouldBeTrue();
+        headers.TryGetValue(AddingResourceIdHeaderBehaviour.HeaderName, out var value).ShouldBeTrue();
         value.Any(x => value == id.ToString()).ShouldBeTrue();
     }
 }

@@ -1,8 +1,10 @@
+using discipline.application.Behaviours;
 using discipline.application.Domain.Entities;
 using discipline.application.Domain.Repositories;
 using discipline.application.DTOs;
 using discipline.application.Exceptions;
 using discipline.application.Features.Base.Abstractions;
+using discipline.application.Features.Configuration.Base.Abstractions;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -14,11 +16,11 @@ public static class CreateActivityRule
     public static WebApplication MapCreateActivityRule(this WebApplication app)
     {
         app.MapPost("/activity-rule/create", async (CreateActivityRuleCommand command, HttpContext httpContext, 
-                    ICqrsDispatcher dispatcher, CancellationToken cancellationToken) 
+                    ICommandDispatcher dispatcher, CancellationToken cancellationToken) 
                 => {
                         var activityRuleId = Guid.NewGuid();
                         await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
-                        //httpContext.Response.Headers.TryAdd()
+                        httpContext.AddResourceIdHeader(activityRuleId);
                         return Results.CreatedAtRoute(GetActivityRuleById.Name, new {activityRuleId = activityRuleId}, null);
                     })
             .Produces(StatusCodes.Status201Created, typeof(void))

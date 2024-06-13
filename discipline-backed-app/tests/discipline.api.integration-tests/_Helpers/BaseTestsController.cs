@@ -3,24 +3,24 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace discipline.api.integration_tests._Helpers;
 
-internal abstract class BaseTestsController : IDisposable
+public abstract class BaseTestsController : IDisposable
 {
-    private readonly TestAppDb _testAppDb;
-    protected readonly HttpClient HttpClient;
-    protected readonly DisciplineDbContext DbContext;
-    
-    protected BaseTestsController()
-    {
-        var app = new TestApp(ConfigureServices);
-        _testAppDb = new TestAppDb();
-        HttpClient = app.HttpClient;
-        DbContext = _testAppDb.DisciplineDbContext;
-    }
-    
-    protected virtual void ConfigureServices(IServiceCollection services)
-    {
-    }
+   private readonly TestAppDb _testAppDb;
+   protected readonly HttpClient HttpClient;
+   internal readonly DisciplineDbContext DbContext;
+   protected BaseTestsController()
+   {
+       var app = new TestApp(ConfigureServices);
+       _testAppDb = new TestAppDb();
+       DbContext = _testAppDb.DisciplineDbContext;
+       HttpClient = app.HttpClient;
+       
+   }
 
-    public void Dispose()
-        => _testAppDb.Dispose();
+   protected virtual void ConfigureServices(IServiceCollection services)
+   {
+   }
+   
+   public void Dispose()
+       => _testAppDb.Dispose();
 }
