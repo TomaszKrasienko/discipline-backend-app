@@ -40,6 +40,8 @@ internal sealed class HandlingExceptionMiddleware(
     {
         var (statusCode, error) = exception switch
         {
+            ValidationException => (StatusCodes.Status422UnprocessableEntity, new ErrorDto(
+                GetException(exception.GetType().Name), exception.Message)),
             DisciplineException => (StatusCodes.Status400BadRequest, new ErrorDto(
                 GetException(exception.GetType().Name), exception.Message)),
             _ => (StatusCodes.Status500InternalServerError, new ErrorDto("server_error",

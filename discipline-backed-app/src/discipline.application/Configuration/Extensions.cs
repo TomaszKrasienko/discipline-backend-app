@@ -1,6 +1,7 @@
-using discipline.application.Behaviours;
+using discipline.application.Behaviours.Configuration;
 using discipline.application.Features.Configuration;
 using discipline.application.Infrastructure.DAL.Configuration;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,14 +14,13 @@ public static class Extensions
         => services
             .AddDal(configuration)
             .AddCqrs()
-            .AddHandlingException()
-            .AddCreatingTransaction()
+            .AddBehaviours()
             .AddSwaggerGen();
 
     public static WebApplication UseApplication(this WebApplication app)
         => app
             .UseUiDocumentation()
-            .UseHandlingException()
+            .UseBehaviours()
             .MapFeatures();
 
     private static WebApplication UseUiDocumentation(this WebApplication app)

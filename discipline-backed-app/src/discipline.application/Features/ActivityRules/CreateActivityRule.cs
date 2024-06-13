@@ -32,7 +32,7 @@ public static class CreateActivityRule
 public sealed record CreateActivityRuleCommand(Guid Id, string Title, string Mode,
     List<int> SelectedDays) : ICommand;
 
-internal sealed class CreateActivityRuleCommandValidator : AbstractValidator<CreateActivityRuleCommand>
+public sealed class CreateActivityRuleCommandValidator : AbstractValidator<CreateActivityRuleCommand>
 {
     public CreateActivityRuleCommandValidator()
     {
