@@ -1,7 +1,6 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.Entities;
 using discipline.application.Domain.Repositories;
-using discipline.application.DTOs;
 using discipline.application.Exceptions;
 using discipline.application.Features.Base.Abstractions;
 using discipline.application.Features.Configuration.Base.Abstractions;

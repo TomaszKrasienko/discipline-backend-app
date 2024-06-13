@@ -14,12 +14,14 @@ internal static class GetActivityRuleById
     internal static WebApplication MapGetActivityRuleById(this WebApplication app)
     {
         app.MapGet("/activity-rule/{activityRuleId:guid}", async (Guid activityRuleId, DisciplineDbContext dbContext,
-            CancellationToken cancellationToken) 
-            => (await dbContext
+            CancellationToken cancellationToken) =>
+            {
+                var result = (await dbContext
                     .ActivityRules
-                    .FirstOrDefaultAsync(x => x.Id.Value == activityRuleId, cancellationToken))?.AsDto()
-                )
-            .WithName(Name)
+                    .FirstOrDefaultAsync(x => x.Id.Equals(activityRuleId), cancellationToken))?.AsDto();
+                return result is null ? Results.NoContent() : Results.Ok(result);
+            })
+        .WithName(Name)
             .Produces(StatusCodes.Status200OK, typeof(ActivityRuleDto))
             .Produces(StatusCodes.Status204NoContent, typeof(void));
         return app;
