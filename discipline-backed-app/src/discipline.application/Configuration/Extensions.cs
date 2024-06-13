@@ -10,16 +10,35 @@ namespace discipline.application.Configuration;
 
 public static class Extensions
 {
+    private const string CorsName = "discipline-cors";
+    
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         => services
             .AddDal(configuration)
+            .AddDisciplineCors()
             .AddCqrs()
             .AddBehaviours()
             .AddSwaggerGen();
 
+    private static IServiceCollection AddDisciplineCors(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy(CorsName, policy =>
+            {
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyHeader();
+            });
+        });
+        return services;
+    }
+
     public static WebApplication UseApplication(this WebApplication app)
         => app
             .UseUiDocumentation()
+            .UseDisciplineCors()
             .UseBehaviours()
             .MapFeatures();
 
@@ -27,6 +46,12 @@ public static class Extensions
     {
         app.UseSwagger();
         app.UseSwaggerUI();
+        return app;
+    }
+
+    private static WebApplication UseDisciplineCors(this WebApplication app)
+    {
+        app.UseCors(CorsName);
         return app;
     }
 
