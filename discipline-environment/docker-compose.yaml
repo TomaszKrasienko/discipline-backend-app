@@ -2,9 +2,9 @@ version: '3'
 
 services:
   postgres:
+    container_name: discipline-postgres
     image: postgres
     shm_size: '4gb'
-    container_name: discipline-postgres
     restart: unless-stopped
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
@@ -12,6 +12,13 @@ services:
       - 6010:5432
     volumes:
       - postgres:/var/lib/postgresql/data
+  discipline-backend:
+    container_name: discipline-backed
+    build: ./../discipline-backed-app
+    ports:
+      - 6001:8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=docker
 
 volumes:
   postgres:
