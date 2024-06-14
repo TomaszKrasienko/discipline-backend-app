@@ -37,6 +37,9 @@ internal sealed record Mode
     internal static string CustomMode()
         => "Custom";
 
+    internal static string FirstDayOfMonth()
+        => "FirstDayOfMonth";
+
     public static implicit operator string(Mode mode)
         => mode.Value;
 
