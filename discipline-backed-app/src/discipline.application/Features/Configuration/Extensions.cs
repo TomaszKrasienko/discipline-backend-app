@@ -25,5 +25,6 @@ public static class Extensions
         => app
             .MapCreateActivityRule()
             .MapGetActivityRuleById()
-            .MapGetActivityRuleModes();
+            .MapGetActivityRuleModes()
+            .MapBrowseActivityRules();
 }

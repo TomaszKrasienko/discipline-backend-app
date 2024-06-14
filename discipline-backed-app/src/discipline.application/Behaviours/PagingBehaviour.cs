@@ -1,10 +1,20 @@
 using discipline.application.DTOs;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace discipline.application.Behaviours;
 
-public static class PagingBehaviour
+internal static class PagingBehaviour
 {
-    public static MetaDataDto AsMetaData<T>(this PagedList<T> pagedList)
+    internal const string HeaderName = "x-pagination";
+
+    internal static void AddPaginationToHeader<T>(this HttpContext context, PagedList<T> pagedList)
+    {
+        var metaDataDto = pagedList.AsMetaData();
+        context.Response.Headers.TryAdd(HeaderName, metaDataDto.AsJson());
+    }
+
+    private static MetaDataDto AsMetaData<T>(this PagedList<T> pagedList)
         => new MetaDataDto()
         {
             CurrentPage = pagedList.CurrentPage,
@@ -16,29 +26,28 @@ public static class PagingBehaviour
         };
 }
 
-public class PagedList<T> : List<T>
+internal class PagedList<T> : List<T>
 {
-    public int CurrentPage { get; private set; }
-    public int TotalPages { get; private set; }
-    public int PageSize { get; private set; }
-    public int TotalCount { get; private set; }
-    public bool HasPrevious => CurrentPage > 1;
-    public bool HasNext => CurrentPage < TotalPages;
+    internal int CurrentPage { get; }
+    internal int TotalPages { get; }
+    internal int PageSize { get; }
+    internal int TotalCount { get; }
+    internal bool HasPrevious => CurrentPage > 1;
+    internal bool HasNext => CurrentPage < TotalPages;
 
-    public PagedList(List<T> items, int count, int pageNumber, int pageSize)
+    private PagedList(IEnumerable<T> items, int count, int pageNumber, int pageSize)
     {
         TotalCount = count;
         PageSize = pageSize;
         CurrentPage = pageNumber;
         TotalPages = (int)Math.Ceiling(count / (double)pageSize);
-        
         AddRange(items);
     }
 
-    public static PagedList<T> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
+    internal static async Task<PagedList<T>> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
     {
         var count = source.Count();
-        var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-        return new PagedList<T>(items.ToList(), count, pageNumber, pageSize);
+        var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        return new PagedList<T>(items, count, pageNumber, pageSize);
     }
 }

@@ -18,6 +18,7 @@ internal static class GetActivityRuleById
             {
                 var result = (await dbContext
                     .ActivityRules
+                    .AsNoTracking()
                     .FirstOrDefaultAsync(x => x.Id.Equals(activityRuleId), cancellationToken))?.AsDto();
                 return result is null ? Results.NoContent() : Results.Ok(result);
             })
