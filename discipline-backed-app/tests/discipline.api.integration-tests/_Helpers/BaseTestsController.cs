@@ -1,5 +1,10 @@
+using System.Text.Json.Serialization;
+using discipline.application.Behaviours;
+using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace discipline.api.integration_tests._Helpers;
 
@@ -28,7 +33,7 @@ public abstract class BaseTestsController : IDisposable
            throw new InvalidOperationException("Http response message is null");
        }
 
-       if (!httpResponseMessage.Headers.TryGetValues("x-resource-id", out var value))
+       if (!httpResponseMessage.Headers.TryGetValues(AddingResourceIdHeaderBehaviour.HeaderName, out var value))
        {
            return null;
        }
@@ -40,6 +45,22 @@ public abstract class BaseTestsController : IDisposable
        }
 
        return id;
+   }
+
+   protected virtual MetaDataDto GetMetaDataFromHeader(HttpResponseMessage httpResponseMessage)
+   {
+       if (httpResponseMessage is null)
+       {
+           throw new InvalidOperationException("Http response message is null");
+       }
+
+       if (!httpResponseMessage.Headers.TryGetValues(PagingBehaviour.HeaderName, out var value))
+       {
+           return null;
+       }
+       
+       var metaDataDto = value.Single();
+       return JsonConvert.DeserializeObject<MetaDataDto>(metaDataDto);
    }
    
    public void Dispose()

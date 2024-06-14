@@ -25,6 +25,13 @@ public sealed class BrowseActivityRulesTests : BaseTestsController
         //assert
         var result = await response.Content.ReadFromJsonAsync<List<ActivityRuleDto>>();
         result.Count.ShouldBe(pageSize);
-        
+
+        var metaData = GetMetaDataFromHeader(response);
+        metaData.CurrentPage.ShouldBe(pageNumber);
+        metaData.TotalPages.ShouldBe(2);
+        metaData.HasPrevious.ShouldBeFalse();
+        metaData.HasNext.ShouldBeTrue();
+        metaData.TotalCount.ShouldBe(5);
+        metaData.PageSize.ShouldBe(pageSize);
     }
 }
