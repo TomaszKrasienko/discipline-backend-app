@@ -9,8 +9,6 @@ namespace discipline.application.Features.ActivityRules;
 
 internal static class GetActivityRuleById
 {
-    internal const string Name = "GetActivityRuleById";
-    
     internal static WebApplication MapGetActivityRuleById(this WebApplication app)
     {
         app.MapGet("/activity-rule/{activityRuleId:guid}", async (Guid activityRuleId, DisciplineDbContext dbContext,
@@ -22,9 +20,13 @@ internal static class GetActivityRuleById
                     .FirstOrDefaultAsync(x => x.Id.Equals(activityRuleId), cancellationToken))?.AsDto();
                 return result is null ? Results.NoContent() : Results.Ok(result);
             })
-        .WithName(Name)
             .Produces(StatusCodes.Status200OK, typeof(ActivityRuleDto))
-            .Produces(StatusCodes.Status204NoContent, typeof(void));
+            .Produces(StatusCodes.Status204NoContent, typeof(void))
+            .WithName(nameof(GetActivityRuleById))
+            .WithOpenApi(operation => new(operation)
+            {
+                Description = "Gets activity rule by \"ID\""
+            });
         return app;
     }
 }

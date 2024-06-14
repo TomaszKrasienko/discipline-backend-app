@@ -15,15 +15,21 @@ internal static class BrowseActivityRules
     {
         app.MapGet("/activity-rules", async ([AsParameters]PaginationDto paginationDto, 
             HttpContext httpContext, DisciplineDbContext dbContext) =>
-        {
-            var source = dbContext
-                .ActivityRules
-                .AsNoTracking();
-            var pagedList = await PagedList<ActivityRule>.ToPagedList(source,
-                paginationDto.PageNumber, paginationDto.PageSize);
-            httpContext.AddPaginationToHeader(pagedList);
-            return Results.Ok(pagedList.Select(x => x.AsDto()));
-        });
+                {
+                    var source = dbContext
+                        .ActivityRules
+                        .AsNoTracking();
+                    var pagedList = await PagedList<ActivityRule>.ToPagedList(source,
+                        paginationDto.PageNumber, paginationDto.PageSize);
+                    httpContext.AddPaginationToHeader(pagedList);
+                    return Results.Ok(pagedList.Select(x => x.AsDto()));
+                })
+            .Produces(StatusCodes.Status200OK, typeof(List<ActivityRuleDto>))
+            .WithName(nameof(BrowseActivityRules))
+            .WithOpenApi(operation => new(operation)
+            {
+                Description = $"Browses activity rules by pagination data. Adds pagination meta data in header with name {PagingBehaviour.HeaderName}"
+            });
         return app;
     }
 }

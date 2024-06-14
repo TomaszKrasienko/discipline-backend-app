@@ -20,11 +20,16 @@ public static class CreateActivityRule
                         var activityRuleId = Guid.NewGuid();
                         await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
                         httpContext.AddResourceIdHeader(activityRuleId);
-                        return Results.CreatedAtRoute(GetActivityRuleById.Name, new {activityRuleId = activityRuleId}, null);
+                        return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId}, null);
                 })
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
-            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto));
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .WithName(nameof(CreateActivityRule))
+            .WithOpenApi(operation => new (operation)
+            {
+                Description = "Adds activity rule"
+            });
         return app;
     }
 }

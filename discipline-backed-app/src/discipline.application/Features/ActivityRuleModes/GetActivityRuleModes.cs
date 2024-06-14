@@ -17,7 +17,12 @@ internal static class GetActivityRuleModes
                     Key = x.Key,
                     Name = x.Value
                 }))
-            .Produces(StatusCodes.Status200OK);
+            .Produces(StatusCodes.Status200OK)
+            .WithName(nameof(GetActivityRuleModes))
+            .WithOpenApi(operation => new(operation)
+            {
+                Description = "Gets activity rule modes"
+            });
         return app;
     }
 }
