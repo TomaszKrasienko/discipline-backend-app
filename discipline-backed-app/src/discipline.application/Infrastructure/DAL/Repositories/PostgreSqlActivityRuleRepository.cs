@@ -18,4 +18,9 @@ internal sealed class PostgreSqlActivityRuleRepository(
             .ActivityRules
             .AnyAsync(x 
                 => x.Title == title, cancellationToken);
+
+    public Task<ActivityRule> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        => dbContext
+            .ActivityRules
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
 }

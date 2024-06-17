@@ -9,7 +9,7 @@ internal sealed class ActivityRule
     public EntityId Id { get; }
     public Title Title { get; private set; }
     public Mode Mode { get; private set; }
-    private readonly List<SelectedDay> _selectedDays = new List<SelectedDay>();
+    private List<SelectedDay> _selectedDays = new List<SelectedDay>();
     public IReadOnlyList<SelectedDay> SelectedDays => _selectedDays; 
 
     private ActivityRule(EntityId id)
@@ -20,12 +20,16 @@ internal sealed class ActivityRule
         var item = new ActivityRule(id);
         item.ChangeTitle(title);
         item.ChangeMode(mode);
-        if (!(selectedDays is null || selectedDays.Count == 0))
-        {
-            item.ChangeSelectedDays(mode, selectedDays);
-        }
+        item.ChangeSelectedDays(mode, selectedDays);
 
         return item;
+    }
+
+    internal void Edit(string title, string mode, List<int> selectedDays = null)
+    {
+        ChangeTitle(title);
+        ChangeMode(title);
+        ChangeSelectedDays(Mode, selectedDays);
     }
 
     private void ChangeTitle(string value)
@@ -36,14 +40,24 @@ internal sealed class ActivityRule
 
     private void ChangeSelectedDays(string mode, List<int> selectedDays)
     {
-        if (mode != Mode.CustomMode())
+        if (mode == Mode.CustomMode() && !IsSelectedDaysNullOrEmpty(selectedDays))
         {
             throw new InvalidModeForSelectedDaysException(mode);
         }
 
+        if (IsSelectedDaysNullOrEmpty(selectedDays))
+        {
+            _selectedDays = null;
+        }
+        
         foreach (var selectedDay in selectedDays)
         {
+            _selectedDays = new();
             _selectedDays.Add(selectedDay);
         }
     }
+
+    private static bool IsSelectedDaysNullOrEmpty(List<int> selectedDays)
+        => selectedDays is null || selectedDays.Count == 0;
+
 }
