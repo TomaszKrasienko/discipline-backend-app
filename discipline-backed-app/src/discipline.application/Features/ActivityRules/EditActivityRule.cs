@@ -1,4 +1,5 @@
 using discipline.application.Domain.Repositories;
+using discipline.application.Exceptions;
 using discipline.application.Features.Base.Abstractions;
 using discipline.application.Features.Configuration.Base.Abstractions;
 using FluentValidation;
@@ -40,6 +41,10 @@ internal sealed class EditActivityRuleCommandHandler(
 {
     public async Task HandleAsync(EditActivityRuleCommand command, CancellationToken cancellationToken = default)
     {
-        
+        var activityRule = await activityRuleRepository.GetByIdAsync(command.Id, cancellationToken);
+        if (activityRule is null)
+        {
+            throw new ActivityRuleNotFoundException(command.Id);
+        }
     }
 }
