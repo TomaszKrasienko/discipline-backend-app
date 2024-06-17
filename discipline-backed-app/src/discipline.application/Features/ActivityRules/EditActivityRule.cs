@@ -1,3 +1,4 @@
+using discipline.application.Domain.Repositories;
 using discipline.application.Features.Base.Abstractions;
 using discipline.application.Features.Configuration.Base.Abstractions;
 using FluentValidation;
@@ -34,7 +35,8 @@ public sealed class EditActivityRuleCommandValidator : AbstractValidator<EditAct
     }
 }
 
-internal sealed class EditActivityRuleCommandHandler : ICommandHandler<EditActivityRuleCommand>
+internal sealed class EditActivityRuleCommandHandler(
+    IActivityRuleRepository activityRuleRepository) : ICommandHandler<EditActivityRuleCommand>
 {
     public async Task HandleAsync(EditActivityRuleCommand command, CancellationToken cancellationToken = default)
     {

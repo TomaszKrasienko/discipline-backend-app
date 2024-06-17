@@ -53,7 +53,6 @@ public class EditActivityRuleCommandValidatorTests
     }
     
     #region arrange
-
     private IValidator<EditActivityRuleCommand> _validator;
     
     public EditActivityRuleCommandValidatorTests()
