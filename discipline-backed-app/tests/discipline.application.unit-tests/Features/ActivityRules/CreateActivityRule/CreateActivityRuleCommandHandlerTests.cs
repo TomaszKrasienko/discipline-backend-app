@@ -4,6 +4,7 @@ using discipline.application.Domain.ValueObjects.ActivityRules;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules;
 using discipline.application.Features.Base.Abstractions;
+using discipline.application.Features.Configuration.Base.Abstractions;
 using discipline.application.Infrastructure.DAL;
 using NSubstitute;
 using Shouldly;

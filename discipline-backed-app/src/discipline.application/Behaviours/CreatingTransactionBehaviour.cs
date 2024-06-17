@@ -1,4 +1,5 @@
 using discipline.application.Features.Base.Abstractions;
+using discipline.application.Features.Configuration.Base.Abstractions;
 using discipline.application.Infrastructure.DAL.UnitOfWork;
 using Microsoft.Extensions.DependencyInjection;
 

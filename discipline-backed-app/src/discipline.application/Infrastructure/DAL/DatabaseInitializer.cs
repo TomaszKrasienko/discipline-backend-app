@@ -11,21 +11,26 @@ internal sealed class DatabaseInitializer(
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        
         using var scope = serviceProvider.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<DisciplineDbContext>();
+        
         await dbContext.Database.MigrateAsync(cancellationToken);
 
-        var activityRules = new List<ActivityRule>
+        if (!await dbContext.ActivityRules.AnyAsync(cancellationToken))
         {
-            ActivityRule.Create(Guid.NewGuid(), "Morning stretching", Mode.EveryDayMode()),
-            ActivityRule.Create(Guid.NewGuid(), "Browsing mails", Mode.EveryDayMode()),
-            ActivityRule.Create(Guid.NewGuid(), "Writing thoughts", Mode.CustomMode(), [0]),
-            ActivityRule.Create(Guid.NewGuid(), "Cleaning", Mode.CustomMode(), [3, 6]),
-            ActivityRule.Create(Guid.NewGuid(), "Coffee break", Mode.EveryDayMode()),
-            ActivityRule.Create(Guid.NewGuid(), "Savings", Mode.FirstDayOfMonth())
-        };
-        await dbContext.ActivityRules.AddRangeAsync(activityRules, cancellationToken);
-        await dbContext.SaveChangesAsync(cancellationToken);
+            var activityRules = new List<ActivityRule>
+            {
+                ActivityRule.Create(Guid.NewGuid(), "Morning stretching", Mode.EveryDayMode()),
+                ActivityRule.Create(Guid.NewGuid(), "Browsing mails", Mode.EveryDayMode()),
+                ActivityRule.Create(Guid.NewGuid(), "Writing thoughts", Mode.CustomMode(), [0]),
+                ActivityRule.Create(Guid.NewGuid(), "Cleaning", Mode.CustomMode(), [3, 6]),
+                ActivityRule.Create(Guid.NewGuid(), "Coffee break", Mode.EveryDayMode()),
+                ActivityRule.Create(Guid.NewGuid(), "Savings", Mode.FirstDayOfMonth())
+            };
+            await dbContext.ActivityRules.AddRangeAsync(activityRules, cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
+        }
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
