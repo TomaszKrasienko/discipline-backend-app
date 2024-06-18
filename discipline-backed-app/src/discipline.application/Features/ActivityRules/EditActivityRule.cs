@@ -22,7 +22,7 @@ public static class EditActivityRule
             .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
-            .WithName(nameof(CreateActivityRule))
+            .WithName(nameof(EditActivityRule))
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Updates activity rule"
