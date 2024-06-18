@@ -13,6 +13,12 @@ internal sealed class PostgreSqlActivityRuleRepository(
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task UpdateAsync(ActivityRule activityRule, CancellationToken cancellationToken = default)
+    {
+        dbContext.ActivityRules.Update(activityRule);
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
     public Task<bool> ExistsAsync(string title, CancellationToken cancellationToken = default)
         => dbContext
             .ActivityRules

@@ -1,14 +1,34 @@
+using discipline.application.Behaviours;
 using discipline.application.Domain.Repositories;
 using discipline.application.Exceptions;
 using discipline.application.Features.Base.Abstractions;
 using discipline.application.Features.Configuration.Base.Abstractions;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace discipline.application.Features.ActivityRules;
 
-public class EditActivityRule
+public static class EditActivityRule
 {
-    
+    public static WebApplication MapEditActivityRule(this WebApplication app)
+    {
+        app.MapPut("/activity-rule/{activityRuleId:guid}/edit", async (Guid activityRuleId, EditActivityRuleCommand command, HttpContext httpContext, 
+                    ICommandDispatcher dispatcher, CancellationToken cancellationToken) 
+                => {
+                        await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
+                        return Results.Ok();
+                })
+            .Produces(StatusCodes.Status200OK, typeof(void))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .WithName(nameof(CreateActivityRule))
+            .WithOpenApi(operation => new (operation)
+            {
+                Description = "Updates activity rule"
+            });
+        return app;
+    }
 }
 
 public sealed record EditActivityRuleCommand(Guid Id, string Title, string Mode, 
@@ -46,5 +66,8 @@ internal sealed class EditActivityRuleCommandHandler(
         {
             throw new ActivityRuleNotFoundException(command.Id);
         }
+        
+        activityRule.Edit(command.Title, command.Mode, command.SelectedDays);
+        await activityRuleRepository.UpdateAsync(activityRule, cancellationToken);
     }
 }

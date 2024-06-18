@@ -3,6 +3,7 @@ using discipline.application.Domain.ValueObjects.ActivityRules;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules;
 using discipline.application.Features.Configuration.Base.Abstractions;
+using discipline.tests.shared.Entities;
 using NSubstitute;
 using Shouldly;
 using Xunit;
@@ -12,6 +13,31 @@ namespace discipline.application.unit_tests.Features.ActivityRules.EditActivityR
 public sealed class EditActivityRuleCommandHandlerTests
 {
     private Task Act(EditActivityRuleCommand command) => _handler.HandleAsync(command, default);
+
+    [Fact]
+    public async Task HandleAsync_GivenExistingActivityRule_ShouldUpdateAndUpdateByRepository()
+    {
+        //arrange
+        var activityRule = ActivityRuleFactory.Get();
+        var command = new EditActivityRuleCommand(activityRule.Id, "New title", Mode.EveryDayMode(), null);
+
+        _activityRuleRepository
+            .GetByIdAsync(command.Id)
+            .Returns(activityRule);
+        
+        //act
+        await Act(command);
+        
+        //assert
+        activityRule.Title.Value.ShouldBe(command.Title);
+        activityRule.Mode.Value.ShouldBe(command.Mode);
+        activityRule.SelectedDays.ShouldBeNull();
+
+        await _activityRuleRepository
+            .Received(1)
+            .UpdateAsync(activityRule);
+
+    }
 
     [Fact]
     public async Task HandleAsync_GivenNotExistingActivityRule_ShouldThrowActivityRuleNotFoundException()
