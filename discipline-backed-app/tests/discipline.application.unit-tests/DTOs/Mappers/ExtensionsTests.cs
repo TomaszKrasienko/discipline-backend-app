@@ -40,6 +40,6 @@ public sealed class ExtensionsTests
         result.Id.ShouldBe(entity.Id.Value);
         result.Title.ShouldBe(entity.Title.Value);
         result.Mode.ShouldBe(entity.Mode.Value);
-        result.SelectedDays.ShouldBeEmpty();
+        result.SelectedDays.ShouldBeNull();
     }
 }

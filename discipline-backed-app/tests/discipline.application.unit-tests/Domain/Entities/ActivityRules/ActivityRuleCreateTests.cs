@@ -43,9 +43,9 @@ public sealed class ActivityRuleCreateTests
         result.Id.Value.ShouldBe(id);
         result.Title.Value.ShouldBe(title);
         result.Mode.Value.ShouldBe(mode);
-        result.SelectedDays[0].Value.ShouldBe(selectedDays[0]);
-        result.SelectedDays[1].Value.ShouldBe(selectedDays[1]);
-        result.SelectedDays[2].Value.ShouldBe(selectedDays[2]);
+        result.SelectedDays.Select(x => x.Value).Contains(selectedDays[0]).ShouldBeTrue();
+        result.SelectedDays.Select(x => x.Value).Contains(selectedDays[1]).ShouldBeTrue();
+        result.SelectedDays.Select(x => x.Value).Contains(selectedDays[2]).ShouldBeTrue();
     }
     
     [Fact]

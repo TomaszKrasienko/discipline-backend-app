@@ -27,6 +27,25 @@ public sealed class ActivityRuleTests
     }
     
     [Fact]
+    public void Edit_GivenWithWithSelectedDaysAndValidMode_ShouldUpdateFields()
+    {
+        //arrange
+        var activityRule = ActivityRuleFactory.Get();
+        var title = "NewTitle";
+        var mode = Mode.CustomMode();
+        List<int> selectedDays = [1, 3, 5];
+        //act
+        activityRule.Edit(title, mode, selectedDays);
+        
+        //assert
+        activityRule.Title.Value.ShouldBe(title);
+        activityRule.Mode.Value.ShouldBe(mode);
+        activityRule.SelectedDays.Select(x => x.Value).Contains(selectedDays[0]).ShouldBeTrue();
+        activityRule.SelectedDays.Select(x => x.Value).Contains(selectedDays[1]).ShouldBeTrue();
+        activityRule.SelectedDays.Select(x => x.Value).Contains(selectedDays[2]).ShouldBeTrue();
+    }
+    
+    [Fact]
     public void Edit_GivenNotCustomModeAndSelectedDays_ShouldThrowInvalidModeForSelectedDaysException()
     {
         //arrange

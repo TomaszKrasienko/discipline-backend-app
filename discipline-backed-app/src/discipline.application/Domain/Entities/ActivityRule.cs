@@ -28,8 +28,8 @@ internal sealed class ActivityRule
     internal void Edit(string title, string mode, List<int> selectedDays = null)
     {
         ChangeTitle(title);
-        ChangeMode(title);
-        ChangeSelectedDays(Mode, selectedDays);
+        ChangeMode(mode);
+        ChangeSelectedDays(mode, selectedDays);
     }
 
     private void ChangeTitle(string value)
@@ -42,6 +42,15 @@ internal sealed class ActivityRule
     {
         if (mode == Mode.CustomMode() && !IsSelectedDaysNullOrEmpty(selectedDays))
         {
+            _selectedDays = new();
+            foreach (var selectedDay in selectedDays)
+            {
+                _selectedDays.Add(selectedDay);
+            }
+        }
+
+        if(mode == Mode.CustomMode() && IsSelectedDaysNullOrEmpty(selectedDays) || mode != Mode.CustomMode() && !IsSelectedDaysNullOrEmpty(selectedDays))            
+        {
             throw new InvalidModeForSelectedDaysException(mode);
         }
 
@@ -50,11 +59,7 @@ internal sealed class ActivityRule
             _selectedDays = null;
         }
         
-        foreach (var selectedDay in selectedDays)
-        {
-            _selectedDays = new();
-            _selectedDays.Add(selectedDay);
-        }
+
     }
 
     private static bool IsSelectedDaysNullOrEmpty(List<int> selectedDays)
