@@ -19,6 +19,12 @@ internal sealed class PostgreSqlActivityRuleRepository(
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task DeleteAsync(ActivityRule activityRule, CancellationToken cancellationToken = default)
+    {
+        dbContext.ActivityRules.Remove(activityRule);
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
     public Task<bool> ExistsAsync(string title, CancellationToken cancellationToken = default)
         => dbContext
             .ActivityRules
@@ -28,5 +34,5 @@ internal sealed class PostgreSqlActivityRuleRepository(
     public Task<ActivityRule> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         => dbContext
             .ActivityRules
-            .FirstOrDefaultAsync(x => x.Id.Equals(id));
+            .FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
 }

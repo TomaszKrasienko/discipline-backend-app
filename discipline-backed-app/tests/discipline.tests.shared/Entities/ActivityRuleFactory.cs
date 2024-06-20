@@ -17,6 +17,6 @@ internal static class ActivityRuleFactory
             .CustomInstantiator(arg => ActivityRule.Create(
                 Guid.NewGuid(),
                 arg.Lorem.Word(),
-                selectedDays is null ? arg.PickRandom<string>(Mode.AvailableModes.Keys.ToList()) : Mode.CustomMode(),
+                selectedDays is null ? arg.PickRandom<string>(Mode.AvailableModes.Keys.Where(x => x != Mode.CustomMode()).ToList()) : Mode.CustomMode(),
                 selectedDays));
 }

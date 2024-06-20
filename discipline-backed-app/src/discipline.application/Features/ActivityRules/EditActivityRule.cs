@@ -13,7 +13,7 @@ public static class EditActivityRule
 {
     public static WebApplication MapEditActivityRule(this WebApplication app)
     {
-        app.MapPut("/activity-rule/{activityRuleId:guid}/edit", async (Guid activityRuleId, EditActivityRuleCommand command, HttpContext httpContext, 
+        app.MapPut("/activity-rules/{activityRuleId:guid}/edit", async (Guid activityRuleId, EditActivityRuleCommand command, HttpContext httpContext, 
                     ICommandDispatcher dispatcher, CancellationToken cancellationToken) 
                 => {
                         await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);

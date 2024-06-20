@@ -20,7 +20,7 @@ public sealed class GetActivityRuleByIdTests : BaseTestsController
         await DbContext.SaveChangesAsync();
         
         //act
-        var result = await HttpClient.GetFromJsonAsync<ActivityRuleDto>($"/activity-rule/{activityRule.Id.Value}");
+        var result = await HttpClient.GetFromJsonAsync<ActivityRuleDto>($"/activity-rules/{activityRule.Id.Value}");
         
         //assert
         result.ShouldNotBeNull();
@@ -31,7 +31,7 @@ public sealed class GetActivityRuleByIdTests : BaseTestsController
     public async Task GetActivityRuleById_GivenNotExistingActivityRule_ShouldReturn204NoContentStatusCode()
     {
         //act
-        var response = await HttpClient.GetAsync($"/activity-rule/{Guid.NewGuid()}");
+        var response = await HttpClient.GetAsync($"/activity-rules/{Guid.NewGuid()}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);

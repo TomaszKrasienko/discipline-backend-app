@@ -45,7 +45,7 @@ public class EditActivityRuleTests : BaseTestsController
         var command = new EditActivityRuleCommand(Guid.Empty, "NewTitle", Mode.EveryDayMode(), null);
         
         //act
-        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rule/{Guid.NewGuid()}/edit",
+        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{Guid.NewGuid()}/edit",
             command);
         
         //assert
@@ -59,7 +59,7 @@ public class EditActivityRuleTests : BaseTestsController
         var command = new EditActivityRuleCommand(Guid.Empty, string.Empty, Mode.EveryDayMode(), null);
         
         //act
-        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rule/{Guid.NewGuid()}/edit",
+        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{Guid.NewGuid()}/edit",
             command);
         
         //assert

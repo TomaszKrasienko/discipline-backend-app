@@ -20,7 +20,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
         var command = new CreateActivityRuleCommand(Guid.Empty, "Test title", Mode.EveryDayMode(), null);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync<CreateActivityRuleCommand>("/activity-rule/create", command);
+        var response = await HttpClient.PostAsJsonAsync<CreateActivityRuleCommand>("/activity-rules/create", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
@@ -43,7 +43,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
         var command = new CreateActivityRuleCommand(Guid.Empty, activityRule.Title, Mode.EveryDayMode(), null);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync<CreateActivityRuleCommand>("/activity-rule/create", command);
+        var response = await HttpClient.PostAsJsonAsync<CreateActivityRuleCommand>("/activity-rules/create", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -56,7 +56,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
         var command = new CreateActivityRuleCommand(Guid.Empty, string.Empty, Mode.EveryDayMode(), null);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync<CreateActivityRuleCommand>("/activity-rule/create", command);
+        var response = await HttpClient.PostAsJsonAsync<CreateActivityRuleCommand>("/activity-rules/create", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

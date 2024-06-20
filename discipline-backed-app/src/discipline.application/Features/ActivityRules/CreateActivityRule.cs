@@ -14,7 +14,7 @@ public static class CreateActivityRule
 {
     public static WebApplication MapCreateActivityRule(this WebApplication app)
     {
-        app.MapPost("/activity-rule/create", async (CreateActivityRuleCommand command, HttpContext httpContext, 
+        app.MapPost("/activity-rules/create", async (CreateActivityRuleCommand command, HttpContext httpContext, 
                     ICommandDispatcher dispatcher, CancellationToken cancellationToken) 
                 => {
                         var activityRuleId = Guid.NewGuid();

@@ -11,7 +11,7 @@ internal static class GetActivityRuleById
 {
     internal static WebApplication MapGetActivityRuleById(this WebApplication app)
     {
-        app.MapGet("/activity-rule/{activityRuleId:guid}", async (Guid activityRuleId, DisciplineDbContext dbContext,
+        app.MapGet("/activity-rules/{activityRuleId:guid}", async (Guid activityRuleId, DisciplineDbContext dbContext,
             CancellationToken cancellationToken) =>
             {
                 var result = (await dbContext
