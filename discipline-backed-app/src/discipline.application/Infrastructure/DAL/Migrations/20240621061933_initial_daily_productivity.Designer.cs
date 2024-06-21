@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using discipline.application.Infrastructure.DAL;
@@ -11,9 +12,11 @@ using discipline.application.Infrastructure.DAL;
 namespace discipline.application.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(DisciplineDbContext))]
-    partial class DisciplineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240621061933_initial_daily_productivity")]
+    partial class initial_daily_productivity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -7,6 +7,8 @@ internal sealed class DisciplineDbContext(DbContextOptions<DisciplineDbContext> 
     : DbContext(dbContextOptions)
 {
     public DbSet<ActivityRule> ActivityRules { get; init; }
+    public DbSet<DailyProductivity> DailyProductivity { get; set; }
+    public DbSet<Activity> Activities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
