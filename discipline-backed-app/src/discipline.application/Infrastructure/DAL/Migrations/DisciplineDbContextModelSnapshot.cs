@@ -27,8 +27,8 @@ namespace discipline.application.Infrastructure.DAL.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("DailyProductivityId")
-                        .HasColumnType("uuid");
+                    b.Property<DateTime?>("DailyProductivityDay")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsChecked")
                         .HasMaxLength(100)
@@ -43,7 +43,7 @@ namespace discipline.application.Infrastructure.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DailyProductivityId");
+                    b.HasIndex("DailyProductivityDay");
 
                     b.ToTable("Activities");
                 });
@@ -73,32 +73,29 @@ namespace discipline.application.Infrastructure.DAL.Migrations
                     b.ToTable("ActivityRules");
                 });
 
-            modelBuilder.Entity("discipline.application.Domain.Entities.DailyProductivities", b =>
+            modelBuilder.Entity("discipline.application.Domain.Entities.DailyProductivity", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("Day")
                         .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("Id");
+                    b.HasKey("Day");
 
                     b.HasIndex("Day")
                         .IsUnique();
 
-                    b.ToTable("DailyProductivities");
+                    b.ToTable("DailyProductivity");
                 });
 
             modelBuilder.Entity("discipline.application.Domain.Entities.Activity", b =>
                 {
-                    b.HasOne("discipline.application.Domain.Entities.DailyProductivities", null)
-                        .WithMany("ActivityItems")
-                        .HasForeignKey("DailyProductivityId");
+                    b.HasOne("discipline.application.Domain.Entities.DailyProductivity", null)
+                        .WithMany("Activities")
+                        .HasForeignKey("DailyProductivityDay");
                 });
 
-            modelBuilder.Entity("discipline.application.Domain.Entities.DailyProductivities", b =>
+            modelBuilder.Entity("discipline.application.Domain.Entities.DailyProductivity", b =>
                 {
-                    b.Navigation("ActivityItems");
+                    b.Navigation("Activities");
                 });
 #pragma warning restore 612, 618
         }

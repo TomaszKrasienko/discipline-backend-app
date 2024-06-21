@@ -19,9 +19,12 @@ internal sealed class PostgreSqlDailyProductivityRepository(
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<DailyProductivity> GetByDateAsync(DateTime day, CancellationToken cancellationToken = default)
-        => dbContext
+    public async Task<DailyProductivity> GetByDateAsync(DateTime day, CancellationToken cancellationToken = default)
+    {
+        var result = await dbContext
             .DailyProductivity
             .Include(x => x.Activities)
-            .FirstOrDefaultAsync(x => x.Day == day, cancellationToken);
+            .ToListAsync(cancellationToken);
+        return result.FirstOrDefault(x => x.Day == day);
+    }
 }

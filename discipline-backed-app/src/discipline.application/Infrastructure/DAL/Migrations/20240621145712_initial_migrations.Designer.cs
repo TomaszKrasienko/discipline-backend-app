@@ -12,8 +12,8 @@ using discipline.application.Infrastructure.DAL;
 namespace discipline.application.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(DisciplineDbContext))]
-    [Migration("20240621061933_initial_daily_productivity")]
-    partial class initial_daily_productivity
+    [Migration("20240621145712_initial_migrations")]
+    partial class initial_migrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,10 +30,11 @@ namespace discipline.application.Infrastructure.DAL.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("DailyProductivityId")
-                        .HasColumnType("uuid");
+                    b.Property<DateTime?>("DailyProductivityDay")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool>("IsChecked")
+                        .HasMaxLength(100)
                         .HasColumnType("boolean");
 
                     b.Property<Guid?>("ParentRuleId")
@@ -45,7 +46,7 @@ namespace discipline.application.Infrastructure.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DailyProductivityId");
+                    b.HasIndex("DailyProductivityDay");
 
                     b.ToTable("Activities");
                 });
@@ -64,8 +65,8 @@ namespace discipline.application.Infrastructure.DAL.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("character varying(40)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
@@ -77,13 +78,10 @@ namespace discipline.application.Infrastructure.DAL.Migrations
 
             modelBuilder.Entity("discipline.application.Domain.Entities.DailyProductivity", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("Day")
                         .HasColumnType("timestamp without time zone");
 
-                    b.HasKey("Id");
+                    b.HasKey("Day");
 
                     b.HasIndex("Day")
                         .IsUnique();
@@ -94,13 +92,13 @@ namespace discipline.application.Infrastructure.DAL.Migrations
             modelBuilder.Entity("discipline.application.Domain.Entities.Activity", b =>
                 {
                     b.HasOne("discipline.application.Domain.Entities.DailyProductivity", null)
-                        .WithMany("ActivityItems")
-                        .HasForeignKey("DailyProductivityId");
+                        .WithMany("Activities")
+                        .HasForeignKey("DailyProductivityDay");
                 });
 
             modelBuilder.Entity("discipline.application.Domain.Entities.DailyProductivity", b =>
                 {
-                    b.Navigation("ActivityItems");
+                    b.Navigation("Activities");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,6 +7,7 @@ using Xunit;
 
 namespace discipline.api.integration_tests.ActivityRules;
 
+[Collection("integration-tests")]
 public sealed class BrowseActivityRulesTests : BaseTestsController
 {
     [Fact]

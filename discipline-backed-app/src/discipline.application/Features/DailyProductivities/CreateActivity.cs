@@ -13,11 +13,12 @@ internal static class CreateActivity
     internal static WebApplication MapCreateActivity(this WebApplication app)
     {
         app.MapPost("/daily-productive/current/add-activity", async (CreateActivityCommand command,
-            CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
+            HttpContext httpContext, CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
             {
                 var activityId = Guid.NewGuid();
                 await commandDispatcher.HandleAsync(command with { Id = activityId }, cancellationToken);
-                
+                httpContext.AddResourceIdHeader(activityId);
+                return Results.CreatedAtRoute(nameof(GetActivityById), new {activityId = activityId}, null);
             })            
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
@@ -31,9 +32,9 @@ internal static class CreateActivity
     }
 }
 
-internal sealed record CreateActivityCommand(Guid Id, string Title) : ICommand;
+public sealed record CreateActivityCommand(Guid Id, string Title) : ICommand;
 
-internal sealed class CreateActivityCommandValidator : AbstractValidator<CreateActivityCommand>
+public sealed class CreateActivityCommandValidator : AbstractValidator<CreateActivityCommand>
 {
     public CreateActivityCommandValidator()
     {

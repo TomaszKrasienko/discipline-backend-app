@@ -14,7 +14,7 @@ internal sealed class DailyProductivityTypeConfiguration : IEntityTypeConfigurat
 
         builder
             .Property(x => x.Day)
-            .HasConversion(x => x.Value, y => new Day(y))
+            .HasConversion(x => x.Value, y => new (y))
             .IsRequired();
 
         builder

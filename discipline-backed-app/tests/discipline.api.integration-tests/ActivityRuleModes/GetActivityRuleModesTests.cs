@@ -6,6 +6,7 @@ using Xunit;
 
 namespace discipline.api.integration_tests.ActivityRuleModes;
 
+[Collection("integration-tests")]
 public class GetActivityRuleModesTests : BaseTestsController
 {
     [Fact]

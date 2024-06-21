@@ -3,6 +3,7 @@ using discipline.application.Features.ActivityRules;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.application.Features.Configuration.Base.Abstractions;
 using discipline.application.Features.Configuration.Base.Internals;
+using discipline.application.Features.DailyProductivities.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,5 +25,6 @@ public static class Extensions
     public static WebApplication MapFeatures(this WebApplication app)
         => app
             .MapActivityRulesFeatures()
+            .MapDailyProductiveFeatures()
             .MapGetActivityRuleModes();
 }
