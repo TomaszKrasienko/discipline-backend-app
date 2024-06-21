@@ -13,12 +13,19 @@ internal static class Extensions
             SelectedDays = entity.SelectedDays?.Select(x => x.Value).ToList()
         };
 
-    internal static ActivityDto AsDto(this Activity activity)
+    internal static ActivityDto AsDto(this Activity entity)
         => new ActivityDto()
         {
-            Id = activity.Id,
-            Title = activity.Title,
-            IsChecked = activity.IsChecked,
-            ParentRuleId = activity.ParentRuleId
+            Id = entity.Id,
+            Title = entity.Title,
+            IsChecked = entity.IsChecked,
+            ParentRuleId = entity.ParentRuleId
+        };
+
+    internal static DailyProductivityDto AsDto(this DailyProductivity entity)
+        => new DailyProductivityDto()
+        {
+            Day = entity.Day,
+            Activities = entity.Activities?.Select(x => x.AsDto()).ToList()
         };
 }

@@ -58,4 +58,36 @@ public sealed class ExtensionsTests
         result.IsChecked.ShouldBe(activity.IsChecked.Value);
         result.ParentRuleId.ShouldBeNull();
     }
+
+    [Fact]
+    public void AsDto_GivenDailyProductivityWithoutActivities_ShouldReturnDailyProductivityDto()
+    {
+        //arrange 
+        var dailyProductivity = DailyProductivityFactory.Get();
+        
+        //act
+        var result = dailyProductivity.AsDto();
+        
+        //assert
+        result.Day.ShouldBe(dailyProductivity.Day.Value);
+        result.Activities.ShouldBeEmpty();
+    }
+    
+    [Fact]
+    public void AsDto_GivenDailyProductivityWithActivities_ShouldReturnDailyProductivityDto()
+    {
+        //arrange 
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
+        
+        //act
+        var result = dailyProductivity.AsDto();
+        
+        //assert
+        result.Day.ShouldBe(dailyProductivity.Day.Value);
+        result.Activities.Any(x
+            => x.Id.Equals(activity.Id)
+               && x.Title == activity.Title
+               && x.IsChecked == activity.IsChecked).ShouldBeTrue();
+    }
 }
