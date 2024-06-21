@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Features.DailyProductivities;
+using discipline.tests.shared.Entities;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using Xunit;
@@ -39,5 +40,33 @@ public sealed class CreateActivityTests : BaseTestsController
             .AnyAsync(x => x.Day == DateTime.Now.Date);
         
         isDailyDisciplineExists.ShouldBeTrue();
+    }
+    
+    [Fact]
+    public async Task Create_GivenForExistingDailyActivity_ShouldReturn201CreatedStatusCodeAndAddActivity()
+    {
+        //arrange
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
+        await DbContext.DailyProductivity.AddAsync(dailyProductivity);
+        await DbContext.SaveChangesAsync();
+        var command = new CreateActivityCommand(Guid.Empty, "Test title");
+        
+        //act
+        var response = await HttpClient.PostAsJsonAsync("/daily-productive/current/add-activity", command);
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        
+        var resourceId = GetResourceIdFromHeader(response);
+        resourceId.ShouldNotBeNull();
+        resourceId.ShouldNotBe(Guid.Empty);
+
+        var isActivityExists = await DbContext
+            .Activities
+            .AsNoTracking()
+            .AnyAsync(x => x.Id.Equals(resourceId));
+        
+        isActivityExists.ShouldBeTrue();
     }
 }
