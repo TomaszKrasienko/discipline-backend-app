@@ -5,7 +5,7 @@ using discipline.application.Features.Configuration.Base.Abstractions;
 using discipline.application.Features.DailyProductivities;
 using discipline.tests.shared.Entities;
 using NSubstitute;
-using NSubstitute.Core.Arguments;
+using NSubstitute.ReceivedExtensions;
 using Shouldly;
 using Xunit;
 
@@ -35,19 +35,27 @@ public sealed class CreateActivityCommandHandlerTests
             .AddAsync(Arg.Is<DailyProductivity>(arg
                 => arg.Day == nowDate
                 && arg.Activities.Any(x => x.Id.Equals(command.Id) && x.Title == command.Title)));
+
+        await _dailyProductivityRepository
+            .Received(0)
+            .UpdateAsync(Arg.Any<DailyProductivity>());
     }
 
     [Fact]
     public async Task HandleAsync_GivenForExistingDailyProductivity_ShouldUpdateDailyProductivityAndUpdateByRepository()
     {
         //arrange
-        var now = DateTime.Now.Date;
+        var nowDate = DateTime.Now.Date;
         var dailyActivity = DailyProductivityFactory.Get();
         var command = new CreateActivityCommand(Guid.NewGuid(), "New activity");
 
         _dailyProductivityRepository
-            .GetByDateAsync(now)
+            .GetByDateAsync(nowDate)
             .Returns(dailyActivity);
+        
+        _clock
+            .DateNow()
+            .Returns(nowDate);
         
         //act
         await Act(command);
@@ -56,6 +64,10 @@ public sealed class CreateActivityCommandHandlerTests
         await _dailyProductivityRepository
             .Received(1)
             .UpdateAsync(dailyActivity);
+
+        await _dailyProductivityRepository
+            .Received(0)
+            .AddAsync(Arg.Any<DailyProductivity>());
 
         dailyActivity
             .Activities

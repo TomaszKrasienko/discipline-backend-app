@@ -44,6 +44,12 @@ internal sealed class CreateActivityCommandHandler(
         if (dailyProductivity is null)
         {
             dailyProductivity = DailyProductivity.Create(now);
+            dailyProductivity.AddActivity(command.Id, command.Title);
+            await dailyProductivityRepository.AddAsync(dailyProductivity, cancellationToken);
+            return;
         }
+        
+        dailyProductivity.AddActivity(command.Id, command.Title);
+        await dailyProductivityRepository.UpdateAsync(dailyProductivity, cancellationToken);
     }
 }
