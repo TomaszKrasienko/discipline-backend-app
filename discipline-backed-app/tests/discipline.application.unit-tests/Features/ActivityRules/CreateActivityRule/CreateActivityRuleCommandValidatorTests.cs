@@ -23,8 +23,8 @@ public sealed class CreateActivityRuleCommandValidatorTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData("T")]
-    [InlineData("TestsTestsTestsTestsTestsTestsTestsTestsTests")]
-    public void Validate_GivenInvalid_ShouldHaveValidationErrorForTitle(string title)
+    [InlineData("12345678902234567890323456789042345678905234567890623456789072345678908234567890923456789002345678901")]
+    public void Validate_GivenInvalidTitle_ShouldHaveValidationErrorForTitle(string title)
     {
         //arrange
         var command = new CreateActivityRuleCommand(Guid.NewGuid(), title, "Mode", null);
@@ -55,8 +55,6 @@ public sealed class CreateActivityRuleCommandValidatorTests
     private readonly IValidator<CreateActivityRuleCommand> _validator;
 
     public CreateActivityRuleCommandValidatorTests()
-    {
-        _validator = new CreateActivityRuleCommandValidator();
-    }
+        => _validator = new CreateActivityRuleCommandValidator();
     #endregion
 }

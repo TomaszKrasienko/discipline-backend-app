@@ -23,6 +23,7 @@ internal sealed class ActivityTypeConfiguration : IEntityTypeConfiguration<Activ
         builder
             .Property(x => x.IsChecked)
             .HasConversion(x => x.Value, y => new(y))
+            .HasMaxLength(100)
             .IsRequired();
 
         builder

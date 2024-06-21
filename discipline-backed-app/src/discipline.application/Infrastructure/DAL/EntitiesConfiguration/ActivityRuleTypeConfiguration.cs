@@ -19,7 +19,7 @@ internal sealed class ActivityRuleTypeConfiguration : IEntityTypeConfiguration<A
         builder
             .Property(x => x.Title)
             .HasConversion(x => x.Value, y => new(y))
-            .HasMaxLength(40)
+            .HasMaxLength(100)
             .IsRequired();
 
         builder

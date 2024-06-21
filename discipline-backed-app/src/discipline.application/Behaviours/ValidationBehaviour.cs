@@ -1,4 +1,3 @@
-using discipline.application.Features.Base.Abstractions;
 using discipline.application.Features.Configuration.Base.Abstractions;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

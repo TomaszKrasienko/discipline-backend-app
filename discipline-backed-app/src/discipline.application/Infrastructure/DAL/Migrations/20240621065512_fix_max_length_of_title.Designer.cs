@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using discipline.application.Infrastructure.DAL;
@@ -11,9 +12,11 @@ using discipline.application.Infrastructure.DAL;
 namespace discipline.application.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(DisciplineDbContext))]
-    partial class DisciplineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240621065512_fix_max_length_of_title")]
+    partial class fix_max_length_of_title
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,7 +76,7 @@ namespace discipline.application.Infrastructure.DAL.Migrations
                     b.ToTable("ActivityRules");
                 });
 
-            modelBuilder.Entity("discipline.application.Domain.Entities.DailyProductivities", b =>
+            modelBuilder.Entity("discipline.application.Domain.Entities.DailyProductivity", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -86,17 +89,17 @@ namespace discipline.application.Infrastructure.DAL.Migrations
                     b.HasIndex("Day")
                         .IsUnique();
 
-                    b.ToTable("DailyProductivities");
+                    b.ToTable("DailyProductivity");
                 });
 
             modelBuilder.Entity("discipline.application.Domain.Entities.Activity", b =>
                 {
-                    b.HasOne("discipline.application.Domain.Entities.DailyProductivities", null)
+                    b.HasOne("discipline.application.Domain.Entities.DailyProductivity", null)
                         .WithMany("ActivityItems")
                         .HasForeignKey("DailyProductivityId");
                 });
 
-            modelBuilder.Entity("discipline.application.Domain.Entities.DailyProductivities", b =>
+            modelBuilder.Entity("discipline.application.Domain.Entities.DailyProductivity", b =>
                 {
                     b.Navigation("ActivityItems");
                 });

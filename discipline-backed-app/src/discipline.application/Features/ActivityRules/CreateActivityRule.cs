@@ -2,7 +2,6 @@ using discipline.application.Behaviours;
 using discipline.application.Domain.Entities;
 using discipline.application.Domain.Repositories;
 using discipline.application.Exceptions;
-using discipline.application.Features.Base.Abstractions;
 using discipline.application.Features.Configuration.Base.Abstractions;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
@@ -50,7 +49,7 @@ public sealed class CreateActivityRuleCommandValidator : AbstractValidator<Creat
             .WithMessage("Activity rule \"Title\" can not be null or empty");
         RuleFor(x => x.Title)
             .MinimumLength(3)
-            .MaximumLength(40)
+            .MaximumLength(100)
             .WithMessage("Activity rule \"Title\" has invalid length");
         RuleFor(x => x.Mode)
             .NotNull()

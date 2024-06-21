@@ -9,7 +9,8 @@ internal static class Extensions
         => services
             .AddHandlingException()
             .AddValidationBehaviour()
-            .AddCreatingTransaction();
+            .AddCreatingTransaction()
+            .AddClockBehaviour();
 
     internal static WebApplication UseBehaviours(this WebApplication app)
         => app

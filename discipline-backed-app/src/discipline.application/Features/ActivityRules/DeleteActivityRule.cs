@@ -1,6 +1,5 @@
 using discipline.application.Domain.Repositories;
 using discipline.application.Exceptions;
-using discipline.application.Features.Base.Abstractions;
 using discipline.application.Features.Configuration.Base.Abstractions;
 using discipline.application.Infrastructure.DAL;
 using FluentValidation;

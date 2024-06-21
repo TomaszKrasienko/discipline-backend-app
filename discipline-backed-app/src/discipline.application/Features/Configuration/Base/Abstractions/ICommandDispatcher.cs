@@ -1,5 +1,3 @@
-using discipline.application.Features.Base.Abstractions;
-
 namespace discipline.application.Features.Configuration.Base.Abstractions;
 
 public interface ICommandDispatcher

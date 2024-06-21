@@ -31,4 +31,14 @@ public sealed class ActivityCreateTests
         //assert
         exception.ShouldBeOfType<EmptyActivityTitleException>();
     }
+    
+    [Fact]
+    public void Create_GivenTitleWithInvalidLength_ShouldThrowEmptyActivityTitleException()
+    {
+        //act
+        var exception = Record.Exception(() => Activity.Create(Guid.NewGuid(), "T"));
+        
+        //assert
+        exception.ShouldBeOfType<InvalidActivityTitleLengthException>();
+    }
 }

@@ -1,5 +1,6 @@
 using discipline.application.Features.ActivityRuleModes;
 using discipline.application.Features.ActivityRules;
+using discipline.application.Features.ActivityRules.Configuration;
 using discipline.application.Features.Configuration.Base.Abstractions;
 using discipline.application.Features.Configuration.Base.Internals;
 using Microsoft.AspNetCore.Builder;
@@ -22,10 +23,6 @@ public static class Extensions
     
     public static WebApplication MapFeatures(this WebApplication app)
         => app
-            .MapCreateActivityRule()
-            .MapEditActivityRule()
-            .MapDeleteActivityRule()
-            .MapGetActivityRuleById()
-            .MapGetActivityRuleModes()
-            .MapBrowseActivityRules();
+            .MapActivityRulesFeatures()
+            .MapGetActivityRuleModes();
 }

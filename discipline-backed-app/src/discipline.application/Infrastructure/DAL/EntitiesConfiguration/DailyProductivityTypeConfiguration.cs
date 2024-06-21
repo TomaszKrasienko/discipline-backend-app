@@ -10,10 +10,7 @@ internal sealed class DailyProductivityTypeConfiguration : IEntityTypeConfigurat
 {
     public void Configure(EntityTypeBuilder<DailyProductivity> builder)
     {
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id)
-            .HasConversion(x => x.Value, y => new EntityId(y))
-            .IsRequired();
+        builder.HasKey(x => x.Day);
 
         builder
             .Property(x => x.Day)
@@ -21,7 +18,7 @@ internal sealed class DailyProductivityTypeConfiguration : IEntityTypeConfigurat
             .IsRequired();
 
         builder
-            .HasMany<Activity>(x => x.ActivityItems)
+            .HasMany<Activity>(x => x.Activities)
             .WithOne();
 
         builder

@@ -12,6 +12,11 @@ internal sealed record Title
         {
             throw new EmptyActivityTitleException();
         }
+        
+        if (value.Length is < 3 or > 100)
+        {
+            throw new InvalidActivityTitleLengthException(value);
+        }
         Value = value;
     }
 

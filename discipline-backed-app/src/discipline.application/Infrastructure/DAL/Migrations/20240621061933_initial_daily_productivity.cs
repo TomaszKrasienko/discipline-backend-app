@@ -12,7 +12,7 @@ namespace discipline.application.Infrastructure.DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DailyProductivity",
+                name: "DailyProductivities",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -39,7 +39,7 @@ namespace discipline.application.Infrastructure.DAL.Migrations
                     table.ForeignKey(
                         name: "FK_Activities_DailyProductivity_DailyProductivityId",
                         column: x => x.DailyProductivityId,
-                        principalTable: "DailyProductivity",
+                        principalTable: "DailyProductivities",
                         principalColumn: "Id");
                 });
 
@@ -50,7 +50,7 @@ namespace discipline.application.Infrastructure.DAL.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_DailyProductivity_Day",
-                table: "DailyProductivity",
+                table: "DailyProductivities",
                 column: "Day",
                 unique: true);
         }
@@ -62,7 +62,7 @@ namespace discipline.application.Infrastructure.DAL.Migrations
                 name: "Activities");
 
             migrationBuilder.DropTable(
-                name: "DailyProductivity");
+                name: "DailyProductivities");
         }
     }
 }

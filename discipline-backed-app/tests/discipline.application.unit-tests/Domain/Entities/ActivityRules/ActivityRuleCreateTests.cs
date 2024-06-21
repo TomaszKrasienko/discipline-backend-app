@@ -58,6 +58,17 @@ public sealed class ActivityRuleCreateTests
         //assert
         exception.ShouldBeOfType<EmptyActivityRuleTitleException>();
     }
+    
+    [Fact]
+    public void Create_GivenTitleWithInvalidLength_ShouldThrowEmptyActivityRuleTitleException()
+    {
+        //act
+        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), "T",
+            Mode.EveryDayMode(), null));
+        
+        //assert
+        exception.ShouldBeOfType<InvalidActivityRuleTitleLengthException>();
+    }
 
     [Fact]
     public void Create_GivenEmptyMode_ShouldThrowEmptyActivityRuleModeException()

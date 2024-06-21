@@ -10,14 +10,12 @@ public sealed class DailyProductivityCreateTests
     public void Create_GivenWithArguments_ShouldReturnDailyProductivityWithFilledFields()
     {
         //arrange
-        var id = Guid.NewGuid();
         var day = DateTime.Now;
         
         //act
-        var result = DailyProductivity.Create(id, day);
+        var result = DailyProductivity.Create(day);
         
         //assert
-        result.Id.Value.ShouldBe(id);
         result.Day.Value.ShouldBe(day.Date);
     } 
 }
