@@ -42,4 +42,20 @@ public sealed class ExtensionsTests
         result.Mode.ShouldBe(entity.Mode.Value);
         result.SelectedDays.ShouldBeNull();
     }
+
+    [Fact]
+    public void AsDto_GivenActivity_ShouldReturnActivityDto()
+    {
+        //arrange
+        var activity = ActivityFactory.Get();
+        
+        //act
+        var result = activity.AsDto();
+        
+        //assert
+        result.Id.ShouldBe(activity.Id.Value);
+        result.Title.ShouldBe(activity.Title.Value);
+        result.IsChecked.ShouldBe(activity.IsChecked.Value);
+        result.ParentRuleId.ShouldBeNull();
+    }
 }

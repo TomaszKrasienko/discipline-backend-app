@@ -3,12 +3,32 @@ using discipline.application.Domain.Entities;
 using discipline.application.Domain.Repositories;
 using discipline.application.Features.Configuration.Base.Abstractions;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace discipline.application.Features.DailyProductivities;
 
-public class CreateActivity
+internal static class CreateActivity
 {
-    
+    internal static WebApplication MapCreateActivity(this WebApplication app)
+    {
+        app.MapPost("/daily-productive/current/add-activity", async (CreateActivityCommand command,
+            CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
+            {
+                var activityId = Guid.NewGuid();
+                await commandDispatcher.HandleAsync(command with { Id = activityId }, cancellationToken);
+                
+            })            
+            .Produces(StatusCodes.Status201Created, typeof(void))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .WithName(nameof(CreateActivity))
+            .WithOpenApi(operation => new (operation)
+            {
+                Description = "Adds activity rule"
+            });
+        return app;
+    }
 }
 
 internal sealed record CreateActivityCommand(Guid Id, string Title) : ICommand;

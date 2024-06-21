@@ -5,7 +5,6 @@ using discipline.application.Features.Configuration.Base.Abstractions;
 using discipline.application.Features.DailyProductivities;
 using discipline.tests.shared.Entities;
 using NSubstitute;
-using NSubstitute.ReceivedExtensions;
 using Shouldly;
 using Xunit;
 

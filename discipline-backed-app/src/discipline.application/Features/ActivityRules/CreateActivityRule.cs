@@ -14,13 +14,13 @@ public static class CreateActivityRule
     public static WebApplication MapCreateActivityRule(this WebApplication app)
     {
         app.MapPost("/activity-rules/create", async (CreateActivityRuleCommand command, HttpContext httpContext, 
-                    ICommandDispatcher dispatcher, CancellationToken cancellationToken) 
-                => {
-                        var activityRuleId = Guid.NewGuid();
-                        await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
-                        httpContext.AddResourceIdHeader(activityRuleId);
-                        return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId}, null);
-                })
+                    ICommandDispatcher dispatcher, CancellationToken cancellationToken) => 
+            {
+                var activityRuleId = Guid.NewGuid();
+                await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
+                httpContext.AddResourceIdHeader(activityRuleId);
+                return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId}, null);
+            })
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
