@@ -69,4 +69,35 @@ public sealed class CreateActivityTests : BaseTestsController
         
         isActivityExists.ShouldBeTrue();
     }
+    
+    [Fact]
+    public async Task Create_GivenInvalidActivity_ShouldReturn400BadRequestStatusCode()
+    {
+        //arrange
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
+        await DbContext.DailyProductivity.AddAsync(dailyProductivity);
+        await DbContext.SaveChangesAsync();
+        var command = new CreateActivityCommand(Guid.Empty, activity.Title);
+        
+        //act
+        var response = await HttpClient.PostAsJsonAsync("/daily-productive/current/add-activity", command);
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    }
+    
+    [Fact]
+    public async Task Create_GivenEmptyTitle_ShouldReturn422UnprocessableEntityStatusCode()
+    {
+        //arrange
+
+        var command = new CreateActivityCommand(Guid.Empty, string.Empty);
+        
+        //act
+        var response = await HttpClient.PostAsJsonAsync("/daily-productive/current/add-activity", command);
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
+    }
 }
