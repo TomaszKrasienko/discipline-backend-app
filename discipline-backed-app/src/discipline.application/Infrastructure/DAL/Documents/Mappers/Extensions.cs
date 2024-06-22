@@ -46,6 +46,15 @@ internal static class Extensions
             document.IsChecked,
             document.ParentRuleId);
 
+    internal static ActivityDto AsDto(this ActivityDocument document)
+        => new()
+        {
+            Id = document.Id,
+            Title = document.Title,
+            IsChecked = document.IsChecked,
+            ParentRuleId = document.ParentRuleId
+        };
+
     internal static DailyProductivityDocument AsDocument(this DailyProductivity entity)
         => new()
         {
@@ -57,4 +66,12 @@ internal static class Extensions
         => new(
             document.Day, 
             document.Activities?.Select(x => x.AsEntity()).ToList());
+
+    internal static DailyProductivityDto AsDto(this DailyProductivityDocument document)
+        => new()
+        {
+            Day = document.Day,
+            Activities = document.Activities?.Select(x => x.AsDto()).ToList()
+        };
+    
 }

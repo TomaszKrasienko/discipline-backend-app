@@ -207,4 +207,36 @@ public sealed class DocumentsMappersExtensionsTests
                && x.Title == activityDocuments[0].Title
                && x.IsChecked == activityDocuments[0].IsChecked).ShouldBeTrue();
     }
+    
+    [Fact]
+    public void AsDto_GivenDailyProductivityDocumentWithoutActivities_ShouldReturnDailyProductivityDtoWithoutActivitiesDto()
+    {
+        //arrange
+        var dailyProductivityDocument = DailyProductivityDocumentFactory.Get();
+        
+        //act
+        var result = dailyProductivityDocument.AsDto();
+        
+        //assert
+        result.Day.ShouldBe(dailyProductivityDocument.Day);
+    }
+    
+    [Fact]
+    public void AsDto_GivenDailyProductivityDocumentWithActivities_ShouldReturnDailyProductivityDtoWithActivitiesDto()
+    {
+        //arrange
+        var activityDocuments = ActivityDocumentFactory.Get(1);
+        var dailyProductivityDocument = DailyProductivityDocumentFactory.Get(activityDocuments);
+        
+        //act
+        var result = dailyProductivityDocument.AsDto();
+        
+        //assert
+        result.Day.ShouldBe(dailyProductivityDocument.Day);
+        result.Activities.Any(x
+            => x.Id.Equals(activityDocuments[0].Id)
+               && x.Title == activityDocuments[0].Title
+               && x.IsChecked == activityDocuments[0].IsChecked).ShouldBeTrue();
+    }
+    
 }
