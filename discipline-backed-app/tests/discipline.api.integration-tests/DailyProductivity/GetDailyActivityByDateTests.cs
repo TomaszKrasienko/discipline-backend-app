@@ -3,6 +3,9 @@ using System.Net.Http.Json;
 using System.Runtime.InteropServices.JavaScript;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
+using discipline.application.Infrastructure.DAL.Documents;
+using discipline.application.Infrastructure.DAL.Documents.Mappers;
+using discipline.application.Infrastructure.DAL.Repositories;
 using discipline.tests.shared.Entities;
 using NSubstitute;
 using Shouldly;
@@ -18,8 +21,8 @@ public class GetDailyActivityByDateTests : BaseTestsController
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
-        await DbContext.DailyProductivity.AddAsync(dailyProductivity);
-        await DbContext.SaveChangesAsync();
+        await TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+            .InsertOneAsync(dailyProductivity.AsDocument());
         
         //act
         var result = await HttpClient.GetFromJsonAsync<DailyProductivityDto>($"/daily-productivity/{DateTime.Now:yyyy-MM-dd}");
