@@ -4,6 +4,7 @@ using discipline.api.integration_tests._Helpers;
 using discipline.application.Domain.Entities;
 using discipline.application.Features.DailyProductivities;
 using discipline.application.Infrastructure.DAL.Documents;
+using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Repositories;
 using discipline.tests.shared.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ namespace discipline.api.integration_tests.DailyProductivity;
 public sealed class CreateActivityTests : BaseTestsController
 {
     [Fact]
-    public async Task Create_GivenForFirstDailyActivity_ShouldReturn201CreatedStatusCodeAndAddDailyProductivityWithActivity()
+    public async Task Create_GivenForFirstDailyActivity_ShouldReturn200OkStatusCodeAndAddDailyProductivityWithActivity()
     {
         //arrange
         var command = new CreateActivityCommand(Guid.Empty, "Test title");
@@ -38,31 +39,28 @@ public sealed class CreateActivityTests : BaseTestsController
     }
     
     [Fact]
-    public async Task Create_GivenForExistingDailyActivity_ShouldReturn201CreatedStatusCodeAndAddActivity()
+    public async Task Create_GivenForExistingDailyActivity_ShouldReturn200OkStatusCodeAndAddActivity()
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
-        await DbContext.DailyProductivity.AddAsync(dailyProductivity);
-        await DbContext.SaveChangesAsync();
+        await TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+            .InsertOneAsync(dailyProductivity.AsDocument());
         var command = new CreateActivityCommand(Guid.Empty, "Test title");
         
         //act
         var response = await HttpClient.PostAsJsonAsync("/daily-productive/current/add-activity", command);
         
         //assert
-        response.StatusCode.ShouldBe(HttpStatusCode.Created);
-        
-        var resourceId = GetResourceIdFromHeader(response);
-        resourceId.ShouldNotBeNull();
-        resourceId.ShouldNotBe(Guid.Empty);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+   
+        var dailyProductivityDocument = await TestAppDb
+            .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+            .Find(x => x.Day == DateTime.Now.Date)
+            .FirstOrDefaultAsync();
 
-        var isActivityExists = await DbContext
-            .Activities
-            .AsNoTracking()
-            .AnyAsync(x => x.Id.Equals(resourceId));
-        
-        isActivityExists.ShouldBeTrue();
+        dailyProductivityDocument.ShouldNotBeNull();
+        dailyProductivityDocument.Activities.Any(x => x.Title == command.Title).ShouldBeTrue();
     }
     
     [Fact]
@@ -71,8 +69,8 @@ public sealed class CreateActivityTests : BaseTestsController
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
-        await DbContext.DailyProductivity.AddAsync(dailyProductivity);
-        await DbContext.SaveChangesAsync();
+        await TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+            .InsertOneAsync(dailyProductivity.AsDocument());
         var command = new CreateActivityCommand(Guid.Empty, activity.Title);
         
         //act
@@ -86,7 +84,6 @@ public sealed class CreateActivityTests : BaseTestsController
     public async Task Create_GivenEmptyTitle_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
-
         var command = new CreateActivityCommand(Guid.Empty, string.Empty);
         
         //act
