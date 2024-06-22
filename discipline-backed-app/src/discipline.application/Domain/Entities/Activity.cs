@@ -21,6 +21,15 @@ internal sealed class Activity
         Title = title;
         ParentRuleId = parentRuleId;
     }
+    
+    //For mongo
+    internal Activity(EntityId id, Title title, IsChecked isChecked, EntityId parentRuleId)
+    {
+        Id = id;
+        Title = title;
+        IsChecked = isChecked;
+        ParentRuleId = parentRuleId;
+    }
 
     internal static Activity Create(Guid id, string title)
     {

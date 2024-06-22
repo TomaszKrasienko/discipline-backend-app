@@ -1,9 +1,13 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
+using discipline.application.Domain.Entities;
 using discipline.application.Features.DailyProductivities;
+using discipline.application.Infrastructure.DAL.Documents;
+using discipline.application.Infrastructure.DAL.Repositories;
 using discipline.tests.shared.Entities;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using Shouldly;
 using Xunit;
 
@@ -22,24 +26,15 @@ public sealed class CreateActivityTests : BaseTestsController
         var response = await HttpClient.PostAsJsonAsync("/daily-productive/current/add-activity", command);
         
         //assert
-        response.StatusCode.ShouldBe(HttpStatusCode.Created);
-        
-        var resourceId = GetResourceIdFromHeader(response);
-        resourceId.ShouldNotBeNull();
-        resourceId.ShouldNotBe(Guid.Empty);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var isActivityExists = await DbContext
-            .Activities
-            .AsNoTracking()
-            .AnyAsync(x => x.Id.Equals(resourceId));
-        
-        isActivityExists.ShouldBeTrue();
+        var dailyProductivityDocument = await TestAppDb
+            .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+            .Find(x => x.Day == DateTime.Now.Date)
+            .FirstOrDefaultAsync();
 
-        var isDailyDisciplineExists = await DbContext
-            .DailyProductivity
-            .AnyAsync(x => x.Day == DateTime.Now.Date);
-        
-        isDailyDisciplineExists.ShouldBeTrue();
+        dailyProductivityDocument.ShouldNotBeNull();
+        dailyProductivityDocument.Activities.Any(x => x.Title == command.Title).ShouldBeTrue();
     }
     
     [Fact]

@@ -1,4 +1,5 @@
 using discipline.application.Domain.Entities;
+using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Documents;
 using discipline.tests.shared.Entities;
@@ -130,6 +131,22 @@ public sealed class DocumentsMappersExtensionsTests
     }
 
     [Fact]
+    public void AsEntity_GivenActivityDocument_ShouldReturnActivity()
+    {
+        //arrange
+        var activityDocument = ActivityDocumentFactory.Get();
+        
+        //act
+        var result = activityDocument.AsEntity();
+        
+        //assert
+        result.Id.Value.ShouldBe(activityDocument.Id);
+        result.Title.Value.ShouldBe(activityDocument.Title);
+        result.IsChecked.Value.ShouldBe(activityDocument.IsChecked);
+        result.ParentRuleId.ShouldBeNull();
+    }
+
+    [Fact]
     public void AsDocument_GivenDailyProductivityWithoutActivities_ShouldReturnDailyProductivityDocumentWithoutActivities()
     {
         //arrange
@@ -158,5 +175,36 @@ public sealed class DocumentsMappersExtensionsTests
             => x.Id.Equals(activity.Id)
                && x.Title == activity.Title
                && x.IsChecked == activity.IsChecked).ShouldBeTrue();
+    }
+    
+    [Fact]
+    public void AsEntity_GivenDailyProductivityDocumentWithoutActivities_ShouldReturnDailyProductivityWithoutActivities()
+    {
+        //arrange
+        var dailyProductivityDocument = DailyProductivityDocumentFactory.Get();
+        
+        //act
+        var result = dailyProductivityDocument.AsEntity();
+        
+        //assert
+        result.Day.Value.ShouldBe(dailyProductivityDocument.Day);
+    }
+    
+    [Fact]
+    public void AsEntity_GivenDailyProductivityDocumentWithActivities_ShouldReturnDailyProductivityWithActivities()
+    {
+        //arrange
+        var activityDocuments = ActivityDocumentFactory.Get(1);
+        var dailyProductivityDocument = DailyProductivityDocumentFactory.Get(activityDocuments);
+        
+        //act
+        var result = dailyProductivityDocument.AsEntity();
+        
+        //assert
+        result.Day.Value.ShouldBe(dailyProductivityDocument.Day);
+        result.Activities.Any(x
+            => x.Id.Value.Equals(activityDocuments[0].Id)
+               && x.Title == activityDocuments[0].Title
+               && x.IsChecked == activityDocuments[0].IsChecked).ShouldBeTrue();
     }
 }

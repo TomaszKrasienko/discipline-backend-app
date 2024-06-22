@@ -14,8 +14,13 @@ internal sealed class DailyProductivity : AggregateRoot
     {
         Day = day;
     }
-    
-    
+
+    //For mongo
+    internal DailyProductivity(Day day, List<Activity> activities)
+    {
+        Day = day;
+        _activities = activities;
+    }
 
     internal static DailyProductivity Create(DateTime day)
         => new DailyProductivity(day);

@@ -17,10 +17,9 @@ internal static class CreateActivity
             {
                 var activityId = Guid.NewGuid();
                 await commandDispatcher.HandleAsync(command with { Id = activityId }, cancellationToken);
-                httpContext.AddResourceIdHeader(activityId);
-                return Results.CreatedAtRoute(nameof(GetActivityById), new {activityId = activityId}, null);
+                return Results.Ok();
             })            
-            .Produces(StatusCodes.Status201Created, typeof(void))
+            .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(CreateActivity))

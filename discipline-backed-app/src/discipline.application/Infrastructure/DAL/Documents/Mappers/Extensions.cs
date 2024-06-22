@@ -30,7 +30,6 @@ internal static class Extensions
             Mode = document.Mode,
             SelectedDays = document.SelectedDays?.ToList()
         };
-
     internal static ActivityDocument AsDocument(this Activity entity)
         => new()
         {
@@ -40,10 +39,22 @@ internal static class Extensions
             ParentRuleId = entity.ParentRuleId
         };
 
+    internal static Activity AsEntity(this ActivityDocument document)
+        => new Activity(
+            document.Id,
+            document.Title,
+            document.IsChecked,
+            document.ParentRuleId);
+
     internal static DailyProductivityDocument AsDocument(this DailyProductivity entity)
         => new()
         {
             Day = entity.Day,
             Activities = entity.Activities?.Select(x => x.AsDocument())
         };
+
+    internal static DailyProductivity AsEntity(this DailyProductivityDocument document)
+        => new(
+            document.Day, 
+            document.Activities?.Select(x => x.AsEntity()).ToList());
 }
