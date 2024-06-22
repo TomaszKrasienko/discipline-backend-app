@@ -1,7 +1,6 @@
 using discipline.application.Domain.Entities;
 using discipline.application.Domain.ValueObjects.ActivityRules;
 using discipline.application.DTOs;
-using Activity = System.Diagnostics.Activity;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;
 
@@ -30,5 +29,14 @@ internal static class Extensions
             Title = document.Title,
             Mode = document.Mode,
             SelectedDays = document.SelectedDays?.ToList()
+        };
+
+    internal static ActivityDocument AsDocument(this Activity entity)
+        => new ()
+        {
+            Id = entity.Id,
+            IsChecked = entity.IsChecked,
+            Title = entity.Title,
+            ParentRuleId = entity.ParentRuleId
         };
 }

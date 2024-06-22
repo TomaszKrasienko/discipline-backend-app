@@ -112,4 +112,20 @@ public sealed class DocumentsMappersExtensionsTests
         result.SelectedDays.Contains(selectedDays[0]).ShouldBeTrue();
         result.SelectedDays.Contains(selectedDays[1]).ShouldBeTrue();
     }
+
+    [Fact]
+    public void AsDocument_GivenActivity_ShouldReturnActivityDocument()
+    {
+        //arrange
+        var activity = ActivityFactory.Get();
+        
+        //act
+        var result = activity.AsDocument();
+        
+        //assert
+        result.Id.ShouldBe(activity.Id.Value);
+        result.Title.ShouldBe(activity.Title.Value);
+        result.IsChecked.ShouldBe(activity.IsChecked.Value);
+        result.ParentRuleId.ShouldBeNull();
+    }
 }
