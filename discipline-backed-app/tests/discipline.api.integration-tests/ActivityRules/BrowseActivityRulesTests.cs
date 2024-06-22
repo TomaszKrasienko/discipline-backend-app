@@ -1,6 +1,8 @@
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
+using discipline.application.Infrastructure.DAL.Documents;
+using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
@@ -15,8 +17,8 @@ public sealed class BrowseActivityRulesTests : BaseTestsController
     {
         //arrange
         var activityRules = ActivityRuleFactory.Get(5);
-        await DbContext.ActivityRules.AddRangeAsync(activityRules);
-        await DbContext.SaveChangesAsync();
+        await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules")
+            .InsertManyAsync(activityRules.Select(x => x.AsDocument()));
         var pageNumber = 1;
         var pageSize = 3;
         

@@ -1,6 +1,6 @@
 using discipline.application.DTOs;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace discipline.application.Behaviours;
 
@@ -31,11 +31,11 @@ internal class PagedList<T> : List<T>
     internal int CurrentPage { get; }
     internal int TotalPages { get; }
     internal int PageSize { get; }
-    internal int TotalCount { get; }
+    internal long TotalCount { get; }
     internal bool HasPrevious => CurrentPage > 1;
     internal bool HasNext => CurrentPage < TotalPages;
 
-    private PagedList(IEnumerable<T> items, int count, int pageNumber, int pageSize)
+    private PagedList(IEnumerable<T> items, long count, int pageNumber, int pageSize)
     {
         TotalCount = count;
         PageSize = pageSize;
@@ -44,10 +44,13 @@ internal class PagedList<T> : List<T>
         AddRange(items);
     }
 
-    internal static async Task<PagedList<T>> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
+    internal static async Task<PagedList<T>> ToPagedList(IFindFluent<T,T> source, int pageNumber, int pageSize)
     {
-        var count = source.Count();
-        var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        var count = await source.CountDocumentsAsync();
+        var items = await source
+            .Skip((pageNumber - 1) * pageSize)
+            .Limit(pageSize)
+            .ToListAsync();
         return new PagedList<T>(items, count, pageNumber, pageSize);
     }
 }

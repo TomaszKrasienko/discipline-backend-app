@@ -3,9 +3,12 @@ using discipline.application.Domain.Entities;
 using discipline.application.DTOs;
 using discipline.application.DTOs.Mappers;
 using discipline.application.Infrastructure.DAL;
+using discipline.application.Infrastructure.DAL.Documents;
+using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace discipline.application.Features.ActivityRules;
 
@@ -14,15 +17,14 @@ internal static class BrowseActivityRules
     internal static WebApplication MapBrowseActivityRules(this WebApplication app)
     {
         app.MapGet("/activity-rules", async ([AsParameters]PaginationDto paginationDto, 
-            HttpContext httpContext, DisciplineDbContext dbContext) =>
-                {
-                    var source = dbContext
-                        .ActivityRules
-                        .AsNoTracking();
-                    var pagedList = await PagedList<ActivityRule>.ToPagedList(source,
-                        paginationDto.PageNumber, paginationDto.PageSize);
-                    httpContext.AddPaginationToHeader(pagedList);
-                    return Results.Ok(pagedList.Select(x => x.AsDto()));
+            HttpContext httpContext, IMongoDatabase mongoDatabase) =>
+            {
+                var collection = mongoDatabase.GetCollection<ActivityRuleDocument>("ActivityRules");
+                var source = collection.Find(_ => true);
+                var pagedList = await PagedList<ActivityRuleDocument>
+                    .ToPagedList(source, paginationDto.PageNumber, paginationDto.PageSize);
+                httpContext.AddPaginationToHeader(pagedList);
+                return Results.Ok(pagedList.Select(x => x.AsDto()));
                 })
             .Produces(StatusCodes.Status200OK, typeof(List<ActivityRuleDto>))
             .WithName(nameof(BrowseActivityRules))
