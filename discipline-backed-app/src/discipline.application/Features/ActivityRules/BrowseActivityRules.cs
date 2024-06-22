@@ -1,13 +1,9 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.Entities;
 using discipline.application.DTOs;
-using discipline.application.DTOs.Mappers;
-using discipline.application.Infrastructure.DAL;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 namespace discipline.application.Features.ActivityRules;

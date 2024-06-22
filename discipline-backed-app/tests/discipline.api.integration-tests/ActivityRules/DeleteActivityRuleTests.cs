@@ -3,7 +3,6 @@ using discipline.api.integration_tests._Helpers;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using Shouldly;
 using Xunit;

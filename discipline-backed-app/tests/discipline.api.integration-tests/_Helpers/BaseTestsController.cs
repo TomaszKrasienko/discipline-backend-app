@@ -12,12 +12,10 @@ public abstract class BaseTestsController : IDisposable
 {
    internal readonly TestAppDb TestAppDb;
    protected readonly HttpClient HttpClient;
-   internal readonly DisciplineDbContext DbContext;
    protected BaseTestsController()
    {
        var app = new TestApp(ConfigureServices);
        TestAppDb = new TestAppDb();
-       DbContext = TestAppDb.DisciplineDbContext;
        HttpClient = app.HttpClient;
        
    }
