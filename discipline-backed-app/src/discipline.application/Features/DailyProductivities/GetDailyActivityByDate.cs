@@ -1,10 +1,14 @@
 using discipline.application.DTOs;
 using discipline.application.DTOs.Mappers;
 using discipline.application.Infrastructure.DAL;
+using discipline.application.Infrastructure.DAL.Documents;
+using discipline.application.Infrastructure.DAL.Documents.Mappers;
+using discipline.application.Infrastructure.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace discipline.application.Features.DailyProductivities;
 
@@ -13,16 +17,14 @@ internal static class GetDailyActivityByDate
     internal static WebApplication MapGetDailyActivityByDate(this WebApplication app)
     {
         app.MapGet("/daily-productivity/{day:datetime}",async (DateTime day, CancellationToken cancellationToken,
-                DisciplineDbContext dbContext) =>
+                IMongoDatabase mongoDatabase) =>
             {
-                var result = await dbContext
-                    .DailyProductivity
-                    .Include(x => x.Activities)
-                    .ToListAsync(cancellationToken);
-                var mapped = result?
-                    .FirstOrDefault(x => x.Day == day)?
-                    .AsDto();
-                return mapped is null ? Results.NoContent() : Results.Ok(mapped);
+                // var result = (await mongoDatabase
+                //     .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+                //     .Find(x => x.Day == day)
+                //     .FirstOrDefaultAsync(cancellationToken))?;
+                // return mapped is null ? Results.NoContent() : Results.Ok(mapped);
+                return Results.Ok();
             })
             .Produces(StatusCodes.Status200OK, typeof(DailyProductivityDto))
             .Produces(StatusCodes.Status204NoContent, typeof(void))

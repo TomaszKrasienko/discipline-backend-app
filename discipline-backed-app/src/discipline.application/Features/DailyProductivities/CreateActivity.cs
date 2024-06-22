@@ -13,7 +13,7 @@ internal static class CreateActivity
     internal static WebApplication MapCreateActivity(this WebApplication app)
     {
         app.MapPost("/daily-productive/current/add-activity", async (CreateActivityCommand command,
-            HttpContext httpContext, CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
+            CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
             {
                 var activityId = Guid.NewGuid();
                 await commandDispatcher.HandleAsync(command with { Id = activityId }, cancellationToken);
