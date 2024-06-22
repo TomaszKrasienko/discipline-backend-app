@@ -27,7 +27,7 @@ internal static class GetActivityById
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Gets activity by \"ID\""
-            });;
+            });
         return app;
     }
 }

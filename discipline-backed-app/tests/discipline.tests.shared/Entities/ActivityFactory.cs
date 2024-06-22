@@ -22,5 +22,5 @@ internal static class ActivityFactory
         => new Faker<Activity>()
             .CustomInstantiator(x => Activity.Create(
                 Guid.NewGuid(),
-                x.Random.String(10)));
+                x.Random.String(10, minChar: 'A', maxChar: 'z')));
 }
