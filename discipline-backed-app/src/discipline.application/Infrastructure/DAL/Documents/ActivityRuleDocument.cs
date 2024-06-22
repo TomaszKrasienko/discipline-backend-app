@@ -5,6 +5,7 @@ namespace discipline.application.Infrastructure.DAL.Documents;
 public sealed class ActivityRuleDocument
 {
     [BsonId]
+    [BsonElement("id")]
     public Guid Id { get; init; }
     
     [BsonElement("title")]

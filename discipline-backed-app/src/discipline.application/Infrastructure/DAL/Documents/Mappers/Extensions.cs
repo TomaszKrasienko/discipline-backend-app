@@ -32,11 +32,18 @@ internal static class Extensions
         };
 
     internal static ActivityDocument AsDocument(this Activity entity)
-        => new ()
+        => new()
         {
             Id = entity.Id,
             IsChecked = entity.IsChecked,
             Title = entity.Title,
             ParentRuleId = entity.ParentRuleId
+        };
+
+    internal static DailyProductivityDocument AsDocument(this DailyProductivity entity)
+        => new()
+        {
+            Day = entity.Day,
+            Activities = entity.Activities?.Select(x => x.AsDocument())
         };
 }

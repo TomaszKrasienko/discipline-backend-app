@@ -128,4 +128,35 @@ public sealed class DocumentsMappersExtensionsTests
         result.IsChecked.ShouldBe(activity.IsChecked.Value);
         result.ParentRuleId.ShouldBeNull();
     }
+
+    [Fact]
+    public void AsDocument_GivenDailyProductivityWithoutActivities_ShouldReturnDailyProductivityDocumentWithoutActivities()
+    {
+        //arrange
+        var dailyProductivity = DailyProductivityFactory.Get();
+        
+        //act
+        var result = dailyProductivity.AsDocument();
+        
+        //assert
+        result.Day.ShouldBe(dailyProductivity.Day.Value);
+    }
+    
+    [Fact]
+    public void AsDocument_GivenDailyProductivityWithActivities_ShouldReturnDailyProductivityDocumentWithActivities()
+    {
+        //arrange
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
+        
+        //act
+        var result = dailyProductivity.AsDocument();
+        
+        //assert
+        result.Day.ShouldBe(dailyProductivity.Day.Value);
+        result.Activities.Any(x
+            => x.Id.Equals(activity.Id)
+               && x.Title == activity.Title
+               && x.IsChecked == activity.IsChecked).ShouldBeTrue();
+    }
 }

@@ -14,6 +14,8 @@ internal sealed class DailyProductivity : AggregateRoot
     {
         Day = day;
     }
+    
+    
 
     internal static DailyProductivity Create(DateTime day)
         => new DailyProductivity(day);
