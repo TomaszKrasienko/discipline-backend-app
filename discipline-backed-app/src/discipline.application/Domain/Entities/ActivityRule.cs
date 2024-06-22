@@ -9,11 +9,20 @@ internal sealed class ActivityRule
     public EntityId Id { get; }
     public Title Title { get; private set; }
     public Mode Mode { get; private set; }
-    private List<SelectedDay> _selectedDays = new List<SelectedDay>();
+    private List<SelectedDay> _selectedDays = [];
     public IReadOnlyList<SelectedDay> SelectedDays => _selectedDays; 
 
     private ActivityRule(EntityId id)
         => Id = id;
+
+    //For mongo
+    public ActivityRule(EntityId id, Title title, Mode mode, IEnumerable<SelectedDay> selectedDays)
+    {
+        Id = id;
+        Title = title;
+        Mode = mode;
+        _selectedDays = selectedDays?.ToList() ?? [];
+    }
 
     internal static ActivityRule Create(Guid id, string title, string mode, List<int> selectedDays = null)
     {
@@ -21,7 +30,6 @@ internal sealed class ActivityRule
         item.ChangeTitle(title);
         item.ChangeMode(mode);
         item.ChangeSelectedDays(mode, selectedDays);
-
         return item;
     }
 
