@@ -13,6 +13,7 @@ using Xunit;
 
 namespace discipline.api.integration_tests.DailyProductivity;
 
+[Collection("integration-tests")]
 public class GetDailyActivityByDateTests : BaseTestsController
 {
     [Fact]
