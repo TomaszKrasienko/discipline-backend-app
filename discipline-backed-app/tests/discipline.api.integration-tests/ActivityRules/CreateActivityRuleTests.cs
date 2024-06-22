@@ -3,8 +3,11 @@ using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Domain.ValueObjects.ActivityRules;
 using discipline.application.Features.ActivityRules;
+using discipline.application.Infrastructure.DAL.Documents;
+using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using Shouldly;
 using Xunit;
 
@@ -29,8 +32,11 @@ public sealed class CreateActivityRuleTests : BaseTestsController
         resourceId.ShouldNotBeNull();
         resourceId.ShouldNotBe(Guid.Empty);
 
-        var isActivityExists = await DbContext.ActivityRules.AnyAsync(x => x.Id.Equals(resourceId));
-        isActivityExists.ShouldBeTrue();
+        var isActivityRuleExists = await TestAppDb
+            .GetCollection<ActivityRuleDocument>("ActivityRules")
+            .Find(x => x.Id == resourceId)
+            .AnyAsync();
+        isActivityRuleExists.ShouldBeTrue();
     }
     
     [Fact]
@@ -38,8 +44,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
     {
         //arrange
         var activityRule = ActivityRuleFactory.Get();
-        await DbContext.ActivityRules.AddAsync(activityRule);
-        await DbContext.SaveChangesAsync();
+        await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules").InsertOneAsync(activityRule.AsDocument());
         var command = new CreateActivityRuleCommand(Guid.Empty, activityRule.Title, Mode.EveryDayMode(), null);
         
         //act

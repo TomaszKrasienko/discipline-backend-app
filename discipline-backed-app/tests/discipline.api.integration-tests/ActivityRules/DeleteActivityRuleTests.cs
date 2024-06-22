@@ -1,7 +1,10 @@
 using System.Net;
 using discipline.api.integration_tests._Helpers;
+using discipline.application.Infrastructure.DAL.Documents;
+using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using Shouldly;
 using Xunit;
 
@@ -15,8 +18,7 @@ public sealed class DeleteActivityRuleTests : BaseTestsController
     {
         //arrange
         var activityRule = ActivityRuleFactory.Get();
-        await DbContext.ActivityRules.AddAsync(activityRule);
-        await DbContext.SaveChangesAsync();
+        await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules").InsertOneAsync(activityRule.AsDocument());
         
         //act
         var response = await HttpClient.DeleteAsync($"activity-rules/{activityRule.Id.Value}/delete");
@@ -24,11 +26,11 @@ public sealed class DeleteActivityRuleTests : BaseTestsController
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var isActivityRuleExist = await DbContext
-            .ActivityRules
-            .AsNoTracking()
-            .AnyAsync(x => x.Id.Equals(activityRule.Id));
-        isActivityRuleExist.ShouldBeFalse();
+        var isActivityRuleExists = await TestAppDb
+            .GetCollection<ActivityRuleDocument>("ActivityRules")
+            .Find(x => x.Id.Equals(activityRule.Id))
+            .AnyAsync();
+        isActivityRuleExists.ShouldBeFalse();
     }
 
     [Fact]

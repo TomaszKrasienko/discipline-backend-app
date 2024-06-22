@@ -1,5 +1,6 @@
 using discipline.application.Domain.Entities;
 using discipline.application.Domain.ValueObjects.ActivityRules;
+using discipline.application.DTOs;
 using Activity = System.Diagnostics.Activity;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;
@@ -21,4 +22,13 @@ internal static class Extensions
             document.Title,
             document.Mode,
             document.SelectedDays?.Select(x => new SelectedDay(x)));
+
+    internal static ActivityRuleDto AsDto(this ActivityRuleDocument document)
+        => new()
+        {
+            Id = document.Id,
+            Title = document.Title,
+            Mode = document.Mode,
+            SelectedDays = document.SelectedDays?.ToList()
+        };
 }

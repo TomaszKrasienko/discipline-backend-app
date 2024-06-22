@@ -3,8 +3,11 @@ using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Domain.ValueObjects.ActivityRules;
 using discipline.application.Features.ActivityRules;
+using discipline.application.Infrastructure.DAL.Documents;
+using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using Shouldly;
 using Xunit;
 
@@ -18,20 +21,19 @@ public class EditActivityRuleTests : BaseTestsController
     {
         //arrange
         var activityRule = ActivityRuleFactory.Get();
-        await DbContext.ActivityRules.AddAsync(activityRule);
-        await DbContext.SaveChangesAsync();
+        await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules").InsertOneAsync(activityRule.AsDocument());
         var command = new EditActivityRuleCommand(Guid.Empty, "NewTitle", Mode.EveryDayMode(), null);
         
         //act
-        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rule/{activityRule.Id.Value}/edit",
+        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{activityRule.Id.Value}/edit",
                 command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var result = await DbContext
-            .ActivityRules
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id.Equals(activityRule.Id));
+        var result = (await TestAppDb
+            .GetCollection<ActivityRuleDocument>("ActivityRules")
+            .Find(x => x.Id.Equals(activityRule.Id))
+            .FirstOrDefaultAsync()).AsEntity();
 
         result.ShouldNotBeNull();
         result.Title.Value.ShouldBe(command.Title);

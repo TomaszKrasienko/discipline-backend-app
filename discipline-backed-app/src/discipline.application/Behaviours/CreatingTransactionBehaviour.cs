@@ -8,7 +8,7 @@ internal static class CreatingTransactionBehaviour
 {
     internal static IServiceCollection AddCreatingTransaction(this IServiceCollection services)
     {
-        services.Decorate(typeof(ICommandHandler<>), typeof(UnitOfWorkCommandHandlerDecorator<>));
+        //services.Decorate(typeof(ICommandHandler<>), typeof(UnitOfWorkCommandHandlerDecorator<>));
         return services;
     }
 }

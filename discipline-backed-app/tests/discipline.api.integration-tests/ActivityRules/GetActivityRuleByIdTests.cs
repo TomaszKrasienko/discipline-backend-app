@@ -2,6 +2,8 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
+using discipline.application.Infrastructure.DAL.Documents;
+using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
@@ -16,8 +18,7 @@ public sealed class GetActivityRuleByIdTests : BaseTestsController
     {
         //arrange 
         var activityRule = ActivityRuleFactory.Get();
-        await DbContext.ActivityRules.AddAsync(activityRule);
-        await DbContext.SaveChangesAsync();
+        await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules").InsertOneAsync(activityRule.AsDocument());
         
         //act
         var result = await HttpClient.GetFromJsonAsync<ActivityRuleDto>($"/activity-rules/{activityRule.Id.Value}");

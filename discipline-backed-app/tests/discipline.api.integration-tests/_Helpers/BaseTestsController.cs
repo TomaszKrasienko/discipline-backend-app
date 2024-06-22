@@ -10,14 +10,14 @@ namespace discipline.api.integration_tests._Helpers;
 
 public abstract class BaseTestsController : IDisposable
 {
-   private readonly TestAppDb _testAppDb;
+   internal readonly TestAppDb TestAppDb;
    protected readonly HttpClient HttpClient;
    internal readonly DisciplineDbContext DbContext;
    protected BaseTestsController()
    {
        var app = new TestApp(ConfigureServices);
-       _testAppDb = new TestAppDb();
-       DbContext = _testAppDb.DisciplineDbContext;
+       TestAppDb = new TestAppDb();
+       DbContext = TestAppDb.DisciplineDbContext;
        HttpClient = app.HttpClient;
        
    }
@@ -64,5 +64,5 @@ public abstract class BaseTestsController : IDisposable
    }
    
    public void Dispose()
-       => _testAppDb.Dispose();
+       => TestAppDb.Dispose();
 }

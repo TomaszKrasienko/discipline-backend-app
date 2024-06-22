@@ -78,4 +78,38 @@ public sealed class DocumentsMappersExtensionsTests
         result.SelectedDays.Select(x => x.Value).ToList().Contains(selectedDays[1]).ShouldBeTrue();
         result.SelectedDays.Select(x => x.Value).ToList().Contains(selectedDays[2]).ShouldBeTrue();
     }
+
+    [Fact]
+    public void AsDto_GivenActivityRuleDocumentWithoutSelectedDays_ShouldReturnActivityRuleDtoWithSelectedDaysAsNull()
+    {
+        //arrange
+        var activityRuleDocument = ActivityRuleDocumentFactory.Get();
+        
+        //act
+        var result = activityRuleDocument.AsDto();
+        
+        //assert
+        result.Id.ShouldBe(activityRuleDocument.Id);
+        result.Title.ShouldBe(activityRuleDocument.Title);
+        result.Mode.ShouldBe(activityRuleDocument.Mode);
+        result.SelectedDays.ShouldBeNull();
+    }
+    
+    [Fact]
+    public void AsDto_GivenActivityRuleDocumentWithSelectedDays_ShouldReturnActivityRuleDto()
+    {
+        //arrange
+        List<int> selectedDays = [1, 4];
+        var activityRuleDocument = ActivityRuleDocumentFactory.Get(selectedDays);
+        
+        //act
+        var result = activityRuleDocument.AsDto();
+        
+        //assert
+        result.Id.ShouldBe(activityRuleDocument.Id);
+        result.Title.ShouldBe(activityRuleDocument.Title);
+        result.Mode.ShouldBe(activityRuleDocument.Mode);
+        result.SelectedDays.Contains(selectedDays[0]).ShouldBeTrue();
+        result.SelectedDays.Contains(selectedDays[1]).ShouldBeTrue();
+    }
 }

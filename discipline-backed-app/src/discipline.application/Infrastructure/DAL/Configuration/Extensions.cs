@@ -54,7 +54,8 @@ internal static class Extensions
     private static IServiceCollection AddServices(this IServiceCollection services)
         => services
             .AddScoped<IUnitOfWork, PostgresUnitOfWork>()
-            .AddScoped<IActivityRuleRepository, PostgreSqlActivityRuleRepository>()
+            // .AddScoped<IActivityRuleRepository, PostgreSqlActivityRuleRepository>()
+            .AddScoped<IActivityRuleRepository, MongoActivityRuleRepository>()
             .AddScoped<IDailyProductivityRepository, PostgreSqlDailyProductivityRepository>();
 
     private static IServiceCollection AddInitializer(this IServiceCollection services, IConfiguration configuration)
