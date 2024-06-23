@@ -29,7 +29,7 @@ public class GetDailyActivityByDateTests : BaseTestsController
         var result = await HttpClient.GetFromJsonAsync<DailyProductivityDto>($"/daily-productivity/{DateTime.Now:yyyy-MM-dd}");
         
         //assert
-        result.Day.Date.ShouldBe(DateTime.Now.Date);
+        result.Day.ShouldBe(DateOnly.FromDateTime(DateTime.Now));
         result.Activities.Any(x
             => x.Id.Equals(activity.Id)
             && x.Title == activity.Title

@@ -13,6 +13,6 @@ internal static class DailyProductivityDocumentFactory
     
     private static Faker<DailyProductivityDocument> GetFaker(IEnumerable<ActivityDocument> activities = null)
         => new Faker<DailyProductivityDocument>()
-            .RuleFor(f => f.Day, v => DateTime.Now.Date)
+            .RuleFor(f => f.Day, v => DateOnly.FromDateTime(DateTime.Now.Date))
             .RuleFor(f => f.Activities, v => activities);
 }

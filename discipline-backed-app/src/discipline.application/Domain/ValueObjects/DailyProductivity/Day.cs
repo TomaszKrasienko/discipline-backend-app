@@ -2,22 +2,22 @@ namespace discipline.application.Domain.ValueObjects.DailyProductivity;
 
 internal sealed record Day
 {
-    internal DateTime Value { get; }
+    internal DateOnly Value { get; }
 
-    internal Day(DateTime value)
+    internal Day(DateOnly value)
     {
-        Value = new DateTime(value.Year, value.Month, value.Day);
+        Value = new DateOnly(value.Year, value.Month, value.Day);
     }
 
-    public static implicit operator DateTime(Day day)
+    public static implicit operator DateOnly(Day day)
         => day.Value;
 
-    public static implicit operator Day(DateTime dateTime)
+    public static implicit operator Day(DateOnly dateTime)
         => new Day(dateTime);
 
-    public static bool operator ==(Day day, DateTime value)
-        => day?.Value.Date == value.Date;
+    public static bool operator ==(Day day, DateOnly value)
+        => day?.Value == value;
 
-    public static bool operator !=(Day day, DateTime value) 
+    public static bool operator !=(Day day, DateOnly value) 
         => !(day == value);
 }

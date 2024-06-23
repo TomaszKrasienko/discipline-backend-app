@@ -32,7 +32,7 @@ public sealed class CreateActivityCommandHandlerTests
         await _dailyProductivityRepository
             .Received(1)
             .AddAsync(Arg.Is<DailyProductivity>(arg
-                => arg.Day == nowDate
+                => arg.Day == DateOnly.FromDateTime(nowDate)
                 && arg.Activities.Any(x => x.Id.Equals(command.Id) && x.Title == command.Title)));
 
         await _dailyProductivityRepository
@@ -49,7 +49,7 @@ public sealed class CreateActivityCommandHandlerTests
         var command = new CreateActivityCommand(Guid.NewGuid(), "New activity");
 
         _dailyProductivityRepository
-            .GetByDateAsync(nowDate)
+            .GetByDateAsync(DateOnly.FromDateTime(nowDate))
             .Returns(dailyActivity);
         
         _clock

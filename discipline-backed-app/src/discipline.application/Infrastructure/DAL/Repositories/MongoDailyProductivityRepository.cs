@@ -18,7 +18,7 @@ internal sealed class MongoDailyProductivityRepository(IMongoDatabase mongoDatab
         => _collection.FindOneAndReplaceAsync(x => x.Day.Equals(dailyProductivity.Day),
             dailyProductivity.AsDocument(), null, cancellationToken);
 
-    public async Task<DailyProductivity> GetByDateAsync(DateTime day, CancellationToken cancellationToken = default)
+    public async Task<DailyProductivity> GetByDateAsync(DateOnly day, CancellationToken cancellationToken = default)
         => (await _collection.Find(x => x.Day == day)
                 .FirstOrDefaultAsync(cancellationToken))?
             .AsEntity();

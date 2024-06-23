@@ -22,7 +22,7 @@ internal sealed class DailyProductivity : AggregateRoot
         _activities = activities;
     }
 
-    internal static DailyProductivity Create(DateTime day)
+    internal static DailyProductivity Create(DateOnly day)
         => new DailyProductivity(day);
     
     internal void AddActivity(Guid id, string title)

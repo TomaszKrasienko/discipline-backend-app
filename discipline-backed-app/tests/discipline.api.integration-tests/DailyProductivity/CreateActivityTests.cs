@@ -29,7 +29,7 @@ public sealed class CreateActivityTests : BaseTestsController
 
         var dailyProductivityDocument = await TestAppDb
             .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
-            .Find(x => x.Day == DateTime.Now.Date)
+            .Find(x => x.Day == DateOnly.FromDateTime(DateTime.Now.Date))
             .FirstOrDefaultAsync();
 
         dailyProductivityDocument.ShouldNotBeNull();
@@ -54,7 +54,7 @@ public sealed class CreateActivityTests : BaseTestsController
    
         var dailyProductivityDocument = await TestAppDb
             .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
-            .Find(x => x.Day == DateTime.Now.Date)
+            .Find(x => x.Day == DateOnly.FromDateTime(DateTime.Now.Date))
             .FirstOrDefaultAsync();
 
         dailyProductivityDocument.ShouldNotBeNull();

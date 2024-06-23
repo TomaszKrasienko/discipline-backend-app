@@ -6,6 +6,9 @@ RUN dotnet restore ./discipline.api/discipline.api.csproj -s https://api.nuget.o
 COPY . ./
 RUN dotnet publish ./discipline-backed-app.sln -c Release -o out
 
+RUN dotnet test tests/discipline.application.unit-tests
+# //RUN dotnet test tests/discipline.api.integration-tests
+
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build-env /app/out .

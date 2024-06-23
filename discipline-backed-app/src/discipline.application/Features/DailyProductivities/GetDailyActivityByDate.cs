@@ -17,7 +17,7 @@ internal static class GetDailyActivityByDate
             {
                 var result = (await mongoDatabase
                     .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
-                    .Find(x => x.Day == day)
+                    .Find(x => x.Day == DateOnly.FromDateTime(day))
                     .FirstOrDefaultAsync(cancellationToken))?.AsDto();
                 return result is null ? Results.NoContent() : Results.Ok(result);
             })

@@ -13,9 +13,9 @@ public sealed class DailyProductivityCreateTests
         var day = DateTime.Now;
         
         //act
-        var result = DailyProductivity.Create(day);
+        var result = DailyProductivity.Create(DateOnly.FromDateTime(day));
         
         //assert
-        result.Day.Value.ShouldBe(day.Date);
+        result.Day.Value.ShouldBe(DateOnly.FromDateTime(day));
     } 
 }

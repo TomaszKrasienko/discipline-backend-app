@@ -60,10 +60,10 @@ internal sealed class CreateActivityCommandHandler(
     public async Task HandleAsync(CreateActivityCommand command, CancellationToken cancellationToken = default)
     {
         var now = clock.DateNow();
-        var dailyProductivity = await dailyProductivityRepository.GetByDateAsync(now, cancellationToken);
+        var dailyProductivity = await dailyProductivityRepository.GetByDateAsync(DateOnly.FromDateTime(now), cancellationToken);
         if (dailyProductivity is null)
         {
-            dailyProductivity = DailyProductivity.Create(now);
+            dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now));
             dailyProductivity.AddActivity(command.Id, command.Title);
             await dailyProductivityRepository.AddAsync(dailyProductivity, cancellationToken);
             return;

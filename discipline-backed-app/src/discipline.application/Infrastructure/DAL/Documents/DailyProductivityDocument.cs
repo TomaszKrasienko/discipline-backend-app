@@ -4,10 +4,10 @@ namespace discipline.application.Infrastructure.DAL.Documents;
 
 public class DailyProductivityDocument
 {
-    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+    //[BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     [BsonElement("day")]
     [BsonId]
-    public DateTime Day { get; set; }
+    public DateOnly Day { get; set; }
 
     [BsonElement("activities")]
     public IEnumerable<ActivityDocument> Activities { get; set; }
