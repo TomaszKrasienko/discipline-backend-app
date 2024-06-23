@@ -1,3 +1,4 @@
+using discipline.application.Configuration;
 using discipline.application.Domain.Repositories;
 using discipline.application.Infrastructure.DAL.Configuration.Options;
 using discipline.application.Infrastructure.DAL.Repositories;
@@ -16,7 +17,8 @@ internal static class Extensions
         => services
             .AddServices()
             .AddOptions(configuration)
-            .AddMongoConnection();
+            .AddMongoConnection()
+            .AddInitializer(configuration);
 
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
         => services.Configure<MongoOptions>(configuration.GetSection(SectionName));
@@ -41,4 +43,15 @@ internal static class Extensions
         => services
             .AddScoped<IActivityRuleRepository, MongoActivityRuleRepository>()
             .AddScoped<IDailyProductivityRepository, MongoDailyProductivityRepository>();
+
+    private static IServiceCollection AddInitializer(this IServiceCollection services, IConfiguration configuration)
+    {
+        var options = configuration.GetOptions<MongoOptions>(SectionName);
+        if (options.Initialize)
+        {
+            services.AddHostedService<DbInitializer>();
+        }
+
+        return services;
+    }
 }
