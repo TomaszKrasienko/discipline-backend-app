@@ -22,4 +22,10 @@ internal sealed class MongoDailyProductivityRepository(IMongoDatabase mongoDatab
         => (await _collection.Find(x => x.Day == day)
                 .FirstOrDefaultAsync(cancellationToken))?
             .AsEntity();
+
+    public async Task<DailyProductivity> GetByActivityId(Guid activityId, CancellationToken cancellationToken = default)
+        => (await _collection.Find(x 
+                    => x.Activities != null && x.Activities.Any(a => a.Id.Equals(activityId)))
+                .FirstOrDefaultAsync(cancellationToken))?
+            .AsEntity();
 }

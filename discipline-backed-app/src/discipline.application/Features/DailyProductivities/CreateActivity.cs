@@ -58,8 +58,7 @@ public sealed class CreateActivityCommandValidator : AbstractValidator<CreateAct
 }
 
 internal sealed class CreateActivityCommandHandler(
-    IDailyProductivityRepository dailyProductivityRepository,
-    IClock clock) : ICommandHandler<CreateActivityCommand>
+    IDailyProductivityRepository dailyProductivityRepository) : ICommandHandler<CreateActivityCommand>
 {
     public async Task HandleAsync(CreateActivityCommand command, CancellationToken cancellationToken = default)
     {

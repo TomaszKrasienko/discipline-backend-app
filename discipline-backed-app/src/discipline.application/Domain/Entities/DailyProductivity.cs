@@ -1,6 +1,7 @@
 using discipline.application.Domain.Exceptions;
 using discipline.application.Domain.ValueObjects.DailyProductivity;
 using discipline.application.Domain.ValueObjects.SharedKernel;
+using discipline.application.Exceptions;
 
 namespace discipline.application.Domain.Entities;
 
@@ -34,5 +35,16 @@ internal sealed class DailyProductivity : AggregateRoot
 
         var activity = Activity.Create(id, title);
         _activities.Add(activity);
+    }
+
+    internal void DeleteActivity(Guid activityId)
+    {
+        var activity = _activities.FirstOrDefault(x => x.Id.Equals(activityId));
+        if (activity is null)
+        {
+            throw new ActivityNotFoundException(activityId);
+        }
+
+        _activities.Remove(activity);
     }
 }

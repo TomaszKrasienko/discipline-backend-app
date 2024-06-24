@@ -38,4 +38,32 @@ public sealed class DailyProductivityTests
         //assert
         exception.ShouldBeOfType<ActivityTitleAlreadyRegisteredException>();
     }
+
+    [Fact]
+    public void DeleteActivity_GivenExistingActivity_ShouldRemoveActivityFromList()
+    {
+        //arrange
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
+
+        //act
+        dailyProductivity.DeleteActivity(activity.Id);
+        
+        //assert
+        dailyProductivity.Activities.Any(x => x.Id.Equals(activity.Id)).ShouldBeFalse();
+    }
+
+    [Fact]
+    public void DeleteActivity_GivenNotExistingActivity_ShouldThrowActivityNotFoundException()
+    {
+        //arrange
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
+        
+        //act
+        var exception = Record.Exception(() => dailyProductivity.DeleteActivity(Guid.NewGuid()));
+        
+        //assert
+        exception.ShouldBeOfType<ActivityNotFoundException>();
+    }
 }

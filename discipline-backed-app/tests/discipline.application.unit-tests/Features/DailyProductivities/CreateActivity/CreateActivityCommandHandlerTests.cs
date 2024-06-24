@@ -70,14 +70,12 @@ public sealed class CreateActivityCommandHandlerTests
     
     #region arrange
     private readonly IDailyProductivityRepository _dailyProductivityRepository;
-    private readonly IClock _clock;
     private readonly ICommandHandler<CreateActivityCommand> _handler;
 
     public CreateActivityCommandHandlerTests()
     {
         _dailyProductivityRepository = Substitute.For<IDailyProductivityRepository>();
-        _clock = Substitute.For<IClock>(); 
-        _handler = new CreateActivityCommandHandler(_dailyProductivityRepository, _clock);
+        _handler = new CreateActivityCommandHandler(_dailyProductivityRepository);
     }
     #endregion
 }
