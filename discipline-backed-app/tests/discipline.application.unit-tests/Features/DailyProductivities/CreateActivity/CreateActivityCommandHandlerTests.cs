@@ -18,12 +18,11 @@ public sealed class CreateActivityCommandHandlerTests
     public async Task HandleAsync_GivenFirstAtDay_ShouldCreateNewDailyProductivityAddAndUpdateByRepository()
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.NewGuid(), "New activity");
-        var nowDate = DateTime.Now.Date; 
-        
-        _clock
-            .DateNow()
-            .Returns(nowDate);
+        var nowDate = DateOnly.FromDateTime(DateTime.Now.Date);
+        var command = new CreateActivityCommand(Guid.NewGuid(), "New activity", nowDate);
+
+        await _dailyProductivityRepository
+            .GetByDateAsync(nowDate, default);
         
         //act
         await Act(command);
@@ -32,7 +31,7 @@ public sealed class CreateActivityCommandHandlerTests
         await _dailyProductivityRepository
             .Received(1)
             .AddAsync(Arg.Is<DailyProductivity>(arg
-                => arg.Day == DateOnly.FromDateTime(nowDate)
+                => arg.Day == nowDate
                 && arg.Activities.Any(x => x.Id.Equals(command.Id) && x.Title == command.Title)));
 
         await _dailyProductivityRepository
@@ -44,17 +43,12 @@ public sealed class CreateActivityCommandHandlerTests
     public async Task HandleAsync_GivenForExistingDailyProductivity_ShouldUpdateDailyProductivityAndUpdateByRepository()
     {
         //arrange
-        var nowDate = DateTime.Now.Date;
-        var dailyActivity = DailyProductivityFactory.Get();
-        var command = new CreateActivityCommand(Guid.NewGuid(), "New activity");
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var command = new CreateActivityCommand(Guid.NewGuid(), "New activity", dailyProductivity.Day);
 
         _dailyProductivityRepository
-            .GetByDateAsync(DateOnly.FromDateTime(nowDate))
-            .Returns(dailyActivity);
-        
-        _clock
-            .DateNow()
-            .Returns(nowDate);
+            .GetByDateAsync(command.Day)
+            .Returns(dailyProductivity);;
         
         //act
         await Act(command);
@@ -62,13 +56,13 @@ public sealed class CreateActivityCommandHandlerTests
         //assert
         await _dailyProductivityRepository
             .Received(1)
-            .UpdateAsync(dailyActivity);
+            .UpdateAsync(dailyProductivity);
 
         await _dailyProductivityRepository
             .Received(0)
             .AddAsync(Arg.Any<DailyProductivity>());
 
-        dailyActivity
+        dailyProductivity
             .Activities
             .Any(x => x.Id.Equals(command.Id) && x.Title == command.Title)
             .ShouldBeTrue();

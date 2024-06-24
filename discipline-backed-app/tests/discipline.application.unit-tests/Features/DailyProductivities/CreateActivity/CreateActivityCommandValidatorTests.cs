@@ -11,7 +11,7 @@ public sealed class CreateActivityCommandValidatorTests
     public void Validate_GivenValidArguments_ShouldNotHaveAnyValidationErrors()
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.NewGuid(), "Tests");
+        var command = new CreateActivityCommand(Guid.NewGuid(), "Tests", DateOnly.FromDateTime(DateTime.Now));
         
         //act
         var result = _validator.TestValidate(command);
@@ -24,7 +24,7 @@ public sealed class CreateActivityCommandValidatorTests
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.Empty, "Title");
+        var command = new CreateActivityCommand(Guid.Empty, "Title", DateOnly.FromDateTime(DateTime.Now));
     
         //act
         var result = _validator.TestValidate(command);
@@ -41,13 +41,26 @@ public sealed class CreateActivityCommandValidatorTests
     public void Validate_GivenInvalidTitle_ShouldHaveValidationErrorForId(string title)
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.NewGuid(), title);
+        var command = new CreateActivityCommand(Guid.NewGuid(), title, DateOnly.FromDateTime(DateTime.Now));
     
         //act
         var result = _validator.TestValidate(command);
         
         //assert
         result.ShouldHaveValidationErrorFor(x => x.Title);
+    }
+
+    [Fact]
+    public void Validate_GivenEmptyDateTime_ShouldHaveValidationErrorForDay()
+    {
+        //arrange
+        var command = new CreateActivityCommand(Guid.NewGuid(), "Title", DateOnly.FromDateTime(default));
+    
+        //act
+        var result = _validator.TestValidate(command);
+        
+        //assert
+        result.ShouldHaveValidationErrorFor(x => x.Day);
     }
     
     #region arrange

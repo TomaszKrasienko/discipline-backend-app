@@ -19,10 +19,11 @@ public sealed class CreateActivityTests : BaseTestsController
     public async Task Create_GivenForFirstDailyActivity_ShouldReturn200OkStatusCodeAndAddDailyProductivityWithActivity()
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.Empty, "Test title");
+        var day = DateTime.Now;
+        var command = new CreateActivityCommand(Guid.Empty, "Test title", default);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("/daily-productive/current/add-activity", command);
+        var response = await HttpClient.PostAsJsonAsync($"/daily-productive/{day:yyyy-MM-dd}/add-activity", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -44,10 +45,10 @@ public sealed class CreateActivityTests : BaseTestsController
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
         await TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
             .InsertOneAsync(dailyProductivity.AsDocument());
-        var command = new CreateActivityCommand(Guid.Empty, "Test title");
+        var command = new CreateActivityCommand(Guid.Empty, "Test title", dailyProductivity.Day);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("/daily-productive/current/add-activity", command);
+        var response = await HttpClient.PostAsJsonAsync($"/daily-productive/{dailyProductivity.Day.Value:yyyy-MM-dd}/add-activity", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -69,10 +70,10 @@ public sealed class CreateActivityTests : BaseTestsController
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
         await TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
             .InsertOneAsync(dailyProductivity.AsDocument());
-        var command = new CreateActivityCommand(Guid.Empty, activity.Title);
+        var command = new CreateActivityCommand(Guid.Empty, activity.Title, dailyProductivity.Day);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("/daily-productive/current/add-activity", command);
+        var response = await HttpClient.PostAsJsonAsync($"/daily-productive/{dailyProductivity.Day.Value:yyyy-MM-dd}/add-activity", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -82,10 +83,11 @@ public sealed class CreateActivityTests : BaseTestsController
     public async Task Create_GivenEmptyTitle_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.Empty, string.Empty);
+        var day = DateTime.Now;
+        var command = new CreateActivityCommand(Guid.Empty, string.Empty, default);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("/daily-productive/current/add-activity", command);
+        var response = await HttpClient.PostAsJsonAsync($"/daily-productive/{day:yyyy-MM-dd}/add-activity", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

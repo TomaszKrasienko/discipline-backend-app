@@ -12,11 +12,11 @@ internal static class CreateActivity
 {
     internal static WebApplication MapCreateActivity(this WebApplication app)
     {
-        app.MapPost("/daily-productive/current/add-activity", async (CreateActivityCommand command,
+        app.MapPost("/daily-productive/{day:datetime}/add-activity", async (DateTime day, CreateActivityCommand command,
             CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
             {
                 var activityId = Guid.NewGuid();
-                await commandDispatcher.HandleAsync(command with { Id = activityId }, cancellationToken);
+                await commandDispatcher.HandleAsync(command with { Id = activityId, Day = DateOnly.FromDateTime(day)}, cancellationToken);
                 return Results.Ok();
             })            
             .Produces(StatusCodes.Status200OK, typeof(void))
@@ -31,7 +31,7 @@ internal static class CreateActivity
     }
 }
 
-public sealed record CreateActivityCommand(Guid Id, string Title) : ICommand;
+public sealed record CreateActivityCommand(Guid Id, string Title, DateOnly Day) : ICommand;
 
 public sealed class CreateActivityCommandValidator : AbstractValidator<CreateActivityCommand>
 {
@@ -50,6 +50,10 @@ public sealed class CreateActivityCommandValidator : AbstractValidator<CreateAct
             .MinimumLength(3)
             .MaximumLength(100)
             .WithMessage("Activity \"Title\" has invalid length");
+
+        RuleFor(x => x.Day)
+            .NotEqual(DateOnly.FromDateTime(default))
+            .WithMessage("Date can not be empty");
     }
 }
 
@@ -59,11 +63,10 @@ internal sealed class CreateActivityCommandHandler(
 {
     public async Task HandleAsync(CreateActivityCommand command, CancellationToken cancellationToken = default)
     {
-        var now = clock.DateNow();
-        var dailyProductivity = await dailyProductivityRepository.GetByDateAsync(DateOnly.FromDateTime(now), cancellationToken);
+        var dailyProductivity = await dailyProductivityRepository.GetByDateAsync(command.Day, cancellationToken);
         if (dailyProductivity is null)
         {
-            dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now));
+            dailyProductivity = DailyProductivity.Create(command.Day);
             dailyProductivity.AddActivity(command.Id, command.Title);
             await dailyProductivityRepository.AddAsync(dailyProductivity, cancellationToken);
             return;
