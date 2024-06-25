@@ -8,5 +8,6 @@ internal static class Extensions
         => app
             .MapCreateActivity()
             .MapDeleteActivity()
+            .MapChangeActivityCheck()
             .MapGetDailyActivityByDate();
 }

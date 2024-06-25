@@ -23,7 +23,7 @@ internal static class DeleteActivity
             .WithName(nameof(DeleteActivity))
             .WithOpenApi(operation => new(operation)
             {
-                Description = "Removes activity rule"
+                Description = "Removes activity"
             });
         return app;
     }

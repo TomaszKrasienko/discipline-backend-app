@@ -16,7 +16,7 @@ internal sealed class TestApp : WebApplicationFactory<Program>
             {
                 builder.ConfigureServices(services);
             }
-            builder.UseEnvironment("docker.tests");
+            builder.UseEnvironment(TestsEnvironmentProvider.GetEnvironments());
         }).CreateClient();
     }
 }

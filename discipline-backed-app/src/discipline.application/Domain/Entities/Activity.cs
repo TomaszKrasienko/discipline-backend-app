@@ -40,4 +40,7 @@ internal sealed class Activity
 
     private void ChangeTitle(string value)
         => Title = value;
+
+    internal void ChangeCheck()
+        => IsChecked = !IsChecked;
 }

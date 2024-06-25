@@ -47,4 +47,15 @@ internal sealed class DailyProductivity : AggregateRoot
 
         _activities.Remove(activity);
     }
+
+    internal void ChangeActivityCheck(Guid activityId)
+    {
+        var activity = _activities.FirstOrDefault(x => x.Id.Equals(activityId));
+        if (activity is null)
+        {
+            throw new ActivityNotFoundException(activityId);
+        }
+
+        activity.ChangeCheck();
+    }
 }

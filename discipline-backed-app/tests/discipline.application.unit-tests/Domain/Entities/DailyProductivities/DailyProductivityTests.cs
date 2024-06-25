@@ -66,4 +66,34 @@ public sealed class DailyProductivityTests
         //assert
         exception.ShouldBeOfType<ActivityNotFoundException>();
     }
+    
+    [Fact]
+    public void ChangeActivityCheck_GivenExistingActivity_ChangeActivityCheck()
+    {
+        //arrange
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
+        var isChecked = activity.IsChecked.Value;
+        
+        //act
+        dailyProductivity.ChangeActivityCheck(activity.Id);
+        
+        //assert
+        var updatedActivity = dailyProductivity.Activities.First(x => x.Id.Equals(activity.Id));
+        updatedActivity.IsChecked.Value.ShouldBe(!isChecked);
+    }
+
+    [Fact]
+    public void ChangeActivityCheck_GivenNotExistingActivity_ShouldThrowActivityNotFoundException()
+    {
+        //arrange
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
+        
+        //act
+        var exception = Record.Exception(() => dailyProductivity.ChangeActivityCheck(Guid.NewGuid()));
+        
+        //assert
+        exception.ShouldBeOfType<ActivityNotFoundException>();
+    }
 }
