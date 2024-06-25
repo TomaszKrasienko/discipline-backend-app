@@ -12,7 +12,7 @@ internal static class CreateActivity
 {
     internal static WebApplication MapCreateActivity(this WebApplication app)
     {
-        app.MapPost("/daily-productive/{day:datetime}/add-activity", async (DateTime day, CreateActivityCommand command,
+        app.MapPost("/daily-productivity/{day:datetime}/add-activity", async (DateTime day, CreateActivityCommand command,
             CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
             {
                 var activityId = Guid.NewGuid();

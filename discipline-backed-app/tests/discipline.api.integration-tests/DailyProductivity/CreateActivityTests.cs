@@ -23,7 +23,7 @@ public sealed class CreateActivityTests : BaseTestsController
         var command = new CreateActivityCommand(Guid.Empty, "Test title", default);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync($"/daily-productive/{day:yyyy-MM-dd}/add-activity", command);
+        var response = await HttpClient.PostAsJsonAsync($"/daily-productivity/{day:yyyy-MM-dd}/add-activity", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -48,7 +48,7 @@ public sealed class CreateActivityTests : BaseTestsController
         var command = new CreateActivityCommand(Guid.Empty, "Test title", dailyProductivity.Day);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync($"/daily-productive/{dailyProductivity.Day.Value:yyyy-MM-dd}/add-activity", command);
+        var response = await HttpClient.PostAsJsonAsync($"/daily-productivity/{dailyProductivity.Day.Value:yyyy-MM-dd}/add-activity", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -73,7 +73,7 @@ public sealed class CreateActivityTests : BaseTestsController
         var command = new CreateActivityCommand(Guid.Empty, activity.Title, dailyProductivity.Day);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync($"/daily-productive/{dailyProductivity.Day.Value:yyyy-MM-dd}/add-activity", command);
+        var response = await HttpClient.PostAsJsonAsync($"/daily-productivity/{dailyProductivity.Day.Value:yyyy-MM-dd}/add-activity", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -87,7 +87,7 @@ public sealed class CreateActivityTests : BaseTestsController
         var command = new CreateActivityCommand(Guid.Empty, string.Empty, default);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync($"/daily-productive/{day:yyyy-MM-dd}/add-activity", command);
+        var response = await HttpClient.PostAsJsonAsync($"/daily-productivity/{day:yyyy-MM-dd}/add-activity", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

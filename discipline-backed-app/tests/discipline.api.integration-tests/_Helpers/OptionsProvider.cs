@@ -8,7 +8,7 @@ internal sealed class OptionsProvider
     
     private static IConfigurationRoot GetConfigurationRoot()
         => new ConfigurationBuilder()
-            .AddJsonFile("appsettings.tests.json")
+            .AddJsonFile("appsettings.docker.tests.json")
             .AddEnvironmentVariables()
             .Build();
 
