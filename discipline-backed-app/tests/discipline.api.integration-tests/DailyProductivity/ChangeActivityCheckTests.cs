@@ -10,6 +10,7 @@ using Xunit;
 
 namespace discipline.api.integration_tests.DailyProductivity;
 
+[Collection("integration-tests")]
 public sealed class ChangeActivityCheckTests : BaseTestsController
 {
     [Fact]
@@ -23,7 +24,7 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
             .InsertOneAsync(dailyProductivity.AsDocument());
         
         //act
-        var response = await HttpClient.PatchAsync($"daily-productivity/activity/{Guid.NewGuid()}/change-check", null);
+        var response = await HttpClient.PatchAsync($"daily-productivity/activity/{activity.Id.Value}/change-check", null);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
