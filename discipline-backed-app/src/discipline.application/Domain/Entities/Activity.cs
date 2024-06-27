@@ -16,9 +16,8 @@ internal sealed class Activity
         IsChecked = false;
     }
 
-    private Activity(EntityId id, Title title, EntityId parentRuleId) : this(id)
+    private Activity(EntityId id, EntityId parentRuleId) : this(id)
     {
-        Title = title;
         ParentRuleId = parentRuleId;
     }
     
@@ -37,6 +36,11 @@ internal sealed class Activity
         activity.ChangeTitle(title);
         return activity;
     }
+
+    // internal static Activity CreateFromRule(Guid id, ActivityRule rule)
+    // {
+    //     
+    // }
 
     private void ChangeTitle(string value)
         => Title = value;
