@@ -1,4 +1,6 @@
+using discipline.application.Domain.Entities;
 using discipline.application.Domain.Exceptions;
+using discipline.application.Domain.ValueObjects.ActivityRules;
 using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
@@ -35,6 +37,69 @@ public sealed class DailyProductivityTests
         //act
         var exception = Record.Exception(() => dailyProductivity.AddActivity(Guid.NewGuid(), title));
         
+        //assert
+        exception.ShouldBeOfType<ActivityTitleAlreadyRegisteredException>();
+    }
+    
+    [Fact]
+    public void AddActivityFromRule_GivenNotExistedTitleAndNotNullActivity_ShouldAddToActivities()
+    {
+        //arrange
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), "activity title",
+            Mode.EveryDayMode());
+        var id = Guid.NewGuid();
+        
+        //act
+        dailyProductivity.AddActivityFromRule(id, DateTime.Now, activityRule);
+    
+        //assert
+        dailyProductivity
+            .Activities
+            .Any(x 
+                => x.Id.Equals(id) 
+                && x.Title == activityRule.Title
+                && x.ParentRuleId.Equals(activityRule.Id))
+            .ShouldBeTrue();
+    }
+    
+    [Fact]
+    public void AddActivityFromRule_GivenNotExistedTitleAndNullActivity_ShouldAddToActivities()
+    {
+        //arrange
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), "activity title",
+            Mode.FirstDayOfMonth());
+        var id = Guid.NewGuid();
+        
+        //act
+        dailyProductivity.AddActivityFromRule(id, new DateTime(2024, 06, 2), activityRule);
+    
+        //assert
+        dailyProductivity
+            .Activities
+            .Any(x 
+                => x.Id.Equals(id) 
+                   && x.Title == activityRule.Title
+                   && x.ParentRuleId.Equals(activityRule.Id))
+            .ShouldBeFalse();
+    }
+    
+    [Fact]
+    public void AddActivityFromRule_GivenAlreadyExistingTitle_ShouldThrowActivityTitleAlreadyRegisteredException()
+    {
+        //arrange
+        var dailyProductivity = DailyProductivityFactory.Get();
+        var title = "Activity title";
+        dailyProductivity.AddActivity(Guid.NewGuid(), title);
+        
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), title,
+            Mode.EveryDayMode());
+    
+        //act
+        var exception = Record.Exception(() => dailyProductivity.AddActivityFromRule(Guid.NewGuid(), 
+            DateTime.Now, activityRule));
+    
         //assert
         exception.ShouldBeOfType<ActivityTitleAlreadyRegisteredException>();
     }

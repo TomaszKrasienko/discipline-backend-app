@@ -28,13 +28,27 @@ internal sealed class DailyProductivity : AggregateRoot
     
     internal void AddActivity(Guid id, string title)
     {
+        ValidateActivity(title);
+        var activity = Activity.Create(id, title);
+        _activities.Add(activity);
+    }
+
+    internal void AddActivityFromRule(Guid id, DateTime now, ActivityRule activityRule)
+    {
+        ValidateActivity(activityRule.Title);
+        var activity = Activity.CreateFromRule(id, now, activityRule);
+        if (activity is not null)
+        {
+            _activities.Add(activity);
+        }
+    }
+
+    private void ValidateActivity(string title)
+    {
         if (_activities.Any(x => x.Title == title))
         {
             throw new ActivityTitleAlreadyRegisteredException(title, Day);
         }
-
-        var activity = Activity.Create(id, title);
-        _activities.Add(activity);
     }
 
     internal void DeleteActivity(Guid activityId)
