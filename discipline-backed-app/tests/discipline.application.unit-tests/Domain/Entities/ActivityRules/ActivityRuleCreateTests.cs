@@ -1,6 +1,8 @@
+using Bogus.DataSets;
 using discipline.application.Domain.Entities;
 using discipline.application.Domain.Exceptions;
 using discipline.application.Domain.ValueObjects.ActivityRules;
+using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
 
@@ -46,6 +48,40 @@ public sealed class ActivityRuleCreateTests
         result.SelectedDays.Select(x => x.Value).Contains(selectedDays[0]).ShouldBeTrue();
         result.SelectedDays.Select(x => x.Value).Contains(selectedDays[1]).ShouldBeTrue();
         result.SelectedDays.Select(x => x.Value).Contains(selectedDays[2]).ShouldBeTrue();
+    }
+    
+    [Fact]
+    public void CreateFromRule_GivenModeForDay_ShouldReturnActivity()
+    {
+        //arrange
+        var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+        var mode = Mode.FirstDayOfMonth();
+        var id = Guid.NewGuid();
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), "Title", mode);
+        
+        //act
+        var result = Activity.CreateFromRule(id, now, activityRule);
+
+        //assert
+        result.Id.Value.ShouldBe(id);
+        result.Title.Value.ShouldBe(activityRule.Title);
+        result.IsChecked.Value.ShouldBeFalse();
+        result.ParentRuleId.Value.ShouldBe(activityRule.Id.Value);
+    }
+
+    [Fact]
+    public void CreateFromRule_GivenModeNotForDay_ShouldReturnNull()
+    {
+        //arrange
+        var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 4);
+        var mode = Mode.FirstDayOfMonth();
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), "Title", mode);
+        
+        //act
+        var result = Activity.CreateFromRule(Guid.NewGuid(), now, activityRule);
+
+        //assert
+        result.ShouldBeNull();
     }
     
     [Fact]

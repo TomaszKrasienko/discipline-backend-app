@@ -1,3 +1,4 @@
+using discipline.application.Domain.Services.Factories;
 using discipline.application.Domain.ValueObjects.Activity;
 using discipline.application.Domain.ValueObjects.SharedKernel;
 
@@ -37,10 +38,17 @@ internal sealed class Activity
         return activity;
     }
 
-    // internal static Activity CreateFromRule(Guid id, ActivityRule rule)
-    // {
-    //     
-    // }
+    internal static Activity CreateFromRule(Guid id, DateTime now, ActivityRule rule)
+    {
+        var weekdayCheckService = WeekdayCheckServiceFactory.GetInstance();
+        if (weekdayCheckService.IsDateForMode(now, rule.Mode, rule.SelectedDays?.Select(x => x.Value).ToList()))
+        {
+            var activity = new Activity(id, rule.Id);
+            activity.ChangeTitle(rule.Title);
+            return activity;
+        }
+        return null;
+    }
 
     private void ChangeTitle(string value)
         => Title = value;
