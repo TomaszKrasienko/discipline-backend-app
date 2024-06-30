@@ -17,7 +17,6 @@ public static class Extensions
             .AddDal(configuration)
             .AddFeatures(configuration)
             .AddDisciplineCors()
-            .AddCqrs()
             .AddBehaviours()
             .AddSwaggerGen();
 

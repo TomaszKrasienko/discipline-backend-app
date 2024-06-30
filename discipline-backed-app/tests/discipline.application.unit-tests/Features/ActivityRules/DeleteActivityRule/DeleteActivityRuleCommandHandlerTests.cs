@@ -1,7 +1,7 @@
+using discipline.application.Behaviours;
 using discipline.application.Domain.Repositories;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules;
-using discipline.application.Features.Configuration.Base.Abstractions;
 using discipline.tests.shared.Entities;
 using NSubstitute;
 using Shouldly;

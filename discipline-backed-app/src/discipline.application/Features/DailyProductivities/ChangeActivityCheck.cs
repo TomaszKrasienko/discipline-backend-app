@@ -1,7 +1,6 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.Exceptions;
 using discipline.application.Domain.Repositories;
-using discipline.application.Features.Configuration.Base.Abstractions;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

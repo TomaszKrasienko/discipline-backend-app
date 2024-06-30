@@ -11,7 +11,9 @@ internal static class Extensions
             .AddValidationBehaviour()
             .AddCreatingTransaction()
             .AddClockBehaviour()
-            .AddLoggingBehaviour();
+            .AddLoggingBehaviour()
+            .AddCommandHandlingBehaviour()
+        ;
 
     internal static WebApplication UseBehaviours(this WebApplication app)
         => app

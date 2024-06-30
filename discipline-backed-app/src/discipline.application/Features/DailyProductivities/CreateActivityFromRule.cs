@@ -3,7 +3,6 @@ using discipline.application.Configuration;
 using discipline.application.Domain.Entities;
 using discipline.application.Domain.Repositories;
 using discipline.application.Exceptions;
-using discipline.application.Features.Configuration.Base.Abstractions;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

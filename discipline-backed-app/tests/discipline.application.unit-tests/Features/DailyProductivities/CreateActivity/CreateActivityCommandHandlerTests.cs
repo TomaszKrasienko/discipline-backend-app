@@ -1,7 +1,6 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.Entities;
 using discipline.application.Domain.Repositories;
-using discipline.application.Features.Configuration.Base.Abstractions;
 using discipline.application.Features.DailyProductivities;
 using discipline.tests.shared.Entities;
 using NSubstitute;
