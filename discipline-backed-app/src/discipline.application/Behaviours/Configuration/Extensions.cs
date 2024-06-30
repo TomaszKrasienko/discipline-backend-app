@@ -7,12 +7,12 @@ internal static class Extensions
 {
     internal static IServiceCollection AddBehaviours(this IServiceCollection services)
         => services
+            .AddCommandHandlingBehaviour()
             .AddHandlingException()
             .AddValidationBehaviour()
             .AddCreatingTransaction()
             .AddClockBehaviour()
             .AddLoggingBehaviour()
-            .AddCommandHandlingBehaviour()
         ;
 
     internal static WebApplication UseBehaviours(this WebApplication app)

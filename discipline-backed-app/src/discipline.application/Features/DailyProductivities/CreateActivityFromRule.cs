@@ -4,8 +4,11 @@ using discipline.application.Domain.Entities;
 using discipline.application.Domain.Repositories;
 using discipline.application.Exceptions;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 using Quartz;
 
 namespace discipline.application.Features.DailyProductivities;
@@ -34,6 +37,26 @@ internal static class CreateActivityFromRule
         }
 
         return services;
+    }
+
+    internal static WebApplication MapCreateActivityFromRule(this WebApplication app)
+    {
+        app.MapPost("/daily-productivity/today/add-activity-from-rule", async (CreateActivityFromRuleCommand command,
+            CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
+        {
+            var activityId = Guid.NewGuid();
+            await commandDispatcher.HandleAsync(command with { ActivityId = activityId }, cancellationToken);
+            return Results.Ok();
+        })
+        .Produces(StatusCodes.Status200OK, typeof(void))
+        .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+        .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+        .WithName(nameof(CreateActivityFromRule))
+        .WithOpenApi(operation => new (operation)
+        {
+            Description = "Adds activity rule from activity rule"
+        });;
+        return app;
     }
 }
 

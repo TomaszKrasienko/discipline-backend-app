@@ -1,6 +1,7 @@
 using discipline.application.Features.ActivityRuleModes;
 using discipline.application.Features.ActivityRuleModes.Configuration;
 using discipline.application.Features.ActivityRules.Configuration;
+using discipline.application.Features.DailyProductivities;
 using discipline.application.Features.DailyProductivities.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -17,5 +18,6 @@ public static class FeaturesConfiguration
         => app
             .MapActivityRulesFeatures()
             .MapDailyProductiveFeatures()
-            .MapActivityRulesModesFeatures();
+            .MapActivityRulesModesFeatures()
+            .MapCreateActivityFromRule();
 }
