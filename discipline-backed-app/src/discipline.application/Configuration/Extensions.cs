@@ -15,6 +15,7 @@ public static class Extensions
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         => services
             .AddDal(configuration)
+            .AddFeatures(configuration)
             .AddDisciplineCors()
             .AddCqrs()
             .AddBehaviours()

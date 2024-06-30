@@ -9,4 +9,5 @@ internal interface IActivityRuleRepository
     Task DeleteAsync(ActivityRule activityRule, CancellationToken cancellationToken = default);
     Task<bool> ExistsAsync(string title, CancellationToken cancellationToken = default);
     Task<ActivityRule> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<List<ActivityRule>> BrowseAsync(CancellationToken cancellationToken = default);
 }

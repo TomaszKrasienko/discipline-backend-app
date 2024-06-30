@@ -1,15 +1,65 @@
 using discipline.application.Behaviours;
+using discipline.application.Configuration;
 using discipline.application.Domain.Entities;
 using discipline.application.Domain.Repositories;
 using discipline.application.Exceptions;
 using discipline.application.Features.Configuration.Base.Abstractions;
 using FluentValidation;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Quartz;
 
 namespace discipline.application.Features.DailyProductivities;
 
-public class CreateActivityFromRule
+internal static class CreateActivityFromRule
 {
-    
+    private const string SectionName = "ActivitiesCronJob";
+    internal static IServiceCollection AddCreateActivityFromRule(this IServiceCollection services, IConfiguration configuration)
+    {
+        var options = configuration.GetOptions<ActivitiesCronJob>(SectionName);
+        if (options.IsActive)
+        {
+            services.AddQuartz(q =>
+            {
+                q.UseMicrosoftDependencyInjectionJobFactory();
+                var jobKey = new JobKey(options.JobKey);
+                q.AddJob<CronActivityFromRuleService>(opts => opts.WithIdentity(jobKey));
+
+                q.AddTrigger(opts => opts
+                    .ForJob(jobKey)
+                    .WithIdentity(options.TriggerKey)
+                    .WithCronSchedule(options.StartTime.AsQuartzExpression()));
+            });
+
+            services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+        }
+
+        return services;
+    }
+}
+
+internal sealed record ActivitiesCronJob
+{
+    public bool IsActive { get; init; }
+    public TimeOnly StartTime { get; init; }
+    public string JobKey { get; init; }
+    public string TriggerKey { get; init; }
+}
+
+internal sealed class CronActivityFromRuleService(IServiceProvider serviceProvider) : IJob
+{
+    public async Task Execute(IJobExecutionContext context)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var activityRuleRepository = scope.ServiceProvider.GetRequiredService<IActivityRuleRepository>();
+        var commandDispatcher = scope.ServiceProvider.GetRequiredService<ICommandDispatcher>();
+
+        var activities = await activityRuleRepository.BrowseAsync();
+        foreach (var activityRule in activities)
+        {
+            await commandDispatcher.HandleAsync(new CreateActivityFromRuleCommand(Guid.NewGuid(), activityRule.Id));
+        }
+    }
 }
 
 public sealed record CreateActivityFromRuleCommand(Guid ActivityId, Guid ActivityRuleId) : ICommand;

@@ -29,4 +29,9 @@ internal sealed class MongoActivityRuleRepository(IMongoDatabase mongoDatabase) 
         => (await _collection.Find(x => x.Id == id)
             .FirstOrDefaultAsync(cancellationToken))?
             .AsEntity();
+
+    public async Task<List<ActivityRule>> BrowseAsync(CancellationToken cancellationToken = default)
+        => (await _collection.Find(_ => true).ToListAsync(cancellationToken))?
+            .Select(x => x.AsEntity())
+            .ToList();
 }

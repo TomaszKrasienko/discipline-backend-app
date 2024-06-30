@@ -5,12 +5,16 @@ using discipline.application.Features.Configuration.Base.Abstractions;
 using discipline.application.Features.Configuration.Base.Internals;
 using discipline.application.Features.DailyProductivities.Configuration;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace discipline.application.Features.Configuration;
 
 public static class Extensions
 {
+    internal static IServiceCollection AddFeatures(this IServiceCollection services, IConfiguration configuration)
+        => services.AddDailyProductivityFeatures(configuration);
+    
     internal static IServiceCollection AddCqrs(this IServiceCollection services)
     {
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
