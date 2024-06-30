@@ -1,5 +1,5 @@
 using discipline.application.Behaviours.Configuration;
-using discipline.application.Features.Configuration;
+using discipline.application.Features;
 using discipline.application.Infrastructure.DAL.Configuration;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
