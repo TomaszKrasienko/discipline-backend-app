@@ -3,7 +3,7 @@
 </div>
 
 <div align="center">
-    **Discipline - Backend Application**
+    Discipline - Backend Application
 </div>
 
 ### Purpose
