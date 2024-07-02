@@ -6,7 +6,7 @@ dist: focal
 
 branches:
   only:
-    - master
+    - release
 
 services:
   - docker
