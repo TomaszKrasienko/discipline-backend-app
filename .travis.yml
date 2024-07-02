@@ -11,13 +11,8 @@ branches:
 services:
   - docker
 
-before_install:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-
-script:
-  - dotnet restore discipline-backed-app
-  - dotnet build discipline-backed-app --configuration Release
-  - docker build -f discipline-backed-app/Dockerfile -t tomaszkras/discipline-backend-app:latest .
+before_script:
+  - chmod -R a+x scripts
 
 after_success:
-  - docker push tomaszkras/discipline-backend-app:latest
+  - ./scripts/dockerize.sh
