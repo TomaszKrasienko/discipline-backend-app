@@ -14,5 +14,8 @@ services:
 before_script:
   - chmod -R a+x scripts
 
+script:
+  - dotnet build discipline-backed-app -c release
+
 after_success:
   - ./scripts/dockerize.sh
