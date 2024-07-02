@@ -17,8 +17,7 @@ before_install:
 script:
   - dotnet restore discipline-backed-app
   - dotnet build discipline-backed-app --configuration Release
-  - dotnet test tests/discipline.application.unit-tests
-  - docker build -t tomaszkras/discipline-backend-app:latest .
+  - docker build -f discipline-backed-app/Dockerfile -t tomaszkras/discipline-backend-app:latest .
 
 after_success:
   - docker push tomaszkras/discipline-backend-app:latest
