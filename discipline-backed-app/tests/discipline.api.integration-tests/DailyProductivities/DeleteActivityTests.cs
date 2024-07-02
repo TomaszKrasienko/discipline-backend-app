@@ -8,40 +8,36 @@ using MongoDB.Driver;
 using Shouldly;
 using Xunit;
 
-namespace discipline.api.integration_tests.DailyProductivity;
+namespace discipline.api.integration_tests.DailyProductivities;
 
 [Collection("integration-tests")]
-public sealed class ChangeActivityCheckTests : BaseTestsController
+public sealed class DeleteActivityTests : BaseTestsController
 {
     [Fact]
-    public async Task ChangeActivityCheck_GivenValidActivityId_ShouldReturn200OkStatusCodeAndDeleteActivity()
+    public async Task Delete_GivenValidActivityId_ShouldReturn200OkStatusCodeAndDeleteActivity()
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
-        var isChecked = activity.IsChecked.Value;
         await TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
             .InsertOneAsync(dailyProductivity.AsDocument());
         
         //act
-        var response = await HttpClient.PatchAsync($"daily-productivity/activity/{activity.Id.Value}/change-check", null);
+        var response = await HttpClient.DeleteAsync($"daily-productivity/activity/{activity.Id.Value}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         
-                
         var dailyProductivityDocument = await TestAppDb
             .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
             .Find(x => x.Day == DateOnly.FromDateTime(DateTime.Now.Date))
             .FirstOrDefaultAsync();
-        dailyProductivityDocument.Activities
-            .Any(x 
-                => x.Id.Equals(activity.Id)
-                && x.IsChecked == !isChecked).ShouldBeTrue();
+        
+        dailyProductivityDocument.Activities.Any(x => x.Id.Equals(activity.Id)).ShouldBeFalse();
     }
     
     [Fact]
-    public async Task ChangeActivityCheck_GivenNotExistingActivityId_ShouldReturn400BadRequestStatusCode()
+    public async Task Delete_GivenNotExistingActivityId_ShouldReturn400BadRequestStatusCode()
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
@@ -49,19 +45,9 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
             .InsertOneAsync(dailyProductivity.AsDocument());
         
         //act
-        var response = await HttpClient.PatchAsync($"daily-productivity/activity/{Guid.NewGuid()}/change-check", null);
+        var response = await HttpClient.DeleteAsync($"daily-productivity/activity/{Guid.NewGuid()}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-    }
-    
-    [Fact]
-    public async Task ChangeActivityCheck_GiveInvalidActivityId_ShouldReturn422UnprocessableEntityStatusCode()
-    {
-        //act
-        var response = await HttpClient.PatchAsync($"daily-productivity/activity/{Guid.Empty}/change-check", null);
-        
-        //assert
-        response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
     }
 }

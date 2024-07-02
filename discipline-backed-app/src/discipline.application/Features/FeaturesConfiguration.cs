@@ -3,6 +3,7 @@ using discipline.application.Features.ActivityRuleModes.Configuration;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.application.Features.DailyProductivities;
 using discipline.application.Features.DailyProductivities.Configuration;
+using discipline.application.Features.Progress.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,5 +20,6 @@ public static class FeaturesConfiguration
             .MapActivityRulesFeatures()
             .MapDailyProductiveFeatures()
             .MapActivityRulesModesFeatures()
-            .MapCreateActivityFromRule();
+            .MapCreateActivityFromRule()
+            .MapProgressFeatures();
 }

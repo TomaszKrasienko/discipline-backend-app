@@ -1,0 +1,24 @@
+language: csharp
+dotnet: 8.0
+mono: none
+sudo: required
+dist: focal
+
+branches:
+  only:
+    - master
+
+services:
+  - docker
+
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+script:
+  - dotnet restore
+  - dotnet build --configuration Release
+  - dotnet test tests/discipline.application.unit-tests
+  - docker build -t tomaszkras/discipline-backend-app:latest .
+
+after_success:
+  - docker push tomaszkras/discipline-backend-app:latest

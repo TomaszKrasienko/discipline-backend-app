@@ -1,17 +1,15 @@
 using System.Net;
 using System.Net.Http.Json;
-using System.Runtime.InteropServices.JavaScript;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Repositories;
 using discipline.tests.shared.Entities;
-using NSubstitute;
 using Shouldly;
 using Xunit;
 
-namespace discipline.api.integration_tests.DailyProductivity;
+namespace discipline.api.integration_tests.DailyProductivities;
 
 [Collection("integration-tests")]
 public class GetDailyActivityByDateTests : BaseTestsController
