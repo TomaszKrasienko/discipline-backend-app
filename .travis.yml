@@ -15,8 +15,8 @@ before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 script:
-  - dotnet restore
-  - dotnet build --configuration Release
+  - dotnet restore discipline-backed-app
+  - dotnet build discipline-backed-app --configuration Release
   - dotnet test tests/discipline.application.unit-tests
   - docker build -t tomaszkras/discipline-backend-app:latest .
 
