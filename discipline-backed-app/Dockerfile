@@ -1,6 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
-COPY src/discipline.application/discipline.application.csproj ./discipline.application/
+
+# RUN mkdir -p /app/discipline.api /app/discipline.application
+# COPY src/discipline.application/discipline.application.csproj ./discipline.application/
 COPY src/discipline.api/discipline.api.csproj ./discipline.api/
 RUN dotnet restore ./discipline.api/discipline.api.csproj -s https://api.nuget.org/v3/index.json 
 COPY . ./
