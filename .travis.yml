@@ -16,4 +16,4 @@ before_script:
 
 script:
   - dotnet build discipline-backed-app -c release
-  - sh ./scripts/dockerize.sh
+  - sh ./discipline-backed-app/dockerize.sh
