@@ -13,4 +13,4 @@ services:
 
 script:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - sh ./discipline-backed-app/dockerize.sh
+  - docker build -t tomaszkras/discipline-backend-app .
