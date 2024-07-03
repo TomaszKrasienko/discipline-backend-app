@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -f ./discipline-backed-app/Dockerfile -t tomaszkras/discipline-backend-app .
+docker build -t tomaszkras/discipline-backend-app .
