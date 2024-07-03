@@ -11,9 +11,5 @@ branches:
 services:
   - docker
 
-before_script:
-  - chmod -R a+x ./scripts/dockerize.sh
-
 script:
-  - dotnet build discipline-backed-app -c release
   - sh ./discipline-backed-app/dockerize.sh
