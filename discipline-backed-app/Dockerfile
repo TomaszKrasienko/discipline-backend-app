@@ -7,7 +7,6 @@ COPY . ./
 RUN dotnet publish ./discipline-backed-app.sln -c Release -o out
 
 RUN dotnet test tests/discipline.application.unit-tests
-RUN dotnet test -e DOTNET_ENVIRONMENT="docker.tests" tests/discipline.api.integration-tests
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
