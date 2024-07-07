@@ -37,15 +37,21 @@ internal sealed class ImportantDate : Event
     }
 }
 
-// internal sealed class Meeting : Event
-// {
-//     public TimeOnly TimeFrom { get; set; }
-//     public TimeOnly TimeTo { get; set; }
-//     public string Platform { get; set; }
-//     public string MeetingAddress { get; set; }
-//     public string Address { get; set; }
-// }
-//
+internal sealed class Meeting : Event
+{
+    public TimeOnly TimeFrom { get; set; }
+    public TimeOnly TimeTo { get; set; }
+    public string Platform { get; set; }
+    public string MeetingAddress { get; set; }
+    public string Address { get; set; }
+
+    public Meeting(EntityId id) : base(id)
+    {
+    }
+    
+    
+}
+
 // internal sealed class CalendarEvent : Event
 // {
 //     public TimeOnly TimeFrom { get; set; }
