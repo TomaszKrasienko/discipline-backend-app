@@ -1,8 +1,7 @@
-using System.Dynamic;
 using discipline.application.Domain.Exceptions;
-using discipline.application.Domain.ValueObjects.Policies.Abstractions;
+using discipline.application.Domain.Policies.Abstractions;
 
-namespace discipline.application.Domain.ValueObjects.Policies;
+namespace discipline.application.Domain.Policies;
 
 internal sealed class MeetingTimePolicy : IPolicy
 {

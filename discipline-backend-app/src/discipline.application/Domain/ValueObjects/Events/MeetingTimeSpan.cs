@@ -1,3 +1,5 @@
+using discipline.application.Domain.Policies;
+
 namespace discipline.application.Domain.ValueObjects.Events;
 
 internal sealed record MeetingTimeSpan
@@ -7,6 +9,13 @@ internal sealed record MeetingTimeSpan
 
     public MeetingTimeSpan(TimeOnly from, TimeOnly? to)
     {
-        
+        if (to is not null)
+        {
+            var policy = MeetingTimePolicy.GetInstance(from, to.Value);
+            policy.Validate();
+        }
+
+        From = from;
+        To = to;
     }
 }

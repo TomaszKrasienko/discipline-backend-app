@@ -1,5 +1,5 @@
 using discipline.application.Domain.Exceptions;
-using discipline.application.Domain.ValueObjects.Policies;
+using discipline.application.Domain.Policies;
 using Shouldly;
 using Xunit;
 

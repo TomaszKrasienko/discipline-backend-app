@@ -8,6 +8,23 @@ namespace discipline.application.unit_tests.Domain.Entities.UserCalendar;
 public class ImportantDateCreateTests
 {
     [Fact]
+    public void Create_GivenValidArguments_ShouldReturnEntityWithFilledFields()
+    {
+        //arrange
+        var id = Guid.NewGuid();
+        var title = "Test title";
+        var eventDay = new DateOnly(2024, 1, 1);
+        
+        //act
+        var entity = ImportantDate.Create(id, title, eventDay);
+        
+        //assert
+        entity.Id.Value.ShouldBe(id);
+        entity.Title.Value.ShouldBe(title);
+        entity.EventDay.Value.ShouldBe(eventDay);
+    }
+    
+    [Fact]
     public void Create_GivenEmptyTitle_ShouldThrowEmptyEventTitleException()
     {
         //act
