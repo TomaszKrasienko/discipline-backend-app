@@ -7,8 +7,54 @@ namespace discipline.application.unit_tests.Domain.Entities.UserCalendar;
 
 public sealed class MeetingCreateTests
 {
-    [Theory]
-    [InlineData()]
+    [Theory, MemberData(nameof(GetPositivePathDate))]
+    public void Create_GivenValidArguments_ShouldReturnMeeting(TimeOnly timeFrom, TimeOnly? timeTo, string platform, string uri, string place)
+    {
+        //arrange
+        var id = Guid.NewGuid();
+        var title = "test_title";
+        var eventDay = new DateOnly(2024, 2, 1);
+        
+        //act
+        var result = Meeting.Create(id, title, eventDay, timeFrom, timeTo, platform, uri, place);
+        
+        //assert
+        result.Id.Value.ShouldBe(id);
+        result.Title.Value.ShouldBe(title);
+        result.EventDay.Value.ShouldBe(eventDay);
+        result.MeetingTimeSpan.From.ShouldBe(timeFrom);
+        if (timeTo is not null)
+            result.MeetingTimeSpan.To.ShouldBe(timeTo);
+        else
+            result.MeetingTimeSpan.To.ShouldBeNull();
+
+        if (string.IsNullOrWhiteSpace(platform))
+            result.Address.Platform.ShouldBeNullOrWhiteSpace();
+        else
+            result.Address.Platform.ShouldBe(platform);
+        
+        
+        if (string.IsNullOrWhiteSpace(uri))
+            result.Address.Uri.ShouldBeNullOrWhiteSpace();
+        else
+            result.Address.Uri.ShouldBe(uri);
+        
+        
+        if (string.IsNullOrWhiteSpace(place))
+            result.Address.Place.ShouldBeNullOrWhiteSpace();
+        else
+            result.Address.Place.ShouldBe(place);
+    }
+
+    public static IEnumerable<object[]> GetPositivePathDate()
+        => new List<object[]>
+        {
+            new object[] { new TimeOnly(15, 00), new TimeOnly(16, 00), "test_platform", "test_uri", string.Empty },
+            new object[] { new TimeOnly(15, 00), new TimeOnly(16, 00), "test_platform", string.Empty, string.Empty },
+            new object[] { new TimeOnly(15, 00), new TimeOnly(16, 00), string.Empty, "test_uri", string.Empty },
+            new object[] { new TimeOnly(15, 00), new TimeOnly(16, 00), string.Empty, string.Empty, "test_place" },
+            new object[] { new TimeOnly(15, 00), null!, string.Empty, string.Empty, "test_place" },
+        };
     
     [Fact]
     public void Create_GivenEmptyTitle_ShouldThrowEmptyEventTitleException()
@@ -48,7 +94,7 @@ public sealed class MeetingCreateTests
             new TimeOnly(14, 00), "test", "test", null));
         
         //arrange
-        exception.ShouldBeOfType<InvalidActivityRuleTitleLengthException>();
+        exception.ShouldBeOfType<InvalidMeetingTimeSpanException>();
     }
 
     [Fact]
@@ -57,7 +103,7 @@ public sealed class MeetingCreateTests
         //act
         var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
             "title", new DateOnly(2024, 1, 1), new TimeOnly(15, 00),
-            new TimeOnly(14, 00),string.Empty, string.Empty, string.Empty));
+            new TimeOnly(16, 00),string.Empty, string.Empty, string.Empty));
         
         //arrange
         exception.ShouldBeOfType<EmptyAddressException>();   
@@ -71,7 +117,7 @@ public sealed class MeetingCreateTests
         //act
         var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
             "title", new DateOnly(2024, 1, 1), new TimeOnly(15, 00),
-            new TimeOnly(14, 00), platform, uri, place));
+            new TimeOnly(16, 00), platform, uri, place));
         
         //arrange
         exception.ShouldBeOfType<InconsistentAddressTypeException>();
