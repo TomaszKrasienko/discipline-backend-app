@@ -1,6 +1,6 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.Exceptions;
-using discipline.application.Domain.Repositories;
+using discipline.application.Domain.DailyProductivities.Exceptions;
+using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Features.DailyProductivities;
 using discipline.tests.shared.Entities;
 using NSubstitute;

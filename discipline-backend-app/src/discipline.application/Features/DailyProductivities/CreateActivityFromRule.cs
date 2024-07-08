@@ -1,14 +1,14 @@
 using discipline.application.Behaviours;
 using discipline.application.Configuration;
-using discipline.application.Domain.Entities;
-using discipline.application.Domain.Repositories;
+using discipline.application.Domain.ActivityRules.Repositories;
+using discipline.application.Domain.DailyProductivities.Entities;
+using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MongoDB.Driver;
 using Quartz;
 
 namespace discipline.application.Features.DailyProductivities;

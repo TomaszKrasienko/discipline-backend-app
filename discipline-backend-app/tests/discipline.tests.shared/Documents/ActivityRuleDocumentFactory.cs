@@ -1,5 +1,5 @@
 using Bogus;
-using discipline.application.Domain.ValueObjects.ActivityRules;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
 using discipline.application.Infrastructure.DAL.Documents;
 
 namespace discipline.tests.shared.Documents;

@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Domain.ValueObjects.ActivityRules;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
 using discipline.application.Features.ActivityRules;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;

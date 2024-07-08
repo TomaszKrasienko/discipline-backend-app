@@ -1,8 +1,5 @@
-using System.Text.Json.Serialization;
 using discipline.application.Behaviours;
 using discipline.application.DTOs;
-using discipline.application.Infrastructure.DAL;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 

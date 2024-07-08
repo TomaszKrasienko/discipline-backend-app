@@ -1,4 +1,4 @@
-using discipline.application.Domain.ValueObjects.ActivityRules;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
 using discipline.application.DTOs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

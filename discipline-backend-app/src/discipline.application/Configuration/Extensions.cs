@@ -1,7 +1,6 @@
 using discipline.application.Behaviours.Configuration;
 using discipline.application.Features;
 using discipline.application.Infrastructure.DAL.Configuration;
-using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

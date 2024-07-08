@@ -1,5 +1,5 @@
-using discipline.application.Domain.Services.Abstractions;
-using discipline.application.Domain.Services.Internal;
+using discipline.application.Domain.DailyProductivities.Services.Abstractions;
+using discipline.application.Domain.DailyProductivities.Services.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace discipline.application.Domain.Configuration;

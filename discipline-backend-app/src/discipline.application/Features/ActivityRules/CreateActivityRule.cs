@@ -1,6 +1,6 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.Entities;
-using discipline.application.Domain.Repositories;
+using discipline.application.Domain.ActivityRules;
+using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;

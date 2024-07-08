@@ -1,4 +1,3 @@
-using discipline.application.Features.ActivityRuleModes;
 using discipline.application.Features.ActivityRuleModes.Configuration;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.application.Features.DailyProductivities;

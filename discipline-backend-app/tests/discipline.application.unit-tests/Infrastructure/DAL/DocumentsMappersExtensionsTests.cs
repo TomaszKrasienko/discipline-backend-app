@@ -1,5 +1,3 @@
-using discipline.application.Domain.Entities;
-using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Documents;
 using discipline.tests.shared.Entities;

@@ -1,6 +1,6 @@
-using discipline.application.Domain.Entities;
-using discipline.application.Domain.Exceptions;
-using discipline.application.Domain.ValueObjects.ActivityRules;
+using discipline.application.Domain.ActivityRules;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
+using discipline.application.Domain.DailyProductivities.Exceptions;
 using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
@@ -97,8 +97,10 @@ public sealed class DailyProductivityTests
             Mode.EveryDayMode());
     
         //act
-        var exception = Record.Exception(() => dailyProductivity.AddActivityFromRule(Guid.NewGuid(), 
-            DateTime.Now, activityRule));
+        // var exception = Record.Exception(() => dailyProductivity.AddActivityFromRule(Guid.NewGuid(), 
+        //     DateTime.Now, activityRule));
+        var exception = Record.Exception(() =>
+            dailyProductivity.AddActivityFromRule(Guid.NewGuid(), DateTime.Now, activityRule));
     
         //assert
         exception.ShouldBeOfType<ActivityTitleAlreadyRegisteredException>();

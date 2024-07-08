@@ -1,5 +1,6 @@
-using discipline.application.Domain.Entities;
-using discipline.application.Domain.ValueObjects.ActivityRules;
+using discipline.application.Domain.ActivityRules;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
+using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.DTOs;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;

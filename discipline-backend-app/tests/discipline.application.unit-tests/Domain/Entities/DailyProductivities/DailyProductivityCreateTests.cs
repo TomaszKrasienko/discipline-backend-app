@@ -1,4 +1,4 @@
-using discipline.application.Domain.Entities;
+using discipline.application.Domain.DailyProductivities.Entities;
 using Shouldly;
 using Xunit;
 

@@ -1,5 +1,6 @@
 using discipline.application.Configuration;
-using discipline.application.Domain.Repositories;
+using discipline.application.Domain.ActivityRules.Repositories;
+using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Infrastructure.DAL.Configuration.Options;
 using discipline.application.Infrastructure.DAL.Repositories;
 using Microsoft.Extensions.Configuration;

@@ -1,4 +1,3 @@
-using discipline.application.Features.ActivityRuleModes;
 using Microsoft.AspNetCore.Builder;
 
 namespace discipline.application.Features.ActivityRules.Configuration;

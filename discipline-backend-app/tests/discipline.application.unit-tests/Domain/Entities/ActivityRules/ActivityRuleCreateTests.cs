@@ -1,8 +1,8 @@
-using Bogus.DataSets;
-using discipline.application.Domain.Entities;
+using discipline.application.Domain.ActivityRules;
+using discipline.application.Domain.ActivityRules.Exceptions;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
+using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.Domain.Exceptions;
-using discipline.application.Domain.ValueObjects.ActivityRules;
-using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
 

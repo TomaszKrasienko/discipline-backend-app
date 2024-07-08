@@ -1,7 +1,6 @@
-using Bogus.DataSets;
-using discipline.application.Domain.Services.Abstractions;
-using discipline.application.Domain.Services.Internal;
-using discipline.application.Domain.ValueObjects.ActivityRules;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
+using discipline.application.Domain.DailyProductivities.Services.Abstractions;
+using discipline.application.Domain.DailyProductivities.Services.Internal;
 using Shouldly;
 using Xunit;
 

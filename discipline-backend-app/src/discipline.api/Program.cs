@@ -1,5 +1,4 @@
 using discipline.application.Configuration;
-using discipline.application.Features.DailyProductivities;
 
 var builder = WebApplication.CreateBuilder(args);
 

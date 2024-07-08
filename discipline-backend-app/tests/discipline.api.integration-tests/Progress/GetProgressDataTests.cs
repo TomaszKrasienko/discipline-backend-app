@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Domain.Entities;
+using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;

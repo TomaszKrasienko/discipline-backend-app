@@ -22,4 +22,9 @@
       <PackageReference Include="Scrutor" Version="4.2.2" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Domain\ActivityRules\ValueObjects\" />
+      <Folder Include="Domain\DailyProductivities\ValueObjects\" />
+      <Folder Include="Domain\UsersCalendars\ValueObjects\" />
+    </ItemGroup>
 </Project>
