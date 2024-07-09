@@ -4,7 +4,7 @@ using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Domain.Entities.ActivityRules;
+namespace discipline.application.unit_tests.Domain.ActivityRules.Entities;
 
 public sealed class ActivityRuleTests
 {

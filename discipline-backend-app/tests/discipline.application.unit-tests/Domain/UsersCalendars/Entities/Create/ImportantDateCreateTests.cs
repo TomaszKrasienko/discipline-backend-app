@@ -4,7 +4,7 @@ using discipline.application.Domain.UsersCalendars.Exceptions;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Domain.Entities.UserCalendar;
+namespace discipline.application.unit_tests.Domain.UsersCalendars.Entities.Create;
 
 public class ImportantDateCreateTests
 {

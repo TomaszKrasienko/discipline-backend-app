@@ -3,7 +3,7 @@ using discipline.application.Domain.UsersCalendars.Policies;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Domain.Policies;
+namespace discipline.application.unit_tests.Domain.UsersCalendars.Policies;
 
 public sealed class MeetingAddressPolicyTests
 {

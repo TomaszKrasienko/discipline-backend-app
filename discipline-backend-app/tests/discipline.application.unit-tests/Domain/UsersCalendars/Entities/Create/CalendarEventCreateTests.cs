@@ -3,9 +3,9 @@ using discipline.application.Domain.UsersCalendars.Exceptions;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Domain.Entities.UserCalendar;
+namespace discipline.application.unit_tests.Domain.UsersCalendars.Entities.Create;
 
-public sealed class CalendarEventTests
+public sealed class CalendarEventCreateTests
 {
     [Theory, MemberData(nameof(GetCreatePositivePathDate))]
     public void Create_GivenValidArguments_ShouldReturnCalendarEventWithFilledFields(Guid id,
@@ -26,9 +26,9 @@ public sealed class CalendarEventTests
     public static IEnumerable<object[]> GetCreatePositivePathDate()
         => new List<object[]>
         {
-            new object[] {Guid.NewGuid(), "title", new DateOnly(2024, 12,1), new TimeOnly(15, 00), new TimeOnly(16, 00), null},
+            new object[] {Guid.NewGuid(), "title", new DateOnly(2024, 12,1), new TimeOnly(15, 00), new TimeOnly(16, 00), null!},
             new object[] {Guid.NewGuid(), "title", new DateOnly(2024, 12,1), new TimeOnly(15, 00), new TimeOnly(16, 00), "test_action"},
-            new object[] {Guid.NewGuid(), "title", new DateOnly(2024, 12,1), new TimeOnly(15, 00), null, "test_action"},
+            new object[] {Guid.NewGuid(), "title", new DateOnly(2024, 12,1), new TimeOnly(15, 00), null!, "test_action"},
         };
 
     [Fact]

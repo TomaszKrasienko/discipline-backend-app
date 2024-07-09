@@ -1,4 +1,3 @@
-using discipline.application.Domain.ActivityRules;
 using discipline.application.Domain.ActivityRules.Entities;
 using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Domain.DailyProductivities.Exceptions;
@@ -6,7 +5,7 @@ using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Domain.Entities.DailyProductivities;
+namespace discipline.application.unit_tests.Domain.DailyProductivities.Entities;
 
 public sealed class DailyProductivityTests
 {

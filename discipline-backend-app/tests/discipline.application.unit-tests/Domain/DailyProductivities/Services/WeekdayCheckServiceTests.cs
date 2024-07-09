@@ -4,7 +4,7 @@ using discipline.application.Domain.DailyProductivities.Services.Internal;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Domain.Services;
+namespace discipline.application.unit_tests.Domain.DailyProductivities.Services;
 
 public sealed class WeekdayCheckServiceTests
 {

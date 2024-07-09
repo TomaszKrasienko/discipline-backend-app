@@ -3,7 +3,7 @@ using discipline.application.Domain.DailyProductivities.Exceptions;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Domain.Entities.DailyProductivities;
+namespace discipline.application.unit_tests.Domain.DailyProductivities.Entities.Create;
 
 public sealed class ActivityCreateTests
 {
