@@ -3,6 +3,7 @@ using discipline.application.Features.ActivityRules.Configuration;
 using discipline.application.Features.DailyProductivities;
 using discipline.application.Features.DailyProductivities.Configuration;
 using discipline.application.Features.Progress.Configuration;
+using discipline.application.Features.UserCalendar.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,5 +21,6 @@ public static class FeaturesConfiguration
             .MapDailyProductiveFeatures()
             .MapActivityRulesModesFeatures()
             .MapCreateActivityFromRule()
-            .MapProgressFeatures();
+            .MapProgressFeatures()
+            .MapUserCalendarFeatures();
 }

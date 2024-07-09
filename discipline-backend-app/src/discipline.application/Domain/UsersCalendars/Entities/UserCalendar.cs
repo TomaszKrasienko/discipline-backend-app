@@ -14,6 +14,7 @@ internal sealed class UserCalendar : AggregateRoot
 
     internal static UserCalendar Create(DateOnly day)
         => new UserCalendar(day);
-    
-    //internal void AddEvent()
+
+    internal void AddEvent(Guid id, string title)
+        => _events.Add(ImportantDate.Create(id, title));
 }
