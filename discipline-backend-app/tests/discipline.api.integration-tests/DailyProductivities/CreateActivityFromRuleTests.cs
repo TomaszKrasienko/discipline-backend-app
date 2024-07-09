@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
+using discipline.application.Domain.ActivityRules.Entities;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Features.DailyProductivities;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
@@ -19,7 +21,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     public async Task CreateActivityFromRule_GivenExistingActivityRule_ShouldReturn200OkStatusCodeAndAddActivity()
     {
         //arrange
-        var activityRule = ActivityRuleFactory.Get(); 
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), "test_title", Mode.EveryDayMode());
         await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules").InsertOneAsync(activityRule.AsDocument());
         var command = new CreateActivityFromRuleCommand(Guid.Empty, activityRule.Id);
         
