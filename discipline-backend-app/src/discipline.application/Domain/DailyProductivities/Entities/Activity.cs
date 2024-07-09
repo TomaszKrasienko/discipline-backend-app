@@ -1,7 +1,7 @@
-using discipline.application.Domain.ActivityRules;
-using discipline.application.Domain.DailyProductivities.Services.Factories;
+using discipline.application.Domain.ActivityRules.Entities;
+using discipline.application.Domain.DailyProductivities.Services.Internal;
 using discipline.application.Domain.DailyProductivities.ValueObjects.Activity;
-using discipline.application.Domain.ValueObjects.SharedKernel;
+using discipline.application.Domain.SharedKernel;
 
 namespace discipline.application.Domain.DailyProductivities.Entities;
 
@@ -41,7 +41,7 @@ internal sealed class Activity
 
     internal static Activity CreateFromRule(Guid id, DateTime now, ActivityRule rule)
     {
-        var weekdayCheckService = WeekdayCheckServiceFactory.GetInstance();
+        var weekdayCheckService = WeekdayCheckService.GetInstance();
         if (weekdayCheckService.IsDateForMode(now, rule.Mode, rule.SelectedDays?.Select(x => x.Value).ToList()))
         {
             var activity = new Activity(id, rule.Id);

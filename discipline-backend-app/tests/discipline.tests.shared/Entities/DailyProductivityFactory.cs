@@ -1,4 +1,5 @@
 using Bogus;
+using discipline.application.Domain.DailyProductivities.Entities;
 
 namespace discipline.tests.shared.Entities;
 

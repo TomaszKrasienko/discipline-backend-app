@@ -1,4 +1,4 @@
-namespace discipline.application.Domain.ValueObjects.SharedKernel;
+namespace discipline.application.Domain.SharedKernel;
 
 public record EntityId<T>(T Value)
 {

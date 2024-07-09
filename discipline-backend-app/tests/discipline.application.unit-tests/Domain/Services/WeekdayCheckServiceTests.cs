@@ -1,4 +1,4 @@
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Domain.DailyProductivities.Services.Abstractions;
 using discipline.application.Domain.DailyProductivities.Services.Internal;
 using Shouldly;

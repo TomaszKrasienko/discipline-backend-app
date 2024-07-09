@@ -1,6 +1,5 @@
 using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.Domain.DailyProductivities.Exceptions;
-using discipline.application.Domain.Exceptions;
 using Shouldly;
 using Xunit;
 

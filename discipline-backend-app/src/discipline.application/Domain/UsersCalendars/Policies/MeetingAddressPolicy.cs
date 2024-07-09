@@ -1,4 +1,4 @@
-using discipline.application.Domain.Exceptions;
+using discipline.application.Domain.UsersCalendars.Exceptions;
 using discipline.application.Domain.UsersCalendars.Policies.Abstractions;
 
 namespace discipline.application.Domain.UsersCalendars.Policies;

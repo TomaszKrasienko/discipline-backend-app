@@ -1,7 +1,7 @@
-using discipline.application.Domain.Exceptions;
+using discipline.application.Domain.ActivityRules.Exceptions;
 using discipline.application.Domain.UsersCalendars.Exceptions;
 
-namespace discipline.application.Domain.UsersCalendars.ValueObjects.Events;
+namespace discipline.application.Domain.UsersCalendars.ValueObjects.Event;
 
 internal sealed record Title
 {

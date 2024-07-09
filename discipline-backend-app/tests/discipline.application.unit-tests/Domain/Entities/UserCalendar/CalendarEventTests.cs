@@ -1,4 +1,3 @@
-using discipline.application.Domain.Exceptions;
 using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Domain.UsersCalendars.Exceptions;
 using Shouldly;

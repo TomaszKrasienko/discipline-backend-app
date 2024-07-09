@@ -1,10 +1,13 @@
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Domain.DailyProductivities.Services.Abstractions;
 
 namespace discipline.application.Domain.DailyProductivities.Services.Internal;
 
 internal sealed class WeekdayCheckService : IWeekdayCheckService
 {
+    public static IWeekdayCheckService GetInstance()
+        => new WeekdayCheckService();
+
     public bool IsDateForMode(DateTime now, string mode, List<int> selectedDays = null)
     {
         if (mode == Mode.EveryDayMode())

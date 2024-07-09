@@ -1,6 +1,6 @@
-using discipline.application.Domain.Exceptions;
+using discipline.application.Domain.ActivityRules.Exceptions;
 
-namespace discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
+namespace discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 
 internal sealed record Title
 {

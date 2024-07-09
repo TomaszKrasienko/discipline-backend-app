@@ -1,4 +1,4 @@
-namespace discipline.application.Domain.UsersCalendars.ValueObjects.Events;
+namespace discipline.application.Domain.UsersCalendars.ValueObjects.Event;
 
 internal sealed record Action(string Value)
 {

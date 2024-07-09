@@ -1,5 +1,6 @@
 using discipline.application.Domain.ActivityRules;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
+using discipline.application.Domain.ActivityRules.Entities;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.DTOs;
 

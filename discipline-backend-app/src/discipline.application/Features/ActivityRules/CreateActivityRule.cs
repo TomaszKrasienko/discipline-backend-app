@@ -1,5 +1,6 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.ActivityRules;
+using discipline.application.Domain.ActivityRules.Entities;
 using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Exceptions;
 using FluentValidation;

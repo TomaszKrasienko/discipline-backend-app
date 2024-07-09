@@ -1,8 +1,8 @@
 using discipline.application.Domain.ActivityRules.Exceptions;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRules;
-using discipline.application.Domain.ValueObjects.SharedKernel;
+using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.application.Domain.SharedKernel;
 
-namespace discipline.application.Domain.ActivityRules;
+namespace discipline.application.Domain.ActivityRules.Entities;
 
 internal sealed class ActivityRule
 {

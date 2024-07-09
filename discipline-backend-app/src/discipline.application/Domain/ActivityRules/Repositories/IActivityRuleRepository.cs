@@ -1,3 +1,5 @@
+using discipline.application.Domain.ActivityRules.Entities;
+
 namespace discipline.application.Domain.ActivityRules.Repositories;
 
 internal interface IActivityRuleRepository

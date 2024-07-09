@@ -1,8 +1,10 @@
 using discipline.application.Behaviours;
+using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Features.DailyProductivities;
 using discipline.tests.shared.Entities;
 using NSubstitute;
+using Shouldly;
 using Xunit;
 
 namespace discipline.application.unit_tests.Features.DailyProductivities.CreateActivity;

@@ -1,4 +1,4 @@
-namespace discipline.application.Domain.ValueObjects.SharedKernel;
+namespace discipline.application.Domain.SharedKernel;
 
 internal abstract class AggregateRoot
 {

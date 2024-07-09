@@ -1,5 +1,4 @@
 using discipline.application.Domain.DailyProductivities.Exceptions;
-using discipline.application.Domain.Exceptions;
 
 namespace discipline.application.Domain.DailyProductivities.ValueObjects.Activity;
 
