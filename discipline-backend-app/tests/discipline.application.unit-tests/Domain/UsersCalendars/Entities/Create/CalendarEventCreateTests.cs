@@ -9,15 +9,14 @@ public sealed class CalendarEventCreateTests
 {
     [Theory, MemberData(nameof(GetCreatePositivePathDate))]
     public void Create_GivenValidArguments_ShouldReturnCalendarEventWithFilledFields(Guid id,
-        string title, DateOnly eventDay, TimeOnly timeFrom, TimeOnly? timeTo, string action)
+        string title, TimeOnly timeFrom, TimeOnly? timeTo, string action)
     {
         //act
-        var result = CalendarEvent.Create(id, title, eventDay, timeFrom, timeTo, action);
+        var result = CalendarEvent.Create(id, title, timeFrom, timeTo, action);
         
         //assert
         result.Id.Value.ShouldBe(id);
         result.Title.Value.ShouldBe(title);
-        result.EventDay.Value.ShouldBe(eventDay);
         result.MeetingTimeSpan.From.ShouldBe(timeFrom);
         result.MeetingTimeSpan.To.ShouldBe(timeTo);
         result.Action?.Value.ShouldBe(action);
@@ -26,9 +25,9 @@ public sealed class CalendarEventCreateTests
     public static IEnumerable<object[]> GetCreatePositivePathDate()
         => new List<object[]>
         {
-            new object[] {Guid.NewGuid(), "title", new DateOnly(2024, 12,1), new TimeOnly(15, 00), new TimeOnly(16, 00), null!},
-            new object[] {Guid.NewGuid(), "title", new DateOnly(2024, 12,1), new TimeOnly(15, 00), new TimeOnly(16, 00), "test_action"},
-            new object[] {Guid.NewGuid(), "title", new DateOnly(2024, 12,1), new TimeOnly(15, 00), null!, "test_action"},
+            new object[] {Guid.NewGuid(), "title", new TimeOnly(15, 00), new TimeOnly(16, 00), null!},
+            new object[] {Guid.NewGuid(), "title", new TimeOnly(15, 00), new TimeOnly(16, 00), "test_action"},
+            new object[] {Guid.NewGuid(), "title", new TimeOnly(15, 00), null!, "test_action"},
         };
 
     [Fact]
@@ -36,7 +35,7 @@ public sealed class CalendarEventCreateTests
     {
         //act
         var exception = Record.Exception(() => CalendarEvent.Create(Guid.NewGuid(), string.Empty,
-            new DateOnly(2024, 1, 1), new TimeOnly(14, 00), null, null));
+            new TimeOnly(14, 00), null, null));
         
         //assert
         exception.ShouldBeOfType<EmptyEventTitleException>();
@@ -47,7 +46,6 @@ public sealed class CalendarEventCreateTests
     {
         //act
         var exception = Record.Exception(() => CalendarEvent.Create(Guid.NewGuid(), "test_title",
-            new DateOnly(2024, 1, 1),
             new TimeOnly(14, 00, 00), new TimeOnly(13, 00, 00), null));
         
         //assert

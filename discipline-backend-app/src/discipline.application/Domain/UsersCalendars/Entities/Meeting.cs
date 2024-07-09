@@ -9,14 +9,14 @@ internal sealed class Meeting : Event
     public Address Address { get; private set; }
 
 
-    private Meeting(EntityId id, Title title, EventDay eventDay) : base(id, title, eventDay)
+    private Meeting(EntityId id, Title title) : base(id, title)
     {
     }
 
-    internal static Meeting Create(Guid id, string title, DateOnly eventDay, TimeOnly timeFrom, TimeOnly? timeTo,
+    internal static Meeting Create(Guid id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
         string platform, string uri, string place)
     {
-        var @event = new Meeting(id, title, eventDay);
+        var @event = new Meeting(id, title);
         @event.ChangeMeetingTimeSpan(timeFrom, timeTo);
         @event.ChangeMeetingAddress(platform, uri, place);
         return @event;

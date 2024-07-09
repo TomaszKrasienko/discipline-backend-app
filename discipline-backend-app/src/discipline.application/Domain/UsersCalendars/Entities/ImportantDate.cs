@@ -5,11 +5,11 @@ namespace discipline.application.Domain.UsersCalendars.Entities;
 
 internal sealed class ImportantDate : Event
 {
-    private ImportantDate(EntityId id, Title title, EventDay eventDay) : base(id, title, eventDay)
+    private ImportantDate(EntityId id, Title title) : base(id, title)
     {
     }
 
-    internal static ImportantDate Create(Guid id, string title, DateOnly eventDay)
-        => new ImportantDate(id, title, eventDay);
+    internal static ImportantDate Create(Guid id, string title)
+        => new ImportantDate(id, title);
         
 }

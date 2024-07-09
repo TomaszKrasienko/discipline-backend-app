@@ -25,6 +25,5 @@
     <ItemGroup>
       <Folder Include="Domain\ActivityRules\ValueObjects\" />
       <Folder Include="Domain\DailyProductivities\ValueObjects\" />
-      <Folder Include="Domain\UsersCalendars\ValueObjects\" />
     </ItemGroup>
 </Project>

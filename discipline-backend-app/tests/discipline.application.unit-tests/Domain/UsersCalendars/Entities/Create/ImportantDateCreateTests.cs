@@ -14,15 +14,13 @@ public class ImportantDateCreateTests
         //arrange
         var id = Guid.NewGuid();
         var title = "Test title";
-        var eventDay = new DateOnly(2024, 1, 1);
         
         //act
-        var entity = ImportantDate.Create(id, title, eventDay);
+        var entity = ImportantDate.Create(id, title);
         
         //assert
         entity.Id.Value.ShouldBe(id);
         entity.Title.Value.ShouldBe(title);
-        entity.EventDay.Value.ShouldBe(eventDay);
     }
     
     [Fact]
@@ -30,7 +28,7 @@ public class ImportantDateCreateTests
     {
         //act
         var exception = Record.Exception(() => ImportantDate.Create(Guid.NewGuid(),
-            string.Empty, new DateOnly(2024, 1, 1)));
+            string.Empty));
         
         //arrange
         exception.ShouldBeOfType<EmptyEventTitleException>();
@@ -46,7 +44,7 @@ public class ImportantDateCreateTests
         
         //act
         var exception = Record.Exception(() => ImportantDate.Create(Guid.NewGuid(),
-            title, new DateOnly(2024, 1, 1)));
+            title));
         
         //arrange
         exception.ShouldBeOfType<InvalidActivityRuleTitleLengthException>();

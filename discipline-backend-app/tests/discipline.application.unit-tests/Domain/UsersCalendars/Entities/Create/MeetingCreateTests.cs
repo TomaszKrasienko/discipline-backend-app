@@ -14,37 +14,18 @@ public sealed class MeetingCreateTests
         //arrange
         var id = Guid.NewGuid();
         var title = "test_title";
-        var eventDay = new DateOnly(2024, 2, 1);
         
         //act
-        var result = Meeting.Create(id, title, eventDay, timeFrom, timeTo, platform, uri, place);
+        var result = Meeting.Create(id, title, timeFrom, timeTo, platform, uri, place);
         
         //assert
         result.Id.Value.ShouldBe(id);
         result.Title.Value.ShouldBe(title);
-        result.EventDay.Value.ShouldBe(eventDay);
         result.MeetingTimeSpan.From.ShouldBe(timeFrom);
-        if (timeTo is not null)
-            result.MeetingTimeSpan.To.ShouldBe(timeTo);
-        else
-            result.MeetingTimeSpan.To.ShouldBeNull();
-
-        if (string.IsNullOrWhiteSpace(platform))
-            result.Address.Platform.ShouldBeNullOrWhiteSpace();
-        else
-            result.Address.Platform.ShouldBe(platform);
-        
-        
-        if (string.IsNullOrWhiteSpace(uri))
-            result.Address.Uri.ShouldBeNullOrWhiteSpace();
-        else
-            result.Address.Uri.ShouldBe(uri);
-        
-        
-        if (string.IsNullOrWhiteSpace(place))
-            result.Address.Place.ShouldBeNullOrWhiteSpace();
-        else
-            result.Address.Place.ShouldBe(place);
+        result.MeetingTimeSpan.To.ShouldBe(timeTo);
+        result.Address.Platform.ShouldBe(platform);
+        result.Address.Uri.ShouldBe(uri);
+        result.Address.Place.ShouldBe(place);
     }
 
     public static IEnumerable<object[]> GetPositivePathDate()
@@ -62,7 +43,7 @@ public sealed class MeetingCreateTests
     {
         //act
         var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
-            string.Empty, new DateOnly(2024, 1, 1), new TimeOnly(15, 00),
+            string.Empty, new TimeOnly(15, 00),
             null, "test", "test", null));
         
         //arrange
@@ -79,7 +60,7 @@ public sealed class MeetingCreateTests
         
         //act
         var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
-            title, new DateOnly(2024, 1, 1), new TimeOnly(15, 00),
+            title, new TimeOnly(15, 00),
             null, "test", "test", null));
         
         //arrange
@@ -91,7 +72,7 @@ public sealed class MeetingCreateTests
     {
         //act
         var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
-            "title", new DateOnly(2024, 1, 1), new TimeOnly(15, 00),
+            "title", new TimeOnly(15, 00),
             new TimeOnly(14, 00), "test", "test", null));
         
         //arrange
@@ -103,7 +84,7 @@ public sealed class MeetingCreateTests
     {
         //act
         var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
-            "title", new DateOnly(2024, 1, 1), new TimeOnly(15, 00),
+            "title", new TimeOnly(15, 00),
             new TimeOnly(16, 00),string.Empty, string.Empty, string.Empty));
         
         //arrange
@@ -117,7 +98,7 @@ public sealed class MeetingCreateTests
     {
         //act
         var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
-            "title", new DateOnly(2024, 1, 1), new TimeOnly(15, 00),
+            "title",  new TimeOnly(15, 00),
             new TimeOnly(16, 00), platform, uri, place));
         
         //arrange

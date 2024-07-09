@@ -12,7 +12,7 @@ internal sealed class DailyProductivity : AggregateRoot
     internal Day Day { get; private set; }
     internal IReadOnlyList<Activity> Activities => _activities;
 
-    private DailyProductivity(Day day)
+    private DailyProductivity(Day day) : base()
     {
         Day = day;
     }
