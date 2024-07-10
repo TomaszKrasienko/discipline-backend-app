@@ -1,7 +1,9 @@
+using System.Collections.Frozen;
 using discipline.application.Configuration;
 using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Infrastructure.DAL.Configuration.Options;
+using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +28,11 @@ internal static class Extensions
     
     private static IServiceCollection AddMongoConnection(this IServiceCollection services)
     {
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        var documentsType = assemblies.SelectMany(x => x.GetTypes())
+            .Where(x => typeof(IDocument).IsAssignableFrom(x) && !x.IsInterface);
+        var collectionDictionary = documentsType.ToFrozenDictionary(x => x, x => x.Name);
+        
         services.AddSingleton<IMongoClient>(sp =>
         {
             var options = sp.GetRequiredService<IOptions<MongoOptions>>().Value;
