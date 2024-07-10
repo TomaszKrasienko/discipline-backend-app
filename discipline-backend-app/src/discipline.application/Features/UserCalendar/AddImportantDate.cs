@@ -20,5 +20,28 @@ public sealed record AddImportantDateCommand(DateOnly Day, Guid Id, string Title
 
 public sealed class AddImportantDateCommandValidator : AbstractValidator<AddImportantDateCommand>
 {
-    
+    public AddImportantDateCommandValidator()
+    {
+        RuleFor(x => x.Id)
+            .NotEmpty()
+            .WithMessage("Important date \"ID\" can not be empty");
+
+        RuleFor(x => x.Title)
+            .NotNull()
+            .NotEmpty()
+            .WithMessage("Important date \"Title\" can not be null or empty");
+
+        RuleFor(x => x.Title)
+            .MinimumLength(3)
+            .MaximumLength(100)
+            .WithMessage("Important date \"Title\" has invalid length");
+    }
+}
+
+internal sealed class AddImportantDateCommandHandler : ICommandHandler<AddImportantDateCommand>
+{
+    public Task HandleAsync(AddImportantDateCommand command, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }

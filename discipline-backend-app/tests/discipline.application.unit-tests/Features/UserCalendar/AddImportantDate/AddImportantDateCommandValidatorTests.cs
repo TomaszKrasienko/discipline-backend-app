@@ -8,6 +8,20 @@ namespace discipline.application.unit_tests.Features.UserCalendar.AddImportantDa
 public sealed class AddImportantDateCommandValidatorTests
 {
     [Fact]
+    public void Validate_GivenValidArguments_ShouldNotHaveAnyValidationErrors()
+    {
+        //arrange
+        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
+            "test_title");
+        
+        //act
+        var result = _validator.TestValidate(command);
+        
+        //assert
+        result.ShouldNotHaveAnyValidationErrors();
+    }
+    
+    [Fact]
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
