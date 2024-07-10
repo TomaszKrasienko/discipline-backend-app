@@ -1,7 +1,6 @@
-using discipline.application.Features.DailyProductivities;
 using Microsoft.AspNetCore.Builder;
 
-namespace discipline.application.Features.UserCalendar.Configuration;
+namespace discipline.application.Features.UsersCalendars.Configuration;
 
 internal static class Extensions
 {

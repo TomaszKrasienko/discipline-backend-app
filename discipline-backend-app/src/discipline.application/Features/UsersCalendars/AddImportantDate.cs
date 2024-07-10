@@ -1,8 +1,9 @@
 using discipline.application.Behaviours;
+using discipline.application.Domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 
-namespace discipline.application.Features.UserCalendar;
+namespace discipline.application.Features.UsersCalendars;
 
 internal static class AddImportantDate
 {
@@ -38,7 +39,8 @@ public sealed class AddImportantDateCommandValidator : AbstractValidator<AddImpo
     }
 }
 
-internal sealed class AddImportantDateCommandHandler : ICommandHandler<AddImportantDateCommand>
+internal sealed class AddImportantDateCommandHandler(
+    IUserCalendarRepository userCalendarRepository) : ICommandHandler<AddImportantDateCommand>
 {
     public Task HandleAsync(AddImportantDateCommand command, CancellationToken cancellationToken = default)
     {

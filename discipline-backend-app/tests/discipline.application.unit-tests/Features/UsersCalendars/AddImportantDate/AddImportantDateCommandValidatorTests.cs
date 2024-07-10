@@ -1,9 +1,9 @@
-using discipline.application.Features.UserCalendar;
+using discipline.application.Features.UsersCalendars;
 using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
 
-namespace discipline.application.unit_tests.Features.UserCalendar.AddImportantDate;
+namespace discipline.application.unit_tests.Features.UsersCalendars.AddImportantDate;
 
 public sealed class AddImportantDateCommandValidatorTests
 {
