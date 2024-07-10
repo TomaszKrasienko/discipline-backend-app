@@ -2,6 +2,7 @@ using discipline.application.Behaviours;
 using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Domain.UsersCalendars.Repositories;
 using discipline.application.Features.UsersCalendars;
+using discipline.tests.shared.Entities;
 using NSubstitute;
 using Xunit;
 
@@ -25,6 +26,31 @@ public sealed class AddImportantDateCommandHandlerTests
         await _userCalendarRepository
             .Received(1)
             .AddAsync(Arg.Is<UserCalendar>(arg
+                => arg.Day.Value == command.Day
+                   && arg.Events.Any(x
+                       => x.Id.Equals(command.Id)
+                          && x.Title.Value == command.Title)));
+    }
+    
+    [Fact]
+    public async Task HandleAsync_GivenExistingUserCalendarForDate_ShouldUpdateUserCalendarWithImportantDate()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        var command = new AddImportantDateCommand(userCalendar.Day, Guid.NewGuid(),
+            "test_title");
+
+        _userCalendarRepository
+            .GetByDateAsync(command.Day)
+            .Returns(userCalendar);
+        
+        //act
+        await Act(command);
+        
+        //assert
+        await _userCalendarRepository
+            .Received(1)
+            .UpdateAsync(Arg.Is<UserCalendar>(arg
                 => arg.Day.Value == command.Day
                    && arg.Events.Any(x
                        => x.Id.Equals(command.Id)
