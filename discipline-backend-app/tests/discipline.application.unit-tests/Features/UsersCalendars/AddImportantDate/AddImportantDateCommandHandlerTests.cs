@@ -30,6 +30,9 @@ public sealed class AddImportantDateCommandHandlerTests
                    && arg.Events.Any(x
                        => x.Id.Equals(command.Id)
                           && x.Title.Value == command.Title)));
+        await _userCalendarRepository
+            .Received(0)
+            .UpdateAsync(Arg.Any<UserCalendar>());
     }
     
     [Fact]
@@ -55,6 +58,9 @@ public sealed class AddImportantDateCommandHandlerTests
                    && arg.Events.Any(x
                        => x.Id.Equals(command.Id)
                           && x.Title.Value == command.Title)));
+        await _userCalendarRepository
+            .Received(0)
+            .AddAsync(Arg.Any<UserCalendar>());
     }
     
     #region arrange

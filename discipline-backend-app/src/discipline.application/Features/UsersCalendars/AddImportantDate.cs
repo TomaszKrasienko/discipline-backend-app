@@ -1,7 +1,9 @@
 using discipline.application.Behaviours;
+using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
+using MongoDB.Driver;
 
 namespace discipline.application.Features.UsersCalendars;
 
@@ -42,8 +44,17 @@ public sealed class AddImportantDateCommandValidator : AbstractValidator<AddImpo
 internal sealed class AddImportantDateCommandHandler(
     IUserCalendarRepository userCalendarRepository) : ICommandHandler<AddImportantDateCommand>
 {
-    public Task HandleAsync(AddImportantDateCommand command, CancellationToken cancellationToken = default)
+    public async Task HandleAsync(AddImportantDateCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var userCalendar = await userCalendarRepository.GetByDateAsync(command.Day, cancellationToken);
+        if (userCalendar is null)
+        {
+            userCalendar = UserCalendar.Create(command.Day);
+            userCalendar.AddEvent(command.Id, command.Title);
+            await userCalendarRepository.AddAsync(userCalendar, cancellationToken);
+            return;
+        }
+        userCalendar.AddEvent(command.Id, command.Title);
+        await userCalendarRepository.UpdateAsync(userCalendar, cancellationToken);
     }
 }
