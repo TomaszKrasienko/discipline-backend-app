@@ -6,7 +6,8 @@ using MongoDB.Driver;
 
 namespace discipline.application.Infrastructure.DAL.Repositories;
 
-internal sealed class MongoDailyProductivityRepository(IMongoDatabase mongoDatabase) : IDailyProductivityRepository
+internal sealed class MongoDailyProductivityRepository(
+    IMongoDatabase mongoDatabase) : IDailyProductivityRepository
 {
     internal const string CollectionName = "DailyProductivity";
     private readonly IMongoCollection<DailyProductivityDocument> _collection = mongoDatabase.GetCollection<DailyProductivityDocument>(CollectionName);

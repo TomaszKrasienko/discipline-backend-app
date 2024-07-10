@@ -2,7 +2,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace discipline.application.Infrastructure.DAL.Documents;
 
-public class ActivityDocument
+public class ActivityDocument : IDocument
 {
     [BsonId] 
     [BsonElement("id")]

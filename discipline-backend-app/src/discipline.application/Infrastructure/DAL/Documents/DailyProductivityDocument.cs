@@ -2,7 +2,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace discipline.application.Infrastructure.DAL.Documents;
 
-public class DailyProductivityDocument
+public class DailyProductivityDocument : IDocument
 {
     //[BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     [BsonElement("day")]
