@@ -1,7 +1,7 @@
 using discipline.application.Infrastructure.DAL.Documents;
 using MongoDB.Driver;
 
-namespace discipline.application.Infrastructure.DAL;
+namespace discipline.application.Infrastructure.DAL.Connection;
 
 public interface IDisciplineMongoCollection
 {

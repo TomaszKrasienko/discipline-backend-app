@@ -1,5 +1,6 @@
 using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.Domain.DailyProductivities.Repositories;
+using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using MongoDB.Driver;
