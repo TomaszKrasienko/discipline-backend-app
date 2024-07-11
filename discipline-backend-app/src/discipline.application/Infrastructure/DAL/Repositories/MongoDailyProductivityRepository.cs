@@ -7,10 +7,10 @@ using MongoDB.Driver;
 namespace discipline.application.Infrastructure.DAL.Repositories;
 
 internal sealed class MongoDailyProductivityRepository(
-    IMongoDatabase mongoDatabase) : IDailyProductivityRepository
+    IDisciplineMongoCollection disciplineMongoCollection) : IDailyProductivityRepository
 {
-    internal const string CollectionName = "DailyProductivity";
-    private readonly IMongoCollection<DailyProductivityDocument> _collection = mongoDatabase.GetCollection<DailyProductivityDocument>(CollectionName);
+    private readonly IMongoCollection<DailyProductivityDocument> _collection =
+        disciplineMongoCollection.GetCollection<DailyProductivityDocument>();
 
     public Task AddAsync(DailyProductivity dailyProductivity, CancellationToken cancellationToken = default)
         => _collection.InsertOneAsync(dailyProductivity.AsDocument(), null, cancellationToken);

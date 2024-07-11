@@ -28,11 +28,6 @@ internal static class Extensions
     
     private static IServiceCollection AddMongoConnection(this IServiceCollection services)
     {
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        var documentsType = assemblies.SelectMany(x => x.GetTypes())
-            .Where(x => typeof(IDocument).IsAssignableFrom(x) && !x.IsInterface);
-        var collectionDictionary = documentsType.ToFrozenDictionary(x => x, x => x.Name);
-        
         services.AddSingleton<IMongoClient>(sp =>
         {
             var options = sp.GetRequiredService<IOptions<MongoOptions>>().Value;
@@ -43,6 +38,20 @@ internal static class Extensions
             var options = sp.GetRequiredService<IOptions<MongoOptions>>().Value;
             var client = sp.GetRequiredService<IMongoClient>();
             return client.GetDatabase(options.Database);
+        });
+        
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        var documentsType = assemblies.SelectMany(x => x.GetTypes())
+            .Where(x => typeof(IDocument).IsAssignableFrom(x) && !x.IsInterface);
+        var collectionDictionary = documentsType
+            .ToFrozenDictionary(x => x, x => x.Name);
+        
+        services.AddTransient<IDisciplineMongoCollection>(sp =>
+        {
+            var mongoDatabase = sp.GetRequiredService<IMongoDatabase>();
+            return new DisciplineMongoCollection(
+                mongoDatabase,
+                collectionDictionary);
         });
         return services;
     }

@@ -7,10 +7,11 @@ using MongoDB.Driver;
 
 namespace discipline.application.Infrastructure.DAL.Repositories;
 
-internal sealed class MongoActivityRuleRepository(IMongoDatabase mongoDatabase) : IActivityRuleRepository
+internal sealed class MongoActivityRuleRepository(
+    IDisciplineMongoCollection disciplineMongoCollection) : IActivityRuleRepository
 {
-    private const string CollectionName = "ActivityRules";
-    private readonly IMongoCollection<ActivityRuleDocument> _collection = mongoDatabase.GetCollection<ActivityRuleDocument>(CollectionName);
+    private readonly IMongoCollection<ActivityRuleDocument> _collection =
+        disciplineMongoCollection.GetCollection<ActivityRuleDocument>(); 
 
     public Task AddAsync(ActivityRule activityRule, CancellationToken cancellationToken = default)
         => _collection.InsertOneAsync(activityRule.AsDocument(), null, cancellationToken);
