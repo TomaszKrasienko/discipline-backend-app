@@ -3,6 +3,8 @@ using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace discipline.application.Features.UsersCalendars;
 
@@ -10,10 +12,21 @@ internal static class AddImportantDate
 {
     internal static WebApplication MapAddImportantDate(this WebApplication app)
     {
-        app.MapPost("user-calendar/add-important-date", () =>
+        app.MapPost("user-calendar/add-important-date", async (AddImportantDateCommand command,
+                    ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+            {
+                var eventId = Guid.NewGuid();
+                await commandDispatcher.HandleAsync(command, cancellationToken);
+                return Results.CreatedAtRoute(nameof(GetEventById), new {Id = eventId}, null);
+            })
+        .Produces(StatusCodes.Status201Created, typeof(void))
+        .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+        .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+        .WithName(nameof(AddImportantDate))
+        .WithOpenApi(operation => new (operation)
         {
-
-        });
+            Description = "Adds activity rule"
+        });;
         return app;
     }
 }
