@@ -4,7 +4,6 @@ namespace discipline.application.Infrastructure.DAL.Documents;
 
 public class DailyProductivityDocument : IDocument
 {
-    //[BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     [BsonElement("day")]
     [BsonId]
     public DateOnly Day { get; set; }
