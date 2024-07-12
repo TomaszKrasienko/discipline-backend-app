@@ -20,7 +20,7 @@ public class GetDailyActivityByDateTests : BaseTestsController
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
-        await TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+        await TestAppDb.GetCollection<DailyProductivityDocument>()
             .InsertOneAsync(dailyProductivity.AsDocument());
         
         //act

@@ -20,7 +20,7 @@ public class EditActivityRuleTests : BaseTestsController
     {
         //arrange
         var activityRule = ActivityRuleFactory.Get();
-        await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules").InsertOneAsync(activityRule.AsDocument());
+        await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
         var command = new EditActivityRuleCommand(Guid.Empty, "NewTitle", Mode.EveryDayMode(), null);
         
         //act
@@ -30,7 +30,7 @@ public class EditActivityRuleTests : BaseTestsController
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var result = (await TestAppDb
-            .GetCollection<ActivityRuleDocument>("ActivityRules")
+            .GetCollection<ActivityRuleDocument>()
             .Find(x => x.Id.Equals(activityRule.Id))
             .FirstOrDefaultAsync()).AsEntity();
 

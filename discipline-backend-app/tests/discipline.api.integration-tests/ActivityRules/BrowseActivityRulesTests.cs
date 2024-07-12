@@ -17,7 +17,7 @@ public sealed class BrowseActivityRulesTests : BaseTestsController
     {
         //arrange
         var activityRules = ActivityRuleFactory.Get(5);
-        await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules")
+        await TestAppDb.GetCollection<ActivityRuleDocument>()
             .InsertManyAsync(activityRules.Select(x => x.AsDocument()));
         var pageNumber = 1;
         var pageSize = 3;

@@ -1,4 +1,5 @@
 using discipline.application.DTOs;
+using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -11,26 +12,27 @@ internal static class GetProgressData
 {
     internal static WebApplication MapGetProgressData(this WebApplication app)
     {
-        app.MapGet("progress/data", async (CancellationToken cancellationToken, IMongoDatabase mongoDatabase) =>
-        {
-            var result = (await mongoDatabase
-                .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
-                .Find(_ => true)
-                .ToListAsync(cancellationToken));
+        app.MapGet("progress/data", async (CancellationToken cancellationToken, 
+                IDisciplineMongoCollection disciplineMongoCollection) =>
+            {
+                var result = (await disciplineMongoCollection
+                    .GetCollection<DailyProductivityDocument>()
+                    .Find(_ => true)
+                    .ToListAsync(cancellationToken));
 
-            if (!result.Any())
-            {
-                return Results.NoContent();
-            }
-            
-            return Results.Ok(result.Select(x => new ProgressDataDto()
-            {
-                Day = x.Day,
-                Percent = ProgressCalculator.Calculate(
-                    x.Activities.Count(),
-                    x.Activities.Where(y => y.IsChecked).ToList().Count)
-            }).OrderBy(x => x.Day));
-        }) 
+                if (!result.Any())
+                {
+                    return Results.NoContent();
+                }
+                
+                return Results.Ok(result.Select(x => new ProgressDataDto()
+                {
+                    Day = x.Day,
+                    Percent = ProgressCalculator.Calculate(
+                        x.Activities.Count(),
+                        x.Activities.Where(y => y.IsChecked).ToList().Count)
+                }).OrderBy(x => x.Day));
+            }) 
         .Produces(StatusCodes.Status200OK, typeof(IEnumerable<ProgressDataDto>))
         .Produces(StatusCodes.Status204NoContent, typeof(void))
         .WithName(nameof(GetProgressData))

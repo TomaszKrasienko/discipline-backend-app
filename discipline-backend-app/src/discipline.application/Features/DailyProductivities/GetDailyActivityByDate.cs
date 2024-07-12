@@ -1,4 +1,5 @@
 using discipline.application.DTOs;
+using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Repositories;
@@ -13,10 +14,10 @@ internal static class GetDailyActivityByDate
     internal static WebApplication MapGetDailyActivityByDate(this WebApplication app)
     {
         app.MapGet("/daily-productivity/{day:datetime}",async (DateTime day, CancellationToken cancellationToken,
-                IMongoDatabase mongoDatabase) =>
+                IDisciplineMongoCollection disciplineMongoCollection) =>
             {
-                var result = (await mongoDatabase
-                    .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+                var result = (await disciplineMongoCollection
+                    .GetCollection<DailyProductivityDocument>()
                     .Find(x => x.Day == DateOnly.FromDateTime(day))
                     .FirstOrDefaultAsync(cancellationToken))?.AsDto();
                 return result is null ? Results.NoContent() : Results.Ok(result);

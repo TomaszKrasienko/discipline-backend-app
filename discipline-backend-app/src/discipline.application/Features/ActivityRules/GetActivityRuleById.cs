@@ -1,4 +1,5 @@
 using discipline.application.DTOs;
+using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using Microsoft.AspNetCore.Builder;
@@ -11,11 +12,11 @@ internal static class GetActivityRuleById
 {
     internal static WebApplication MapGetActivityRuleById(this WebApplication app)
     {
-        app.MapGet("/activity-rules/{activityRuleId:guid}", async (Guid activityRuleId, IMongoDatabase mongoDatabase,
-            CancellationToken cancellationToken) =>
+        app.MapGet("/activity-rules/{activityRuleId:guid}", async (Guid activityRuleId, 
+                IDisciplineMongoCollection disciplineMongoCollection, CancellationToken cancellationToken) =>
             {
-                var collection = mongoDatabase.GetCollection<ActivityRuleDocument>("ActivityRules");
-                var result = await collection
+                var result = await disciplineMongoCollection
+                    .GetCollection<ActivityRuleDocument>()
                     .Find(x => x.Id == activityRuleId)
                     .FirstOrDefaultAsync(cancellationToken);
                 return result is null ? Results.NoContent() : Results.Ok(result.AsDto());

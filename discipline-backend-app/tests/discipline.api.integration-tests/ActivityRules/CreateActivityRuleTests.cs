@@ -32,7 +32,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
         resourceId.ShouldNotBe(Guid.Empty);
 
         var isActivityRuleExists = await TestAppDb
-            .GetCollection<ActivityRuleDocument>("ActivityRules")
+            .GetCollection<ActivityRuleDocument>()
             .Find(x => x.Id == resourceId)
             .AnyAsync();
         isActivityRuleExists.ShouldBeTrue();
@@ -43,7 +43,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
     {
         //arrange
         var activityRule = ActivityRuleFactory.Get();
-        await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules").InsertOneAsync(activityRule.AsDocument());
+        await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
         var command = new CreateActivityRuleCommand(Guid.Empty, activityRule.Title, Mode.EveryDayMode(), null);
         
         //act

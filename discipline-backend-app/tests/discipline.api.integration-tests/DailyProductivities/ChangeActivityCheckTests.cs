@@ -20,7 +20,7 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
         var dailyProductivity = DailyProductivityFactory.Get();
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
         var isChecked = activity.IsChecked.Value;
-        await TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+        await TestAppDb.GetCollection<DailyProductivityDocument>()
             .InsertOneAsync(dailyProductivity.AsDocument());
         
         //act
@@ -31,7 +31,7 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
         
                 
         var dailyProductivityDocument = await TestAppDb
-            .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+            .GetCollection<DailyProductivityDocument>()
             .Find(x => x.Day == DateOnly.FromDateTime(DateTime.Now.Date))
             .FirstOrDefaultAsync();
         dailyProductivityDocument.Activities
@@ -45,7 +45,7 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
-        await TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+        await TestAppDb.GetCollection<DailyProductivityDocument>()
             .InsertOneAsync(dailyProductivity.AsDocument());
         
         //act

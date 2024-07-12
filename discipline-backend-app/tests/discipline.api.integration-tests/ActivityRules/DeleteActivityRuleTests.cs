@@ -17,7 +17,7 @@ public sealed class DeleteActivityRuleTests : BaseTestsController
     {
         //arrange
         var activityRule = ActivityRuleFactory.Get();
-        await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules").InsertOneAsync(activityRule.AsDocument());
+        await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
         
         //act
         var response = await HttpClient.DeleteAsync($"activity-rules/{activityRule.Id.Value}/delete");
@@ -26,7 +26,7 @@ public sealed class DeleteActivityRuleTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var isActivityRuleExists = await TestAppDb
-            .GetCollection<ActivityRuleDocument>("ActivityRules")
+            .GetCollection<ActivityRuleDocument>()
             .Find(x => x.Id.Equals(activityRule.Id))
             .AnyAsync();
         isActivityRuleExists.ShouldBeFalse();

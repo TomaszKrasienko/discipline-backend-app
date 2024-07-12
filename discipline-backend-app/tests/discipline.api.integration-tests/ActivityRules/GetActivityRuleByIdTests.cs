@@ -18,7 +18,7 @@ public sealed class GetActivityRuleByIdTests : BaseTestsController
     {
         //arrange 
         var activityRule = ActivityRuleFactory.Get();
-        await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules").InsertOneAsync(activityRule.AsDocument());
+        await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
         
         //act
         var result = await HttpClient.GetFromJsonAsync<ActivityRuleDto>($"/activity-rules/{activityRule.Id.Value}");

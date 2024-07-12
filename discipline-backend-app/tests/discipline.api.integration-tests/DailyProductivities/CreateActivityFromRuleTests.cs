@@ -22,7 +22,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     {
         //arrange
         var activityRule = ActivityRule.Create(Guid.NewGuid(), "test_title", Mode.EveryDayMode());
-        await TestAppDb.GetCollection<ActivityRuleDocument>("ActivityRules").InsertOneAsync(activityRule.AsDocument());
+        await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
         var command = new CreateActivityFromRuleCommand(Guid.Empty, activityRule.Id);
         
         //act
@@ -32,7 +32,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         
         var isExists = await TestAppDb
-            .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+            .GetCollection<DailyProductivityDocument>()
             .Find(x 
                 => x.Activities.Any(a 
                     => a.ParentRuleId.Equals(command.ActivityRuleId)

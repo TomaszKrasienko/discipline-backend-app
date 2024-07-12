@@ -1,5 +1,6 @@
 using discipline.application.Behaviours;
 using discipline.application.DTOs;
+using discipline.application.Infrastructure.DAL.Connection;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
@@ -19,6 +20,7 @@ public abstract class BaseTestsController : IDisposable
 
    protected virtual void ConfigureServices(IServiceCollection services)
    {
+       services.AddSingleton<IMongoCollectionNameConvention, TestsMongoCollectionNameConvention>();
    }
    
    protected virtual Guid? GetResourceIdFromHeader(HttpResponseMessage httpResponseMessage) 

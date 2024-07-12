@@ -34,7 +34,7 @@ public sealed class GetProgressDataTests : BaseTestsController
         dailyProductivity2.ChangeActivityCheck(dailyProductivity2.Activities.First(x => x.Title == "test 3").Id);
 
         var collection =
-            TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName);
+            TestAppDb.GetCollection<DailyProductivityDocument>();
 
         await collection.InsertManyAsync([dailyProductivity1.AsDocument(), dailyProductivity2.AsDocument()]);
         

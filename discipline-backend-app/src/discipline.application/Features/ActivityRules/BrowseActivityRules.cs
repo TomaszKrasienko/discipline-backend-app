@@ -1,5 +1,6 @@
 using discipline.application.Behaviours;
 using discipline.application.DTOs;
+using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using Microsoft.AspNetCore.Builder;
@@ -13,10 +14,10 @@ internal static class BrowseActivityRules
     internal static WebApplication MapBrowseActivityRules(this WebApplication app)
     {
         app.MapGet("/activity-rules", async ([AsParameters]PaginationDto paginationDto, 
-            HttpContext httpContext, IMongoDatabase mongoDatabase) =>
+            HttpContext httpContext, IDisciplineMongoCollection disciplineMongoCollection) =>
             {
-                var collection = mongoDatabase.GetCollection<ActivityRuleDocument>("ActivityRules");
-                var source = collection.Find(_ => true);
+                var source = disciplineMongoCollection
+                    .GetCollection<ActivityRuleDocument>().Find(_ => true);
                 var pagedList = await PagedList<ActivityRuleDocument>
                     .ToPagedList(source, paginationDto.PageNumber, paginationDto.PageSize);
                 httpContext.AddPaginationToHeader(pagedList);

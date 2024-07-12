@@ -50,9 +50,10 @@ internal static class Extensions
         services.AddTransient<IDisciplineMongoCollection>(sp =>
         {
             var mongoDatabase = sp.GetRequiredService<IMongoDatabase>();
+            var mongoCollectionNameConvention = sp.GetRequiredService<IMongoCollectionNameConvention>();
             return new DisciplineMongoCollection(
                 mongoDatabase,
-                collectionDictionary);
+                mongoCollectionNameConvention);
         });
         return services;
     }

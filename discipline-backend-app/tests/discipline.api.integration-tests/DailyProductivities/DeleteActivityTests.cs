@@ -19,7 +19,7 @@ public sealed class DeleteActivityTests : BaseTestsController
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
-        await TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+        await TestAppDb.GetCollection<DailyProductivityDocument>()
             .InsertOneAsync(dailyProductivity.AsDocument());
         
         //act
@@ -29,7 +29,7 @@ public sealed class DeleteActivityTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         
         var dailyProductivityDocument = await TestAppDb
-            .GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+            .GetCollection<DailyProductivityDocument>()
             .Find(x => x.Day == DateOnly.FromDateTime(DateTime.Now.Date))
             .FirstOrDefaultAsync();
         
@@ -41,7 +41,7 @@ public sealed class DeleteActivityTests : BaseTestsController
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
-        await TestAppDb.GetCollection<DailyProductivityDocument>(MongoDailyProductivityRepository.CollectionName)
+        await TestAppDb.GetCollection<DailyProductivityDocument>()
             .InsertOneAsync(dailyProductivity.AsDocument());
         
         //act
