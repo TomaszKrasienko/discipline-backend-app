@@ -2,6 +2,7 @@ using System.Collections.Frozen;
 using discipline.application.Configuration;
 using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Domain.DailyProductivities.Repositories;
+using discipline.application.Domain.UsersCalendars.Repositories;
 using discipline.application.Infrastructure.DAL.Configuration.Options;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
@@ -34,18 +35,13 @@ internal static class Extensions
             var options = sp.GetRequiredService<IOptions<MongoOptions>>().Value;
             return new MongoClient(options.ConnectionString);
         });
+        
         services.AddTransient(sp =>
         {
             var options = sp.GetRequiredService<IOptions<MongoOptions>>().Value;
             var client = sp.GetRequiredService<IMongoClient>();
             return client.GetDatabase(options.Database);
         });
-        
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        var documentsType = assemblies.SelectMany(x => x.GetTypes())
-            .Where(x => typeof(IDocument).IsAssignableFrom(x) && !x.IsInterface);
-        var collectionDictionary = documentsType
-            .ToFrozenDictionary(x => x, x => x.Name);
         
         services.AddTransient<IDisciplineMongoCollection>(sp =>
         {
@@ -61,7 +57,8 @@ internal static class Extensions
     private static IServiceCollection AddServices(this IServiceCollection services)
         => services
             .AddScoped<IActivityRuleRepository, MongoActivityRuleRepository>()
-            .AddScoped<IDailyProductivityRepository, MongoDailyProductivityRepository>();
+            .AddScoped<IDailyProductivityRepository, MongoDailyProductivityRepository>()
+            .AddScoped<IUserCalendarRepository, MongoUserCalendarRepository>();
 
     private static IServiceCollection AddInitializer(this IServiceCollection services, IConfiguration configuration)
     {

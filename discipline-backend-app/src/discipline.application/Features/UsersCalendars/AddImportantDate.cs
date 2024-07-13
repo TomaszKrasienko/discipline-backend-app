@@ -25,7 +25,7 @@ internal static class AddImportantDate
         .WithName(nameof(AddImportantDate))
         .WithOpenApi(operation => new (operation)
         {
-            Description = "Adds activity rule"
+            Description = "Adds event and adds or updates user calendar"
         });;
         return app;
     }

@@ -20,12 +20,7 @@ internal sealed class MongoUserCalendarRepository(
             .FindOneAndReplaceAsync(x => x.Day == userCalendar.Day.Value, 
                 userCalendar.AsDocument(), null, cancellationToken);
 
-    public Task<UserCalendar> GetByDateAsync(DateOnly day, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    // public async Task<UserCalendar> GetByDateAsync(DateOnly day, CancellationToken cancellationToken = default)
-    //     => (await disciplineMongoCollection.GetCollection<UserCalendarDocument>()
-    //         .Find(x => x.Day == day).FirstOrDefaultAsync())?
+    public async Task<UserCalendar> GetByDateAsync(DateOnly day, CancellationToken cancellationToken = default)
+        => (await disciplineMongoCollection.GetCollection<UserCalendarDocument>()
+            .Find(x => x.Day == day).FirstOrDefaultAsync(cancellationToken))?.AsEntity();
 }
