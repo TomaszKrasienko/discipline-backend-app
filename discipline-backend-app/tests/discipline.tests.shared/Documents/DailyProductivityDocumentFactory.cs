@@ -8,7 +8,7 @@ internal static class DailyProductivityDocumentFactory
     internal static DailyProductivityDocument Get(IEnumerable<ActivityDocument> activities = null)
         => Get(1, activities).Single();
     
-    internal static List<DailyProductivityDocument> Get(int count, IEnumerable<ActivityDocument> activities = null)
+    private static List<DailyProductivityDocument> Get(int count, IEnumerable<ActivityDocument> activities = null)
         => GetFaker(activities).Generate(count);
     
     private static Faker<DailyProductivityDocument> GetFaker(IEnumerable<ActivityDocument> activities = null)
