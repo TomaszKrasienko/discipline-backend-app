@@ -17,10 +17,9 @@ internal static class AddImportantDate
             {
                 var eventId = Guid.NewGuid();
                 await commandDispatcher.HandleAsync(command, cancellationToken);
-                return Results.CreatedAtRoute(nameof(GetEventById), new {Id = eventId}, null);
+                return Results.CreatedAtRoute(nameof(GetEventById), new {eventId = eventId}, null);
             })
         .Produces(StatusCodes.Status201Created, typeof(void))
-        .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
         .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
         .WithName(nameof(AddImportantDate))
         .WithOpenApi(operation => new (operation)
