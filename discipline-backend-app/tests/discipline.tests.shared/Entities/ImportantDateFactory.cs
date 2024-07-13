@@ -5,7 +5,7 @@ namespace discipline.tests.shared.Entities;
 
 internal static class ImportantDateFactory
 {
-    private static ImportantDate GetInUserCalender(UserCalendar userCalendar)
+    internal static ImportantDate GetInUserCalender(UserCalendar userCalendar)
     {
         var importantDate = Get();
         userCalendar.AddEvent(importantDate.Id, importantDate.Title);

@@ -9,5 +9,5 @@ public class UserCalendarDocument : IDocument
     public DateOnly Day { get; set; }
     
     [BsonElement("events")] 
-    public IEnumerable<EventDocument> Type { get; set; }
+    public IEnumerable<EventDocument> Events { get; set; }
 }

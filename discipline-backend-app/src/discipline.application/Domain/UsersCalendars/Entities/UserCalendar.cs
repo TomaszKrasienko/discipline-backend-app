@@ -17,4 +17,12 @@ internal sealed class UserCalendar : AggregateRoot
 
     internal void AddEvent(Guid id, string title)
         => _events.Add(ImportantDate.Create(id, title));
+
+    internal void AddEvent(Guid id, string title, TimeOnly timeFrom,
+        TimeOnly? timeTo, string action)
+        => _events.Add(CalendarEvent.Create(id, title, timeFrom, timeTo, action));
+
+    internal void AddEvent(Guid id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
+        string platform, string uri, string place)
+        => _events.Add(Meeting.Create(id, title, timeFrom, timeTo, platform, uri, place));
 }
