@@ -6,5 +6,6 @@ internal static class Extensions
 {
     internal static WebApplication MapUserCalendarFeatures(this WebApplication app)
         => app
-            .MapAddImportantDate();
+            .MapAddImportantDate()
+            .MapGetEventById();
 }
