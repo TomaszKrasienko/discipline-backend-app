@@ -13,6 +13,13 @@ internal sealed class CalendarEvent : Event
     {
     }
 
+    //For mongo
+    public CalendarEvent(EntityId id, Title title, MeetingTimeSpan meetingTimeSpan, Action action) : base(id, title)
+    {
+        MeetingTimeSpan = meetingTimeSpan;
+        Action = action;
+    }
+
     internal static CalendarEvent Create(Guid id, string title, TimeOnly timeFrom, 
         TimeOnly? timeTo, string action)
     {

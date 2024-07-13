@@ -13,6 +13,13 @@ internal sealed class Meeting : Event
     {
     }
 
+    //For mongo
+    internal Meeting(EntityId id, Title title, MeetingTimeSpan meetingTimeSpan, Address address) : base(id, title)
+    {
+        MeetingTimeSpan = meetingTimeSpan;
+        Address = address;
+    }
+
     internal static Meeting Create(Guid id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
         string platform, string uri, string place)
     {

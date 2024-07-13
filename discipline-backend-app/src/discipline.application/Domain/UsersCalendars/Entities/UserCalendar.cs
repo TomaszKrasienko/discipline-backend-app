@@ -9,6 +9,13 @@ internal sealed class UserCalendar : AggregateRoot
     public Day Day { get; }
     public IReadOnlyList<Event> Events => _events;
 
+    //For mongo
+    public UserCalendar(Day day, List<Event> events)
+    {
+        Day = day;
+        _events = events;
+    }
+
     private UserCalendar(Day day)
         => Day = day;
 
