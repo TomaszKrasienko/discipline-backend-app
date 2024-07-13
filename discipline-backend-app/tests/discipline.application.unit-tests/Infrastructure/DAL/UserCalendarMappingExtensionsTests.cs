@@ -45,4 +45,18 @@ public sealed class UserCalendarMappingExtensionsTests
         ((MeetingDocument)meetingDocument).Uri.ShouldBe(meeting.Address.Uri);
     }
     
+        [Fact]
+    public void AsDocument_GivenUserCalendarWithoutEvents_ShouldReturnUserCalendarDocument()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        
+        //act
+        var result = userCalendar.AsDocument();
+        
+        //assert
+        result.Day.ShouldBe(userCalendar.Day.Value);
+        result.Events.ShouldBeEmpty();
+    }
+    
 }
