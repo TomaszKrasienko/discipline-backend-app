@@ -20,7 +20,7 @@ internal static class UserCalendarMappingExtensions
         ImportantDate date => date.AsDocument(),
         Meeting meeting => meeting.AsDocument()
     };
-    
+
     private static ImportantDateDocument AsDocument(this ImportantDate entity)
         => new()
         {
@@ -51,7 +51,7 @@ internal static class UserCalendarMappingExtensions
         };
 
     internal static UserCalendar AsEntity(this UserCalendarDocument document)
-        => new UserCalendar(document.Day, document.Events?.Select(x => x.AsEntity()).ToList());
+        => new(document.Day, document.Events?.Select(x => x.AsEntity()).ToList());
 
     private static Event AsEntity(this EventDocument document) => document switch
     {
@@ -61,27 +61,68 @@ internal static class UserCalendarMappingExtensions
     };
 
     private static ImportantDate AsEntity(this ImportantDateDocument document)
-        => new ImportantDate(
+        => new(
             document.Id,
             document.Title);
 
     private static CalendarEvent AsEntity(this CalendarEventDocument document)
-        => new CalendarEvent(
+        => new(
             document.Id,
             document.Title,
-            new MeetingTimeSpan(document.TimeFrom,document.TimeTo),
+            new MeetingTimeSpan(document.TimeFrom, document.TimeTo),
             document.Action);
 
     private static Meeting AsEntity(this MeetingDocument document)
-        => new Meeting(
+        => new(
             document.Id,
             document.Title,
             new MeetingTimeSpan(document.TimeFrom, document.TimeTo),
             new Address(document.Platform, document.Uri, document.Place));
 
     internal static UserCalendarDto AsDto(this UserCalendarDocument document)
-        => new();
+        => new()
+        {
+            Day = document.Day,
+            ImportantDates = document.Events
+                .Where(x => x.GetType() == typeof(ImportantDateDocument))
+                .Select(x => ((ImportantDateDocument)x).AsDto())
+                .ToList(),
+            CalendarEvents = document.Events
+                .Where(x => x.GetType() == typeof(CalendarEventDocument))
+                .Select(x => ((CalendarEventDocument)x).AsDto())
+                .ToList(),
+            Meetings = document.Events
+                .Where(x => x.GetType() == typeof(MeetingDocument))
+                .Select(x => ((MeetingDocument)x).AsDto())
+                .ToList()
+        };
 
-    private static ImportantDateDto AsDto(this ImportantDateDocument document)
-        => new();
+private static ImportantDateDto AsDto(this ImportantDateDocument document)
+        => new()
+        {
+            Id = document.Id,
+            Title = document.Title
+        };
+
+    private static CalendarEventDto AsDto(this CalendarEventDocument document)
+        => new()
+        {
+            Id = document.Id,
+            Title = document.Title,
+            TimeFrom = document.TimeFrom,
+            TimeTo = document.TimeTo,
+            Action = document.Action
+        };
+
+    private static MeetingDto AsDto(this MeetingDocument document)
+        => new ()
+        {
+            Id = document.Id,
+            Title = document.Title,
+            TimeFrom = document.TimeFrom,
+            TimeTo = document.TimeTo,
+            Platform = document.Platform,
+            Uri = document.Uri,
+            Place = document.Place
+        };
 }

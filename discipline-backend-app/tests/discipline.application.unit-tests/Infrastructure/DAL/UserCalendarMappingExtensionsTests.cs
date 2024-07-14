@@ -128,20 +128,33 @@ public sealed class UserCalendarMappingExtensionsTests
             => x.Id == importantDateDocument.Id
             && x.Title == importantDateDocument.Title).ShouldBeTrue();
         
-        // var calendarEvent = result.Events.SingleOrDefault(x => x.Id.Value == calendarEventDocument.Id);
-        // calendarEvent.ShouldBeOfType<CalendarEvent>();
-        // ((CalendarEvent)calendarEvent).Title.Value.ShouldBe(calendarEventDocument.Title);
-        // ((CalendarEvent)calendarEvent).MeetingTimeSpan.From.ShouldBe(calendarEventDocument.TimeFrom);
-        // ((CalendarEvent)calendarEvent).MeetingTimeSpan.To.ShouldBe(calendarEventDocument.TimeTo);
-        // ((CalendarEvent)calendarEvent).Action.Value.ShouldBe(calendarEventDocument.Action);
-        //
-        // var meeting = result.Events.SingleOrDefault(x => x.Id.Value == meetingDocument.Id);
-        // meeting.ShouldBeOfType<Meeting>();
-        // ((Meeting)meeting).Title.Value.ShouldBe(meetingDocument.Title);
-        // ((Meeting)meeting).MeetingTimeSpan.From.ShouldBe(meetingDocument.TimeFrom);
-        // ((Meeting)meeting).MeetingTimeSpan.To.ShouldBe(meetingDocument.TimeTo);
-        // ((Meeting)meeting).Address.Place.ShouldBe(meetingDocument.Place);
-        // ((Meeting)meeting).Address.Platform.ShouldBe(meetingDocument.Platform);
-        // ((Meeting)meeting).Address.Uri.ShouldBe(meetingDocument.Uri);
+        result.CalendarEvents.Any(x
+            => x.Id == calendarEventDocument.Id
+            && x.Title == calendarEventDocument.Title
+            && x.TimeFrom == calendarEventDocument.TimeFrom
+            && x.TimeTo == calendarEventDocument.TimeTo
+            && x.Action == calendarEventDocument.Action).ShouldBeTrue();
+
+        result.Meetings.Any(x
+            => x.Id == meetingDocument.Id
+            && x.Title == meetingDocument.Title
+            && x.TimeFrom == meetingDocument.TimeFrom
+            && x.TimeTo == meetingDocument.TimeTo
+            && x.Platform == meetingDocument.Platform
+            && x.Uri == meetingDocument.Uri
+            && x.Place == meetingDocument.Place).ShouldBeTrue();
+    }
+    
+    [Fact]
+    public void AsDto_GivenUserCalendarDocumentWithoutEvents_ShouldReturnUserCalendarDtoWithoutEvents()
+    {
+        //arrange
+        var userCalendarDocument = UserCalendarDocumentFactory.Get([]);
+        
+        //act
+        var result = userCalendarDocument.AsDto();
+        
+        //assert
+        result.Day.ShouldBe(userCalendarDocument.Day);
     }
 }
