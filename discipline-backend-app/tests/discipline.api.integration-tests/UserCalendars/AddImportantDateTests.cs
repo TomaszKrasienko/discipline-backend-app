@@ -12,6 +12,7 @@ using Xunit;
 
 namespace discipline.api.integration_tests.UserCalendars;
 
+[Collection("integration-tests")]
 public sealed class AddImportantDateTests : BaseTestsController
 {
     [Fact]
