@@ -5,6 +5,7 @@ using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Domain.UsersCalendars.Repositories;
 using discipline.application.Infrastructure.DAL.Configuration.Options;
 using discipline.application.Infrastructure.DAL.Connection;
+using discipline.application.Infrastructure.DAL.Connection.Configuration;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -27,32 +28,6 @@ internal static class Extensions
 
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
         => services.Configure<MongoOptions>(configuration.GetSection(SectionName));
-    
-    private static IServiceCollection AddMongoConnection(this IServiceCollection services)
-    {
-        services.AddSingleton<IMongoClient>(sp =>
-        {
-            var options = sp.GetRequiredService<IOptions<MongoOptions>>().Value;
-            return new MongoClient(options.ConnectionString);
-        });
-        
-        services.AddTransient(sp =>
-        {
-            var options = sp.GetRequiredService<IOptions<MongoOptions>>().Value;
-            var client = sp.GetRequiredService<IMongoClient>();
-            return client.GetDatabase(options.Database);
-        });
-        
-        services.AddTransient<IDisciplineMongoCollection>(sp =>
-        {
-            var mongoDatabase = sp.GetRequiredService<IMongoDatabase>();
-            var mongoCollectionNameConvention = sp.GetRequiredService<IMongoCollectionNameConvention>();
-            return new DisciplineMongoCollection(
-                mongoDatabase,
-                mongoCollectionNameConvention);
-        });
-        return services;
-    }
 
     private static IServiceCollection AddServices(this IServiceCollection services)
         => services
