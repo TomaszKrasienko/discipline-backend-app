@@ -1,5 +1,6 @@
 using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Domain.UsersCalendars.ValueObjects.Event;
+using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;
@@ -77,4 +78,10 @@ internal static class UserCalendarMappingExtensions
             document.Title,
             new MeetingTimeSpan(document.TimeFrom, document.TimeTo),
             new Address(document.Platform, document.Uri, document.Place));
+
+    internal static UserCalendarDto AsDto(this UserCalendarDocument document)
+        => new();
+
+    private static ImportantDateDto AsDto(this ImportantDateDocument document)
+        => new();
 }
