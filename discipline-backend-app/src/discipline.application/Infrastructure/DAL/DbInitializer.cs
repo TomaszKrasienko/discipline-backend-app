@@ -51,22 +51,22 @@ internal sealed class DbInitializer(
 
         var now = DateTime.Now;
         var yesterdayUserCalendar = UserCalendar.Create(DateOnly.FromDateTime(now.AddDays(-1)));
-        yesterdayUserCalendar.AddEvent(Guid.NewGuid(), "yesterday_important_day");
-        yesterdayUserCalendar.AddEvent(Guid.NewGuid(), "yesterday_calendar_event_title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "yesterday_action");
-        yesterdayUserCalendar.AddEvent(Guid.NewGuid(), "yesterday_meeting_title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "yesterday_platform",
-            "yesterday_uri", string.Empty);
+        yesterdayUserCalendar.AddEvent(Guid.NewGuid(), "yesterday important day");
+        yesterdayUserCalendar.AddEvent(Guid.NewGuid(), "yesterday calendar event title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "yesterday action");
+        yesterdayUserCalendar.AddEvent(Guid.NewGuid(), "yesterday meeting title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "yesterday platform",
+            "yesterday uri", string.Empty);
         
         var todayUserCalendar = UserCalendar.Create(DateOnly.FromDateTime(now));
-        todayUserCalendar.AddEvent(Guid.NewGuid(), "today_important_day");
-        todayUserCalendar.AddEvent(Guid.NewGuid(), "today_calendar_event_title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "today_action");
-        todayUserCalendar.AddEvent(Guid.NewGuid(), "today_meeting_title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "today_platform",
-            "today_uri", string.Empty);
+        todayUserCalendar.AddEvent(Guid.NewGuid(), "today important day");
+        todayUserCalendar.AddEvent(Guid.NewGuid(), "today calendar event title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "today action");
+        todayUserCalendar.AddEvent(Guid.NewGuid(), "today meeting title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "today platform",
+            "today uri", string.Empty);
         
         var tomorrowUserCalendar = UserCalendar.Create(DateOnly.FromDateTime(now.AddDays(1)));
-        tomorrowUserCalendar.AddEvent(Guid.NewGuid(), "tomorrow_important_day");
-        tomorrowUserCalendar.AddEvent(Guid.NewGuid(), "tomorrow_calendar_event_title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "tomorrow_action");
-        tomorrowUserCalendar.AddEvent(Guid.NewGuid(), "tomorrow_meeting_title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "tomorrow_platform",
-            "tomorrow_uri", string.Empty);
+        tomorrowUserCalendar.AddEvent(Guid.NewGuid(), "tomorrow important day");
+        tomorrowUserCalendar.AddEvent(Guid.NewGuid(), "tomorrow calendar event title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "tomorrow action");
+        tomorrowUserCalendar.AddEvent(Guid.NewGuid(), "tomorrow meeting title", new TimeOnly(10,0, 0), new TimeOnly(12, 0, 0), "tomorrow platform",
+            "tomorrow uri", string.Empty);
         
         using var scope = serviceProvider.CreateScope();
         var disciplineMongoClient = scope.ServiceProvider.GetRequiredService<IDisciplineMongoCollection>();
