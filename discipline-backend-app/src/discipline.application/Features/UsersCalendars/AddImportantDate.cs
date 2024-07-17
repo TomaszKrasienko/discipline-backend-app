@@ -13,10 +13,11 @@ internal static class AddImportantDate
     internal static WebApplication MapAddImportantDate(this WebApplication app)
     {
         app.MapPost("user-calendar/add-important-date", async (AddImportantDateCommand command,
-                    ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+                    HttpContext httpContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var eventId = Guid.NewGuid();
-                await commandDispatcher.HandleAsync(command, cancellationToken);
+                await commandDispatcher.HandleAsync(command with {Id = eventId}, cancellationToken);
+                httpContext.AddResourceIdHeader(eventId);
                 return Results.CreatedAtRoute(nameof(GetEventById), new {eventId = eventId}, null);
             })
         .Produces(StatusCodes.Status201Created, typeof(void))
