@@ -17,7 +17,17 @@ internal static class AddCalendarEvent
         app.MapPost("user-calendar/add-calendar-event", async (AddCalendarEventCommand command,
             HttpContext httpContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
         {
-
+            var eventId = Guid.NewGuid();
+            await commandDispatcher.HandleAsync(command with { Id = eventId }, cancellationToken);
+            httpContext.AddResourceIdHeader(eventId);
+            return Results.CreatedAtRoute(nameof(GetEventById), new {eventId = eventId}, null);
+        })
+        .Produces(StatusCodes.Status201Created, typeof(void))
+        .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+        .WithName(nameof(AddCalendarEvent))
+        .WithOpenApi(operation => new (operation)
+        {
+            Description = "Adds calendar event to existing user calendar for day or creates user calendar for day"
         });
         return app;
     }

@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Features.UsersCalendars;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
@@ -10,19 +9,20 @@ using MongoDB.Driver;
 using Shouldly;
 using Xunit;
 
-namespace discipline.api.integration_tests.UserCalendars;
+namespace discipline.api.integration_tests.UserCalendars; 
 
 [Collection("integration-tests")]
-public sealed class AddImportantDateTests : BaseTestsController
+public sealed class AddCalendarEventTests : BaseTestsController
 {
     [Fact]
-    public async Task AddImportantDate_GivenNotExistingUserCalendar_ShouldReturn201CreatedStatusCodeAddUserCalendarWithImportantDateEvent()
+    public async Task AddCalendarEvent_GivenNotExistingUserCalendar_ShouldReturn201CreatedStatusCodeAddUserCalendarWithCalendarEvent()
     {
         //arrange
-        var command = new AddImportantDateCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, "test_title");
+        var command = new AddCalendarEventCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, "test_title",
+            new TimeOnly(15,00), null, "test_action");
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("user-calendar/add-important-date", command);
+        var response = await HttpClient.PostAsJsonAsync("user-calendar/add-calendar-event", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
@@ -37,45 +37,49 @@ public sealed class AddImportantDateTests : BaseTestsController
         
         userCalendar.ShouldNotBeNull();
         var eventDocument = userCalendar.Events.FirstOrDefault(x => x.Id == resourceId);
-        eventDocument.ShouldBeOfType<ImportantDateDocument>();
+        eventDocument.ShouldBeOfType<CalendarEventDocument>();
         eventDocument.Title.ShouldBe(command.Title);
     }
     
     [Fact]
-    public async Task AddImportantDate_GivenExistingUserCalendar_ShouldReturn201CreatedStatusCodeUpdateUserCalendarWithImportantDateEvent()
+    public async Task AddCalendarEvent_GivenExistingUserCalendar_ShouldReturn201CreatedStatusCodeUpdateUserCalendarWithCalendarEvent()
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
         var @event = MeetingFactory.GetInUserCalender(userCalendar);
         await TestAppDb.GetCollection<UserCalendarDocument>().InsertOneAsync(userCalendar.AsDocument());
-        var command = new AddImportantDateCommand(userCalendar.Day, Guid.Empty, "test_title");
+        var command = new AddCalendarEventCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, "test_title",
+            new TimeOnly(15,00), null, "test_action");
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("user-calendar/add-important-date", command);
+        var response = await HttpClient.PostAsJsonAsync("user-calendar/add-calendar-event", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
+
+        var updatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
+            .Find(x => x.Day == command.Day)
+            .FirstOrDefaultAsync();
 
         var resourceId = GetResourceIdFromHeader(response);
         resourceId.ShouldNotBeNull();
         resourceId.ShouldNotBe(Guid.Empty);
         
-        var updatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == command.Day)
-            .FirstOrDefaultAsync();
+        updatedUserCalendar.ShouldNotBeNull();
         var eventDocument = updatedUserCalendar.Events.FirstOrDefault(x => x.Id == resourceId);
-        eventDocument.ShouldBeOfType<ImportantDateDocument>();
+        eventDocument.ShouldBeOfType<CalendarEventDocument>();
         eventDocument.Title.ShouldBe(command.Title);
     }
     
     [Fact]
-    public async Task AddImportantDate_GivenEmptyTitle_ShouldReturn422UnprocessableEntityStatusCode()
+    public async Task AddCalendarEvent_GivenEmptyTitle_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
-        var command = new AddImportantDateCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, string.Empty);
+        var command = new AddCalendarEventCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, string.Empty,
+            new TimeOnly(15,00), null, "test_action");
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("user-calendar/add-important-date", command);
+        var response = await HttpClient.PostAsJsonAsync("user-calendar/add-calendar-event", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
