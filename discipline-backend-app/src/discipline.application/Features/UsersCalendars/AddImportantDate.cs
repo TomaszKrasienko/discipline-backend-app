@@ -4,7 +4,6 @@ using discipline.application.Domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace discipline.application.Features.UsersCalendars;
 
@@ -25,8 +24,8 @@ internal static class AddImportantDate
         .WithName(nameof(AddImportantDate))
         .WithOpenApi(operation => new (operation)
         {
-            Description = "Adds event and adds or updates user calendar"
-        });;
+            Description = "Adds important date to existing user calendar for day or creates user calendar for day"
+        });
         return app;
     }
 }
