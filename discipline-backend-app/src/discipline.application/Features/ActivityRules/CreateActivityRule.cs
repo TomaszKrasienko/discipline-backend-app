@@ -3,6 +3,7 @@ using discipline.application.Domain.ActivityRules;
 using discipline.application.Domain.ActivityRules.Entities;
 using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Exceptions;
+using discipline.application.Features.ActivityRules.Configuration;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +14,7 @@ public static class CreateActivityRule
 {
     public static WebApplication MapCreateActivityRule(this WebApplication app)
     {
-        app.MapPost("/activity-rules/create", async (CreateActivityRuleCommand command, HttpContext httpContext, 
+        app.MapPost($"/{Extensions.ActivityRulesTag}/create", async (CreateActivityRuleCommand command, HttpContext httpContext, 
                     ICommandDispatcher dispatcher, CancellationToken cancellationToken) => 
             {
                 var activityRuleId = Guid.NewGuid();
@@ -25,6 +26,7 @@ public static class CreateActivityRule
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(CreateActivityRule))
+            .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Adds activity rule"

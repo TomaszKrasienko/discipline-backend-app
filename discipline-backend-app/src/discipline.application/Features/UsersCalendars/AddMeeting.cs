@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Domain.UsersCalendars.Repositories;
+using discipline.application.Features.UsersCalendars.Configuration;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@ public static class AddMeeting
 {
     internal static WebApplication MapAddMeeting(this WebApplication app)
     {
-        app.MapPost("user-calendar/add-meeting", async (AddMeetingCommand command,
+        app.MapPost($"{Extensions.UserCalendarTag}/add-meeting", async (AddMeetingCommand command,
                 HttpContext httpContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var eventId = Guid.NewGuid();
@@ -22,6 +23,7 @@ public static class AddMeeting
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(AddMeeting))
+            .WithTags(Extensions.UserCalendarTag)
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Adds meeting to existing user calendar for day or creates user calendar for day"

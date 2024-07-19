@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.Domain.DailyProductivities.Repositories;
+using discipline.application.Features.DailyProductivities.Configuration;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@ internal static class CreateActivity
 {
     internal static WebApplication MapCreateActivity(this WebApplication app)
     {
-        app.MapPost("/daily-productivity/{day:datetime}/add-activity", async (DateTime day, CreateActivityCommand command,
+        app.MapPost($"/{Extensions.DailyProductivityTag}/{{day:datetime}}/add-activity", async (DateTime day, CreateActivityCommand command,
             CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
             {
                 var activityId = Guid.NewGuid();
@@ -22,6 +23,7 @@ internal static class CreateActivity
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(CreateActivity))
+            .WithTags(Extensions.DailyProductivityTag)
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Adds activity rule"

@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.DailyProductivities.Exceptions;
 using discipline.application.Domain.DailyProductivities.Repositories;
+using discipline.application.Features.DailyProductivities.Configuration;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@ internal static class DeleteActivity
 {
     internal static WebApplication MapDeleteActivity(this WebApplication app)
     {
-        app.MapDelete("/daily-productivity/activity/{activityId:guid}", async (Guid activityId,
+        app.MapDelete($"/{Extensions.DailyProductivityTag}/activity/{{activityId:guid}}", async (Guid activityId,
             CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
             {
                 await commandDispatcher.HandleAsync(new DeleteActivityCommand(activityId), cancellationToken);
@@ -20,6 +21,7 @@ internal static class DeleteActivity
             .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
             .WithName(nameof(DeleteActivity))
+            .WithTags(Extensions.DailyProductivityTag)
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Removes activity"

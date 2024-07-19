@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.DailyProductivities.Exceptions;
 using discipline.application.Domain.DailyProductivities.Repositories;
+using discipline.application.Features.DailyProductivities.Configuration;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@ internal static class ChangeActivityCheck
 {
     internal static WebApplication MapChangeActivityCheck(this WebApplication app)
     {
-        app.MapPatch("/daily-productivity/activity/{activityId:guid}/change-check", async (Guid activityId,
+        app.MapPatch($"/{Extensions.DailyProductivityTag}/activity/{{activityId:guid}}/change-check", async (Guid activityId,
             CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
             {
                 await commandDispatcher.HandleAsync(new ChangeActivityCheckCommand(activityId), cancellationToken);
@@ -21,6 +22,7 @@ internal static class ChangeActivityCheck
         .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))        .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
         .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
         .WithName(nameof(ChangeActivityCheck))
+        .WithTags(Extensions.DailyProductivityTag)
         .WithOpenApi(operation => new(operation)
         {
             Description = "Changes activity check"
