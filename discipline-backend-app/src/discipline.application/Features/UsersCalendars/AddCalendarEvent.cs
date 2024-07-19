@@ -1,12 +1,9 @@
-
-
 using discipline.application.Behaviours;
 using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using MongoDB.Driver;
 
 namespace discipline.application.Features.UsersCalendars;
 

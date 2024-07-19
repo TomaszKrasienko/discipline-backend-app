@@ -8,6 +8,7 @@ internal static class Extensions
         => app
             .MapAddImportantDate()
             .MapAddCalendarEvent()
+            .MapAddMeeting()
             .MapGetEventById()
             .MapBrowseUserCalendar();
 }
