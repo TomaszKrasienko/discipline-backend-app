@@ -4,7 +4,6 @@ using discipline.application.Domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace discipline.application.Features.UsersCalendars;
 

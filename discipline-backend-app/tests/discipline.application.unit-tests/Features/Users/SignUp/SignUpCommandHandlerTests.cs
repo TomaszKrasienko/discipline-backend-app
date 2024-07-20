@@ -1,4 +1,3 @@
-using System.Xml.Schema;
 using discipline.application.Behaviours;
 using discipline.application.Domain.Users.Entities;
 using discipline.application.Domain.Users.Repositories;

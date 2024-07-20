@@ -3,12 +3,17 @@ using discipline.application.Domain.Users.Entities;
 using discipline.application.Domain.Users.Repositories;
 using discipline.application.Exceptions;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
 
 namespace discipline.application.Features.Users;
 
-public class SignUp
+internal static class SignUp
 {
-    
+    internal static WebApplication MapSignUp(this WebApplication app)
+    {
+        //app.MapPost()
+        return app;
+    }
 }
 
 public sealed record SignUpCommand(Guid Id, string Email, string Password, string FirstName, string LastName) : ICommand;
