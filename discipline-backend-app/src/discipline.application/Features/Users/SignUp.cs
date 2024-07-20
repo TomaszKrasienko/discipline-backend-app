@@ -2,8 +2,10 @@ using discipline.application.Behaviours;
 using discipline.application.Domain.Users.Entities;
 using discipline.application.Domain.Users.Repositories;
 using discipline.application.Exceptions;
+using discipline.application.Features.Users.Configuration;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace discipline.application.Features.Users;
 
@@ -11,7 +13,21 @@ internal static class SignUp
 {
     internal static WebApplication MapSignUp(this WebApplication app)
     {
-        //app.MapPost()
+        app.MapPost($"{Extensions.UsersTag}/sign-up", async (SignUpCommand command,
+            ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+        {
+            await commandDispatcher.HandleAsync(command, cancellationToken);
+            return Results.Ok();
+        })
+        .Produces(StatusCodes.Status201Created, typeof(void))
+        .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+        .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+        .WithName(nameof(SignUp))
+        .WithTags(Extensions.UsersTag)
+        .WithOpenApi(operation => new (operation)
+        {
+            Description = "Adds activity rule"
+        });
         return app;
     }
 }
