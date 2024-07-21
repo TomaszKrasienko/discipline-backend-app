@@ -3,7 +3,7 @@ using discipline.application.Domain.Users.ValueObjects;
 
 namespace discipline.application.Domain.Users.Entities;
 
-internal class User
+internal sealed class User : AggregateRoot
 {
     public EntityId Id { get; }
     public Email Email { get; private set; }
