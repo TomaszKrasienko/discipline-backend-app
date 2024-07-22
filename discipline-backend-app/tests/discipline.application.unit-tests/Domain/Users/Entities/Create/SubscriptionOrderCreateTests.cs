@@ -15,7 +15,7 @@ public sealed class SubscriptionOrderCreateTests
         var subscription = Subscription.Create(Guid.NewGuid(), "test_subscription_title", 10, 100);
         var id = Guid.NewGuid();
         var subscriptionOrderFrequency = SubscriptionOrderFrequency.Monthly;
-        var now = DateTime.Now;
+        var now = new DateTime(2024, 7, 22, 12, 30, 00);
         var cardNumber = new string('1', 14);
         var cvvNumber = "123";
 
@@ -25,9 +25,9 @@ public sealed class SubscriptionOrderCreateTests
         //arrange
         result.Id.Value.ShouldBe(id);
         result.CreatedAt.Value.ShouldBe(now);
-        result.State.ActiveTill.ShouldBe(DateOnly.FromDateTime(now.AddMonths(1).AddDays(-1)));
+        result.State.ActiveTill.ShouldBe(new DateOnly(2024, 8, 21));
         result.State.IsCancelled.ShouldBeFalse();
-        result.Next.Value.ShouldBe(DateOnly.FromDateTime(now.AddMonths(1)));
+        result.Next.Value.ShouldBe(new DateOnly(2024, 8, 22));
         result.PaymentDetails.CardNumber.ShouldBe(cardNumber);
         result.PaymentDetails.CvvCode.ShouldBe(cvvNumber);
     }

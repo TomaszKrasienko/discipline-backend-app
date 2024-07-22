@@ -43,10 +43,18 @@ internal sealed class SubscriptionOrder
             throw new NullSubscriptionOrderFrequencyException(subscription.Id);
         }
 
-        var subscriptionOrder = new SubscriptionOrder(id, now);
+        var subscriptionOrder = new SubscriptionOrder(id, now); 
+        subscriptionOrder.ChangeState(now);
+        subscriptionOrder.ChangeNext(now);
         return subscriptionOrder;
     }
 
-    private void ChangeNext(DateOnly nextDate)
-        => Next = nextDate;
+    private void ChangeState(DateTime now)
+        => State = new State(false, DateOnly.FromDateTime(now).AddMonths(1).AddDays(-1));
+
+    private void ChangeNext(DateTime now)
+        => Next = DateOnly.FromDateTime(now).AddMonths(1);
+
+    private void ChangePaymentDetails(string cardNumber, string cvvNumber)
+        => PaymentDetails = new PaymentDetails(cardNumber, cvvNumber);
 }
