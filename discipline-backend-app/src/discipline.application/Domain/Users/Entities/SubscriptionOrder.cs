@@ -1,54 +1,52 @@
 using discipline.application.Domain.SharedKernel;
+using discipline.application.Domain.Users.Enums;
+using discipline.application.Domain.Users.Exceptions;
+using discipline.application.Domain.Users.ValueObjects;
 
 namespace discipline.application.Domain.Users.Entities;
 
 internal sealed class SubscriptionOrder
 {
     public EntityId Id { get; }
-    public EntityId TypeId { get; }
-    public StartDate StartDate { get; private set; }
-    public IsRealized IsRealized { get; private set; }
-    public CreatedAt CreatedAt { get; set; }
+    public CreatedAt CreatedAt { get; }
+    public EntityId SubscriptionId { get; private set; }
+    public State State { get; set; }
+    public Next Next { get; set; }
+    public PaymentDetails PaymentDetails { get; set; }
 
-    private SubscriptionOrder(EntityId id, EntityId typeId, CreatedAt createdAt)
+    private SubscriptionOrder(EntityId id, CreatedAt createdAt)
     {
         Id = id;
-        TypeId = typeId;
         CreatedAt = createdAt;
     }
     
     //For mongo
-    internal SubscriptionOrder(EntityId id, EntityId typeId, StartDate startDate, IsRealized isRealized, CreatedAt createdAt)
-        : this(id, typeId, createdAt)
+    public SubscriptionOrder(EntityId id, EntityId subscriptionId, CreatedAt createdAt, State state,
+        Next next, PaymentDetails paymentDetails) : this(id, createdAt)
     {
-        StartDate = startDate;
-        IsRealized = isRealized;
+        SubscriptionId = subscriptionId;
+        State = state;
+        Next = next;
+        PaymentDetails = paymentDetails;
     }
-}
 
-internal sealed record StartDate(DateOnly Value)
-{
-    public static implicit operator DateOnly(StartDate startDate)
-        => startDate.Value;
+    internal static SubscriptionOrder Create(Guid id, Subscription subscription, SubscriptionOrderFrequency? subscriptionOrderFrequency, DateTime now,
+        string cardNumber, string cardCvvNumber)
+    {
+        if (subscription is null)
+        {
+            throw new NullSubscriptionException();
+        }
 
-    public static implicit operator StartDate(DateOnly value)
-        => new StartDate(value);
-}
+        if (!subscription.IsFreeSubscription() && subscriptionOrderFrequency is null)
+        {
+            throw new NullSubscriptionOrderFrequencyException(subscription.Id);
+        }
 
-internal sealed record IsRealized(bool Value)
-{
-    public static implicit operator bool(IsRealized isRealized)
-        => isRealized.Value;
+        var subscriptionOrder = new SubscriptionOrder(id, now);
+        return subscriptionOrder;
+    }
 
-    public static implicit operator IsRealized(bool value)
-        => new IsRealized(value);
-}
-
-internal sealed record CreatedAt(DateTime Value)
-{
-    public static implicit operator DateTime(CreatedAt createdAt)
-        => createdAt.Value;
-
-    public static implicit operator CreatedAt(DateTime value)
-        => new CreatedAt(value);
+    private void ChangeNext(DateOnly nextDate)
+        => Next = nextDate;
 }

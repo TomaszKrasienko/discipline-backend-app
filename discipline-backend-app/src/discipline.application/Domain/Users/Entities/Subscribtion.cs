@@ -1,4 +1,5 @@
 using discipline.application.Domain.SharedKernel;
+using discipline.application.Domain.Users.Enums;
 using discipline.application.Domain.Users.Exceptions;
 
 namespace discipline.application.Domain.Users.Entities;
@@ -32,6 +33,9 @@ internal sealed class Subscription
 
     private void ChangePrice(decimal pricePerMonth, decimal pricePerYear)
         => Price = new Price(pricePerMonth, pricePerYear);
+
+    internal bool IsFreeSubscription()
+        => true;
 }
 
 internal sealed record Title

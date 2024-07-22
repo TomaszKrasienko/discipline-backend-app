@@ -9,6 +9,7 @@ internal sealed class User : AggregateRoot
     public Email Email { get; private set; }
     public Password Password { get; private set; }
     public FullName FullName { get; private set; }
+    public SubscriptionOrder SubscriptionOrder { get; private set; }
 
     //For mongo
     internal User(EntityId id, Email email, Password password, FullName fullName)
