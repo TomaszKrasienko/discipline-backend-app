@@ -38,7 +38,7 @@ internal sealed class SubscriptionOrder
             throw new NullSubscriptionException();
         }
 
-        if (!subscription.IsFreeSubscription() && subscriptionOrderFrequency is null)
+        if (subscription.IsFreeSubscription() && subscriptionOrderFrequency is null)
         {
             throw new NullSubscriptionOrderFrequencyException(subscription.Id);
         }
@@ -46,6 +46,7 @@ internal sealed class SubscriptionOrder
         var subscriptionOrder = new SubscriptionOrder(id, now); 
         subscriptionOrder.ChangeState(now);
         subscriptionOrder.ChangeNext(now);
+        subscriptionOrder.ChangePaymentDetails(cardNumber, cardCvvNumber);
         return subscriptionOrder;
     }
 
