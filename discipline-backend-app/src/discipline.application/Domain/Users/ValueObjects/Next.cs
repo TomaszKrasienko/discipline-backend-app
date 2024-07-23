@@ -1,4 +1,4 @@
-namespace discipline.application.Domain.Users.Entities;
+namespace discipline.application.Domain.Users.ValueObjects;
 
 internal sealed record Next(DateOnly Value)
 {

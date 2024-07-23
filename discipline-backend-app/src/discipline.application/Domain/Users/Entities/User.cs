@@ -40,4 +40,5 @@ internal sealed class User : AggregateRoot
 
     private void ChangeFullName(string firstName, string lastName)
         => FullName = new FullName(firstName, lastName);
+    
 }
