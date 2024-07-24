@@ -1,3 +1,5 @@
+using discipline.application.Domain.Users.Entities;
+using discipline.application.Domain.Users.Enums;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Documents;
 using discipline.tests.shared.Entities;
@@ -13,6 +15,10 @@ public sealed class UserMappingExtensionsTests
     {
         //arrange
         var user = UserFactory.Get();
+        var subscription = SubscriptionFactory.Get();
+        var subscriptionOrder = SubscriptionOrderFactory.Get(subscription);
+        // user.CreateSubscriptionOrder(subscriptionOrder.Id, subscription,
+        //     subscriptionOrder.);
         
         //act
         var result = user.AsDocument();

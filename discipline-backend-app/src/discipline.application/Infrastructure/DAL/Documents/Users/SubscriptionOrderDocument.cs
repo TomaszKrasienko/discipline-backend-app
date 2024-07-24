@@ -1,8 +1,8 @@
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace discipline.application.Domain.Users.Entities;
+namespace discipline.application.Infrastructure.DAL.Documents.Users;
 
-public class SubscriptionOrderDocument
+public class SubscriptionOrderDocument : IDocument
 {
     [BsonId]
     [BsonElement("id")]

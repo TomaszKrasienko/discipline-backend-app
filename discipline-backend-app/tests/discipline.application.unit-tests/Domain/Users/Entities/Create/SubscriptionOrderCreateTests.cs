@@ -9,6 +9,30 @@ namespace discipline.application.unit_tests.Domain.Users.Entities.Create;
 public sealed class SubscriptionOrderCreateTests
 {
     [Fact]
+    public void Create_GivenAllValidArgumentsForYearlySubscription_ShouldReturnSubscriptionOrderWithFilledNext()
+    {
+        //arrange
+        var subscription = Subscription.Create(Guid.NewGuid(), "test_subscription_title", 10, 100);
+        var id = Guid.NewGuid();
+        var subscriptionOrderFrequency = SubscriptionOrderFrequency.Yearly;
+        var now = new DateTime(2024, 7, 22, 12, 30, 00);
+        var cardNumber = new string('1', 14);
+        var cvvNumber = "123";
+
+        //act
+        var result = SubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency, now, cardNumber, cvvNumber);
+
+        //arrange
+        result.Id.Value.ShouldBe(id);
+        result.CreatedAt.Value.ShouldBe(now);
+        result.State.ActiveTill.ShouldBe(new DateOnly(2025, 7, 21));
+        result.State.IsCancelled.ShouldBeFalse();
+        result.Next.Value.ShouldBe(new DateOnly(2025, 7, 22));
+        result.PaymentDetails.CardNumber.ShouldBe(cardNumber);
+        result.PaymentDetails.CvvCode.ShouldBe(cvvNumber);
+    }
+    
+    [Fact]
     public void Create_GivenAllValidArgumentsForMonthlySubscription_ShouldReturnSubscriptionOrderWithFilledNext()
     {
         //arrange
