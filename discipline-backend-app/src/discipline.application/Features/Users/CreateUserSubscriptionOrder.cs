@@ -45,9 +45,8 @@ public sealed class CreateUserSubscriptionOrderCommandValidator : AbstractValida
             .NotEmpty()
             .WithMessage("\"Card Cvv Number\" can not be empty");
 
-        RuleFor(x => x.CardNumber)
-            .MinimumLength(13)
-            .MaximumLength(19)
+        RuleFor(x => x.CardCvvNumber)
+            .Length(3)
             .WithMessage("\"Card Cvv Number\" has invalid length");
     }
 }
