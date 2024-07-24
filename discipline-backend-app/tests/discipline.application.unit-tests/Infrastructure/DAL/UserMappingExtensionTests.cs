@@ -41,4 +41,20 @@ public sealed class UserMappingExtensionsTests
         result.FullName.FirstName.ShouldBe(userDocument.FirstName);
         result.FullName.LastName.ShouldBe(userDocument.LastName);
     }
+
+    [Fact]
+    public void AsEntity_GivenSubscriptionDocument_ShouldReturnSubscription()
+    {
+        //arrange
+        var subscriptionDocument = SubscriptionDocumentFactory.Get();
+        
+        //act
+        var result = subscriptionDocument.AsEntity();
+        
+        //assert
+        result.Id.Value.ShouldBe(subscriptionDocument.Id);
+        result.Title.Value.ShouldBe(subscriptionDocument.Title);
+        result.Price.PerMonth.ShouldBe(subscriptionDocument.PricePerMonth);
+        result.Price.PerYear.ShouldBe(subscriptionDocument.PricePerYear);
+    }
 }

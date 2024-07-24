@@ -18,4 +18,7 @@ internal static class UsersMappingExtensions
 
     internal static User AsEntity(this UserDocument document)
         => new(document.Id, document.Email, document.Password, new FullName(document.FirstName, document.LastName));
+
+    internal static Subscription AsEntity(this SubscriptionDocument document)
+        => new (document.Id, document.Title, new Price(document.PricePerMonth, document.PricePerYear));
 }

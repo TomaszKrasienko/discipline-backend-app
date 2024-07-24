@@ -1,6 +1,6 @@
 using discipline.application.Domain.SharedKernel;
 using discipline.application.Domain.Users.Enums;
-using discipline.application.Domain.Users.Exceptions;
+using discipline.application.Domain.Users.ValueObjects;
 
 namespace discipline.application.Domain.Users.Entities;
 
@@ -36,45 +36,4 @@ internal sealed class Subscription
 
     internal bool IsFreeSubscription()
         => Price?.PerMonth == 0 && Price?.PerYear == 0;
-}
-
-internal sealed record Title
-{
-    public string Value { get; }
-
-    public Title(string value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new EmptySubscriptionTitleException();
-        }
-        Value = value;
-    }
-
-    public static implicit operator string(Title title)
-        => title.Value;
-
-    public static implicit operator Title(string value)
-        => new Title(value);
-}
-
-internal sealed record Price
-{
-    public decimal PerMonth { get; }
-    public decimal PerYear { get; }
-
-    public Price(decimal perMonth, decimal perYear)
-    {
-        if (perMonth < 0)
-        {
-            throw new SubscriptionValueLessThanZeroException(nameof(PerMonth));
-        }
-
-        if (perYear < 0)
-        {
-            throw new SubscriptionValueLessThanZeroException(nameof(PerYear));
-        }
-        PerMonth = perMonth;
-        PerYear = perYear;
-    }
 }
