@@ -27,7 +27,7 @@ internal static class SignUp
             .WithTags(Extensions.UsersTag)
             .WithOpenApi(operation => new (operation)
             {
-                Description = "Adds activity rule"
+                Description = "Signs-up user"
             });
         return app;
     }
@@ -95,7 +95,7 @@ internal sealed class SignUpCommandHandler(
         }
 
         var securedPassword = passwordManager.Secure(command.Password);
-        //var user = User.Create(command.Id, command.Email, securedPassword, command.FirstName, command.LastName);
-        //await userRepository.AddAsync(user, cancellationToken);
+        var user = User.Create(command.Id, command.Email, securedPassword, command.FirstName, command.LastName);
+        await userRepository.AddAsync(user, cancellationToken);
     }
 }

@@ -1,3 +1,5 @@
+
+
 using discipline.application.Behaviours;
 using discipline.application.Configuration;
 using discipline.application.Domain.ActivityRules.Repositories;
@@ -10,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
-using Extensions = discipline.application.Features.UsersCalendars.Configuration.Extensions;
+using Extensions = discipline.application.Features.DailyProductivities.Configuration.Extensions;
 
 namespace discipline.application.Features.DailyProductivities;
 
@@ -42,7 +44,7 @@ internal static class CreateActivityFromRule
 
     internal static WebApplication MapCreateActivityFromRule(this WebApplication app)
     {
-        app.MapPost($"/{Extensions.UserCalendarTag}/today/add-activity-from-rule", async (CreateActivityFromRuleCommand command,
+        app.MapPost($"/{Extensions.DailyProductivityTag}/today/add-activity-from-rule", async (CreateActivityFromRuleCommand command,
             CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
         {
             var activityId = Guid.NewGuid();
@@ -53,7 +55,7 @@ internal static class CreateActivityFromRule
         .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
         .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
         .WithName(nameof(CreateActivityFromRule))
-        .WithTags(Extensions.UserCalendarTag)
+        .WithTags(Extensions.DailyProductivityTag)
         .WithOpenApi(operation => new (operation)
         {
             Description = "Adds activity rule from activity rule"

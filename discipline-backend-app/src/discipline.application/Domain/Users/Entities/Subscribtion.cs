@@ -35,7 +35,7 @@ internal sealed class Subscription
         => Price = new Price(pricePerMonth, pricePerYear);
 
     internal bool IsFreeSubscription()
-        => true;
+        => Price?.PerMonth == 0 && Price?.PerYear == 0;
 }
 
 internal sealed record Title

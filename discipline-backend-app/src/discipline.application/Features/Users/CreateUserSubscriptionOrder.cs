@@ -3,13 +3,36 @@ using discipline.application.Behaviours;
 using discipline.application.Domain.Users.Enums;
 using discipline.application.Domain.Users.Repositories;
 using discipline.application.Exceptions;
+using discipline.application.Features.Users.Configuration;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace discipline.application.Features.Users;
 
-public class CreateUserSubscriptionOrder
+public static class CreateUserSubscriptionOrder
 {
-    
+    internal static WebApplication MapCreateUserSubscriptionOrder(this WebApplication app)
+    {
+        app.MapPost($"{Extensions.UsersTag}/{{userId:guid}}/crate-subscription-order", async (CreateUserSubscriptionOrderCommand command,
+            Guid userId,ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+            {
+                var subscriptionOrderId = Guid.NewGuid();
+                await commandDispatcher.HandleAsync(command with { Id = subscriptionOrderId, UserId = userId },
+                    cancellationToken);
+                return Results.Ok();
+            })
+            .Produces(StatusCodes.Status200OK, typeof(void))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .WithName(nameof(CreateUserSubscriptionOrder))
+            .WithTags(Extensions.UsersTag)
+            .WithOpenApi(operation => new (operation)
+            {
+                Description = "Adds subscription order for user"
+            });
+        return app;
+    }
 }
 
 public sealed record CreateUserSubscriptionOrderCommand(Guid UserId, Guid Id, 
