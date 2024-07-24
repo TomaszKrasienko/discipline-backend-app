@@ -1,5 +1,4 @@
 using discipline.application.Domain.SharedKernel;
-using discipline.application.Domain.Users.Enums;
 using discipline.application.Domain.Users.ValueObjects;
 
 namespace discipline.application.Domain.Users.Entities;
