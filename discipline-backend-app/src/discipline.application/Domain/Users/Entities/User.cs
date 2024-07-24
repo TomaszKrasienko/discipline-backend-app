@@ -1,4 +1,6 @@
 using discipline.application.Domain.SharedKernel;
+using discipline.application.Domain.Users.Enums;
+using discipline.application.Domain.Users.Exceptions;
 using discipline.application.Domain.Users.ValueObjects;
 
 namespace discipline.application.Domain.Users.Entities;
@@ -40,5 +42,16 @@ internal sealed class User : AggregateRoot
 
     private void ChangeFullName(string firstName, string lastName)
         => FullName = new FullName(firstName, lastName);
-    
+
+    internal void CreateSubscriptionOrder(Guid id, Subscription subscription,
+        SubscriptionOrderFrequency? subscriptionOrderFrequency, DateTime now,
+        string cardNumber, string cardCvvNumber)
+    {
+        if (SubscriptionOrder is not null)
+        {
+            throw new SubscriptionOrderForUserAlreadyExistsException(Id);
+        }
+        SubscriptionOrder = SubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency,
+            now, cardNumber, cardCvvNumber);
+    }
 }

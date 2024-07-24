@@ -1,6 +1,8 @@
 using System.Data;
 using discipline.application.Behaviours;
 using discipline.application.Domain.Users.Enums;
+using discipline.application.Domain.Users.Repositories;
+using discipline.application.Exceptions;
 using FluentValidation;
 
 namespace discipline.application.Features.Users;
@@ -48,5 +50,30 @@ public sealed class CreateUserSubscriptionOrderCommandValidator : AbstractValida
         RuleFor(x => x.CardCvvNumber)
             .Length(3)
             .WithMessage("\"Card Cvv Number\" has invalid length");
+    }
+}
+
+internal sealed class CreateUserSubscriptionOrderCommandHandler(
+    IUserRepository userRepository,
+    ISubscriptionRepository subscriptionRepository,
+    IClock clock) : ICommandHandler<CreateUserSubscriptionOrderCommand>
+{
+    public async Task HandleAsync(CreateUserSubscriptionOrderCommand command, CancellationToken cancellationToken = default)
+    {
+        var user = await userRepository.GetByIdAsync(command.UserId, cancellationToken);
+        if (user is null)
+        {
+            throw new UserNotFoundException(command.UserId);
+        }
+
+        var subscription = await subscriptionRepository.GetByIdAsync(command.SubscriptionId, cancellationToken);
+        if (subscription is null)
+        {
+            throw new SubscriptionNotFoundException(command.SubscriptionId);
+        }
+        
+        user.CreateSubscriptionOrder(command.Id, subscription, command.SubscriptionOrderFrequency, clock.DateNow(), command.CardNumber,
+            command.CardCvvNumber);
+        await userRepository.UpdateAsync(user, cancellationToken);
     }
 }
