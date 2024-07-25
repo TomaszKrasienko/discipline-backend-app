@@ -1,8 +1,5 @@
 using discipline.application.Domain.SharedKernel;
-using discipline.application.Domain.Users.Enums;
-using discipline.application.Domain.Users.Exceptions;
 using discipline.application.Domain.Users.ValueObjects;
-using Type = discipline.application.Domain.Users.ValueObjects.Type;
 
 namespace discipline.application.Domain.Users.Entities;
 

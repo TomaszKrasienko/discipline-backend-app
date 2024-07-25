@@ -2,6 +2,8 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Users;
 
+[BsonDiscriminator]
+[BsonKnownTypes(typeof(FreeSubscriptionOrderDocument), typeof(PaidSubscriptionOrderDocument))]
 public class SubscriptionOrderDocument : IDocument
 {
     [BsonId]
@@ -18,14 +20,7 @@ public class SubscriptionOrderDocument : IDocument
     public bool StateIsCancelled { get; set; }
     
     [BsonElement("stateActiveTill")]
-    public DateOnly StateActiveTill { get; set; }
+    public DateOnly? StateActiveTill { get; set; }
     
-    [BsonElement("next")]
-    public DateOnly Next { get; set; }
-    
-    [BsonElement("paymentDetailsCardNumber")]
-    public string PaymentDetailsCardNumber { get; set; }
-    
-    [BsonElement("paymentDetailsCvvCode")]
-    public string PaymentDetailsCvvCode { get; set; }
+
 }

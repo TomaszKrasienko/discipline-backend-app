@@ -25,7 +25,7 @@ internal sealed class FreeSubscriptionOrder : SubscriptionOrder
         
         var freeSubscriptionOrder = new FreeSubscriptionOrder(id, now);
         freeSubscriptionOrder.ChangeSubscriptionId(subscription.Id);
-        //freeSubscriptionOrder.ChangeState(false, null);
+        freeSubscriptionOrder.SetState(new State(false, null));
         return freeSubscriptionOrder;
     }
 }
