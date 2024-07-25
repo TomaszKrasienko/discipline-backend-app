@@ -6,7 +6,7 @@ using Xunit;
 
 namespace discipline.application.unit_tests.Domain.Users.Entities.Create;
 
-public sealed class SubscriptionOrderCreateTests
+public sealed class PaidSubscriptionOrderCreateTests
 {
     [Fact]
     public void Create_GivenAllValidArgumentsForYearlySubscription_ShouldReturnSubscriptionOrderWithFilledNext()
@@ -20,7 +20,7 @@ public sealed class SubscriptionOrderCreateTests
         var cvvNumber = "123";
 
         //act
-        var result = SubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency, now, cardNumber, cvvNumber);
+        var result = PaidSubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency, now, cardNumber, cvvNumber);
 
         //arrange
         result.Id.Value.ShouldBe(id);
@@ -30,6 +30,7 @@ public sealed class SubscriptionOrderCreateTests
         result.Next.Value.ShouldBe(new DateOnly(2025, 7, 22));
         result.PaymentDetails.CardNumber.ShouldBe(cardNumber);
         result.PaymentDetails.CvvCode.ShouldBe(cvvNumber);
+        result.Type.Value.ShouldBe(subscriptionOrderFrequency);
     }
     
     [Fact]
@@ -44,7 +45,7 @@ public sealed class SubscriptionOrderCreateTests
         var cvvNumber = "123";
 
         //act
-        var result = SubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency, now, cardNumber, cvvNumber);
+        var result = PaidSubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency, now, cardNumber, cvvNumber);
 
         //arrange
         result.Id.Value.ShouldBe(id);
@@ -54,13 +55,14 @@ public sealed class SubscriptionOrderCreateTests
         result.Next.Value.ShouldBe(new DateOnly(2024, 8, 22));
         result.PaymentDetails.CardNumber.ShouldBe(cardNumber);
         result.PaymentDetails.CvvCode.ShouldBe(cvvNumber);
+        result.Type.Value.ShouldBe(subscriptionOrderFrequency);
     }
 
     [Fact]
     public void Create_GivenNullSubscription_ShouldThrowNullSubscriptionException()
     {
         //act
-        var exception = Record.Exception(() => SubscriptionOrder.Create(Guid.NewGuid(), null,
+        var exception = Record.Exception(() => PaidSubscriptionOrder.Create(Guid.NewGuid(), null,
             SubscriptionOrderFrequency.Monthly, DateTime.Now, "test_card_number", "test_cvv"));
         
         //assert
@@ -68,17 +70,17 @@ public sealed class SubscriptionOrderCreateTests
     }
     
     [Fact]
-    public void Create_GivenNotZeroSubscriptionAndNullSubscriptionOrderFrequency_ShouldThrowNullSubscriptionOrderFrequencyException()
+    public void Create_GivenFreeSubscription_ShouldThrow()
     {
         //arrange
-        var subscription = Subscription.Create(Guid.NewGuid(), "test_subscription_title", 10, 100);
+        var subscription = Subscription.Create(Guid.NewGuid(), "test_subscription_title", 0, 0);
         
         //act
-        var exception = Record.Exception(() => SubscriptionOrder.Create(Guid.NewGuid(), subscription,
-            null, DateTime.Now, "test_card_number", "test_cvv"));
+        var exception = Record.Exception(() => PaidSubscriptionOrder.Create(Guid.NewGuid(), subscription,
+            SubscriptionOrderFrequency.Monthly, DateTime.Now, "test_card_number", "test_cvv"));
         
         //assert
-        exception.ShouldBeOfType<NullSubscriptionOrderFrequencyException>();
+        exception.ShouldBeOfType<InvalidSubscriptionTypeException>();
     }
 
     [Fact]
@@ -88,7 +90,7 @@ public sealed class SubscriptionOrderCreateTests
         var subscription = Subscription.Create(Guid.NewGuid(), "title", 10, 100);
         
         //act
-        var exception = Record.Exception(() => SubscriptionOrder.Create(Guid.NewGuid(), subscription,
+        var exception = Record.Exception(() => PaidSubscriptionOrder.Create(Guid.NewGuid(), subscription,
             SubscriptionOrderFrequency.Monthly, default, new string('1',14), "123"));
         
         //assert
@@ -104,7 +106,7 @@ public sealed class SubscriptionOrderCreateTests
         var subscription = Subscription.Create(Guid.NewGuid(), "title", 10, 100);
         
         //act
-        var exception = Record.Exception(() => SubscriptionOrder.Create(Guid.NewGuid(), subscription,
+        var exception = Record.Exception(() => PaidSubscriptionOrder.Create(Guid.NewGuid(), subscription,
             SubscriptionOrderFrequency.Monthly, DateTime.Now, new string('1',multiplier), "123"));
         
         //assert
@@ -118,7 +120,7 @@ public sealed class SubscriptionOrderCreateTests
         var subscription = Subscription.Create(Guid.NewGuid(), "title", 10, 100);
         
         //act
-        var exception = Record.Exception(() => SubscriptionOrder.Create(Guid.NewGuid(), subscription,
+        var exception = Record.Exception(() => PaidSubscriptionOrder.Create(Guid.NewGuid(), subscription,
             SubscriptionOrderFrequency.Monthly, DateTime.Now, new string('1',14), "13"));
         
         //assert

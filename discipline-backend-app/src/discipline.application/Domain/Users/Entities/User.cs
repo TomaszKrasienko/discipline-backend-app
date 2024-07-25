@@ -43,15 +43,15 @@ internal sealed class User : AggregateRoot
     private void ChangeFullName(string firstName, string lastName)
         => FullName = new FullName(firstName, lastName);
 
-    internal void CreateSubscriptionOrder(Guid id, Subscription subscription,
-        SubscriptionOrderFrequency? subscriptionOrderFrequency, DateTime now,
-        string cardNumber, string cardCvvNumber)
-    {
-        if (SubscriptionOrder is not null)
-        {
-            throw new SubscriptionOrderForUserAlreadyExistsException(Id);
-        }
-        SubscriptionOrder = SubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency,
-            now, cardNumber, cardCvvNumber);
-    }
+    // internal void CreateSubscriptionOrder(Guid id, Subscription subscription,
+    //     SubscriptionOrderFrequency? subscriptionOrderFrequency, DateTime now,
+    //     string cardNumber, string cardCvvNumber)
+    // {
+    //     if (SubscriptionOrder is not null)
+    //     {
+    //         throw new SubscriptionOrderForUserAlreadyExistsException(Id);
+    //     }
+    //     SubscriptionOrder = SubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency,
+    //         now, cardNumber, cardCvvNumber);
+    // }
 }

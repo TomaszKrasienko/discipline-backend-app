@@ -95,8 +95,8 @@ internal sealed class CreateUserSubscriptionOrderCommandHandler(
             throw new SubscriptionNotFoundException(command.SubscriptionId);
         }
         
-        user.CreateSubscriptionOrder(command.Id, subscription, command.SubscriptionOrderFrequency, clock.DateNow(), command.CardNumber,
-            command.CardCvvNumber);
+        // user.CreateSubscriptionOrder(command.Id, subscription, command.SubscriptionOrderFrequency, clock.DateNow(), command.CardNumber,
+        //     command.CardCvvNumber);
         await userRepository.UpdateAsync(user, cancellationToken);
     }
 }
