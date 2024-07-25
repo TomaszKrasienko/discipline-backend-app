@@ -54,4 +54,14 @@ internal sealed class User : AggregateRoot
         SubscriptionOrder = PaidSubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency,
             now, cardNumber, cardCvvNumber);
     }
+
+    internal void CreateFreeSubscriptionOrder(Guid id, Subscription subscription,
+        DateTime now)
+    {        
+        if (SubscriptionOrder is FreeSubscriptionOrder)
+        {
+            throw new SubscriptionOrderForUserAlreadyExistsException(Id);
+        }
+        SubscriptionOrder = FreeSubscriptionOrder.Create(id, subscription, now);
+    }
 }
