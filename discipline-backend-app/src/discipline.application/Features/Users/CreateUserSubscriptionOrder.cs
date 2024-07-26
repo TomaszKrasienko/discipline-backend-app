@@ -54,25 +54,6 @@ public sealed class CreateUserSubscriptionOrderCommandValidator : AbstractValida
         RuleFor(x => x.SubscriptionId)
             .NotEmpty()
             .WithMessage("\"SubscriptionId\" can not be empty");
-
-        RuleFor(x => x.CardNumber)
-            .NotNull()
-            .NotEmpty()
-            .WithMessage("\"Card number\" can not be empty");
-
-        RuleFor(x => x.CardNumber)
-            .MinimumLength(13)
-            .MaximumLength(19)
-            .WithMessage("\"Card number\" has invalid length");
-        
-        RuleFor(x => x.CardCvvNumber)
-            .NotNull()
-            .NotEmpty()
-            .WithMessage("\"Card Cvv Number\" can not be empty");
-
-        RuleFor(x => x.CardCvvNumber)
-            .Length(3)
-            .WithMessage("\"Card Cvv Number\" has invalid length");
     }
 }
 

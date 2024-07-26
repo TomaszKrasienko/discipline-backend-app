@@ -68,67 +68,6 @@ public sealed class CreateUserSubscriptionOrderCommandValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.SubscriptionId);
     }
     
-    [Fact]
-    public void Validate_GivenEmptyCardNumber_ShouldHaveValidationErrorForCardNumber()
-    {
-        //arrange
-        var command = new CreateUserSubscriptionOrderCommand(Guid.NewGuid(), Guid.NewGuid(),
-            Guid.Empty, null, string.Empty, "132");
-        
-        //act
-        var result = _validator.TestValidate(command);
-        
-        //assert
-        result.ShouldHaveValidationErrorFor(x => x.CardNumber);
-    }
-    
-    [Theory]
-    [InlineData(12)]
-    [InlineData(20)]
-    public void Validate_GivenInvalidCardNumberLength_ShouldHaveValidationErrorForCardNumber(int multiplier)
-    {
-        //arrange
-        var command = new CreateUserSubscriptionOrderCommand(Guid.NewGuid(), Guid.NewGuid(),
-            Guid.Empty, null, new string('1', multiplier), "132");
-        
-        //act
-        var result = _validator.TestValidate(command);
-        
-        //assert
-        result.ShouldHaveValidationErrorFor(x => x.CardNumber);
-    }
-    
-    [Fact]
-    public void Validate_GivenEmptyCardCvvNumber_ShouldHaveValidationErrorForCardCvvNumber()
-    {
-        //arrange
-        var command = new CreateUserSubscriptionOrderCommand(Guid.NewGuid(), Guid.NewGuid(),
-            Guid.Empty, null, new string('1', 15), null);
-        
-        //act
-        var result = _validator.TestValidate(command);
-        
-        //assert
-        result.ShouldHaveValidationErrorFor(x => x.CardCvvNumber);
-    }
-    
-    [Theory]
-    [InlineData(2)]
-    [InlineData(4)]
-    public void Validate_GivenInvalidLengthCardCvvNumber_ShouldHaveValidationErrorForCardCvvNumber(int multiplier)
-    {
-        //arrange
-        var command = new CreateUserSubscriptionOrderCommand(Guid.NewGuid(), Guid.NewGuid(),
-            Guid.Empty, null, new string('1', 15), 
-            new string('2', multiplier));
-        
-        //act
-        var result = _validator.TestValidate(command);
-        
-        //assert
-        result.ShouldHaveValidationErrorFor(x => x.CardCvvNumber);
-    }
-    
     #region arrange
     private IValidator<CreateUserSubscriptionOrderCommand> _validator;
 
