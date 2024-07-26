@@ -26,7 +26,12 @@ internal sealed class SubscriptionOrderService : ISubscriptionOrderService
         }
         else
         {
-            
+            if (subscriptionOrderFrequency is null)
+            {
+                throw new NullSubscriptionOrderFrequencyException();
+            }
+            user.CreatePaidSubscriptionOrder(id, subscription, subscriptionOrderFrequency.Value,
+                now, cardNumber, cardCvvNumber);
         }
     }
     

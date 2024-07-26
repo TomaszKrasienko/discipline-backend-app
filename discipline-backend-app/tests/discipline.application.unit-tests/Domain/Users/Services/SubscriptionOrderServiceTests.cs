@@ -29,7 +29,24 @@ public sealed class SubscriptionOrderServiceTests
     }
 
     [Fact]
-    public void AddOrderSubscriptio_GivenNullSubscription_ShouldThrowNullSubscriptionException()
+    public void AddOrderSubscriptionToUser_GivenPaidSubscription_ShouldAddPaidSubscriptionToUser()
+    {
+        //arrange
+        var user = UserFactory.Get();
+        var subscription = SubscriptionFactory.Get(10,100);
+        var id = Guid.NewGuid();
+        
+        //act
+        _subscriptionOrderService.AddOrderSubscriptionToUser(user, id, subscription,
+            SubscriptionOrderFrequency.Monthly, DateTime.Now, new string('1',15), "123");
+        
+        //assert
+        user.SubscriptionOrder.Id.Value.ShouldBe(id);
+        user.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrder>();
+    }
+    
+    [Fact]
+    public void AddOrderSubscriptionToUser_GivenNullSubscription_ShouldThrowNullSubscriptionException()
     {
         //arrange
         var user = UserFactory.Get();
@@ -43,13 +60,13 @@ public sealed class SubscriptionOrderServiceTests
     }
     
     [Fact]
-    public void AddOrderSubscriptio_GivenNullUser_ShouldThrowNullUserException()
+    public void AddOrderSubscriptionToUser_GivenNullUser_ShouldThrowNullUserException()
     {
         //arrange
-        var user = UserFactory.Get();
+        var subscription = SubscriptionFactory.Get();
         
         //act
-        var exception = Record.Exception(() => _subscriptionOrderService.AddOrderSubscriptionToUser(user, Guid.NewGuid(), null,
+        var exception = Record.Exception(() => _subscriptionOrderService.AddOrderSubscriptionToUser(null, Guid.NewGuid(), subscription,
             SubscriptionOrderFrequency.Monthly, DateTime.Now, "123", "123"));
         
         //assert
@@ -57,11 +74,11 @@ public sealed class SubscriptionOrderServiceTests
     }
 
     [Fact]
-    public void AddOrderSubscription_GivenPaidSubscriptionAndNullSubscriptionOrderFrequency_ShouldThrowNullSubscriptionOrderFrequencyException()
+    public void AddOrderSubscriptionToUser_GivenPaidSubscriptionAndNullSubscriptionOrderFrequency_ShouldThrowNullSubscriptionOrderFrequencyException()
     {
         //arrange
         var user = UserFactory.Get();
-        var subscription = SubscriptionFactory.Get();
+        var subscription = SubscriptionFactory.Get(10, 100);
         
         //act
         var exception = Record.Exception(() => _subscriptionOrderService.AddOrderSubscriptionToUser(user,
