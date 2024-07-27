@@ -8,5 +8,6 @@ internal static class Extensions
     
     internal static WebApplication MapUserFeatures(this WebApplication app)
         => app
+            .MapCreateUserSubscriptionOrder()
             .MapSignUp();
 }

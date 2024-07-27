@@ -27,7 +27,7 @@ internal static class SignUp
             .WithTags(Extensions.UsersTag)
             .WithOpenApi(operation => new (operation)
             {
-                Description = "Adds activity rule"
+                Description = "Signs-up user"
             });
         return app;
     }
