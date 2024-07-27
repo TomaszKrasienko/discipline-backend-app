@@ -11,6 +11,24 @@ namespace discipline.application.unit_tests.Infrastructure.DAL;
 
 public sealed class UserMappingExtensionsTests
 {
+    [Fact]
+    public void AsDocument_GivenUserWithouSubscriptionOrder_ShouldReturnUserDocumentWithSubscriptionOrderAsNull()
+    {
+        //arrange
+        var user = UserFactory.Get();
+         
+        //act
+        var result = user.AsDocument();
+         
+        //assert
+        result.Id.ShouldBe(user.Id.Value);
+        result.Email.ShouldBe(user.Email.Value);
+        result.Password.ShouldBe(user.Password.Value);
+        result.FirstName.ShouldBe(user.FullName.FirstName);
+        result.LastName.ShouldBe(user.FullName.LastName);
+        result.SubscriptionOrder.ShouldBeNull();
+    }
+    
      [Fact]
      public void AsDocument_GivenUserWithPaidSubscriptionOrder_ShouldReturnUserDocumentWithPaidSubscriptionOrderDocument()
      {
@@ -71,6 +89,23 @@ public sealed class UserMappingExtensionsTests
          result.SubscriptionOrder.StateActiveTill.ShouldBeNull();
      }
 
+     [Fact]
+     public void AsEntity_GivenUserDocumentWithoutSubscriptionOrder_ShouldReturnUserWithSubscriptionOrderAsNull()
+     {
+         //arrange
+         var userDocument = UserDocumentFactory.Get();
+         
+         //act
+         var result = userDocument.AsEntity();
+         
+         //assert
+         result.Id.Value.ShouldBe(userDocument.Id);
+         result.Email.Value.ShouldBe(userDocument.Email);
+         result.Password.Value.ShouldBe(userDocument.Password);
+         result.FullName.FirstName.ShouldBe(userDocument.FirstName);
+         result.FullName.LastName.ShouldBe(userDocument.LastName);
+         result.SubscriptionOrder.ShouldBeNull();
+     }
 
      [Fact]
      public void AsEntity_GivenUserDocumentWithPaidSubscriptionOrder_ShouldReturnUserWithPaidSubscriptionOrder()

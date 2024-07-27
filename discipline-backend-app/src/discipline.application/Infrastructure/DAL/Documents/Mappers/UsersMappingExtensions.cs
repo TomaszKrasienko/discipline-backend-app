@@ -16,7 +16,7 @@ internal static class UsersMappingExtensions
             Password = entity.Password,
             FirstName = entity.FullName.FirstName,
             LastName = entity.FullName.LastName,
-            SubscriptionOrder = entity.SubscriptionOrder.AsDocument()
+            SubscriptionOrder = entity.SubscriptionOrder?.AsDocument()
         };
 
     private static SubscriptionOrderDocument AsDocument(this SubscriptionOrder entity) => entity switch
@@ -51,7 +51,7 @@ internal static class UsersMappingExtensions
 
     internal static User AsEntity(this UserDocument document)
         => new (document.Id, document.Email, document.Password, new FullName(document.FirstName, document.LastName),
-            document.SubscriptionOrder.AsEntity());
+            document.SubscriptionOrder?.AsEntity());
 
     private static SubscriptionOrder AsEntity(this SubscriptionOrderDocument document) => document switch
     {
