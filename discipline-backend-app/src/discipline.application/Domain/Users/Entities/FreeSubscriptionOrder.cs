@@ -6,8 +6,13 @@ namespace discipline.application.Domain.Users.Entities;
 
 internal sealed class FreeSubscriptionOrder : SubscriptionOrder
 {
+    private FreeSubscriptionOrder(EntityId id, CreatedAt createdAt) : base(id, createdAt)
+    {
+    }
+    
     //for mongo
-    internal FreeSubscriptionOrder(EntityId id, CreatedAt createdAt) : base(id, createdAt)
+    internal FreeSubscriptionOrder(EntityId id, CreatedAt createdAt,
+        EntityId subscriptionId, State state) : base(id, createdAt, subscriptionId, state)
     {
     }
 

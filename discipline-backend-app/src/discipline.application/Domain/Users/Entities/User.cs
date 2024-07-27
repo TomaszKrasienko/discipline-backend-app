@@ -13,17 +13,18 @@ internal sealed class User : AggregateRoot
     public FullName FullName { get; private set; }
     public SubscriptionOrder SubscriptionOrder { get; private set; }
 
+    private User(EntityId id)
+        => Id = id;
+
     //For mongo
-    internal User(EntityId id, Email email, Password password, FullName fullName)
+    internal User(EntityId id, Email email, Password password, FullName fullName,
+        SubscriptionOrder subscriptionOrder) : this(id)
     {
-        Id = id;
         Email = email;
         Password = password;
         FullName = fullName;
+        SubscriptionOrder = subscriptionOrder;
     }
-
-    private User(EntityId id)
-        => Id = id;
 
     internal static User Create(Guid id, string email, string password, string firstName, string lastName)
     {

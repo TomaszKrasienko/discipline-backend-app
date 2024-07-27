@@ -12,4 +12,7 @@ public class PaidSubscriptionOrderDocument : SubscriptionOrderDocument
     
     [BsonElement("paymentDetailsCvvCode")]
     public string PaymentDetailsCvvCode { get; set; }
+    
+    [BsonElement]
+    public int Type { get; set; }
 }
