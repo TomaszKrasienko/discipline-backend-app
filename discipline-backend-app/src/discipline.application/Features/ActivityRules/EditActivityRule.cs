@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Exceptions;
+using discipline.application.Features.ActivityRules.Configuration;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@ public static class EditActivityRule
 {
     public static WebApplication MapEditActivityRule(this WebApplication app)
     {
-        app.MapPut("/activity-rules/{activityRuleId:guid}/edit", async (Guid activityRuleId, EditActivityRuleCommand command, HttpContext httpContext, 
+        app.MapPut($"/{Extensions.ActivityRulesTag}/{{activityRuleId:guid}}/edit", async (Guid activityRuleId, EditActivityRuleCommand command, HttpContext httpContext, 
                     ICommandDispatcher dispatcher, CancellationToken cancellationToken) 
                 => {
                         await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
@@ -21,6 +22,7 @@ public static class EditActivityRule
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(EditActivityRule))
+            .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Updates activity rule"

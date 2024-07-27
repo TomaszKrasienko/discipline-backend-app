@@ -1,4 +1,5 @@
 using discipline.application.DTOs;
+using discipline.application.Features.ActivityRules.Configuration;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
@@ -12,7 +13,7 @@ internal static class GetActivityRuleById
 {
     internal static WebApplication MapGetActivityRuleById(this WebApplication app)
     {
-        app.MapGet("/activity-rules/{activityRuleId:guid}", async (Guid activityRuleId, 
+        app.MapGet($"/{Extensions.ActivityRulesTag}/{{activityRuleId:guid}}", async (Guid activityRuleId, 
                 IDisciplineMongoCollection disciplineMongoCollection, CancellationToken cancellationToken) =>
             {
                 var result = await disciplineMongoCollection
@@ -24,6 +25,7 @@ internal static class GetActivityRuleById
             .Produces(StatusCodes.Status200OK, typeof(ActivityRuleDto))
             .Produces(StatusCodes.Status204NoContent, typeof(void))
             .WithName(nameof(GetActivityRuleById))
+            .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Gets activity rule by \"ID\""

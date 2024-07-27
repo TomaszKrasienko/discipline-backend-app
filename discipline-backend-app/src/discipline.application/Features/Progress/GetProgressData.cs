@@ -1,4 +1,5 @@
 using discipline.application.DTOs;
+using discipline.application.Features.Progress.Configuration;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Repositories;
@@ -12,7 +13,7 @@ internal static class GetProgressData
 {
     internal static WebApplication MapGetProgressData(this WebApplication app)
     {
-        app.MapGet("progress/data", async (CancellationToken cancellationToken, 
+        app.MapGet($"{Extensions.ProgressTag}/data", async (CancellationToken cancellationToken, 
                 IDisciplineMongoCollection disciplineMongoCollection) =>
             {
                 var result = (await disciplineMongoCollection
@@ -36,6 +37,7 @@ internal static class GetProgressData
         .Produces(StatusCodes.Status200OK, typeof(IEnumerable<ProgressDataDto>))
         .Produces(StatusCodes.Status204NoContent, typeof(void))
         .WithName(nameof(GetProgressData))
+        .WithTags(Extensions.ProgressTag)
         .WithOpenApi(operation => new(operation)
         {
             Description = "Gets data progress as day, percent of done activities per day"

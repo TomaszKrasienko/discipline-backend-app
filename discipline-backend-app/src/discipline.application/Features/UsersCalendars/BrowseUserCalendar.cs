@@ -1,4 +1,5 @@
 using discipline.application.DTOs;
+using discipline.application.Features.UsersCalendars.Configuration;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
@@ -12,7 +13,7 @@ internal static class BrowseUserCalendar
 {
     internal static WebApplication MapBrowseUserCalendar(this WebApplication app)
     {
-        app.MapGet("user-calendar/{day:datetime}", async (DateOnly day,
+        app.MapGet($"{Extensions.UserCalendarTag}/{{day:datetime}}", async (DateOnly day,
             IDisciplineMongoCollection disciplineMongoCollection) =>
             {
                 var result = await disciplineMongoCollection
@@ -24,6 +25,7 @@ internal static class BrowseUserCalendar
             .Produces(StatusCodes.Status200OK, typeof(UserCalendarDto))
             .Produces(StatusCodes.Status204NoContent, typeof(void))
             .WithName(nameof(BrowseUserCalendar))
+            .WithTags(Extensions.UserCalendarTag)
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Gets user calendar by \"Day\""

@@ -1,4 +1,5 @@
 using discipline.application.DTOs;
+using discipline.application.Features.DailyProductivities.Configuration;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
@@ -13,7 +14,7 @@ internal static class GetDailyActivityByDate
 {
     internal static WebApplication MapGetDailyActivityByDate(this WebApplication app)
     {
-        app.MapGet("/daily-productivity/{day:datetime}",async (DateTime day, CancellationToken cancellationToken,
+        app.MapGet($"/{Extensions.DailyProductivityTag}/{{day:datetime}}",async (DateTime day, CancellationToken cancellationToken,
                 IDisciplineMongoCollection disciplineMongoCollection) =>
             {
                 var result = (await disciplineMongoCollection
@@ -25,6 +26,7 @@ internal static class GetDailyActivityByDate
             .Produces(StatusCodes.Status200OK, typeof(DailyProductivityDto))
             .Produces(StatusCodes.Status204NoContent, typeof(void))
             .WithName(nameof(GetDailyActivityByDate))
+            .WithTags(Extensions.DailyProductivityTag)
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Gets daily discipline by \"Day\""

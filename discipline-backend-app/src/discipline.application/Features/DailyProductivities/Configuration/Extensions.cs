@@ -6,6 +6,8 @@ namespace discipline.application.Features.DailyProductivities.Configuration;
 
 internal static class Extensions
 {
+    internal const string DailyProductivityTag = "daily-productivity";
+    
     internal static IServiceCollection AddDailyProductivityFeatures(this IServiceCollection services, IConfiguration configuration)
         => services
             .AddCreateActivityFromRule(configuration);

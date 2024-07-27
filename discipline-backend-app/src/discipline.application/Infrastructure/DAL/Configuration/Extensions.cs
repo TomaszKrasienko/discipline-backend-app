@@ -2,6 +2,7 @@ using System.Collections.Frozen;
 using discipline.application.Configuration;
 using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Domain.DailyProductivities.Repositories;
+using discipline.application.Domain.Users.Repositories;
 using discipline.application.Domain.UsersCalendars.Repositories;
 using discipline.application.Infrastructure.DAL.Configuration.Options;
 using discipline.application.Infrastructure.DAL.Connection;
@@ -33,7 +34,9 @@ internal static class Extensions
         => services
             .AddScoped<IActivityRuleRepository, MongoActivityRuleRepository>()
             .AddScoped<IDailyProductivityRepository, MongoDailyProductivityRepository>()
-            .AddScoped<IUserCalendarRepository, MongoUserCalendarRepository>();
+            .AddScoped<IUserCalendarRepository, MongoUserCalendarRepository>()
+            .AddScoped<IUserRepository, MongoUserRepository>()
+            .AddScoped<ISubscriptionRepository, MongoSubscriptionRepository>();
 
     private static IServiceCollection AddInitializer(this IServiceCollection services, IConfiguration configuration)
     {

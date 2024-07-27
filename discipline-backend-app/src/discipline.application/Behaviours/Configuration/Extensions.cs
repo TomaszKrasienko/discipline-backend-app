@@ -13,7 +13,7 @@ internal static class Extensions
             .AddCreatingTransaction()
             .AddClockBehaviour()
             .AddLoggingBehaviour()
-        ;
+            .AddPasswordSecureBehaviour();
 
     internal static WebApplication UseBehaviours(this WebApplication app)
         => app

@@ -1,4 +1,5 @@
 using discipline.application.Behaviours.Configuration;
+using discipline.application.Domain.Users.Services.Configuration;
 using discipline.application.Features;
 using discipline.application.Infrastructure.DAL.Configuration;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +14,7 @@ public static class Extensions
     
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         => services
+            .SetDomain()
             .AddDal(configuration)
             .AddFeatures(configuration)
             .AddDisciplineCors()
