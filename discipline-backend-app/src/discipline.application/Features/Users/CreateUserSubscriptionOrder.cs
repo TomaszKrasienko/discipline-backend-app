@@ -2,6 +2,7 @@ using System.Data;
 using discipline.application.Behaviours;
 using discipline.application.Domain.Users.Enums;
 using discipline.application.Domain.Users.Repositories;
+using discipline.application.Domain.Users.Services.Abstractions;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;
 using FluentValidation;
@@ -60,6 +61,7 @@ public sealed class CreateUserSubscriptionOrderCommandValidator : AbstractValida
 internal sealed class CreateUserSubscriptionOrderCommandHandler(
     IUserRepository userRepository,
     ISubscriptionRepository subscriptionRepository,
+    ISubscriptionOrderService subscriptionOrderService,
     IClock clock) : ICommandHandler<CreateUserSubscriptionOrderCommand>
 {
     public async Task HandleAsync(CreateUserSubscriptionOrderCommand command, CancellationToken cancellationToken = default)
@@ -76,8 +78,8 @@ internal sealed class CreateUserSubscriptionOrderCommandHandler(
             throw new SubscriptionNotFoundException(command.SubscriptionId);
         }
         
-        // user.CreateSubscriptionOrder(command.Id, subscription, command.SubscriptionOrderFrequency, clock.DateNow(), command.CardNumber,
-        //     command.CardCvvNumber);
+        subscriptionOrderService.AddOrderSubscriptionToUser(user, command.Id, subscription,
+            command.SubscriptionOrderFrequency, clock.DateNow(), command.CardNumber, command.CardCvvNumber);
         await userRepository.UpdateAsync(user, cancellationToken);
     }
 }
