@@ -72,4 +72,13 @@ internal static class UsersMappingExtensions
     
     internal static Subscription AsEntity(this SubscriptionDocument document)
         => new (document.Id, document.Title, new Price(document.PricePerMonth, document.PricePerYear));
+
+    internal static SubscriptionDocument AsDocument(this Subscription document)
+        => new()
+        {
+            Id = document.Id,
+            PricePerMonth = document.Price.PerMonth,
+            PricePerYear = document.Price.PerYear,
+            Title = document.Title
+        };
 }
