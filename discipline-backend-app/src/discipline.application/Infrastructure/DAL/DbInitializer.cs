@@ -2,6 +2,8 @@ using discipline.application.Domain.ActivityRules;
 using discipline.application.Domain.ActivityRules.Entities;
 using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Domain.DailyProductivities.Entities;
+using discipline.application.Domain.Users.Entities;
+using discipline.application.Domain.Users.Repositories;
 using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Infrastructure.DAL.Configuration.Options;
 using discipline.application.Infrastructure.DAL.Connection;
@@ -21,6 +23,12 @@ internal sealed class DbInitializer(
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        var subscriptions = new List<Subscription>()
+        {
+            Subscription.Create(Guid.NewGuid(), "Free", 0, 0),
+            Subscription.Create(Guid.NewGuid(), "Premium", 10, 100)
+        };
+        
         var activityRules = new List<ActivityRule>()
         {
             ActivityRule.Create(Guid.NewGuid(), "My test 1 activity rule", Mode.EveryDayMode()),
@@ -73,6 +81,12 @@ internal sealed class DbInitializer(
         var mongoClient = scope.ServiceProvider.GetRequiredService<IMongoClient>();
         var options = scope.ServiceProvider.GetRequiredService<IOptions<MongoOptions>>().Value;
         await mongoClient.DropDatabaseAsync(options.Database, cancellationToken);
+
+        var subscriptionRepository = scope.ServiceProvider.GetRequiredService<ISubscriptionRepository>();
+        foreach (var subscription in subscriptions)
+        {
+            await subscriptionRepository.AddAsync(subscription, cancellationToken);
+        }
         
         var activityRulesCollection = disciplineMongoClient.GetCollection<ActivityRuleDocument>();
         await activityRulesCollection.InsertManyAsync(activityRules.Select(x => x.AsDocument()), null, cancellationToken);

@@ -23,7 +23,7 @@ internal static class BrowseActivityRules
                     .ToPagedList(source, paginationDto.PageNumber, paginationDto.PageSize);
                 httpContext.AddPaginationToHeader(pagedList);
                 return Results.Ok(pagedList.Select(x => x.AsDto()));
-                })
+            })
             .Produces(StatusCodes.Status200OK, typeof(List<ActivityRuleDto>))
             .WithName(nameof(BrowseActivityRules))
             .WithTags(Extensions.ActivityRulesTag)
