@@ -2,6 +2,7 @@ using System.Diagnostics;
 using discipline.application.Domain.Users.Entities;
 using discipline.application.Domain.Users.Enums;
 using discipline.application.Domain.Users.ValueObjects;
+using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents.Users;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;
@@ -80,5 +81,14 @@ internal static class UsersMappingExtensions
             PricePerMonth = document.Price.PerMonth,
             PricePerYear = document.Price.PerYear,
             Title = document.Title
+        };
+
+    internal static SubscriptionDto AsDto(this SubscriptionDocument document)
+        => new()
+        {
+            Id = document.Id,
+            Title = document.Title,
+            PricePerMonth = document.PricePerMonth,
+            PricePerYear = document.PricePerYear
         };
 }

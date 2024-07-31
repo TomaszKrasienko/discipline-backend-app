@@ -192,4 +192,20 @@ public sealed class UserMappingExtensionsTests
          document.PricePerMonth.ShouldBe(subscription.Price.PerMonth);
          document.PricePerYear.ShouldBe(subscription.Price.PerYear);
      }
+
+     [Fact]
+     public void AsDto_GivenSubscriptionDocument_ShouldReturnSubscriptionDto()
+     {
+         //arrange
+         var document = SubscriptionDocumentFactory.Get();
+         
+         //act
+         var dto = document.AsDto();
+         
+         //assert
+         dto.Id.ShouldBe(document.Id);
+         dto.Title.ShouldBe(document.Title);
+         dto.PricePerMonth.ShouldBe(document.PricePerMonth);
+         dto.PricePerYear.ShouldBe(document.PricePerYear);
+     }
 }
