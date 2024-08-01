@@ -1,3 +1,4 @@
+using System.Runtime.Intrinsics.Arm;
 using discipline.application.Domain.Users.Entities;
 using discipline.application.Domain.Users.Enums;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
@@ -175,6 +176,7 @@ public sealed class UserMappingExtensionsTests
          result.Title.Value.ShouldBe(subscriptionDocument.Title);
          result.Price.PerMonth.ShouldBe(subscriptionDocument.PricePerMonth);
          result.Price.PerYear.ShouldBe(subscriptionDocument.PricePerYear);
+         result.Features.Any(x => x.Value == subscriptionDocument.Features[0]).ShouldBeTrue();
      }
 
      [Fact]
@@ -191,6 +193,7 @@ public sealed class UserMappingExtensionsTests
          document.Title.ShouldBe(subscription.Title.Value);
          document.PricePerMonth.ShouldBe(subscription.Price.PerMonth);
          document.PricePerYear.ShouldBe(subscription.Price.PerYear);
+         document.Features.Any(x => x == subscription.Features.First().Value).ShouldBeTrue();
      }
 
      [Fact]
@@ -207,5 +210,6 @@ public sealed class UserMappingExtensionsTests
          dto.Title.ShouldBe(document.Title);
          dto.PricePerMonth.ShouldBe(document.PricePerMonth);
          dto.PricePerYear.ShouldBe(document.PricePerYear);
+         dto.Features.Any(x => x == document.Features[0]).ShouldBeTrue();
      }
 }

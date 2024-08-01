@@ -16,10 +16,11 @@ internal sealed class Subscription
         => Id = id;
     
     //For mongo
-    internal Subscription(EntityId id, Title title, Price price) : this(id)
+    internal Subscription(EntityId id, Title title, Price price, List<Feature> features) : this(id)
     {
         Title = title;
         Price = price;
+        _features = features.ToHashSet();
     }
 
     internal static Subscription Create(Guid id, string title, decimal pricePerMonth, decimal pricePerYear,
