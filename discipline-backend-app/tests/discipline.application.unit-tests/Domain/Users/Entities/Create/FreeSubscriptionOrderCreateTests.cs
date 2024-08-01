@@ -12,7 +12,7 @@ public sealed class FreeSubscriptionOrderCreateTests
     {
         //arrange
         var subscription = Subscription.Create(Guid.NewGuid(), "test_title_subscription",
-            0, 0);
+            0, 0, ["test"]);
         var id = Guid.NewGuid();
         var now = DateTime.Now;
         
@@ -43,7 +43,7 @@ public sealed class FreeSubscriptionOrderCreateTests
     {
         //arrange
         var subscription = Subscription.Create(Guid.NewGuid(), "test_title_subscription",
-            10, 100);
+            10, 100, ["test"]);
         
         //act
         var exception = Record.Exception(() => FreeSubscriptionOrder.Create(Guid.NewGuid(), subscription,

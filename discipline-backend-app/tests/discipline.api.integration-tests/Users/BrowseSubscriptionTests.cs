@@ -8,6 +8,7 @@ using Xunit;
 
 namespace discipline.api.integration_tests.Users;
 
+[Collection("integration-tests")]
 public sealed class BrowseSubscriptionTests : BaseTestsController
 {
     [Fact]
