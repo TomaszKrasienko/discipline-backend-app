@@ -16,15 +16,18 @@ public sealed class SubscriptionCreateTests
         var title = "test_title";
         var pricePerMonth = 10m;
         var pricePerYear = 100m;
+        var feature = "test_feature";
         
         //act
-        var result = Subscription.Create(id, title, pricePerMonth, pricePerYear);
+        var result = Subscription.Create(id, title, pricePerMonth, pricePerYear,
+            [feature]);
         
         //assert
         result.Id.Value.ShouldBe(id);
         result.Title.Value.ShouldBe(title);
         result.Price.PerMonth.ShouldBe(pricePerMonth);
         result.Price.PerYear.ShouldBe(pricePerYear);
+        result.Features.Any(x => x.Value == feature).ShouldBeTrue();
     }
     
     [Fact]
@@ -32,7 +35,7 @@ public sealed class SubscriptionCreateTests
     {
         //act
         var exception = Record.Exception(() => Subscription.Create(Guid.NewGuid(),
-            string.Empty, 12, 123));
+            string.Empty, 12, 123, ["test"]));
         
         //assert
         exception.ShouldBeOfType<EmptySubscriptionTitleException>();
@@ -45,9 +48,31 @@ public sealed class SubscriptionCreateTests
     {
         //act
         var exception = Record.Exception(() => Subscription.Create(Guid.NewGuid(),
-            "test_title", pricePerMonth, pricePerYear));
+            "test_title", pricePerMonth, pricePerYear, ["test"]));
         
         //assert
         exception.ShouldBeOfType<SubscriptionValueLessThanZeroException>();
+    }
+
+    [Fact]
+    public void Create_GivenEmptyFeaturesList_ShouldThrowEmptyFeaturesListException()
+    {
+        //act
+        var exception = Record.Exception(() => Subscription.Create(Guid.NewGuid(),
+            "test_title", 1, 1, []));
+        
+        //assert
+        exception.ShouldBeOfType<EmptyFeaturesListException>();
+    }
+
+    [Fact]
+    public void Create_GivenEmptyFeature_ShouldThrowEmptyFeatureValueException()
+    {
+        //act
+        var exception = Record.Exception(() => Subscription.Create(Guid.NewGuid(),
+            "test_title", 1, 1, [string.Empty]));
+        
+        //assert
+        exception.ShouldBeOfType<EmptyFeatureValueException>();
     }
 }

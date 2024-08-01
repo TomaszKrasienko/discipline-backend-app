@@ -25,8 +25,8 @@ internal sealed class DbInitializer(
     {
         var subscriptions = new List<Subscription>()
         {
-            Subscription.Create(Guid.NewGuid(), "Free", 0, 0),
-            Subscription.Create(Guid.NewGuid(), "Premium", 10, 100)
+            Subscription.Create(Guid.NewGuid(), "Free", 0, 0, ["Daily habits", "Activity rules"]),
+            Subscription.Create(Guid.NewGuid(), "Premium", 10, 100, ["Daily habits", "Activity rules", "Calendar", "Chat"])
         };
         
         var activityRules = new List<ActivityRule>()
