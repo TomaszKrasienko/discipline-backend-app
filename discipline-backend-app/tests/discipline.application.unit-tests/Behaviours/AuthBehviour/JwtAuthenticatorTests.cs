@@ -15,6 +15,9 @@ public sealed class JwtAuthenticatorTests
     public void CreateToken_GivenUserIdSubscriptionAndState_ShouldReturnTokenDtoWithTokenContainingAllClaims()
     {
         //arrange
+        _clock
+            .DateNow()
+            .Returns(DateTime.Now);
         var userId = Guid.NewGuid();
         var subscription = "test_subscription";
         var state = "test_state";
@@ -41,10 +44,11 @@ public sealed class JwtAuthenticatorTests
         _clock = Substitute.For<IClock>();
         _options = Options.Create(new AuthOptions()
         {
-            PublicCertPath = "/Certs/public.pem",
-            PrivateCertPath = "/Certs/private.pem",
+            PublicCertPath = "_certs/public.pem",
+            PrivateCertPath = "_certs/private.pem",
             Issuer = "test_issuer",
             Audience = "test_audience",
+            Password = "Discipline123!",
             Expiry = TimeSpan.FromMinutes(10)
         });
         _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();

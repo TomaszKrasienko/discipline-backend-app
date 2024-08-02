@@ -64,6 +64,7 @@ public sealed record AuthOptions
 {
     public string PublicCertPath { get; init; }
     public string PrivateCertPath { get; init; }
+    public string Password { get; set; }
     public string Issuer { get; init; }
     public string Audience { get; init; }
     public TimeSpan Expiry { get; init; }
@@ -80,6 +81,7 @@ internal sealed class JwtAuthenticator : IAuthenticator
     private readonly string _issuer;
     private readonly string _audience;
     private readonly string _privateCertPath;
+    private readonly string _password;
     private readonly TimeSpan _expiry;
     private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
@@ -89,6 +91,7 @@ internal sealed class JwtAuthenticator : IAuthenticator
         _issuer = options.Value.Issuer;
         _audience = options.Value.Audience;
         _privateCertPath = options.Value.PrivateCertPath;
+        _password = options.Value.Password;
         _expiry = options.Value.Expiry;
         _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
     }
@@ -96,7 +99,7 @@ internal sealed class JwtAuthenticator : IAuthenticator
     public JwtDto CreateToken(string userId, string subscription, string state)
     {
         RSA privateRsa = RSA.Create();
-        privateRsa.ImportFromPem(File.ReadAllText(_privateCertPath));
+        privateRsa.ImportFromEncryptedPem(input: File.ReadAllText(_privateCertPath), password: _password);
         var privateKey = new RsaSecurityKey(privateRsa);
         var signingCredentials = new SigningCredentials(privateKey, SecurityAlgorithms.RsaSha256);
         var claims = new List<Claim>
