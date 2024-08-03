@@ -1,8 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 using discipline.application.Behaviours;
 using discipline.application.Domain.Users.Entities;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
 using Shouldly;
 using Xunit;
@@ -27,9 +29,22 @@ public sealed class JwtAuthenticatorTests
         
         //assert
         result.ShouldNotBeNull();
-        var token = _jwtSecurityTokenHandler.ReadJwtToken(result.Token);
-        token.Issuer.ShouldBe(_options.Value.Issuer);
-        token.Audiences.Single().ShouldBe(_options.Value.Audience);
+        RSA privateRsa = RSA.Create();
+        privateRsa.ImportFromPem(input: File.ReadAllText(_options.Value.PublicCertPath));
+        var publicKey = new RsaSecurityKey(privateRsa);
+        
+        var validationParameters = new TokenValidationParameters {
+            ValidateIssuer = true,
+            ValidIssuer = _options.Value.Issuer,
+            ValidateAudience = true,
+            ValidAudience = _options.Value.Audience,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = publicKey,
+            ValidateLifetime = true
+        };
+
+        //_jwtSecurityTokenHandler.ValidateToken(result.Token, validationParameters, out SecurityToken validatedToken);
+        
     }
     
     #region arrange

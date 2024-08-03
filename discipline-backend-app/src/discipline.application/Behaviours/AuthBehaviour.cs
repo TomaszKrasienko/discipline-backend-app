@@ -113,8 +113,13 @@ internal sealed class JwtAuthenticator : IAuthenticator
         var now = _clock.DateNow();
         var expirationTime = now.Add(_expiry);
 
-        var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expirationTime,
-            signingCredentials);
+        var jwt = new JwtSecurityToken(
+            issuer: _issuer, 
+            audience: _audience,
+            claims: claims,
+            notBefore: now,
+            expires: expirationTime,
+            signingCredentials: signingCredentials);
         var token = _jwtSecurityTokenHandler.WriteToken(jwt);
         return new JwtDto()
         {
