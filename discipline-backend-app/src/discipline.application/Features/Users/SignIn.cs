@@ -1,13 +1,35 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.Users.Repositories;
 using discipline.application.Exceptions;
+using discipline.application.Features.Users.Configuration;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace discipline.application.Features.Users;
 
-internal class SignIn
+internal static class SignIn
 {
-    
+    internal static WebApplication MapSignIn(this WebApplication app)
+    {
+        app.MapPost($"{Extensions.UsersTag}/sign-in", async (SignInCommand command,
+                ICommandDispatcher commandDispatcher, ITokenStorage tokenStorage, CancellationToken cancellationToken) =>
+            {
+                await commandDispatcher.HandleAsync(command, cancellationToken);
+                var jwt = tokenStorage.Get(); 
+                return Results.Ok(jwt);
+            })
+            .Produces(StatusCodes.Status201Created, typeof(void))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .WithName(nameof(SignIn))
+            .WithTags(Extensions.UsersTag)
+            .WithOpenApi(operation => new (operation)
+            {
+                Description = "Signs-in user"
+            });
+        return app;
+    }
 }
 
 public sealed record SignInCommand(string Email, string Password) : ICommand;

@@ -20,7 +20,9 @@ internal static class AuthBehaviour
         IConfiguration configuration)
         => services
                 .AddTokenValidation(configuration)
+                .AddServices()
                 .AddOptions(configuration);
+    
     private static IServiceCollection AddTokenValidation(this IServiceCollection services, IConfiguration configuration)
     {
         var authOptions = configuration.GetOptions<AuthOptions>(SectionName);
@@ -48,6 +50,9 @@ internal static class AuthBehaviour
         
         return services;
     }
+
+    private static IServiceCollection AddServices(this IServiceCollection services)
+        => services.AddSingleton<IAuthenticator, JwtAuthenticator>();
     
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
         => services.Configure<AuthOptions>(configuration.GetSection(SectionName));

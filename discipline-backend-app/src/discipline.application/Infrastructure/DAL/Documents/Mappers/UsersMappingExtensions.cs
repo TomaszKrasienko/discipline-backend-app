@@ -53,7 +53,7 @@ internal static class UsersMappingExtensions
 
     internal static User AsEntity(this UserDocument document)
         => new (document.Id, document.Email, document.Password, new FullName(document.FirstName, document.LastName),
-            document.SubscriptionOrder?.AsEntity());
+            document.Status, document.SubscriptionOrder?.AsEntity());
 
     private static SubscriptionOrder AsEntity(this SubscriptionOrderDocument document) => document switch
     {

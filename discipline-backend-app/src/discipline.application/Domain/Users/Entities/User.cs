@@ -19,7 +19,7 @@ internal sealed class User : AggregateRoot
 
     //For mongo
     internal User(EntityId id, Email email, Password password, FullName fullName,
-        SubscriptionOrder subscriptionOrder) : this(id)
+        Status status, SubscriptionOrder subscriptionOrder) : this(id)
     {
         Email = email;
         Password = password;

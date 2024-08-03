@@ -106,6 +106,7 @@ public sealed class UserMappingExtensionsTests
          result.Password.Value.ShouldBe(userDocument.Password);
          result.FullName.FirstName.ShouldBe(userDocument.FirstName);
          result.FullName.LastName.ShouldBe(userDocument.LastName);
+         result.Status.Value.ShouldBe(userDocument.Status);
          result.SubscriptionOrder.ShouldBeNull();
      }
 
