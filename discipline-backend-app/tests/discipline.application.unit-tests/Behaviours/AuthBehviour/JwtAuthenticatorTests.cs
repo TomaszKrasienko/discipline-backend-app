@@ -25,7 +25,7 @@ public sealed class JwtAuthenticatorTests
         var state = "test_state";
         
         //act
-        var result = _authenticator.CreateToken(userId.ToString(), subscription, state);
+        var result = _authenticator.CreateToken(userId.ToString(), state);
         
         //assert
         result.ShouldNotBeNull();

@@ -26,6 +26,7 @@ public sealed class UserCreateTests
         result.Password.Value.ShouldBe(password);
         result.FullName.FirstName.ShouldBe(firstName);
         result.FullName.LastName.ShouldBe(lastName);
+        result.Status.Value.ShouldBe("Created");
     }
     
     [Fact]

@@ -13,7 +13,7 @@ namespace discipline.application.unit_tests.Infrastructure.DAL;
 public sealed class UserMappingExtensionsTests
 {
     [Fact]
-    public void AsDocument_GivenUserWithouSubscriptionOrder_ShouldReturnUserDocumentWithSubscriptionOrderAsNull()
+    public void AsDocument_GivenUserWithoutSubscriptionOrder_ShouldReturnUserDocumentWithSubscriptionOrderAsNull()
     {
         //arrange
         var user = UserFactory.Get();
@@ -27,6 +27,7 @@ public sealed class UserMappingExtensionsTests
         result.Password.ShouldBe(user.Password.Value);
         result.FirstName.ShouldBe(user.FullName.FirstName);
         result.LastName.ShouldBe(user.FullName.LastName);
+        result.Status.ShouldBe(user.Status.Value);
         result.SubscriptionOrder.ShouldBeNull();
     }
     

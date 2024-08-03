@@ -21,15 +21,10 @@ public sealed class SignInCommandHandlerTests
     {
         //arrange
         var user = UserFactory.Get();
-        var subscription = SubscriptionFactory.Get();
         var command = new SignInCommand(user.Email, "Test123!");
         _userRepository
             .GetByEmailAsync(command.Email)
             .Returns(user);
-
-        _subscriptionRepository
-            .GetByIdAsync(user.SubscriptionOrder.SubscriptionId)
-            .Returns(subscription);
         
         _passwordManager
             .VerifyPassword(user.Password, command.Password)
@@ -40,7 +35,7 @@ public sealed class SignInCommandHandlerTests
             Token = Guid.NewGuid().ToString()
         };
         _authenticator
-            .CreateToken(user.Id.Value.ToString(), subscription.Title, null)
+            .CreateToken(user.Id.Value.ToString(), user.Status.Value)
             .Returns(jwtDto);
         
         //act
@@ -49,7 +44,8 @@ public sealed class SignInCommandHandlerTests
         //assert
         _tokenStorage
             .Received(1)
-            .Set(jwtDto);
+            .Set(Arg.Is<JwtDto>(arg
+                => arg.Token == jwtDto.Token));
     }
     
     [Fact]
@@ -88,7 +84,6 @@ public sealed class SignInCommandHandlerTests
     
     #region arrange
     private readonly IUserRepository _userRepository;
-    private readonly ISubscriptionRepository _subscriptionRepository;
     private readonly IPasswordManager _passwordManager;
     private readonly IAuthenticator _authenticator;
     private readonly ITokenStorage _tokenStorage;
@@ -97,8 +92,14 @@ public sealed class SignInCommandHandlerTests
     public SignInCommandHandlerTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
+        _passwordManager = Substitute.For<IPasswordManager>();
         _authenticator = Substitute.For<IAuthenticator>();
-        _handler = new SignInCommandHandler();
+        _tokenStorage = Substitute.For<ITokenStorage>();
+        _handler = new SignInCommandHandler(
+            _userRepository,
+            _passwordManager,
+            _authenticator,
+            _tokenStorage);
     }
     
     #endregion

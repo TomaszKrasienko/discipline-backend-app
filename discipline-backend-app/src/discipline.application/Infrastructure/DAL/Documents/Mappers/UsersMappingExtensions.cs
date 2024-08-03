@@ -17,6 +17,7 @@ internal static class UsersMappingExtensions
             Password = entity.Password,
             FirstName = entity.FullName.FirstName,
             LastName = entity.FullName.LastName,
+            Status = entity.Status,
             SubscriptionOrder = entity.SubscriptionOrder?.AsDocument()
         };
 

@@ -25,12 +25,12 @@ internal static class AuthBehaviour
     {
         var authOptions = configuration.GetOptions<AuthOptions>(SectionName);
         RSA privateRsa = RSA.Create();
-        privateRsa.ImportFromPem(File.ReadAllText(authOptions.PrivateCertPath));
+        privateRsa.ImportFromEncryptedPem(File.ReadAllText(authOptions.PrivateCertPath), authOptions.Password);
         RSA publicRsa = RSA.Create();
         publicRsa.ImportFromPem(File.ReadAllText(authOptions.PublicCertPath));
         var publicKey = new RsaSecurityKey(publicRsa);
-        
-        
+
+        services.AddAuthorization();
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -72,7 +72,7 @@ public sealed record AuthOptions
 
 internal interface IAuthenticator
 {
-    JwtDto CreateToken(string userId, string subscription, string state);
+    JwtDto CreateToken(string userId, string status);
 }
 
 internal sealed class JwtAuthenticator : IAuthenticator
@@ -96,7 +96,7 @@ internal sealed class JwtAuthenticator : IAuthenticator
         _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
     }
     
-    public JwtDto CreateToken(string userId, string subscription, string state)
+    public JwtDto CreateToken(string userId, string status)
     {
         RSA privateRsa = RSA.Create();
         privateRsa.ImportFromEncryptedPem(input: File.ReadAllText(_privateCertPath), password: _password);
@@ -106,8 +106,7 @@ internal sealed class JwtAuthenticator : IAuthenticator
         {
             new Claim(JwtRegisteredClaimNames.UniqueName, userId),
             new Claim(ClaimTypes.NameIdentifier, userId),
-            new Claim("subscription", subscription),
-            new Claim("state", state)
+            new Claim("status", status)
         };
 
         var now = _clock.DateNow();

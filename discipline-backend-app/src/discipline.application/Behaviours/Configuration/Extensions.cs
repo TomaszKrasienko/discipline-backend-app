@@ -15,7 +15,8 @@ internal static class Extensions
             .AddClockBehaviour()
             .AddLoggingBehaviour()
             .AddPasswordSecureBehaviour()
-            .AddAuthBehaviour(configuration);
+            .AddAuthBehaviour(configuration)
+            .AddTokenStorage();
 
     internal static WebApplication UseBehaviours(this WebApplication app)
         => app
