@@ -25,6 +25,7 @@ public sealed class UserTests
         user.SubscriptionOrder.ShouldNotBeNull();
         user.SubscriptionOrder.Id.Value.ShouldBe(subscriptionOrderId);
         user.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrder>();
+        user.Status.Value.ShouldBe("PaidSubscriptionPicked");
     }
     
     [Fact]
@@ -59,6 +60,7 @@ public sealed class UserTests
         user.SubscriptionOrder.ShouldNotBeNull();
         user.SubscriptionOrder.Id.Value.ShouldBe(subscriptionOrderId);
         user.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrder>();
+        user.Status.Value.ShouldBe("FreeSubscriptionPicked");
     }
 
     [Fact]

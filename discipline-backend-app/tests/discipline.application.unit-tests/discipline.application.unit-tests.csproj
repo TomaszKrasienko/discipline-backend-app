@@ -30,4 +30,19 @@
       <ProjectReference Include="..\discipline.tests.shared\discipline.tests.shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Certs\private.pem">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Certs\public.pem">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="_certs\public.pem">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="_certs\private.pem">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

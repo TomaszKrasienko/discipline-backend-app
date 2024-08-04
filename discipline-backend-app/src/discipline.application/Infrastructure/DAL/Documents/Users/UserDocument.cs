@@ -20,6 +20,9 @@ public sealed class UserDocument : IDocument
     [BsonElement("lastName")]
     public string LastName { get; set; }
     
+    [BsonElement("status")] 
+    public string Status { get; set; }
+    
     [BsonElement("subscriptionOrder")]
     public SubscriptionOrderDocument SubscriptionOrder { get; set; }
 }

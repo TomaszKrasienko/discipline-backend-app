@@ -1,0 +1,32 @@
+@url = http://localhost:5097
+@email = tom.krasienko@discipline.com
+@password = Test123!
+
+###
+POST {{url}}/users/sign-up
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "firstName": "Tom",
+  "lastName": "Krasienko"
+}
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email":"{{email}}",
+    "password":"{{password}}"
+}
+
+###
+@token = {{sign_in.response.body.$.token}}
+
+###
+GET {{url}}/users/subscriptions
+Authorization: bearer {{token}}
+

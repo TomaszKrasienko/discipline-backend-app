@@ -19,13 +19,13 @@ namespace discipline.application.Infrastructure.DAL.Configuration;
 internal static class Extensions
 {
     private const string SectionName = "Mongo";
-    
+
     internal static IServiceCollection AddDal(this IServiceCollection services, IConfiguration configuration)
         => services
             .AddServices()
             .AddOptions(configuration)
-            .AddMongoConnection()
-            .AddInitializer(configuration);
+            .AddMongoConnection();
+            //.AddInitializer(configuration);
 
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
         => services.Configure<MongoOptions>(configuration.GetSection(SectionName));

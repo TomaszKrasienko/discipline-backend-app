@@ -11,6 +11,7 @@ internal sealed class User : AggregateRoot
     public Email Email { get; private set; }
     public Password Password { get; private set; }
     public FullName FullName { get; private set; }
+    public Status Status { get; private set; }
     public SubscriptionOrder SubscriptionOrder { get; private set; }
 
     private User(EntityId id)
@@ -18,11 +19,12 @@ internal sealed class User : AggregateRoot
 
     //For mongo
     internal User(EntityId id, Email email, Password password, FullName fullName,
-        SubscriptionOrder subscriptionOrder) : this(id)
+        Status status, SubscriptionOrder subscriptionOrder) : this(id)
     {
         Email = email;
         Password = password;
         FullName = fullName;
+        Status = status;
         SubscriptionOrder = subscriptionOrder;
     }
 
@@ -32,6 +34,7 @@ internal sealed class User : AggregateRoot
         user.ChangeEmail(email);
         user.ChangePassword(password);
         user.ChangeFullName(firstName, lastName);
+        user.Status = Status.Created();
         return user;
     }
 
@@ -54,6 +57,7 @@ internal sealed class User : AggregateRoot
         }
         SubscriptionOrder = PaidSubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency,
             now, cardNumber, cardCvvNumber);
+        Status = Status.PaidSubscriptionPicked();
     }
 
     internal void CreateFreeSubscriptionOrder(Guid id, Subscription subscription,
@@ -64,5 +68,6 @@ internal sealed class User : AggregateRoot
             throw new SubscriptionOrderForUserAlreadyExistsException(Id);
         }
         SubscriptionOrder = FreeSubscriptionOrder.Create(id, subscription, now);
+        Status = Status.FreeSubscriptionPicked();
     }
 }

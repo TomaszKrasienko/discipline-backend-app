@@ -1,6 +1,8 @@
+using System.Reflection.PortableExecutable;
 using discipline.application.Behaviours.Configuration;
 using discipline.application.Domain.Users.Services.Configuration;
 using discipline.application.Features;
+using discipline.application.Infrastructure.Configuration;
 using discipline.application.Infrastructure.DAL.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +20,7 @@ public static class Extensions
             .AddDal(configuration)
             .AddFeatures(configuration)
             .AddDisciplineCors()
-            .AddBehaviours()
+            .AddBehaviours(configuration)
             .AddSwaggerGen();
 
     private static IServiceCollection AddDisciplineCors(this IServiceCollection services)

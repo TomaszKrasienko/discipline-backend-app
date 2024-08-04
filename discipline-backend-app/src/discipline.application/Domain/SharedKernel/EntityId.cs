@@ -27,6 +27,7 @@ public sealed record EntityId : EntityId<Guid>
 
     public static implicit operator EntityId(Guid value)
         => new EntityId(value);
-    
 
+    public override string ToString()
+        => Value.ToString();
 } 

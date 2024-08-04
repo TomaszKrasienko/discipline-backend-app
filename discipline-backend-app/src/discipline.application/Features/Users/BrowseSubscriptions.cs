@@ -12,12 +12,13 @@ internal static class BrowseSubscriptions
 {
     internal static WebApplication MapBrowseSubscriptions(this WebApplication app)
     {
-        app.MapGet($"{Extensions.UsersTag}/subscriptions", async (IDisciplineMongoCollection disciplineMongoCollection) =>
-            {
-                var results = await disciplineMongoCollection.GetCollection<SubscriptionDocument>()
-                    .Find(_ => true).ToListAsync();
-                return Results.Ok(results);
-            })
+        app.MapGet($"{Extensions.UsersTag}/subscriptions",
+                async (IDisciplineMongoCollection disciplineMongoCollection) =>
+                {
+                    var results = await disciplineMongoCollection.GetCollection<SubscriptionDocument>()
+                        .Find(_ => true).ToListAsync();
+                    return Results.Ok(results);
+                })
             .Produces(StatusCodes.Status200OK, typeof(List<SubscriptionDto>))
             .WithName(nameof(BrowseSubscriptions))
             .WithTags(Extensions.UsersTag)

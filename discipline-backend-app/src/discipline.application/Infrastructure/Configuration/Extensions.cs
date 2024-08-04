@@ -9,4 +9,5 @@ internal static class Extensions
     internal static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         => services
             .AddDal(configuration);
+
 }
