@@ -18,20 +18,22 @@ public sealed class JwtAuthenticatorTests
     {
         //arrange
         _clock
-            .DateNow()
+            .DateTimeNow()
             .Returns(DateTime.Now);
         var userId = Guid.NewGuid();
-        var subscription = "test_subscription";
-        var state = "test_state";
+        var status = "test_state";
         
         //act
-        var result = _authenticator.CreateToken(userId.ToString(), state);
+        var result = _authenticator.CreateToken(userId.ToString(), status);
         
         //assert
         result.ShouldNotBeNull();
         RSA privateRsa = RSA.Create();
         privateRsa.ImportFromPem(input: File.ReadAllText(_options.Value.PublicCertPath));
         var publicKey = new RsaSecurityKey(privateRsa);
+        var token = _jwtSecurityTokenHandler.ReadJwtToken(result.Token);
+        
+        token.Claims.FirstOrDefault(x => x.Type == "status")?.Value.ShouldBe(status);
         
         var validationParameters = new TokenValidationParameters {
             ValidateIssuer = true,
@@ -43,7 +45,7 @@ public sealed class JwtAuthenticatorTests
             ValidateLifetime = true
         };
 
-        //_jwtSecurityTokenHandler.ValidateToken(result.Token, validationParameters, out SecurityToken validatedToken);
+        _jwtSecurityTokenHandler.ValidateToken(result.Token, validationParameters, out SecurityToken validatedToken);
         
     }
     

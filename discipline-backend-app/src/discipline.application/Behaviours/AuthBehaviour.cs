@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using discipline.application.Configuration;
 using discipline.application.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,26 +27,31 @@ internal static class AuthBehaviour
     private static IServiceCollection AddTokenValidation(this IServiceCollection services, IConfiguration configuration)
     {
         var authOptions = configuration.GetOptions<AuthOptions>(SectionName);
-        RSA privateRsa = RSA.Create();
-        privateRsa.ImportFromEncryptedPem(File.ReadAllText(authOptions.PrivateCertPath), authOptions.Password);
+        var validationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = authOptions.Issuer,
+            ValidAudience = authOptions.Audience,
+            LogValidationExceptions = true,
+        };
+        
         RSA publicRsa = RSA.Create();
         publicRsa.ImportFromPem(File.ReadAllText(authOptions.PublicCertPath));
         var publicKey = new RsaSecurityKey(publicRsa);
+        validationParameters.IssuerSigningKey = publicKey;
 
         services.AddAuthorization();
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = authOptions.Issuer,
-                    ValidAudience = authOptions.Audience,
-                    IssuerSigningKey = publicKey
-                };
+                options.TokenValidationParameters = validationParameters;
             });
         
         return services;
@@ -65,11 +71,12 @@ internal static class AuthBehaviour
     }
 }
 
-public sealed record AuthOptions
+internal sealed record AuthOptions
 {
+    
     public string PublicCertPath { get; init; }
     public string PrivateCertPath { get; init; }
-    public string Password { get; set; }
+    public string Password { get; init; }
     public string Issuer { get; init; }
     public string Audience { get; init; }
     public TimeSpan Expiry { get; init; }
@@ -83,9 +90,9 @@ internal interface IAuthenticator
 internal sealed class JwtAuthenticator : IAuthenticator
 {
     private readonly IClock _clock;
+    private readonly string _privateCertPath;
     private readonly string _issuer;
     private readonly string _audience;
-    private readonly string _privateCertPath;
     private readonly string _password;
     private readonly TimeSpan _expiry;
     private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
@@ -103,10 +110,12 @@ internal sealed class JwtAuthenticator : IAuthenticator
     
     public JwtDto CreateToken(string userId, string status)
     {
+        SigningCredentials signingCredentials;
         RSA privateRsa = RSA.Create();
         privateRsa.ImportFromEncryptedPem(input: File.ReadAllText(_privateCertPath), password: _password);
         var privateKey = new RsaSecurityKey(privateRsa);
-        var signingCredentials = new SigningCredentials(privateKey, SecurityAlgorithms.RsaSha256);
+        signingCredentials = new SigningCredentials(privateKey, SecurityAlgorithms.RsaSha256);  
+        
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.UniqueName, userId),
@@ -114,7 +123,7 @@ internal sealed class JwtAuthenticator : IAuthenticator
             new Claim("status", status)
         };
 
-        var now = _clock.DateNow();
+        var now = _clock.DateTimeNow();
         var expirationTime = now.Add(_expiry);
 
         var jwt = new JwtSecurityToken(

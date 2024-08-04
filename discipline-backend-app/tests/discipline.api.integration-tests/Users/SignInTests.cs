@@ -2,9 +2,9 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Behaviours;
-using discipline.application.Domain.Users.Entities;
 using discipline.application.DTOs;
 using discipline.application.Features.Users;
+using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.Users;
 using discipline.tests.shared.Entities;
@@ -67,6 +67,7 @@ public sealed class SignInTests : BaseTestsController
     protected override void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<IPasswordManager, TestsPasswordManager>();
+        services.AddSingleton<IMongoCollectionNameConvention, TestsMongoCollectionNameConvention>();
     }
 
     #endregion
