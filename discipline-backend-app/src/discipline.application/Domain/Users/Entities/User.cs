@@ -24,6 +24,7 @@ internal sealed class User : AggregateRoot
         Email = email;
         Password = password;
         FullName = fullName;
+        Status = status;
         SubscriptionOrder = subscriptionOrder;
     }
 
