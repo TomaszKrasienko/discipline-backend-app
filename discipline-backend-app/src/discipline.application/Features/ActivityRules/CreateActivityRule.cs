@@ -15,9 +15,10 @@ public static class CreateActivityRule
     public static WebApplication MapCreateActivityRule(this WebApplication app)
     {
         app.MapPost($"/{Extensions.ActivityRulesTag}/create", async (CreateActivityRuleCommand command, HttpContext httpContext, 
-                    ICommandDispatcher dispatcher, CancellationToken cancellationToken) => 
+                    ICommandDispatcher dispatcher, CancellationToken cancellationToken, IIdentityContext identityContext) => 
             {
                 var activityRuleId = Guid.NewGuid();
+                var userId = identityContext.UserId;
                 await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
                 httpContext.AddResourceIdHeader(activityRuleId);
                 return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId}, null);
@@ -30,7 +31,8 @@ public static class CreateActivityRule
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Adds activity rule"
-            });
+            })
+            .RequireAuthorization();
         return app;
     }
 }
