@@ -1,10 +1,19 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace discipline.application.Behaviours;
 
-public class IdentityFromContextBehaviour
+internal static class IdentityFromContextBehaviour
 {
-    
+    internal static IServiceCollection AddIdentityFromContextBehaviour(this IServiceCollection services)
+        => services
+            .AddHttpContextAccessor()
+            .AddSingleton<IIdentityContextFactory, IdentityContextFactory>()
+            .AddScoped<IIdentityContext>(sp =>
+            {
+                var factory = sp.GetRequiredService<IIdentityContextFactory>();
+                return factory.Create();
+            });
 }
 
 public interface IIdentityContext
