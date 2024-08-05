@@ -35,13 +35,16 @@ public static class CreateActivityRule
     }
 }
 
-public sealed record CreateActivityRuleCommand(Guid Id, string Title, string Mode,
+public sealed record CreateActivityRuleCommand(Guid UserId, Guid Id, string Title, string Mode,
     List<int> SelectedDays) : ICommand;
 
 public sealed class CreateActivityRuleCommandValidator : AbstractValidator<CreateActivityRuleCommand>
 {
     public CreateActivityRuleCommandValidator()
     {
+        RuleFor(x => x.UserId)
+            .NotEmpty()
+            .WithMessage("Activity rule \"UserId\" can not be empty");
         RuleFor(x => x.Id)
             .NotEmpty()
             .WithMessage("Activity rule \"ID\" can not be empty");

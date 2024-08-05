@@ -6,17 +6,49 @@ namespace discipline.application.unit_tests.Features.ActivityRules.CreateActivit
 
 public sealed class CreateActivityRuleCommandValidatorTests
 {
+    private TestValidationResult<CreateActivityRuleCommand> Act(CreateActivityRuleCommand command)
+        => _validator.TestValidate(command);
+
+    [Fact]
+    public void Validate_GivenValidCommand_ShouldNotHaveAnyValidationError()
+    {
+        //arrange
+        var command = new CreateActivityRuleCommand(Guid.NewGuid(), Guid.Empty,
+            "Title", "Mode", null);
+        
+        //act
+        var result = Act(command);
+
+        //assert
+        result.ShouldNotHaveAnyValidationErrors();
+    }
+    
     [Fact]
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(Guid.Empty, "Title", "Mode", null);
+        var command = new CreateActivityRuleCommand(Guid.NewGuid(), Guid.Empty,
+            "Title", "Mode", null);
         
         //act
-        var result = _validator.TestValidate(command);
+        var result = Act(command);
         
         //assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
+    }
+
+    [Fact]
+    public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorFor()
+    {
+        //arrange
+        var command = new CreateActivityRuleCommand(Guid.Empty, Guid.NewGuid(),
+            "Title", "Mode", null);
+        
+        //act
+        var result = Act(command);
+        
+        //assert
+        result.ShouldHaveValidationErrorFor(x => x.UserId);
     }
     
     [Theory]
@@ -27,10 +59,11 @@ public sealed class CreateActivityRuleCommandValidatorTests
     public void Validate_GivenInvalidTitle_ShouldHaveValidationErrorForTitle(string title)
     {
         //arrange
-        var command = new CreateActivityRuleCommand(Guid.NewGuid(), title, "Mode", null);
+        var command = new CreateActivityRuleCommand(Guid.NewGuid(),
+            Guid.NewGuid(), title, "Mode", null);
         
         //act
-        var result = _validator.TestValidate(command);
+        var result = Act(command);
         
         //assert
         result.ShouldHaveValidationErrorFor(x => x.Title);
@@ -42,7 +75,7 @@ public sealed class CreateActivityRuleCommandValidatorTests
     public void Validate_GivenInvalidMode_ShouldHaveValidationErrorForMode(string mode)
     {
         //arrange
-        var command = new CreateActivityRuleCommand(Guid.NewGuid(), "Title", mode, null);
+        var command = new CreateActivityRuleCommand(Guid.NewGuid(), Guid.NewGuid(), "Title", mode, null);
         
         //act
         var result = _validator.TestValidate(command);
