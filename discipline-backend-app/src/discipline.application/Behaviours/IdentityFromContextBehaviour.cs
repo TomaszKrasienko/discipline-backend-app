@@ -14,7 +14,7 @@ public interface IIdentityContext
     public string Status { get; }
 }
 
-public sealed class IdentityContext : IIdentityContext
+internal sealed class IdentityContext : IIdentityContext
 {
     public bool IsAuthenticated { get; }
     public Guid UserId { get; }
@@ -42,6 +42,12 @@ public sealed class IdentityContext : IIdentityContext
 
 public interface IIdentityContextFactory
 {
-    
+    IIdentityContext Create();
 }
 
+internal sealed class IdentityContextFactory(
+    HttpContextAccessor httpContextAccessor) : IIdentityContextFactory
+{
+    public IIdentityContext Create()
+        => new IdentityContext(httpContextAccessor.HttpContext);
+}
