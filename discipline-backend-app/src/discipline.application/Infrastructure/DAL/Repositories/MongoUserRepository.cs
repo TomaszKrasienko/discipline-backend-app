@@ -26,8 +26,13 @@ internal sealed class MongoUserRepository(
         => (await disciplineMongoCollection.GetCollection<UserDocument>()
             .Find(x => x.Email == email).FirstOrDefaultAsync(cancellationToken))?.AsEntity();
 
-    public async Task<bool> IsEmailExists(string email, CancellationToken cancellationToken = default)
-        => await disciplineMongoCollection.GetCollection<UserDocument>()
+    public Task<bool> IsEmailExists(string email, CancellationToken cancellationToken = default)
+        => disciplineMongoCollection.GetCollection<UserDocument>()
             .Find(x => x.Email == email)
+            .AnyAsync(cancellationToken);
+
+    public Task<bool> IsUserExists(Guid userId, CancellationToken cancellationToken = default)
+        =>  disciplineMongoCollection.GetCollection<UserDocument>()
+            .Find(x => x.Id == userId)
             .AnyAsync(cancellationToken);
 }

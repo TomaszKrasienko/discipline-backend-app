@@ -19,13 +19,15 @@ public static class CreateActivityRule
             {
                 var activityRuleId = Guid.NewGuid();
                 var userId = identityContext.UserId;
-                await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
+                await dispatcher.HandleAsync(command with { Id = activityRuleId, UserId = userId }, cancellationToken);
                 httpContext.AddResourceIdHeader(activityRuleId);
                 return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId}, null);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
             .WithName(nameof(CreateActivityRule))
             .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new (operation)
@@ -37,7 +39,7 @@ public static class CreateActivityRule
     }
 }
 
-public sealed record CreateActivityRuleCommand(Guid UserId, Guid Id, string Title, string Mode,
+public sealed record CreateActivityRuleCommand(Guid Id, Guid UserId, string Title, string Mode,
     List<int> SelectedDays) : ICommand;
 
 public sealed class CreateActivityRuleCommandValidator : AbstractValidator<CreateActivityRuleCommand>
@@ -65,19 +67,19 @@ public sealed class CreateActivityRuleCommandValidator : AbstractValidator<Creat
     }
 }
 
-// internal sealed class CreateActivityRuleCommandHandler(
-//     IActivityRuleRepository activityRuleRepository) : ICommandHandler<CreateActivityRuleCommand>
-// {
-//     public async Task HandleAsync(CreateActivityRuleCommand command, CancellationToken cancellationToken = default)
-//     {
-//         var isExists = await activityRuleRepository.ExistsAsync(command.Title, cancellationToken);
-//         if (isExists)
-//         {
-//             throw new ActivityRuleTitleAlreadyRegisteredException(command.Title);
-//         }
-//
-//         var activity = ActivityRule.Create(command.Id, command.Title, command.Mode, command.SelectedDays);
-//         await activityRuleRepository.AddAsync(activity, cancellationToken);
-//     }
-// }
-//TODO: Finish
+internal sealed class CreateActivityRuleCommandHandler(
+    IActivityRuleRepository activityRuleRepository) : ICommandHandler<CreateActivityRuleCommand>
+{
+    public async Task HandleAsync(CreateActivityRuleCommand command, CancellationToken cancellationToken = default)
+    {
+        var isExists = await activityRuleRepository.ExistsAsync(command.Title, cancellationToken);
+        if (isExists)
+        {
+            throw new ActivityRuleTitleAlreadyRegisteredException(command.Title);
+        }
+
+        var activity = ActivityRule.Create(command.Id, command.UserId, command.Title, 
+            command.Mode, command.SelectedDays);
+        await activityRuleRepository.AddAsync(activity, cancellationToken);
+    }
+}

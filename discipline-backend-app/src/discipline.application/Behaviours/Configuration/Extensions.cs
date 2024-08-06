@@ -17,10 +17,12 @@ internal static class Extensions
             .AddPasswordSecureBehaviour()
             .AddAuthBehaviour(configuration)
             .AddTokenStorage()
-            .AddIdentityFromContextBehaviour();
+            .AddIdentityFromContextBehaviour()
+            .AddUserStateCheckingBehaviour();
 
     internal static WebApplication UseBehaviours(this WebApplication app)
         => app
             .UseHandlingException()
+            .UseUserStateCheckingBehaviour()
             .UseAuthBehaviour();
 }
