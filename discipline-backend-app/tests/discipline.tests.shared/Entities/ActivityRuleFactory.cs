@@ -17,6 +17,7 @@ internal static class ActivityRuleFactory
         => new Faker<ActivityRule>()
             .CustomInstantiator(arg => ActivityRule.Create(
                 Guid.NewGuid(),
+                Guid.NewGuid(),
                 arg.Random.String2(length: 10),
                 selectedDays is null ? arg.PickRandom<string>(Mode.AvailableModes.Keys.Where(x => x != Mode.CustomMode()).ToList()) : Mode.CustomMode(),
                 selectedDays));

@@ -10,6 +10,7 @@ internal static class ActivityRuleMappingExtensions
         => new()
         {
             Id = entity.Id,
+            UserId = entity.UserId,
             Title = entity.Title,
             Mode = entity.Mode,
             SelectedDays = entity.SelectedDays?.Select(x => x.Value).ToList()
@@ -18,6 +19,7 @@ internal static class ActivityRuleMappingExtensions
     internal static ActivityRule AsEntity(this ActivityRuleDocument document)
         => new(
             document.Id,
+            document.UserId,
             document.Title,
             document.Mode,
             document.SelectedDays?.Select(x => new SelectedDay(x)));

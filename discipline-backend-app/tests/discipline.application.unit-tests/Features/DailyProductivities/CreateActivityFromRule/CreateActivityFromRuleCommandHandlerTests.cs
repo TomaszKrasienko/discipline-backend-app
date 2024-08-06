@@ -21,7 +21,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     public async Task HandleAsync_GivenDateForRuleAndExistingDailyProductivity_ShouldAddActivityAndUpdateDailyProductivityByRepository()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
         var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),activityRule.Id);
 
@@ -53,7 +53,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     public async Task HandleAsync_GivenDateForRuleAndNotExistingDailyProductivity_ShouldAddActivityAndAndDailyProductivityByRepository()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
         var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),activityRule.Id);
 
@@ -93,7 +93,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     public async Task HandleAsync_GivenDateNotForRule_ShouldNotAddActivityAndUpdateDailyProductivityByRepository()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
         var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 4);
         var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),activityRule.Id);
 

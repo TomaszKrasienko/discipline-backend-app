@@ -7,26 +7,30 @@ namespace discipline.application.Domain.ActivityRules.Entities;
 internal sealed class ActivityRule
 {
     public EntityId Id { get; }
+    public EntityId UserId { get; }
     public Title Title { get; private set; }
     public Mode Mode { get; private set; }
     private List<SelectedDay> _selectedDays = [];
-    public IReadOnlyList<SelectedDay> SelectedDays => _selectedDays; 
+    public IReadOnlyList<SelectedDay> SelectedDays => _selectedDays;
 
-    private ActivityRule(EntityId id)
-        => Id = id;
-
-    //For mongo
-    public ActivityRule(EntityId id, Title title, Mode mode, IEnumerable<SelectedDay> selectedDays)
+    private ActivityRule(EntityId id, EntityId userId)
     {
         Id = id;
+        UserId = userId;
+    }
+
+    //For mongo
+    public ActivityRule(EntityId id, EntityId userId, Title title, 
+        Mode mode, IEnumerable<SelectedDay> selectedDays) : this(id, userId)
+    {
         Title = title;
         Mode = mode;
         _selectedDays = selectedDays?.ToList() ?? [];
     }
 
-    internal static ActivityRule Create(Guid id, string title, string mode, List<int> selectedDays = null)
+    internal static ActivityRule Create(Guid id, Guid userId, string title, string mode, List<int> selectedDays = null)
     {
-        var item = new ActivityRule(id);
+        var item = new ActivityRule(id, userId);
         item.ChangeTitle(title);
         item.ChangeMode(mode);
         item.ChangeSelectedDays(mode, selectedDays);

@@ -65,18 +65,19 @@ public sealed class CreateActivityRuleCommandValidator : AbstractValidator<Creat
     }
 }
 
-internal sealed class CreateActivityRuleCommandHandler(
-    IActivityRuleRepository activityRuleRepository) : ICommandHandler<CreateActivityRuleCommand>
-{
-    public async Task HandleAsync(CreateActivityRuleCommand command, CancellationToken cancellationToken = default)
-    {
-        var isExists = await activityRuleRepository.ExistsAsync(command.Title, cancellationToken);
-        if (isExists)
-        {
-            throw new ActivityRuleTitleAlreadyRegisteredException(command.Title);
-        }
-
-        var activity = ActivityRule.Create(command.Id, command.Title, command.Mode, command.SelectedDays);
-        await activityRuleRepository.AddAsync(activity, cancellationToken);
-    }
-}
+// internal sealed class CreateActivityRuleCommandHandler(
+//     IActivityRuleRepository activityRuleRepository) : ICommandHandler<CreateActivityRuleCommand>
+// {
+//     public async Task HandleAsync(CreateActivityRuleCommand command, CancellationToken cancellationToken = default)
+//     {
+//         var isExists = await activityRuleRepository.ExistsAsync(command.Title, cancellationToken);
+//         if (isExists)
+//         {
+//             throw new ActivityRuleTitleAlreadyRegisteredException(command.Title);
+//         }
+//
+//         var activity = ActivityRule.Create(command.Id, command.Title, command.Mode, command.SelectedDays);
+//         await activityRuleRepository.AddAsync(activity, cancellationToken);
+//     }
+// }
+//TODO: Finish

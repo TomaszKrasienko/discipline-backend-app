@@ -21,7 +21,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     public async Task CreateActivityFromRule_GivenExistingActivityRule_ShouldReturn200OkStatusCodeAndAddActivity()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "test_title", Mode.EveryDayMode());
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"test_title", Mode.EveryDayMode());
         await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
         var command = new CreateActivityFromRuleCommand(Guid.Empty, activityRule.Id);
         

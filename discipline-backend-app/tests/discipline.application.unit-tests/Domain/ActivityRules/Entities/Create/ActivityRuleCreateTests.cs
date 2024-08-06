@@ -14,15 +14,17 @@ public sealed class ActivityRuleCreateTests
     {
         //arrange
         var id = Guid.NewGuid();
+        var userId = Guid.NewGuid();
         var title = "Test title";
         var mode = Mode.EveryDayMode();
         
         //act
-        var result = ActivityRule.Create(id, title, mode);
+        var result = ActivityRule.Create(id, userId, title, mode);
         
         //assert
         result.ShouldBeOfType<ActivityRule>();
         result.Id.Value.ShouldBe(id);
+        result.UserId.Value.ShouldBe(userId);
         result.Title.Value.ShouldBe(title);
         result.Mode.Value.ShouldBe(mode);
     }
@@ -32,12 +34,13 @@ public sealed class ActivityRuleCreateTests
     {
         //arrange
         var id = Guid.NewGuid();
+        var userId = Guid.NewGuid();
         var title = "Test title";
         var mode = Mode.CustomMode();
         List<int> selectedDays = [1, 2, 4];
         
         //act
-        var result = ActivityRule.Create(id, title, mode, selectedDays);
+        var result = ActivityRule.Create(id, userId, title, mode, selectedDays);
         
         //assert
         result.ShouldBeOfType<ActivityRule>();
@@ -50,44 +53,10 @@ public sealed class ActivityRuleCreateTests
     }
     
     [Fact]
-    public void CreateFromRule_GivenModeForDay_ShouldReturnActivity()
-    {
-        //arrange
-        var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-        var mode = Mode.FirstDayOfMonth();
-        var id = Guid.NewGuid();
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "Title", mode);
-        
-        //act
-        var result = Activity.CreateFromRule(id, now, activityRule);
-
-        //assert
-        result.Id.Value.ShouldBe(id);
-        result.Title.Value.ShouldBe(activityRule.Title);
-        result.IsChecked.Value.ShouldBeFalse();
-        result.ParentRuleId.Value.ShouldBe(activityRule.Id.Value);
-    }
-
-    [Fact]
-    public void CreateFromRule_GivenModeNotForDay_ShouldReturnNull()
-    {
-        //arrange
-        var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 4);
-        var mode = Mode.FirstDayOfMonth();
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "Title", mode);
-        
-        //act
-        var result = Activity.CreateFromRule(Guid.NewGuid(), now, activityRule);
-
-        //assert
-        result.ShouldBeNull();
-    }
-    
-    [Fact]
     public void Create_GivenEmptyTitle_ShouldThrowEmptyActivityRuleTitleException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), string.Empty,
+        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),string.Empty,
             Mode.EveryDayMode(), null));
         
         //assert
@@ -98,7 +67,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenTitleWithInvalidLength_ShouldThrowEmptyActivityRuleTitleException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), "T",
+        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"T",
             Mode.EveryDayMode(), null));
         
         //assert
@@ -109,7 +78,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenEmptyMode_ShouldThrowEmptyActivityRuleModeException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), "Test title",
+        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"Test title",
             string.Empty, null));
         
         //assert
@@ -120,7 +89,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenRandomMode_ShouldThrowModeUnavailableException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), "Test title",
+        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"Test title",
             Guid.NewGuid().ToString(), null));
         
         //assert
@@ -131,7 +100,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenSelectedDaysNotEmptyAndModeOtherThanCustom_ShouldThrowInvalidModeForSelectedDaysException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), "Test title",
+        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "Test title",
             Mode.EveryDayMode(), [1, 2, 3]));
         
         //assert
@@ -144,7 +113,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenInvalidSelectedDay_ShouldThrowSelectedDayOutOfRangeException(int selectedDay)
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), "Test title",
+        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"Test title",
             Mode.CustomMode(), [selectedDay]));
         
         //assert

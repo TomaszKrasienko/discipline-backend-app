@@ -46,7 +46,7 @@ public sealed class DailyProductivityTests
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "activity title",
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "activity title",
             Mode.EveryDayMode());
         var id = Guid.NewGuid();
         
@@ -68,7 +68,7 @@ public sealed class DailyProductivityTests
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "activity title",
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"activity title",
             Mode.FirstDayOfMonth());
         var id = Guid.NewGuid();
         
@@ -93,7 +93,7 @@ public sealed class DailyProductivityTests
         var title = "Activity title";
         dailyProductivity.AddActivity(Guid.NewGuid(), title);
         
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), title,
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), title,
             Mode.EveryDayMode());
     
         //act
