@@ -7,7 +7,6 @@ using discipline.application.Features.ActivityRules;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.Users;
 using discipline.tests.shared.Entities;
-using Microsoft.AspNetCore.Http;
 using Shouldly;
 using Xunit;
 

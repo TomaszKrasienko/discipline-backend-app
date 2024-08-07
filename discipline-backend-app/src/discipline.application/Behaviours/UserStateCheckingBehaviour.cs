@@ -40,10 +40,13 @@ internal sealed class UserStateMiddleware(
         if (user is null)
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return;
         }
-        else if (user?.Status.Value == Status.Created().Value)
+        if (user?.Status.Value == Status.Created().Value)
         {
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            return;
         }
+        await next(context);
     }
 } 
