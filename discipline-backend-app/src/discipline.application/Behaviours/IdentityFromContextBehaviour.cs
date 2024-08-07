@@ -55,7 +55,7 @@ public interface IIdentityContextFactory
 }
 
 internal sealed class IdentityContextFactory(
-    HttpContextAccessor httpContextAccessor) : IIdentityContextFactory
+    IHttpContextAccessor httpContextAccessor) : IIdentityContextFactory
 {
     public IIdentityContext Create()
         => new IdentityContext(httpContextAccessor.HttpContext);

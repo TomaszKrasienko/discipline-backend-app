@@ -23,6 +23,6 @@ internal static class Extensions
     internal static WebApplication UseBehaviours(this WebApplication app)
         => app
             .UseHandlingException()
-            .UseUserStateCheckingBehaviour()
-            .UseAuthBehaviour();
+            .UseAuthBehaviour()
+            .UseUserStateCheckingBehaviour();
 }
