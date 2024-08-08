@@ -1,7 +1,7 @@
 using discipline.application.Domain.ActivityRules.Entities;
 using discipline.application.Domain.DailyProductivities.Exceptions;
 using discipline.application.Domain.DailyProductivities.ValueObjects.DailyProductivity;
-using discipline.application.Domain.SharedKernel;
+using discipline.domain.SharedKernel;
 
 namespace discipline.application.Domain.DailyProductivities.Entities;
 

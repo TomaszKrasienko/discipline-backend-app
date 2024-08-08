@@ -1,4 +1,3 @@
-using discipline.application.Domain.SharedKernel;
 using discipline.application.Domain.UsersCalendars.ValueObjects.UserCalendar;
 
 namespace discipline.application.Domain.UsersCalendars.Entities;

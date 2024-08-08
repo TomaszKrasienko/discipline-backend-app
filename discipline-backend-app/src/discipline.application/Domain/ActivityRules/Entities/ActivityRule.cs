@@ -1,6 +1,6 @@
 using discipline.application.Domain.ActivityRules.Exceptions;
 using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
-using discipline.application.Domain.SharedKernel;
+using discipline.domain.SharedKernel;
 
 namespace discipline.application.Domain.ActivityRules.Entities;
 

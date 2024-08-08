@@ -1,5 +1,5 @@
-using discipline.application.Domain.SharedKernel;
 using discipline.application.Domain.UsersCalendars.ValueObjects.Event;
+using discipline.domain.SharedKernel;
 using Action = discipline.application.Domain.UsersCalendars.ValueObjects.Event.Action;
 
 namespace discipline.application.Domain.UsersCalendars.Entities;

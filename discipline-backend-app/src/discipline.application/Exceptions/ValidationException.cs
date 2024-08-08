@@ -1,3 +1,5 @@
+using discipline.domain.SharedKernel;
+
 namespace discipline.application.Exceptions;
 
 public class ValidationException(Type command, List<string> errorMessages)

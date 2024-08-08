@@ -27,4 +27,7 @@
       <Folder Include="Domain\ActivityRules\ValueObjects\" />
       <Folder Include="Domain\DailyProductivities\ValueObjects\" />
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\discipline.domain\discipline.domain.csproj" />
+    </ItemGroup>
 </Project>
