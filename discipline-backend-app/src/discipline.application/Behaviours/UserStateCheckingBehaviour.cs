@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using discipline.application.Domain.Users.Repositories;
 using discipline.application.Domain.Users.ValueObjects;
 using Microsoft.AspNetCore.Builder;
@@ -27,11 +28,13 @@ internal sealed class UserStateMiddleware(
         if (!(context.User?.Identity?.IsAuthenticated) ?? true)
         {
             await next(context);
+            return;
         }
 
         if (!(Guid.TryParse(context?.User?.Identity?.Name, out var userId)))
         {
             await next(context);
+            return;
         }
 
         using var scope = serviceProvider.CreateScope();
@@ -45,6 +48,7 @@ internal sealed class UserStateMiddleware(
         if (user?.Status.Value == Status.Created().Value)
         {
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
+            var errorDto = new ErrorDto("create_user_state", "User have to have picked subscription");
             return;
         }
         await next(context);

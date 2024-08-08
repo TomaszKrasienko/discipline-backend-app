@@ -37,7 +37,7 @@ public sealed class IdentityContextFactoryTests
         
         //assert
         result.ShouldNotBeNull();
-        result.ShouldBeOfType<IIdentityContext>();
+        result.ShouldBeOfType<IdentityContext>();
         result.IsAuthenticated.ShouldBeTrue();
     }
 }
