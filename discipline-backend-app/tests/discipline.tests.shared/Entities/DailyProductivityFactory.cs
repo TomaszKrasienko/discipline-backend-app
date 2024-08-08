@@ -14,5 +14,5 @@ internal static class DailyProductivityFactory
     private static Faker<DailyProductivity> GetFaker(DateOnly? now = null)
         => new Faker<DailyProductivity>()
             .CustomInstantiator(x => DailyProductivity.Create(
-                now ?? DateOnly.FromDateTime(DateTime.Now.Date)));
+                now ?? DateOnly.FromDateTime(DateTime.Now.Date), Guid.NewGuid()));
 }

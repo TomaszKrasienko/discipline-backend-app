@@ -11,11 +11,13 @@ public sealed class DailyProductivityCreateTests
     {
         //arrange
         var day = DateTime.Now;
+        var userId = Guid.NewGuid();
         
         //act
-        var result = DailyProductivity.Create(DateOnly.FromDateTime(day));
+        var result = DailyProductivity.Create(DateOnly.FromDateTime(day), userId);
         
         //assert
         result.Day.Value.ShouldBe(DateOnly.FromDateTime(day));
+        result.UserId.Value.ShouldBe(userId);
     } 
 }

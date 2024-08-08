@@ -33,7 +33,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .DateNow()
             .Returns(now);
 
-        var dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now));
+        var dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now), activityRule.UserId);
         _dailyProductivityRepository
             .GetByDateAsync(dailyProductivity.Day)
             .Returns(dailyProductivity);
@@ -73,7 +73,8 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .Received(1)
             .AddAsync(Arg.Is<DailyProductivity>(arg
                 => arg.Day.Value == DateOnly.FromDateTime(now)
-                   && arg.Activities.Any(x => x.Id.Equals(command.ActivityId))));
+                && arg.UserId.Value == activityRule.UserId.Value
+                && arg.Activities.Any(x => x.Id.Equals(command.ActivityId))));
     }
     
     [Fact]
@@ -105,7 +106,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .DateNow()
             .Returns(now);
 
-        var dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now));
+        var dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now), activityRule.UserId);
         _dailyProductivityRepository
             .GetByDateAsync(dailyProductivity.Day)
             .Returns(dailyProductivity);

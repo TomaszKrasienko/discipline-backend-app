@@ -13,14 +13,21 @@ internal static class CreateActivity
     internal static WebApplication MapCreateActivity(this WebApplication app)
     {
         app.MapPost($"/{Extensions.DailyProductivityTag}/{{day:datetime}}/add-activity", async (DateTime day, CreateActivityCommand command,
-            CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
+            CancellationToken cancellationToken, ICommandDispatcher commandDispatcher, IIdentityContext identityContext) =>
             {
                 var activityId = Guid.NewGuid();
-                await commandDispatcher.HandleAsync(command with { Id = activityId, Day = DateOnly.FromDateTime(day)}, cancellationToken);
+                await commandDispatcher.HandleAsync(command with
+                {
+                    Id = activityId,
+                    Day = DateOnly.FromDateTime(day),
+                    UserId = identityContext.UserId
+                }, cancellationToken);
                 return Results.Ok();
             })            
             .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(CreateActivity))
             .WithTags(Extensions.DailyProductivityTag)
@@ -32,7 +39,7 @@ internal static class CreateActivity
     }
 }
 
-public sealed record CreateActivityCommand(Guid Id, string Title, DateOnly Day) : ICommand;
+public sealed record CreateActivityCommand(Guid Id, Guid UserId, string Title, DateOnly Day) : ICommand;
 
 public sealed class CreateActivityCommandValidator : AbstractValidator<CreateActivityCommand>
 {
@@ -66,7 +73,7 @@ internal sealed class CreateActivityCommandHandler(
         var dailyProductivity = await dailyProductivityRepository.GetByDateAsync(command.Day, cancellationToken);
         if (dailyProductivity is null)
         {
-            dailyProductivity = DailyProductivity.Create(command.Day);
+            dailyProductivity = DailyProductivity.Create(command.Day, command.UserId);
             dailyProductivity.AddActivity(command.Id, command.Title);
             await dailyProductivityRepository.AddAsync(dailyProductivity, cancellationToken);
             return;

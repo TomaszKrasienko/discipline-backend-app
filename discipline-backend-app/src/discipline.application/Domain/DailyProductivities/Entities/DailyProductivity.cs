@@ -1,4 +1,3 @@
-using discipline.application.Domain.ActivityRules;
 using discipline.application.Domain.ActivityRules.Entities;
 using discipline.application.Domain.DailyProductivities.Exceptions;
 using discipline.application.Domain.DailyProductivities.ValueObjects.DailyProductivity;
@@ -10,22 +9,23 @@ internal sealed class DailyProductivity : AggregateRoot
 {
     private readonly List<Activity> _activities = new();
     internal Day Day { get; private set; }
+    internal EntityId UserId { get; private set; }
     internal IReadOnlyList<Activity> Activities => _activities;
 
-    private DailyProductivity(Day day) : base()
+    private DailyProductivity(Day day, EntityId userId) : base()
     {
         Day = day;
     }
 
     //For mongo
-    internal DailyProductivity(Day day, List<Activity> activities)
+    internal DailyProductivity(Day day, EntityId userId, List<Activity> activities) 
+        : this(day, userId)
     {
-        Day = day;
         _activities = activities;
     }
 
-    internal static DailyProductivity Create(DateOnly day)
-        => new DailyProductivity(day);
+    internal static DailyProductivity Create(DateOnly day, Guid userId)
+        => new DailyProductivity(day, userId);
     
     internal void AddActivity(Guid id, string title)
     {

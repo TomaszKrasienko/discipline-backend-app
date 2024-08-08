@@ -18,14 +18,14 @@ public sealed class GetProgressDataTests : BaseTestsController
     public async Task GetProgressData_GivenFilledData_ShouldReturnIEnumerableOfProgressDataDto()
     {
         //arrange
-        var dailyProductivity1 = DailyProductivity.Create(new DateOnly(2024, 6, 10));
+        var dailyProductivity1 = DailyProductivity.Create(new DateOnly(2024, 6, 10), Guid.NewGuid());
         dailyProductivity1.AddActivity(Guid.NewGuid(), "test 1");
         dailyProductivity1.AddActivity(Guid.NewGuid(), "test 2");
         dailyProductivity1.AddActivity(Guid.NewGuid(), "test 3");
         dailyProductivity1.ChangeActivityCheck(dailyProductivity1.Activities.First(x => x.Title == "test 1").Id);
         dailyProductivity1.ChangeActivityCheck(dailyProductivity1.Activities.First(x => x.Title == "test 2").Id);
         
-        var dailyProductivity2 = DailyProductivity.Create(new DateOnly(2024, 6, 11));
+        var dailyProductivity2 = DailyProductivity.Create(new DateOnly(2024, 6, 11),Guid.NewGuid());
         dailyProductivity2.AddActivity(Guid.NewGuid(), "test 1");
         dailyProductivity2.AddActivity(Guid.NewGuid(), "test 2");
         dailyProductivity2.AddActivity(Guid.NewGuid(), "test 3");

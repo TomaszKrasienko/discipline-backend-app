@@ -120,7 +120,7 @@ internal sealed class CreateActivityFromRuleCommandHandler(
         var dailyProductivity = await dailyProductivityRepository.GetByDateAsync(day, cancellationToken);
         if (dailyProductivity is null)
         {
-            dailyProductivity = DailyProductivity.Create(day);
+            dailyProductivity = DailyProductivity.Create(day, activityRule.UserId);
             dailyProductivity.AddActivityFromRule(command.ActivityId, clock.DateNow(), activityRule);
             await dailyProductivityRepository.AddAsync(dailyProductivity, cancellationToken);
             return;
