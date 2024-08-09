@@ -1,10 +1,6 @@
 using discipline.application.Domain.ActivityRules;
-using discipline.application.Domain.ActivityRules.Entities;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
-using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.Domain.Users.Entities;
 using discipline.application.Domain.Users.Repositories;
-using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Infrastructure.DAL.Configuration.Options;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;

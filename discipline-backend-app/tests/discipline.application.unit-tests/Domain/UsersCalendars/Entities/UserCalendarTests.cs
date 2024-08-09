@@ -1,4 +1,3 @@
-using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
 using discipline.tests.shared.Entities;
 using Shouldly;

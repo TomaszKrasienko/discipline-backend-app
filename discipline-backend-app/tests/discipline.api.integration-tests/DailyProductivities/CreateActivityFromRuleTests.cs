@@ -1,8 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Domain.ActivityRules.Entities;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Features.DailyProductivities;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;

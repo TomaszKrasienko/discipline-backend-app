@@ -18,7 +18,7 @@ public sealed class Billing
     }
     
     //For mongo
-    internal Billing(EntityId id, CreatedAt createdAt, IsRealized isRealized, Cost cost, TransferDetails transferDetails)
+    public Billing(EntityId id, CreatedAt createdAt, IsRealized isRealized, Cost cost, TransferDetails transferDetails)
         : this(id, createdAt)
     {
         IsRealized = isRealized;

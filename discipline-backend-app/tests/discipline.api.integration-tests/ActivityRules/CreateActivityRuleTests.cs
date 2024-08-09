@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Domain.Users.Entities;
 using discipline.application.Domain.Users.ValueObjects;
 using discipline.application.Features.ActivityRules;

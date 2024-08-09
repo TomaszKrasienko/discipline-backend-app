@@ -1,10 +1,5 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.ActivityRules;
-using discipline.application.Domain.ActivityRules.Entities;
-using discipline.application.Domain.ActivityRules.Repositories;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
-using discipline.application.Domain.DailyProductivities.Entities;
-using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Exceptions;
 using discipline.application.Features.DailyProductivities;
 using NSubstitute;

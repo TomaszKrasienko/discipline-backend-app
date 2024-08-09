@@ -1,7 +1,6 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.DailyProductivities.Exceptions;
-using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Features.DailyProductivities.Configuration;
+using discipline.domain.DailyProductivities.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

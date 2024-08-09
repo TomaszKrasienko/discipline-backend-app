@@ -1,7 +1,6 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.DailyProductivities.Exceptions;
-using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Features.DailyProductivities;
+using discipline.domain.DailyProductivities.Exceptions;
 using discipline.tests.shared.Entities;
 using NSubstitute;
 using Shouldly;

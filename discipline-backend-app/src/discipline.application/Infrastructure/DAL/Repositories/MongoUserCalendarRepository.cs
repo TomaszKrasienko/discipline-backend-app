@@ -1,6 +1,4 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.UsersCalendars.Entities;
-using discipline.application.Domain.UsersCalendars.Repositories;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;

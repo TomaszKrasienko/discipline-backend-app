@@ -1,6 +1,4 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.UsersCalendars.Entities;
-using discipline.application.Domain.UsersCalendars.Repositories;
 using discipline.application.Features.UsersCalendars.Configuration;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;

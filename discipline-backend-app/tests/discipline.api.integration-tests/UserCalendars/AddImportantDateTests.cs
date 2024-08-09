@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Features.UsersCalendars;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;

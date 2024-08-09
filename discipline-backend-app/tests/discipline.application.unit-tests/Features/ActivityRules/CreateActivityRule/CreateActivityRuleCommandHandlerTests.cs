@@ -1,8 +1,5 @@
 using discipline.application.Behaviours;
 using discipline.application.Domain.ActivityRules;
-using discipline.application.Domain.ActivityRules.Entities;
-using discipline.application.Domain.ActivityRules.Repositories;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules;
 using NSubstitute;

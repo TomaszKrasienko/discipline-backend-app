@@ -1,5 +1,4 @@
-using discipline.application.Domain.UsersCalendars.Exceptions;
-using discipline.application.Domain.UsersCalendars.Policies;
+using discipline.domain.UsersCalendars.Exceptions;
 using Shouldly;
 using Xunit;
 

@@ -1,6 +1,4 @@
 using discipline.application.Domain.ActivityRules;
-using discipline.application.Domain.ActivityRules.Entities;
-using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;

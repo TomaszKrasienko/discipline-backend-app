@@ -1,4 +1,3 @@
-using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.DTOs;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;

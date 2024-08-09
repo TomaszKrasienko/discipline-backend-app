@@ -1,7 +1,7 @@
-using discipline.application.Domain.UsersCalendars.Entities;
-using discipline.application.Domain.UsersCalendars.ValueObjects.Event;
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
+using discipline.domain.UsersCalendars.Entities;
+using discipline.domain.UsersCalendars.ValueObjects.UserCalendar;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;
 
@@ -51,7 +51,7 @@ internal static class UserCalendarMappingExtensions
         };
 
     internal static UserCalendar AsEntity(this UserCalendarDocument document)
-        => new(document.Day, document.Events?.Select(x => x.AsEntity()).ToList());
+        => new((Day)document.Day, (List<Event>)document.Events?.Select(x => x.AsEntity()).ToList());
 
     private static Event AsEntity(this EventDocument document) => document switch
     {

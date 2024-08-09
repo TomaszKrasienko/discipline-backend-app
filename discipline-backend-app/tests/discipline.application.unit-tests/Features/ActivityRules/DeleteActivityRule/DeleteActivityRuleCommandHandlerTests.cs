@@ -1,5 +1,4 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules;
 using discipline.tests.shared.Entities;

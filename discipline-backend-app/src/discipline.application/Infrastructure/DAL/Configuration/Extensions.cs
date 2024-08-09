@@ -1,9 +1,6 @@
 using System.Collections.Frozen;
 using discipline.application.Configuration;
-using discipline.application.Domain.ActivityRules.Repositories;
-using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Domain.Users.Repositories;
-using discipline.application.Domain.UsersCalendars.Repositories;
 using discipline.application.Infrastructure.DAL.Configuration.Options;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Connection.Configuration;
