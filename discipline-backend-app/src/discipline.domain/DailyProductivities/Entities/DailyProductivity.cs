@@ -5,12 +5,12 @@ using discipline.domain.SharedKernel;
 
 namespace discipline.domain.DailyProductivities.Entities;
 
-internal sealed class DailyProductivity : AggregateRoot
+public sealed class DailyProductivity : AggregateRoot
 {
     private readonly List<Activity> _activities = new();
-    internal Day Day { get; private set; }
-    internal EntityId UserId { get; private set; }
-    internal IReadOnlyList<Activity> Activities => _activities;
+    public Day Day { get; private set; }
+    public EntityId UserId { get; private set; }
+    public IReadOnlyList<Activity> Activities => _activities;
 
     private DailyProductivity(Day day, EntityId userId) : base()
     {
@@ -18,23 +18,23 @@ internal sealed class DailyProductivity : AggregateRoot
     }
 
     //For mongo
-    internal DailyProductivity(Day day, EntityId userId, List<Activity> activities) 
+    public DailyProductivity(Day day, EntityId userId, List<Activity> activities) 
         : this(day, userId)
     {
         _activities = activities;
     }
 
-    internal static DailyProductivity Create(DateOnly day, Guid userId)
+    public static DailyProductivity Create(DateOnly day, Guid userId)
         => new DailyProductivity(day, userId);
     
-    internal void AddActivity(Guid id, string title)
+    public void AddActivity(Guid id, string title)
     {
         ValidateActivity(title);
         var activity = Activity.Create(id, title);
         _activities.Add(activity);
     }
 
-    internal void AddActivityFromRule(Guid id, DateTime now, ActivityRule activityRule)
+    public void AddActivityFromRule(Guid id, DateTime now, ActivityRule activityRule)
     {
         ValidateActivity(activityRule.Title);
         var activity = Activity.CreateFromRule(id, now, activityRule);
@@ -52,7 +52,7 @@ internal sealed class DailyProductivity : AggregateRoot
         }
     }
 
-    internal void DeleteActivity(Guid activityId)
+    public void DeleteActivity(Guid activityId)
     {
         var activity = _activities.FirstOrDefault(x => x.Id.Equals(activityId));
         if (activity is null)
@@ -63,7 +63,7 @@ internal sealed class DailyProductivity : AggregateRoot
         _activities.Remove(activity);
     }
 
-    internal void ChangeActivityCheck(Guid activityId)
+    public void ChangeActivityCheck(Guid activityId)
     {
         var activity = _activities.FirstOrDefault(x => x.Id.Equals(activityId));
         if (activity is null)

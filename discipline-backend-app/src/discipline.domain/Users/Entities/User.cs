@@ -29,7 +29,7 @@ public sealed class User : AggregateRoot<Guid>
         SubscriptionOrder = subscriptionOrder;
     }
 
-    internal static User Create(Guid id, string email, string password, string firstName, string lastName)
+    public static User Create(Guid id, string email, string password, string firstName, string lastName)
     {
         var user = new User(id);
         user.ChangeEmail(email);

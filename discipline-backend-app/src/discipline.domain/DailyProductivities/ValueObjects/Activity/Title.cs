@@ -2,11 +2,11 @@ using discipline.domain.DailyProductivities.Exceptions;
 
 namespace discipline.domain.DailyProductivities.ValueObjects.Activity;
 
-internal sealed record Title
+public sealed record Title
 {
-    internal string Value { get; }
+    public string Value { get; }
 
-    internal Title(string value)
+    public Title(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {

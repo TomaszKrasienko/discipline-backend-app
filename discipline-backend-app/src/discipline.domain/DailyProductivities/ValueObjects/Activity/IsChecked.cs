@@ -1,10 +1,10 @@
 namespace discipline.domain.DailyProductivities.ValueObjects.Activity;
 
-internal sealed record IsChecked
+public sealed record IsChecked
 {
-    internal bool Value { get; }
+    public bool Value { get; }
 
-    internal IsChecked(bool value)
+    public IsChecked(bool value)
         => Value = value;
 
     public static implicit operator bool(IsChecked isChecked)

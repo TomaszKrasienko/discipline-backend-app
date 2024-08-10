@@ -4,6 +4,7 @@ using discipline.application.Behaviours;
 using discipline.application.Configuration;
 using discipline.application.Exceptions;
 using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.DailyProductivities.Entities;
 using discipline.domain.DailyProductivities.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
