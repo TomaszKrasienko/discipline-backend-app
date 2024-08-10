@@ -1,4 +1,4 @@
-using discipline.application.Domain.Users.Entities;
+using discipline.domain.Users.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 

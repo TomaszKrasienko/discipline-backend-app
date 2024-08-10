@@ -1,4 +1,5 @@
 using Bogus;
+using discipline.domain.UsersCalendars.Entities;
 
 namespace discipline.tests.shared.Entities;
 

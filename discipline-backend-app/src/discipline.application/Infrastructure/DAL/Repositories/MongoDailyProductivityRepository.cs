@@ -1,6 +1,8 @@
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
+using discipline.domain.DailyProductivities.Entities;
+using discipline.domain.DailyProductivities.Repositories;
 using MongoDB.Driver;
 
 namespace discipline.application.Infrastructure.DAL.Repositories;

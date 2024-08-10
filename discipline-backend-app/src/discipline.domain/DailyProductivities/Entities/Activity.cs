@@ -24,7 +24,7 @@ public sealed class Activity
     }
     
     //For mongo
-    internal Activity(EntityId id, Title title, IsChecked isChecked, EntityId parentRuleId)
+    public Activity(EntityId id, Title title, IsChecked isChecked, EntityId parentRuleId)
     {
         Id = id;
         Title = title;

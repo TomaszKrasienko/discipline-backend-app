@@ -3,7 +3,7 @@ using discipline.domain.UsersCalendars.ValueObjects.Event;
 
 namespace discipline.domain.UsersCalendars.Entities;
 
-internal sealed class Meeting : Event
+public sealed class Meeting : Event
 {
     public MeetingTimeSpan MeetingTimeSpan { get; private set; }
     public Address Address { get; private set; }
@@ -14,7 +14,7 @@ internal sealed class Meeting : Event
     }
 
     //For mongo
-    internal Meeting(EntityId id, Title title, MeetingTimeSpan meetingTimeSpan, Address address) : base(id, title)
+    public Meeting(EntityId id, Title title, MeetingTimeSpan meetingTimeSpan, Address address) : base(id, title)
     {
         MeetingTimeSpan = meetingTimeSpan;
         Address = address;

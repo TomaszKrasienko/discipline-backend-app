@@ -2,7 +2,7 @@ using discipline.domain.UsersCalendars.Policies;
 
 namespace discipline.domain.UsersCalendars.ValueObjects.Event;
 
-internal sealed record Address
+public sealed record Address
 {
     public string Platform { get; }
     public string Uri { get; }

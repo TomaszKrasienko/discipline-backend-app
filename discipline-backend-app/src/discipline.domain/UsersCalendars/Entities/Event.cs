@@ -3,7 +3,7 @@ using discipline.domain.UsersCalendars.ValueObjects.Event;
 
 namespace discipline.domain.UsersCalendars.Entities;
 
-internal abstract class Event
+public abstract class Event
 {
     public EntityId Id { get; }
     public Title Title { get; private set; }

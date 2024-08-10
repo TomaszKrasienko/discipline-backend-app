@@ -3,11 +3,11 @@ using discipline.domain.UsersCalendars.Exceptions;
 
 namespace discipline.domain.UsersCalendars.ValueObjects.Event;
 
-internal sealed record Title
+public sealed record Title
 {
-    internal string Value { get; }
+    public string Value { get; }
 
-    internal Title(string value)
+    public Title(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {

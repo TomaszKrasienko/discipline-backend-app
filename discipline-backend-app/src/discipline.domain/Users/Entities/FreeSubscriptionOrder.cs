@@ -4,7 +4,7 @@ using discipline.domain.Users.ValueObjects;
 
 namespace discipline.domain.Users.Entities;
 
-internal sealed class FreeSubscriptionOrder : SubscriptionOrder
+public sealed class FreeSubscriptionOrder : SubscriptionOrder
 {
     private FreeSubscriptionOrder(EntityId id, CreatedAt createdAt) : base(id, createdAt)
     {
@@ -16,7 +16,7 @@ internal sealed class FreeSubscriptionOrder : SubscriptionOrder
     {
     }
 
-    internal static FreeSubscriptionOrder Create(Guid id, Subscription subscription, DateTime now)
+    public static FreeSubscriptionOrder Create(Guid id, Subscription subscription, DateTime now)
     {
         if (subscription is null)
         {

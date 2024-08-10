@@ -10,6 +10,7 @@
     </ItemGroup>
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.application.unit-tests"/>
+        <InternalsVisibleTo Include="discipline.domain.unit-tests"/>
         <InternalsVisibleTo Include="discipline.api.integration-tests"/>
     </ItemGroup>
     <ItemGroup>

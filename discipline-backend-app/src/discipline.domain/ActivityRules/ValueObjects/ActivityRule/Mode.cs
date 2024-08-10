@@ -30,22 +30,22 @@ public sealed record Mode
         Value = value;
     }
 
-    internal static string EveryDayMode()
+    public static string EveryDayMode()
         => "EveryDay";
     
-    internal static string FirstDayOfWeekMode()
+    public static string FirstDayOfWeekMode()
         => "FirstDayOfWeek";
     
-    internal static string LastDayOfWeekMode()
+    public static string LastDayOfWeekMode()
         => "LastDayOfWeek";
 
-    internal static string CustomMode()
+    public static string CustomMode()
         => "Custom";
 
-    internal static string FirstDayOfMonth()
+    public static string FirstDayOfMonth()
         => "FirstDayOfMonth";
     
-    internal static string LastDayOfMonthMode()
+    public static string LastDayOfMonthMode()
         => "LastDayOfMonth";
 
     public static implicit operator string(Mode mode)

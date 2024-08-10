@@ -1,4 +1,6 @@
+using discipline.domain.ActivityRules.Entities;
 using discipline.domain.ActivityRules.Exceptions;
+using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 using Shouldly;
 using Xunit;
 

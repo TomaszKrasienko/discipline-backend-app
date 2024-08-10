@@ -4,7 +4,7 @@ using Action = discipline.domain.UsersCalendars.ValueObjects.Event.Action;
 
 namespace discipline.domain.UsersCalendars.Entities;
 
-internal sealed class CalendarEvent : Event
+public sealed class CalendarEvent : Event
 {
     public MeetingTimeSpan MeetingTimeSpan { get; set; }
     public Action Action { get; set; }

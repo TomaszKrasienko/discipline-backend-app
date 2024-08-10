@@ -2,6 +2,8 @@ using discipline.application.Behaviours;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
+using discipline.domain.UsersCalendars.Entities;
+using discipline.domain.UsersCalendars.Repositories;
 using MongoDB.Driver;
 
 namespace discipline.application.Infrastructure.DAL.Repositories;

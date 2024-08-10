@@ -1,10 +1,10 @@
 namespace discipline.domain.UsersCalendars.ValueObjects.UserCalendar;
 
-internal sealed record Day
+public sealed record Day
 {
-    internal DateOnly Value { get; }
+    public DateOnly Value { get; }
 
-    internal Day(DateOnly value)
+    public Day(DateOnly value)
     {
         Value = new DateOnly(value.Year, value.Month, value.Day);
     }

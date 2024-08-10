@@ -1,6 +1,6 @@
 namespace discipline.domain.UsersCalendars.ValueObjects.Event;
 
-internal sealed record Action(string Value)
+public sealed record Action(string Value)
 {
     public static implicit operator string(Action action)
         => action?.Value;

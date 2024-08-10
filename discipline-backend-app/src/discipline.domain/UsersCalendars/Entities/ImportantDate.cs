@@ -3,10 +3,10 @@ using discipline.domain.UsersCalendars.ValueObjects.Event;
 
 namespace discipline.domain.UsersCalendars.Entities;
 
-internal sealed class ImportantDate : Event
+public sealed class ImportantDate : Event
 {
     //For mongo
-    internal ImportantDate(EntityId id, Title title) : base(id, title)
+    public ImportantDate(EntityId id, Title title) : base(id, title)
     {
     }
 

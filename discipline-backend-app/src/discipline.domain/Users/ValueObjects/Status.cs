@@ -22,13 +22,13 @@ public sealed record Status
         Value = value;
     }
 
-    internal static Status Created()
+    public static Status Created()
         => new Status("Created");
 
-    internal static Status PaidSubscriptionPicked()
+    public static Status PaidSubscriptionPicked()
         => new Status("PaidSubscriptionPicked");
 
-    internal static Status FreeSubscriptionPicked()
+    public static Status FreeSubscriptionPicked()
         => new Status("FreeSubscriptionPicked");
 
     public static implicit operator string(Status status)

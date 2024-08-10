@@ -19,7 +19,7 @@ public sealed class User : AggregateRoot<Guid>
     }
 
     //For mongo
-    internal User(EntityId id, Email email, Password password, FullName fullName,
+    public User(EntityId id, Email email, Password password, FullName fullName,
         Status status, SubscriptionOrder subscriptionOrder) : this(id)
     {
         Email = email;

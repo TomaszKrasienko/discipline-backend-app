@@ -1,8 +1,8 @@
-using discipline.application.Domain.Users.Entities;
-using discipline.application.Domain.Users.Repositories;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.Users.Entities;
+using discipline.domain.Users.Repositories;
 using MongoDB.Driver;
 
 namespace discipline.application.Infrastructure.DAL.Repositories;

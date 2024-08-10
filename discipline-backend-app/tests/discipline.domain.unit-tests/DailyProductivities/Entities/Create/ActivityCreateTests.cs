@@ -1,3 +1,6 @@
+using discipline.domain.ActivityRules.Entities;
+using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.domain.DailyProductivities.Entities;
 using discipline.domain.DailyProductivities.Exceptions;
 using Shouldly;
 using Xunit;

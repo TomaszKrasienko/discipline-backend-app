@@ -6,7 +6,7 @@ public sealed record SelectedDay
 {
     public int Value { get; }
 
-    internal SelectedDay(int value)
+    public SelectedDay(int value)
     {
         if (value is < (int)DayOfWeek.Sunday or > (int)DayOfWeek.Saturday)
         {

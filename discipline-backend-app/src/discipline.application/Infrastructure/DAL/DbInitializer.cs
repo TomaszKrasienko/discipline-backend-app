@@ -1,16 +1,4 @@
-using discipline.application.Domain.ActivityRules;
-using discipline.application.Domain.Users.Entities;
-using discipline.application.Domain.Users.Repositories;
-using discipline.application.Infrastructure.DAL.Configuration.Options;
-using discipline.application.Infrastructure.DAL.Connection;
-using discipline.application.Infrastructure.DAL.Documents;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
-using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
-using discipline.application.Infrastructure.DAL.Repositories;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
 
 namespace discipline.application.Infrastructure.DAL;
 

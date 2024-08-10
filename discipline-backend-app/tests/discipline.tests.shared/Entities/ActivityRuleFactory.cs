@@ -1,5 +1,6 @@
 using Bogus;
-using discipline.application.Domain.ActivityRules;
+using discipline.domain.ActivityRules.Entities;
+using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 
 namespace discipline.tests.shared.Entities;
 

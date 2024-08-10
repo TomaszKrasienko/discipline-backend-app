@@ -1,6 +1,7 @@
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
 using discipline.domain.UsersCalendars.Entities;
+using discipline.domain.UsersCalendars.ValueObjects.Event;
 using discipline.domain.UsersCalendars.ValueObjects.UserCalendar;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;

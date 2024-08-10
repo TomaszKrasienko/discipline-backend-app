@@ -1,8 +1,8 @@
-using discipline.application.Domain.Users.Entities;
-using discipline.application.Domain.Users.Enums;
-using discipline.application.Domain.Users.Exceptions;
-using discipline.application.Domain.Users.Services;
-using discipline.application.Domain.Users.Services.Abstractions;
+using discipline.domain.Users.Entities;
+using discipline.domain.Users.Enums;
+using discipline.domain.Users.Exceptions;
+using discipline.domain.Users.Services;
+using discipline.domain.Users.Services.Abstractions;
 using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;

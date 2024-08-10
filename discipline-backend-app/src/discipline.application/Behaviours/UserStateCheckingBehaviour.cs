@@ -1,6 +1,5 @@
-using System.Runtime.InteropServices.JavaScript;
-using discipline.application.Domain.Users.Repositories;
-using discipline.application.Domain.Users.ValueObjects;
+using discipline.domain.Users.Repositories;
+using discipline.domain.Users.ValueObjects;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
