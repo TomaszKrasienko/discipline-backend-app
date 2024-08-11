@@ -66,7 +66,7 @@ public sealed class CreateActivityCommandValidatorTests
     
     [Theory]
     [InlineData('t', 2)]
-    [InlineData('t', 100)]
+    [InlineData('t', 101)]
     public void Validate_GivenInvalidTitle_ShouldHaveValidationErrorForId(char character, int multiplier)
     {
         //arrange

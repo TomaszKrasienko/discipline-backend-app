@@ -1,9 +1,12 @@
 using discipline.application.Configuration;
+using discipline.domain.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddApplication(builder.Configuration);
+builder.Services
+    .AddDomain()
+    .AddApplication(builder.Configuration);
 var app = builder.Build();
 app.UseRouting();
 app.UseApplication();

@@ -25,7 +25,7 @@ internal sealed class UserStateMiddleware(
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         if (!(context.User?.Identity?.IsAuthenticated) ?? true)
-        {
+        { 
             await next(context);
             return;
         }

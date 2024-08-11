@@ -34,7 +34,8 @@ internal static class CreateActivity
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Adds activity rule"
-            });
+            })
+            .RequireAuthorization();
         return app;
     }
 }
@@ -48,6 +49,10 @@ public sealed class CreateActivityCommandValidator : AbstractValidator<CreateAct
         RuleFor(x => x.Id)
             .NotEmpty()
             .WithMessage("Activity \"ID\" can not be empty");
+
+        RuleFor(x => x.UserId)
+            .NotEmpty()
+            .WithMessage("Activity \"UserId\" can not be empty");
 
         RuleFor(x => x.Title)
             .NotNull()

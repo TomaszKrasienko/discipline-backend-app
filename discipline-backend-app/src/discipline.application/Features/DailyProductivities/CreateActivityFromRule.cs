@@ -53,13 +53,16 @@ internal static class CreateActivityFromRule
         })
         .Produces(StatusCodes.Status200OK, typeof(void))
         .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+        .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+        .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
         .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
         .WithName(nameof(CreateActivityFromRule))
         .WithTags(Extensions.DailyProductivityTag)
         .WithOpenApi(operation => new (operation)
         {
             Description = "Adds activity rule from activity rule"
-        });;
+        })
+        .RequireAuthorization();
         return app;
     }
 }
