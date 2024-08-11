@@ -1,7 +1,9 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.ActivityRules;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules;
+using discipline.domain.ActivityRules.Entities;
+using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 using NSubstitute;
 using Shouldly;
 using Xunit;

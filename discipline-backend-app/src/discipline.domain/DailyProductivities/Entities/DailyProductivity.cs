@@ -15,6 +15,7 @@ public sealed class DailyProductivity : AggregateRoot
     private DailyProductivity(Day day, EntityId userId) : base()
     {
         Day = day;
+        UserId = userId;
     }
 
     //For mongo

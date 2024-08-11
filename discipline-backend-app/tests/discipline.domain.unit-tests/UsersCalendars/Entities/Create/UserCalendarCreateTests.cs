@@ -1,3 +1,4 @@
+using discipline.domain.UsersCalendars.Entities;
 using Shouldly;
 using Xunit;
 

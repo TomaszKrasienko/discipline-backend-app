@@ -1,11 +1,9 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.Users.Entities;
-using discipline.application.Domain.Users.Repositories;
 using discipline.application.DTOs;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users;
+using discipline.domain.Users.Repositories;
 using discipline.tests.shared.Entities;
-using Microsoft.AspNetCore.Routing.Matching;
 using NSubstitute;
 using Shouldly;
 using Xunit;
@@ -35,7 +33,7 @@ public sealed class SignInCommandHandlerTests
             Token = Guid.NewGuid().ToString()
         };
         _authenticator
-            .CreateToken(user.Id.Value.ToString(), user.Status.Value)
+            .CreateToken(user.Id.ToString(), user.Status.Value)
             .Returns(jwtDto);
         
         //act

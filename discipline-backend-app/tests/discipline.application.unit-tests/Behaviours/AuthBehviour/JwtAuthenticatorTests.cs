@@ -1,8 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using discipline.application.Behaviours;
-using discipline.application.Domain.Users.Entities;
-using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NSubstitute;

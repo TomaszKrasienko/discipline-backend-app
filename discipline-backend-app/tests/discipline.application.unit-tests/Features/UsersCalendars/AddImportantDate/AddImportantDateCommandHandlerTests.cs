@@ -1,5 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Features.UsersCalendars;
+using discipline.domain.UsersCalendars.Entities;
+using discipline.domain.UsersCalendars.Repositories;
 using discipline.tests.shared.Entities;
 using NSubstitute;
 using Xunit;

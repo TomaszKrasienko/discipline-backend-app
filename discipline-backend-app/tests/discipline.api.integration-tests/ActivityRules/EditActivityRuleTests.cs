@@ -4,6 +4,7 @@ using discipline.api.integration_tests._Helpers;
 using discipline.application.Features.ActivityRules;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
+using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
 using Shouldly;

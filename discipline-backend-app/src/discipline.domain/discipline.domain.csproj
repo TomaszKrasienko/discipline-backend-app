@@ -13,6 +13,8 @@
     
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.domain.unit-tests"/>
+        <InternalsVisibleTo Include="discipline.application.unit-tests"/>
+        <InternalsVisibleTo Include="discipline.api.integration-tests"/>
         <InternalsVisibleTo Include="discipline.tests.shared"/>
     </ItemGroup>
 

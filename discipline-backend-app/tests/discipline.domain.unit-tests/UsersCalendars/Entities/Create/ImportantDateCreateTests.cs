@@ -1,4 +1,5 @@
 using discipline.domain.ActivityRules.Exceptions;
+using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Exceptions;
 using Shouldly;
 using Xunit;

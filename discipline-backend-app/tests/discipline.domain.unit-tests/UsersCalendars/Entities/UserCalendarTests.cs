@@ -1,4 +1,4 @@
-using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
+using discipline.domain.UsersCalendars.Entities;
 using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;

@@ -1,6 +1,5 @@
-using System.Xml.XPath;
-using discipline.application.Domain.Users.Entities;
-using discipline.application.Domain.Users.Exceptions;
+using discipline.domain.Users.Entities;
+using discipline.domain.Users.Exceptions;
 using Shouldly;
 using Xunit;
 

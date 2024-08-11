@@ -1,5 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Features.DailyProductivities;
+using discipline.domain.DailyProductivities.Entities;
+using discipline.domain.DailyProductivities.Repositories;
 using discipline.tests.shared.Entities;
 using NSubstitute;
 using Shouldly;

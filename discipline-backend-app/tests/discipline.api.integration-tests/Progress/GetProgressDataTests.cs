@@ -5,6 +5,7 @@ using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Repositories;
+using discipline.domain.DailyProductivities.Entities;
 using Shouldly;
 using Xunit;
 

@@ -1,10 +1,10 @@
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Domain.Users.Entities;
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.Users.Entities;
 using discipline.tests.shared.Documents;
 using discipline.tests.shared.Entities;
 using Shouldly;

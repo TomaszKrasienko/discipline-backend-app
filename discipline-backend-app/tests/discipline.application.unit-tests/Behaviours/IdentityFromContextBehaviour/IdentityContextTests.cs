@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using discipline.application.Behaviours;
-using discipline.application.Domain.Users.Entities;
 using Microsoft.AspNetCore.Http;
 using Shouldly;
 using Xunit;
