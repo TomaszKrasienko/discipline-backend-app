@@ -1,7 +1,12 @@
 using System.Net.Http.Headers;
+using Amazon.Runtime;
 using discipline.application.Behaviours;
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Connection;
+using discipline.application.Infrastructure.DAL.Documents.Mappers;
+using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.Users.Entities;
+using discipline.tests.shared.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -59,6 +64,24 @@ public abstract class BaseTestsController : IDisposable
        
        var metaDataDto = value.Single();
        return JsonConvert.DeserializeObject<MetaDataDto>(metaDataDto);
+   }
+   
+   protected async Task<User> AuthorizeWithFreeSubscriptionPicked()
+   {
+       var subscription = SubscriptionFactory.Get();
+       var user = UserFactory.Get();
+       user.CreateFreeSubscriptionOrder(Guid.NewGuid(), subscription, DateTime.Now);
+       await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
+       Authorize(user.Id, user.Status);
+       return user;
+   }
+
+   protected async Task<User> AuthorizeWithoutSubscription()
+   {
+       var user = UserFactory.Get();
+       await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
+       Authorize(user.Id, user.Status);
+       return user;
    }
 
    protected virtual void Authorize(Guid userId, string status)

@@ -18,6 +18,7 @@ public sealed class GetProgressDataTests : BaseTestsController
     public async Task GetProgressData_GivenFilledData_ShouldReturnIEnumerableOfProgressDataDto()
     {
         //arrange
+        await AuthorizeWithFreeSubscriptionPicked();
         var dailyProductivity1 = DailyProductivity.Create(new DateOnly(2024, 6, 10), Guid.NewGuid());
         dailyProductivity1.AddActivity(Guid.NewGuid(), "test 1");
         dailyProductivity1.AddActivity(Guid.NewGuid(), "test 2");
@@ -53,9 +54,33 @@ public sealed class GetProgressDataTests : BaseTestsController
     public async Task GetProgressData_GivenEmptyData_ShouldReturnNoContentStatusCode()
     {
         //act
+        await AuthorizeWithFreeSubscriptionPicked();
         var response = await HttpClient.GetAsync("progress/data");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
+    }
+    
+    [Fact]
+    public async Task GetProgressData_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
+    {
+        //act
+        var response = await HttpClient.GetAsync("progress/data");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task etProgressData_GivenAuthorizedWithoutPickedSubscription_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange
+        await AuthorizeWithoutSubscription();
+        
+        //act
+        var response = await HttpClient.GetAsync("progress/data");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

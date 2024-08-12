@@ -26,7 +26,8 @@ internal static class ChangeActivityCheck
         .WithOpenApi(operation => new(operation)
         {
             Description = "Changes activity check"
-        });;
+        })
+        .RequireAuthorization();
         return app;
     }
 }

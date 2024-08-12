@@ -18,6 +18,7 @@ public class GetDailyActivityByDateTests : BaseTestsController
     public async Task GetDailyActivityByDate_GivenExistingDailyProductivity_ShouldReturnDailyProductivityDto()
     {
         //arrange
+        await AuthorizeWithFreeSubscriptionPicked();
         var dailyProductivity = DailyProductivityFactory.Get();
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
         await TestAppDb.GetCollection<DailyProductivityDocument>()
@@ -38,9 +39,33 @@ public class GetDailyActivityByDateTests : BaseTestsController
     public async Task GetDailyActivityByDay_GivenNotExistingDailyProductivity_ShouldReturn204NoContentStatusCode()
     {
         //act
+        await AuthorizeWithFreeSubscriptionPicked();
         var response = await HttpClient.GetAsync($"/daily-productivity/{DateTime.Now:yyyy-MM-dd}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
+    }
+    
+    [Fact]
+    public async Task GetDailyActivityByDay_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
+    {
+        //act
+        var response = await HttpClient.GetAsync($"/daily-productivity/{DateTime.Now:yyyy-MM-dd}");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task GetDailyActivityByDay_GivenAuthorizedWithoutPickedSubscription_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange
+        await AuthorizeWithoutSubscription();
+        
+        //act
+        var response = await HttpClient.GetAsync($"/daily-productivity/{DateTime.Now:yyyy-MM-dd}");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }
