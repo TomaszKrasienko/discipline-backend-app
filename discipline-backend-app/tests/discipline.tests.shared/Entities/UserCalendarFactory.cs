@@ -13,5 +13,5 @@ internal static class UserCalendarFactory
     
     private static Faker<UserCalendar> GetFaker()
         => new Faker<UserCalendar>().CustomInstantiator(x =>
-            UserCalendar.Create(DateOnly.FromDateTime(DateTime.Now)));
+            UserCalendar.Create(DateOnly.FromDateTime(DateTime.Now), Guid.NewGuid()));
 }

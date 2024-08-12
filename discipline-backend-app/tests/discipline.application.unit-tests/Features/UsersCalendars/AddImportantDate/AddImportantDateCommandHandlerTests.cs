@@ -17,7 +17,7 @@ public sealed class AddImportantDateCommandHandlerTests
     {
         //arrange
         var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
-            "test_title");
+            Guid.NewGuid(), "test_title");
         
         //act
         await Act(command);
@@ -27,6 +27,7 @@ public sealed class AddImportantDateCommandHandlerTests
             .Received(1)
             .AddAsync(Arg.Is<UserCalendar>(arg
                 => arg.Day.Value == command.Day
+                && arg.UserId.Value == command.UserId
                    && arg.Events.Any(x
                        => x.Id.Equals(command.Id)
                           && x.Title.Value == command.Title)));
@@ -40,11 +41,11 @@ public sealed class AddImportantDateCommandHandlerTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var command = new AddImportantDateCommand(userCalendar.Day, Guid.NewGuid(),
+        var command = new AddImportantDateCommand(userCalendar.Day, Guid.NewGuid(), Guid.NewGuid(),
             "test_title");
 
         _userCalendarRepository
-            .GetByDateAsync(command.Day)
+            .GetForUserByDateAsync(command.UserId, command.Day)
             .Returns(userCalendar);
         
         //act
@@ -55,9 +56,11 @@ public sealed class AddImportantDateCommandHandlerTests
             .Received(1)
             .UpdateAsync(Arg.Is<UserCalendar>(arg
                 => arg.Day.Value == command.Day
+                && arg.UserId.Value == command.UserId
                    && arg.Events.Any(x
                        => x.Id.Equals(command.Id)
                           && x.Title.Value == command.Title)));
+        
         await _userCalendarRepository
             .Received(0)
             .AddAsync(Arg.Any<UserCalendar>());

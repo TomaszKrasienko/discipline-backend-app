@@ -11,11 +11,13 @@ public sealed class UserCalendarCreateTests
     {
         //arrange
         var day = new DateOnly(2024, 1, 1);
+        var userId = Guid.NewGuid();
         
         //act
-        var result = UserCalendar.Create(day);
+        var result = UserCalendar.Create(day, userId);
         
         //assert
         result.Day.Value.ShouldBe(day);
+        result.UserId.Value.ShouldBe(userId);
     }
 }

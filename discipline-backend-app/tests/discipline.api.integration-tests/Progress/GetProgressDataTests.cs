@@ -72,7 +72,7 @@ public sealed class GetProgressDataTests : BaseTestsController
     }
     
     [Fact]
-    public async Task etProgressData_GivenAuthorizedWithoutPickedSubscription_ShouldReturn403ForbiddenStatusCode()
+    public async Task GetProgressData_GivenAuthorizedWithoutPickedSubscription_ShouldReturn403ForbiddenStatusCode()
     {
         //arrange
         await AuthorizeWithoutSubscription();

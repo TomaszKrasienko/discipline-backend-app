@@ -8,10 +8,25 @@ namespace discipline.application.unit_tests.Features.UsersCalendars.AddMeeting;
 public sealed class AddMeetingCommandValidatorTests
 {
     [Fact]
+    public void Validate_GivenValidArguments_ShouldNotHaveAnyValidationErrors()
+    {
+        //arrange
+        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(), Guid.NewGuid(),
+            "test_title", new TimeOnly(11, 00),  new TimeOnly(12, 00), 
+            "platform", "uri", "place");
+        
+        //act
+        var result = _validator.TestValidate(command);
+        
+        //assert
+        result.ShouldNotHaveAnyValidationErrors();
+    }
+    
+    [Fact]
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.Empty,
+        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(), Guid.Empty,
             "test_title", new TimeOnly(11, 00),  new TimeOnly(12, 00), 
             "platform", "uri", "place");
         
@@ -23,10 +38,25 @@ public sealed class AddMeetingCommandValidatorTests
     }
     
     [Fact]
+    public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorForUserId()
+    {
+        //arrange
+        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.Empty, Guid.NewGuid(),
+            "test_title", new TimeOnly(11, 00),  new TimeOnly(12, 00), 
+            "platform", "uri", "place");
+        
+        //act
+        var result = _validator.TestValidate(command);
+        
+        //assert
+        result.ShouldHaveValidationErrorFor(x => x.UserId);
+    }
+    
+    [Fact]
     public void Validate_GivenNullTitle_ShouldHaveValidationErrorForTitle()
     {
         //arrange
-        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
+        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(), Guid.NewGuid(),
             null, new TimeOnly(11, 00),new TimeOnly(12, 00), 
             "platform", "uri", "place");
         
@@ -44,7 +74,7 @@ public sealed class AddMeetingCommandValidatorTests
     {
         //arrange
         var title = new string(letter, multiplier);
-        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
+        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),Guid.NewGuid(),
             title, new TimeOnly(11, 00),  new TimeOnly(12, 00), 
             "platform", "uri", "place"); 
         
@@ -59,7 +89,7 @@ public sealed class AddMeetingCommandValidatorTests
     public void Validate_GivenEmptyTimeFrom_ShouldHaveValidationErrorForTimeFrom()
     {
         //arrange
-        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
+        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),Guid.NewGuid(),
             "test_title", default, new TimeOnly(12, 00), 
             "platform", "uri", "place");
         

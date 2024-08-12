@@ -16,7 +16,7 @@ public sealed class AddMeetingCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingUserCalendarForDate_ShouldAddUserCalendarWithMeeting()
     {
         //arrange
-        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
+        var command = new AddMeetingCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(), Guid.NewGuid(),
             "test_title", new TimeOnly(10, 00), new TimeOnly(11, 00), "test_platform",
             "test_uri", null);
         
@@ -27,6 +27,7 @@ public sealed class AddMeetingCommandHandlerTests
         await _userCalendarRepository
             .AddAsync(Arg.Is<UserCalendar>(arg
                 => arg.Day.Value == command.Day
+                && arg.UserId.Value == command.UserId
                    && arg.Events.Any(x
                        => x.Id.Equals(command.Id)
                           && x.Title.Value == command.Title
@@ -47,12 +48,12 @@ public sealed class AddMeetingCommandHandlerTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var command = new AddMeetingCommand(userCalendar.Day, Guid.NewGuid(),
+        var command = new AddMeetingCommand(userCalendar.Day, Guid.NewGuid(), Guid.NewGuid(),
             "test_title", new TimeOnly(10, 00), new TimeOnly(11, 00), null,
             null, "place");
 
         _userCalendarRepository
-            .GetByDateAsync(command.Day)
+            .GetForUserByDateAsync(command.UserId, command.Day)
             .Returns(userCalendar);
         
         //act
@@ -63,6 +64,7 @@ public sealed class AddMeetingCommandHandlerTests
             .Received(1)
             .UpdateAsync(Arg.Is<UserCalendar>(arg
                 => arg.Day.Value == command.Day
+                && arg.UserId.Value == command.UserId
                    && arg.Events.Any(x
                        => x.Id.Equals(command.Id)
                           && x.Title.Value == command.Title

@@ -7,20 +7,21 @@ public sealed class UserCalendar : AggregateRoot
 {
     private readonly List<Event> _events = [];
     public Day Day { get; }
+    public EntityId UserId { get; }
     public IReadOnlyList<Event> Events => _events;
 
-    //For mongo
-    public UserCalendar(Day day, List<Event> events)
+    private UserCalendar(Day day, EntityId userId)
     {
         Day = day;
-        _events = events;
-    }
+        UserId = userId;
+    } 
+    
+    //For mongo
+    public UserCalendar(Day day, EntityId userId, List<Event> events) : this(day, userId)
+        => _events = events;
 
-    private UserCalendar(Day day)
-        => Day = day;
-
-    public static UserCalendar Create(DateOnly day)
-        => new UserCalendar(day);
+    public static UserCalendar Create(DateOnly day, Guid userId)
+        => new UserCalendar(day, userId);
 
     public void AddEvent(Guid id, string title)
         => _events.Add(ImportantDate.Create(id, title));

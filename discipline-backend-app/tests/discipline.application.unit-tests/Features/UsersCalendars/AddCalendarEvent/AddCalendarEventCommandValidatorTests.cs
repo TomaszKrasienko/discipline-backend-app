@@ -8,11 +8,39 @@ namespace discipline.application.unit_tests.Features.UsersCalendars.AddCalendarE
 public sealed class AddCalendarEventCommandValidatorTests
 {
     [Fact]
-    public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
+    public void Validate_GivenValidCommand_ShouldNotHaveAnyValidationError()
+    {
+        //arrange
+        var command = new AddCalendarEventCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
+            Guid.NewGuid(), "test_title", new TimeOnly(11, 00),  null, "test_action");
+        
+        //act
+        var result = _validator.TestValidate(command);
+        
+        //assert
+        result.ShouldHaveAnyValidationError();
+    }
+    
+    [Fact]
+    public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorForUserId()
     {
         //arrange
         var command = new AddCalendarEventCommand(new DateOnly(2024, 1, 1), Guid.Empty,
-            "test_title", new TimeOnly(11, 00),  null, "test_action");
+        Guid.NewGuid(), "test_title", new TimeOnly(11, 00),  null, "test_action");
+        
+        //act
+        var result = _validator.TestValidate(command);
+        
+        //assert
+        result.ShouldHaveValidationErrorFor(x => x.UserId);
+    }
+    
+    [Fact]
+    public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
+    {
+        //arrange
+        var command = new AddCalendarEventCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
+            Guid.Empty, "test_title", new TimeOnly(11, 00),  null, "test_action");
         
         //act
         var result = _validator.TestValidate(command);
@@ -26,7 +54,7 @@ public sealed class AddCalendarEventCommandValidatorTests
     {
         //arrange
         var command = new AddCalendarEventCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
-            null, new TimeOnly(11, 00),  null, "test_action");
+            Guid.NewGuid(),null, new TimeOnly(11, 00),  null, "test_action");
         
         //act
         var result = _validator.TestValidate(command);
@@ -43,7 +71,7 @@ public sealed class AddCalendarEventCommandValidatorTests
         //arrange
         var title = new string(letter, multiplier);
         var command = new AddCalendarEventCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
-            title, new TimeOnly(11, 00),  null, "test_action"); 
+            Guid.NewGuid(), title, new TimeOnly(11, 00),  null, "test_action"); 
         
         //act
         var result = _validator.TestValidate(command);
@@ -57,7 +85,7 @@ public sealed class AddCalendarEventCommandValidatorTests
     {
         //arrange
         var command = new AddCalendarEventCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
-            "test_title", default, null, "test_action");
+            Guid.NewGuid(), "test_title", default, null, "test_action");
         
         //act
         var result = _validator.TestValidate(command);
