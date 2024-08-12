@@ -28,7 +28,7 @@ public sealed class AddImportantDateTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         var userCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == command.Day && x.UserId == command.UserId)
+            .Find(x => x.Day == command.Day && x.UserId == user.Id)
             .FirstOrDefaultAsync();
 
         var resourceId = GetResourceIdFromHeader(response);
@@ -64,7 +64,7 @@ public sealed class AddImportantDateTests : BaseTestsController
         resourceId.ShouldNotBe(Guid.Empty);
         
         var updatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == command.Day && x.UserId == command.UserId)
+            .Find(x => x.Day == command.Day && x.UserId == user.Id)
             .FirstOrDefaultAsync();
         var eventDocument = updatedUserCalendar.Events.FirstOrDefault(x => x.Id == resourceId);
         eventDocument.ShouldBeOfType<ImportantDateDocument>();

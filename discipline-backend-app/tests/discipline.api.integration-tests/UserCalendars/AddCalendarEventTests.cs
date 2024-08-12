@@ -29,7 +29,7 @@ public sealed class AddCalendarEventTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         var userCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == command.Day && x.UserId == command.UserId )
+            .Find(x => x.Day == command.Day && x.UserId == user.Id )
             .FirstOrDefaultAsync();
 
         var resourceId = GetResourceIdFromHeader(response);
@@ -62,7 +62,7 @@ public sealed class AddCalendarEventTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         var updatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == command.Day && x.UserId == command.UserId )
+            .Find(x => x.Day == command.Day && x.UserId == user.Id )
             .FirstOrDefaultAsync();
 
         var resourceId = GetResourceIdFromHeader(response);
