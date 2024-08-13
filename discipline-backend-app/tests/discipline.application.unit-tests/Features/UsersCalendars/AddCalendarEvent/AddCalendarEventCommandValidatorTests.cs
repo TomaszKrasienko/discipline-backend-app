@@ -8,7 +8,7 @@ namespace discipline.application.unit_tests.Features.UsersCalendars.AddCalendarE
 public sealed class AddCalendarEventCommandValidatorTests
 {
     [Fact]
-    public void Validate_GivenValidCommand_ShouldNotHaveAnyValidationError()
+    public void Validate_GivenValidCommand_ShouldNotHaveAnyValidationErrors()
     {
         //arrange
         var command = new AddCalendarEventCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
@@ -18,7 +18,7 @@ public sealed class AddCalendarEventCommandValidatorTests
         var result = _validator.TestValidate(command);
         
         //assert
-        result.ShouldHaveAnyValidationError();
+        result.ShouldNotHaveAnyValidationErrors();
     }
     
     [Fact]

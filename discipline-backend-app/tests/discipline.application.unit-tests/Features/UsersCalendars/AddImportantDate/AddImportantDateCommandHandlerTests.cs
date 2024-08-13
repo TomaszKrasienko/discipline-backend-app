@@ -41,7 +41,7 @@ public sealed class AddImportantDateCommandHandlerTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var command = new AddImportantDateCommand(userCalendar.Day, Guid.NewGuid(), Guid.NewGuid(),
+        var command = new AddImportantDateCommand(userCalendar.Day, userCalendar.UserId, Guid.NewGuid(),
             "test_title");
 
         _userCalendarRepository

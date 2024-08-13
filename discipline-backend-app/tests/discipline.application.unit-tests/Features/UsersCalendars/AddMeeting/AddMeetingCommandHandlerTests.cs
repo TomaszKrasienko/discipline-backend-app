@@ -48,7 +48,7 @@ public sealed class AddMeetingCommandHandlerTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var command = new AddMeetingCommand(userCalendar.Day, Guid.NewGuid(), Guid.NewGuid(),
+        var command = new AddMeetingCommand(userCalendar.Day, userCalendar.UserId, Guid.NewGuid(),
             "test_title", new TimeOnly(10, 00), new TimeOnly(11, 00), null,
             null, "place");
 

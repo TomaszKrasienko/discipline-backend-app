@@ -42,7 +42,7 @@ public sealed class AddCalendarEventCommandHandlerTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var command = new AddCalendarEventCommand(userCalendar.Day, Guid.NewGuid(),Guid.NewGuid(),
+        var command = new AddCalendarEventCommand(userCalendar.Day, userCalendar.UserId,Guid.NewGuid(),
             "test_title", new TimeOnly(10, 00), new TimeOnly(11, 00), "test_action");
 
         _userCalendarRepository

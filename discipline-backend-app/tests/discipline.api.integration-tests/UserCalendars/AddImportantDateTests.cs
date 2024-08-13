@@ -102,6 +102,7 @@ public sealed class AddImportantDateTests : BaseTestsController
     public async Task AddImportantDate_GivenEmptyTitle_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
+        await AuthorizeWithFreeSubscriptionPicked();
         var command = new AddImportantDateCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, Guid.Empty, string.Empty);
         
         //act

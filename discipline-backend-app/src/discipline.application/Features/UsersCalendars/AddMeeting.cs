@@ -13,10 +13,14 @@ public static class AddMeeting
     internal static WebApplication MapAddMeeting(this WebApplication app)
     {
         app.MapPost($"{Extensions.UserCalendarTag}/add-meeting", async (AddMeetingCommand command,
-                HttpContext httpContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+                HttpContext httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var eventId = Guid.NewGuid();
-                await commandDispatcher.HandleAsync(command with {Id = eventId}, cancellationToken);
+                await commandDispatcher.HandleAsync(command with
+                {
+                    Id = eventId,
+                    UserId = identityContext.UserId
+                }, cancellationToken);
                 httpContext.AddResourceIdHeader(eventId);
                 return Results.CreatedAtRoute(nameof(GetEventById), new {eventId = eventId}, null);
             })
@@ -46,7 +50,7 @@ public sealed class AddMeetingCommandValidator : AbstractValidator<AddMeetingCom
             .NotEmpty()
             .WithMessage("Important date \"ID\" can not be empty");
         
-        RuleFor(x => x.Id)
+        RuleFor(x => x.UserId)
             .NotEmpty()
             .WithMessage("Important date \"UserId\" can not be empty");
 
