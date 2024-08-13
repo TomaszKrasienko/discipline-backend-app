@@ -20,13 +20,16 @@ public static class EditActivityRule
                 })
             .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(EditActivityRule))
             .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Updates activity rule"
-            });
+            })
+            .RequireAuthorization();
         return app;
     }
 }

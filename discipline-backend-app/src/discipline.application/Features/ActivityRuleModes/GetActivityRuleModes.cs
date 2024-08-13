@@ -24,7 +24,8 @@ internal static class GetActivityRuleModes
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Gets activity rule modes"
-            });
+            })
+            .RequireAuthorization();
         return app;
     }
 }

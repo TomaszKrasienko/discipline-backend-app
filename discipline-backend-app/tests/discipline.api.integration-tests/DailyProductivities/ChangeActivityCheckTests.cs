@@ -24,7 +24,7 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
         var isChecked = activity.IsChecked.Value;
         await TestAppDb.GetCollection<DailyProductivityDocument>()
             .InsertOneAsync(dailyProductivity.AsDocument());
-        await AuthorizeWithUser();
+        await AuthorizeWithFreeSubscriptionPicked();
         
         //act
         var response = await HttpClient.PatchAsync($"daily-productivity/activity/{activity.Id.Value}/change-check", null);
@@ -49,7 +49,7 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
         var dailyProductivity = DailyProductivityFactory.Get();
         await TestAppDb.GetCollection<DailyProductivityDocument>()
             .InsertOneAsync(dailyProductivity.AsDocument());
-        await AuthorizeWithUser();
+        await AuthorizeWithFreeSubscriptionPicked();
         
         //act
         var response = await HttpClient.PatchAsync($"daily-productivity/activity/{Guid.NewGuid()}/change-check", null);
@@ -72,9 +72,7 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
     public async Task ChangeActivityCheck_AuthorizedByUserWithStatusCreated_ShouldReturnResponse403ForbiddenStatusCode()
     {
         //arrange
-        var user = UserFactory.Get();
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
-        Authorize(user.Id, user.Status);
+        await AuthorizeWithoutSubscription();
         
         //act
         var response = await HttpClient.PatchAsync($"daily-productivity/activity/{Guid.Empty}/change-check", null);
@@ -87,22 +85,12 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
     public async Task ChangeActivityCheck_GiveInvalidActivityId_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
-        await AuthorizeWithUser();
+        await AuthorizeWithFreeSubscriptionPicked();
         
         //act
         var response = await HttpClient.PatchAsync($"daily-productivity/activity/{Guid.Empty}/change-check", null);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
-    }
-    
-    private async Task<User> AuthorizeWithUser()
-    {
-        var subscription = SubscriptionFactory.Get();
-        var user = UserFactory.Get();
-        user.CreateFreeSubscriptionOrder(Guid.NewGuid(), subscription, DateTime.Now);
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
-        Authorize(user.Id, user.Status);
-        return user;
     }
 }

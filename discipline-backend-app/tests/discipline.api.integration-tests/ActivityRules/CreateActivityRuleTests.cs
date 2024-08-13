@@ -22,7 +22,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
      public async Task Create_GivenValidArguments_ShouldReturn201CreatedStatusCode()
      {
          //arrange
-         var user = await AuthorizeWithUser();
+         var user = await AuthorizeWithFreeSubscriptionPicked();
          var command = new CreateActivityRuleCommand(Guid.Empty, Guid.Empty, "Test title", Mode.EveryDayMode(), null);
          
          //act
@@ -48,7 +48,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
      public async Task Create_GivenAlreadyExistingTitle_ShouldReturn400BadRequestStatusCode()
      {
          //arrange
-         await AuthorizeWithUser();
+         await AuthorizeWithFreeSubscriptionPicked();
          var activityRule = ActivityRuleFactory.Get();
          await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
          var command = new CreateActivityRuleCommand(Guid.Empty, Guid.Empty,activityRule.Title, Mode.EveryDayMode(), null);
@@ -64,7 +64,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
      public async Task Create_GivenInvalidRequest_ShouldReturn422UnprocessableEntityStatusCode()
      {
          //arrange
-         await AuthorizeWithUser();
+         await AuthorizeWithFreeSubscriptionPicked();
          var command = new CreateActivityRuleCommand(Guid.Empty, Guid.Empty, string.Empty, Mode.EveryDayMode(), null);
          
          //act
@@ -93,9 +93,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
      public async Task Create_AuthorizedByUserWithStatusCreated_ShouldReturn403ForbiddenStatusCode()
      {
          //arrange
-         var user = UserFactory.Get();
-         await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
-         Authorize(user.Id, user.Status);
+         await AuthorizeWithoutSubscription();
          var command = new CreateActivityRuleCommand(Guid.Empty, Guid.Empty, "test_title",
              Mode.EveryDayMode(), null);
         
@@ -104,15 +102,5 @@ public sealed class CreateActivityRuleTests : BaseTestsController
         
          //assert
          response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
-     }
-
-     private async Task<User> AuthorizeWithUser()
-     {
-         var subscription = SubscriptionFactory.Get();
-         var user = UserFactory.Get();
-         user.CreateFreeSubscriptionOrder(Guid.NewGuid(), subscription, DateTime.Now);
-         await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
-         Authorize(user.Id, user.Status);
-         return user;
      }
 }

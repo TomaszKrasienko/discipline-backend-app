@@ -23,7 +23,7 @@ public sealed class DeleteActivityTests : BaseTestsController
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
         await TestAppDb.GetCollection<DailyProductivityDocument>()
             .InsertOneAsync(dailyProductivity.AsDocument());
-        await AuthorizeWithUser();
+        await AuthorizeWithFreeSubscriptionPicked();
         
         //act
         var response = await HttpClient.DeleteAsync($"daily-productivity/activity/{activity.Id.Value}");
@@ -46,7 +46,7 @@ public sealed class DeleteActivityTests : BaseTestsController
         var dailyProductivity = DailyProductivityFactory.Get();
         await TestAppDb.GetCollection<DailyProductivityDocument>()
             .InsertOneAsync(dailyProductivity.AsDocument());
-        await AuthorizeWithUser();
+        await AuthorizeWithFreeSubscriptionPicked();
         
         //act
         var response = await HttpClient.DeleteAsync($"daily-productivity/activity/{Guid.NewGuid()}");
@@ -69,24 +69,12 @@ public sealed class DeleteActivityTests : BaseTestsController
     public async Task Delete_AuthorizedByUserWithStatusCreated_ShouldReturnResponse403ForbiddenStatusCode()
     {
         //arrange
-        var user = UserFactory.Get();
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
-        Authorize(user.Id, user.Status);
+        await AuthorizeWithoutSubscription();
         
         //act
         var response = await HttpClient.DeleteAsync($"daily-productivity/activity/{Guid.NewGuid()}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
-    }
-    
-    private async Task<User> AuthorizeWithUser()
-    {
-        var subscription = SubscriptionFactory.Get();
-        var user = UserFactory.Get();
-        user.CreateFreeSubscriptionOrder(Guid.NewGuid(), subscription, DateTime.Now);
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
-        Authorize(user.Id, user.Status);
-        return user;
     }
 }

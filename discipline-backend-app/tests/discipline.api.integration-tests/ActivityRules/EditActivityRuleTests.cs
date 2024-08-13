@@ -19,6 +19,7 @@ public class EditActivityRuleTests : BaseTestsController
     public async Task Edit_GivenValidArgumentsAndExistingActivityRule_ShouldReturn200OkStatusCode()
     {
         //arrange
+        await AuthorizeWithFreeSubscriptionPicked();
         var activityRule = ActivityRuleFactory.Get();
         await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
         var command = new EditActivityRuleCommand(Guid.Empty, "NewTitle", Mode.EveryDayMode(), null);
@@ -43,6 +44,7 @@ public class EditActivityRuleTests : BaseTestsController
     public async Task Edit_GivenValidArgumentsAndNotExistingActivityRule_ShouldReturn400BadRequestStatusCode()
     {
         //arrange
+        await AuthorizeWithFreeSubscriptionPicked();
         var command = new EditActivityRuleCommand(Guid.Empty, "NewTitle", Mode.EveryDayMode(), null);
         
         //act
@@ -54,9 +56,39 @@ public class EditActivityRuleTests : BaseTestsController
     }
     
     [Fact]
+    public async Task Edit_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
+    {
+        //arrange
+        var command = new EditActivityRuleCommand(Guid.Empty, string.Empty, Mode.EveryDayMode(), null);
+        
+        //act
+        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{Guid.NewGuid()}/edit",
+            command);
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task Edit_AuthorizedByUserWithStatusCreated_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange
+        await AuthorizeWithoutSubscription();
+        var command = new EditActivityRuleCommand(Guid.Empty, string.Empty, Mode.EveryDayMode(), null);
+        
+        //act
+        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{Guid.NewGuid()}/edit",
+            command);
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
+    }
+    
+    [Fact]
     public async Task Edit_GivenInvalidArguments_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
+        await AuthorizeWithFreeSubscriptionPicked();
         var command = new EditActivityRuleCommand(Guid.Empty, string.Empty, Mode.EveryDayMode(), null);
         
         //act

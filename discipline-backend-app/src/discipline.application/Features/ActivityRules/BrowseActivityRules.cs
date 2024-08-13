@@ -34,7 +34,8 @@ internal static class BrowseActivityRules
             .WithOpenApi(operation => new(operation)
             {
                 Description = $"Browses activity rules by pagination data. Adds pagination meta data in header with name {PagingBehaviour.HeaderName}"
-            });
+            })
+            .RequireAuthorization();
         return app;
     }
 }

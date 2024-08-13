@@ -1,12 +1,9 @@
+using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
-using discipline.application.Infrastructure.DAL.Documents.Users;
-using discipline.domain.Users.Entities;
 using discipline.tests.shared.Documents;
-using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
 
@@ -19,7 +16,7 @@ public sealed class BrowseActivityRulesTests : BaseTestsController
     public async Task BrowseActivityRules_GivenPaginationDataAndAuthorized_ShouldReturnDataForUser()
     {
         //arrange
-        var user = await AuthorizeWithUser();
+        var user = await AuthorizeWithFreeSubscriptionPicked();
         var activityRules = ActivityRuleDocumentFactory.Get(5);
         activityRules.ForEach(x => x.UserId = user.Id);
         var notUserActivityRules = ActivityRuleDocumentFactory.Get(2);
@@ -46,13 +43,26 @@ public sealed class BrowseActivityRulesTests : BaseTestsController
         metaData.PageSize.ShouldBe(pageSize);
     }
     
-    private async Task<User> AuthorizeWithUser()
+    [Fact]
+    public async Task BrowseActivityRules_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
     {
-        var subscription = SubscriptionFactory.Get();
-        var user = UserFactory.Get();
-        user.CreateFreeSubscriptionOrder(Guid.NewGuid(), subscription, DateTime.Now);
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
-        Authorize(user.Id, user.Status);
-        return user;
+        //act
+        var response = await HttpClient.GetAsync("/activity-rules?pageNumber=1&pageSize=1");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task BrowseActivityRules_GivenAuthorizedWithoutPickedSubscription_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange
+        await AuthorizeWithoutSubscription();
+        
+        //act
+        var response = await HttpClient.GetAsync("/activity-rules?pageNumber=1&pageSize=1");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

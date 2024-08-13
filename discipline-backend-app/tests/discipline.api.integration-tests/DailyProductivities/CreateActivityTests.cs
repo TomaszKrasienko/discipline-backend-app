@@ -20,7 +20,7 @@ public sealed class CreateActivityTests : BaseTestsController
     public async Task Create_GivenForFirstDailyActivity_ShouldReturn200OkStatusCodeAndAddDailyProductivityWithActivity()
     {
         //arrange
-        var user = await AuthorizeWithUser();
+        var user = await AuthorizeWithFreeSubscriptionPicked();
         var day = DateTime.Now;
         var command = new CreateActivityCommand(Guid.Empty, user.Id, "Test title", default);
         
@@ -43,7 +43,7 @@ public sealed class CreateActivityTests : BaseTestsController
     public async Task Create_GivenForExistingDailyActivity_ShouldReturn200OkStatusCodeAndAddActivity()
     {
         //arrange
-        var user = await AuthorizeWithUser();
+        var user = await AuthorizeWithFreeSubscriptionPicked();
         var dailyProductivity = DailyProductivityFactory.Get();
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
         await TestAppDb.GetCollection<DailyProductivityDocument>()
@@ -69,7 +69,7 @@ public sealed class CreateActivityTests : BaseTestsController
     public async Task Create_GivenInvalidActivity_ShouldReturn400BadRequestStatusCode()
     {
         //arrange
-        var user = await AuthorizeWithUser();
+        var user = await AuthorizeWithFreeSubscriptionPicked();
         var dailyProductivity = DailyProductivityFactory.Get();
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
         await TestAppDb.GetCollection<DailyProductivityDocument>()
@@ -100,9 +100,7 @@ public sealed class CreateActivityTests : BaseTestsController
     public async Task Create_AuthorizedByUserWithStatusCreated_ShouldReturnResponse403ForbiddenStatusCode()
     {
         //arrange
-        var user = UserFactory.Get();
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
-        Authorize(user.Id, user.Status);
+        await AuthorizeWithoutSubscription();
         var command = new CreateActivityCommand(Guid.Empty, Guid.Empty, "test_title", new DateOnly(2024,1,1));
         
         //act
@@ -116,7 +114,7 @@ public sealed class CreateActivityTests : BaseTestsController
     public async Task Create_GivenEmptyTitle_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
-        var user = await AuthorizeWithUser();
+        var user = await AuthorizeWithFreeSubscriptionPicked();
         var day = DateTime.Now;
         var command = new CreateActivityCommand(Guid.Empty, user.Id, string.Empty, default);
         
@@ -125,15 +123,5 @@ public sealed class CreateActivityTests : BaseTestsController
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
-    }
-    
-    private async Task<User> AuthorizeWithUser()
-    {
-        var subscription = SubscriptionFactory.Get();
-        var user = UserFactory.Get();
-        user.CreateFreeSubscriptionOrder(Guid.NewGuid(), subscription, DateTime.Now);
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
-        Authorize(user.Id, user.Status);
-        return user;
     }
 }

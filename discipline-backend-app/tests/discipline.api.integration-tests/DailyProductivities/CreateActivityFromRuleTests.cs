@@ -25,7 +25,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
         //arrange
         var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"test_title", Mode.EveryDayMode());
         await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
-        await AuthorizeWithUser();
+        await AuthorizeWithFreeSubscriptionPicked();
         var command = new CreateActivityFromRuleCommand(Guid.Empty, activityRule.Id);
         
         //act
@@ -48,7 +48,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     public async Task CreateActivityFromRule_GivenNotExistingActivityRule_ShouldReturn400BadRequestStatusCode()
     {
         //arrange
-        await AuthorizeWithUser();
+        await AuthorizeWithFreeSubscriptionPicked();
         var command = new CreateActivityFromRuleCommand(Guid.Empty, Guid.NewGuid());
         
         //act
@@ -75,9 +75,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     public async Task Create_AuthorizedByUserWithStatusCreated_ShouldReturnResponse403ForbiddenStatusCode()
     {
         //arrange
-        var user = UserFactory.Get();
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
-        Authorize(user.Id, user.Status);
+        await AuthorizeWithoutSubscription();
         var command = new CreateActivityFromRuleCommand(Guid.Empty, Guid.NewGuid());
         
         //act
@@ -91,7 +89,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     public async Task CreateActivityFromRule_GivenInvalidCommand_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
-        await AuthorizeWithUser();
+        await AuthorizeWithFreeSubscriptionPicked();
         var command = new CreateActivityFromRuleCommand(Guid.Empty, Guid.Empty);
         
         //act
@@ -99,15 +97,5 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
-    }
-    
-    private async Task<User> AuthorizeWithUser()
-    {
-        var subscription = SubscriptionFactory.Get();
-        var user = UserFactory.Get();
-        user.CreateFreeSubscriptionOrder(Guid.NewGuid(), subscription, DateTime.Now);
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
-        Authorize(user.Id, user.Status);
-        return user;
     }
 }
