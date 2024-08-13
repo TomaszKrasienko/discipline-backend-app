@@ -1,4 +1,5 @@
 using discipline.application.Exceptions;
+using discipline.domain.SharedKernel;
 using Humanizer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

@@ -1,3 +1,4 @@
+using discipline.application.Behaviours;
 using discipline.application.DTOs;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.application.Infrastructure.DAL.Connection;
@@ -24,12 +25,15 @@ internal static class GetActivityRuleById
             })
             .Produces(StatusCodes.Status200OK, typeof(ActivityRuleDto))
             .Produces(StatusCodes.Status204NoContent, typeof(void))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
             .WithName(nameof(GetActivityRuleById))
             .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Gets activity rule by \"ID\""
-            });
+            })
+            .RequireAuthorization();
         return app;
     }
 }

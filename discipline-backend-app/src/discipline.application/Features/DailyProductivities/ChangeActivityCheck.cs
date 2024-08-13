@@ -1,7 +1,7 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.DailyProductivities.Exceptions;
-using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Features.DailyProductivities.Configuration;
+using discipline.domain.DailyProductivities.Exceptions;
+using discipline.domain.DailyProductivities.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -19,14 +19,17 @@ internal static class ChangeActivityCheck
                 return Results.Ok();
             })
         .Produces(StatusCodes.Status200OK, typeof(void))
-        .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))        .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+        .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))        
+        .Produces(StatusCodes.Status401Unauthorized, typeof(void))        
+            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
         .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
         .WithName(nameof(ChangeActivityCheck))
         .WithTags(Extensions.DailyProductivityTag)
         .WithOpenApi(operation => new(operation)
         {
             Description = "Changes activity check"
-        });;
+        })
+        .RequireAuthorization();
         return app;
     }
 }

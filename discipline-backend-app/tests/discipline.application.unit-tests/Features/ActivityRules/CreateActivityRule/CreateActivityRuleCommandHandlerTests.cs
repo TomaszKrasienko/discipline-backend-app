@@ -1,10 +1,9 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.ActivityRules;
-using discipline.application.Domain.ActivityRules.Entities;
-using discipline.application.Domain.ActivityRules.Repositories;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules;
+using discipline.domain.ActivityRules.Entities;
+using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 using NSubstitute;
 using Shouldly;
 using Xunit;
@@ -19,7 +18,8 @@ public sealed class CreateActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingTitle_ShouldCreateActivityRule()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(Guid.NewGuid(), "Rule title", Mode.EveryDayMode(), null);
+        var command = new CreateActivityRuleCommand(Guid.NewGuid(), Guid.NewGuid(),
+            "Rule title", Mode.EveryDayMode(), null);
         _activityRuleRepository
             .ExistsAsync(command.Title, default)
             .Returns(false);
@@ -40,7 +40,8 @@ public sealed class CreateActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenAlreadyRegisteredRuleTitle_ShouldThrowActivityRuleTitleAlreadyRegisteredException()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(Guid.NewGuid(), "Rule title", Mode.EveryDayMode(), null);
+        var command = new CreateActivityRuleCommand(Guid.NewGuid(), Guid.NewGuid(),
+            "Rule title", Mode.EveryDayMode(), null);
         _activityRuleRepository
             .ExistsAsync(command.Title, default)
             .Returns(true);

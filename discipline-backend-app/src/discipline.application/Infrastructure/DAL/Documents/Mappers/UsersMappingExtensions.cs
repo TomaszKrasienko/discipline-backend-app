@@ -1,9 +1,8 @@
-using System.Diagnostics;
-using discipline.application.Domain.Users.Entities;
-using discipline.application.Domain.Users.Enums;
-using discipline.application.Domain.Users.ValueObjects;
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.Users.Entities;
+using discipline.domain.Users.Enums;
+using discipline.domain.Users.ValueObjects;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;
 

@@ -11,7 +11,7 @@ public sealed class AddImportantDateCommandValidatorTests
     public void Validate_GivenValidArguments_ShouldNotHaveAnyValidationErrors()
     {
         //arrange
-        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
+        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),Guid.NewGuid(),
             "test_title");
         
         //act
@@ -22,10 +22,24 @@ public sealed class AddImportantDateCommandValidatorTests
     }
     
     [Fact]
+    public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorForUserId()
+    {
+        //arrange
+        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.Empty,Guid.NewGuid(),
+            "test_title");
+        
+        //act
+        var result = _validator.TestValidate(command);
+        
+        //assert
+        result.ShouldHaveValidationErrorFor(x => x.UserId);
+    }
+    
+    [Fact]
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.Empty,
+        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),Guid.Empty,
             "test_title");
         
         //act
@@ -39,7 +53,7 @@ public sealed class AddImportantDateCommandValidatorTests
     public void Validate_GivenNullTitle_ShouldHaveValidationErrorForTitle()
     {
         //arrange
-        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
+        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),Guid.NewGuid(),
             null);
         
         //act
@@ -56,7 +70,7 @@ public sealed class AddImportantDateCommandValidatorTests
     {
         //arrange
         var title = new string(letter, multiplier);
-        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
+        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),Guid.NewGuid(),
             title);
         
         //act

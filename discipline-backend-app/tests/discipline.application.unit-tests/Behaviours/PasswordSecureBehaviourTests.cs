@@ -1,6 +1,6 @@
 using System.Text;
 using discipline.application.Behaviours;
-using discipline.application.Domain.Users.Entities;
+using discipline.domain.Users.Entities;
 using Microsoft.AspNetCore.Identity;
 using Shouldly;
 using Xunit;

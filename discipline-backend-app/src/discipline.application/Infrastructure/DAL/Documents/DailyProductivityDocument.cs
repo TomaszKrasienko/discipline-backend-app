@@ -7,6 +7,9 @@ public class DailyProductivityDocument : IDocument
     [BsonElement("day")]
     [BsonId]
     public DateOnly Day { get; set; }
+    
+    [BsonElement("userId")] 
+    public Guid UserId { get; set; }
 
     [BsonElement("activities")]
     public IEnumerable<ActivityDocument> Activities { get; set; }

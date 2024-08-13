@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Domain.UsersCalendars.Entities;
 using discipline.application.Features.UsersCalendars;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
@@ -20,7 +19,8 @@ public class AddMeetingTests : BaseTestsController
     public async Task AddMeeting_GivenNotExistingUserCalendar_ShouldReturn201CreatedStatusCodeAddUserCalendarWithMeeting()
     {
         //arrange
-        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, "test_title",
+        var user = await AuthorizeWithFreeSubscriptionPicked();
+        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, Guid.Empty, "test_title",
             new TimeOnly(15,00), null, "test_platform", "test_uri", null);
         
         //act
@@ -30,7 +30,7 @@ public class AddMeetingTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         var userCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == command.Day)
+            .Find(x => x.Day == command.Day && x.UserId == user.Id)
             .FirstOrDefaultAsync();
 
         var resourceId = GetResourceIdFromHeader(response);
@@ -47,10 +47,13 @@ public class AddMeetingTests : BaseTestsController
     public async Task AddMeeting_GivenExistingUserCalendar_ShouldReturn201CreatedStatusCodeUpdateUserCalendarWithMeeting()
     {
         //arrange
+        var user = await AuthorizeWithFreeSubscriptionPicked();
         var userCalendar = UserCalendarFactory.Get();
         var @event = MeetingFactory.GetInUserCalender(userCalendar);
-        await TestAppDb.GetCollection<UserCalendarDocument>().InsertOneAsync(userCalendar.AsDocument());
-        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, "test_title",
+        var userCalendarDocument = userCalendar.AsDocument();
+        userCalendarDocument.UserId = user.Id;
+        await TestAppDb.GetCollection<UserCalendarDocument>().InsertOneAsync(userCalendarDocument);
+        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now),Guid.Empty, Guid.Empty, "test_title",
             new TimeOnly(15,00), null, null, null, "test_place");
         
         //act
@@ -60,7 +63,7 @@ public class AddMeetingTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         var updatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == command.Day)
+            .Find(x => x.Day == command.Day && x.UserId == user.Id)
             .FirstOrDefaultAsync();
 
         var resourceId = GetResourceIdFromHeader(response);
@@ -74,10 +77,40 @@ public class AddMeetingTests : BaseTestsController
     }
     
     [Fact]
+    public async Task AddMeeting_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
+    {
+        //arrange
+        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, Guid.Empty, "test_title",
+            new TimeOnly(15,00), null, "test_platform", "test_uri", null);
+        
+        //act
+        var response = await HttpClient.PostAsJsonAsync("user-calendar/add-calendar-event", command);
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task AddMeeting_GivenAuthorizedWithoutPickedSubscription_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange
+        await AuthorizeWithoutSubscription();
+        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, Guid.Empty, "test_title",
+            new TimeOnly(15,00), null, "test_platform", "test_uri", null);
+        
+        //act
+        var response = await HttpClient.PostAsJsonAsync("user-calendar/add-calendar-event", command);
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
+    }
+    
+    [Fact]
     public async Task AddMeeting_GivenEmptyTitle_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
-        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, string.Empty,
+        await AuthorizeWithFreeSubscriptionPicked();
+        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty,Guid.Empty, string.Empty,
             new TimeOnly(15,00), null, "test_platform", "test_uri", null);
         
         //act

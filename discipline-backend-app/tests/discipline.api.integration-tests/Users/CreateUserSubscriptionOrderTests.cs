@@ -1,9 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Domain.Users.Enums;
 using discipline.application.Features.Users;
 using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.Users.Enums;
 using discipline.tests.shared.Documents;
 using MongoDB.Driver;
 using Shouldly;

@@ -1,18 +1,13 @@
-using System.Collections.Frozen;
 using discipline.application.Configuration;
-using discipline.application.Domain.ActivityRules.Repositories;
-using discipline.application.Domain.DailyProductivities.Repositories;
-using discipline.application.Domain.Users.Repositories;
-using discipline.application.Domain.UsersCalendars.Repositories;
 using discipline.application.Infrastructure.DAL.Configuration.Options;
-using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Connection.Configuration;
-using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Repositories;
+using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.DailyProductivities.Repositories;
+using discipline.domain.Users.Repositories;
+using discipline.domain.UsersCalendars.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
 
 namespace discipline.application.Infrastructure.DAL.Configuration;
 

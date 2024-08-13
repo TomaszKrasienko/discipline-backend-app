@@ -1,12 +1,11 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.ActivityRules;
-using discipline.application.Domain.ActivityRules.Entities;
-using discipline.application.Domain.ActivityRules.Repositories;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
-using discipline.application.Domain.DailyProductivities.Entities;
-using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Exceptions;
 using discipline.application.Features.DailyProductivities;
+using discipline.domain.ActivityRules.Entities;
+using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.domain.DailyProductivities.Entities;
+using discipline.domain.DailyProductivities.Repositories;
 using NSubstitute;
 using Shouldly;
 using Xunit;
@@ -21,7 +20,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     public async Task HandleAsync_GivenDateForRuleAndExistingDailyProductivity_ShouldAddActivityAndUpdateDailyProductivityByRepository()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
         var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),activityRule.Id);
 
@@ -33,7 +32,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .DateNow()
             .Returns(now);
 
-        var dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now));
+        var dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now), activityRule.UserId);
         _dailyProductivityRepository
             .GetByDateAsync(dailyProductivity.Day)
             .Returns(dailyProductivity);
@@ -53,7 +52,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     public async Task HandleAsync_GivenDateForRuleAndNotExistingDailyProductivity_ShouldAddActivityAndAndDailyProductivityByRepository()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
         var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),activityRule.Id);
 
@@ -73,7 +72,8 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .Received(1)
             .AddAsync(Arg.Is<DailyProductivity>(arg
                 => arg.Day.Value == DateOnly.FromDateTime(now)
-                   && arg.Activities.Any(x => x.Id.Equals(command.ActivityId))));
+                && arg.UserId.Value == activityRule.UserId.Value
+                && arg.Activities.Any(x => x.Id.Equals(command.ActivityId))));
     }
     
     [Fact]
@@ -93,7 +93,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     public async Task HandleAsync_GivenDateNotForRule_ShouldNotAddActivityAndUpdateDailyProductivityByRepository()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
         var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 4);
         var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),activityRule.Id);
 
@@ -105,7 +105,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .DateNow()
             .Returns(now);
 
-        var dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now));
+        var dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now), activityRule.UserId);
         _dailyProductivityRepository
             .GetByDateAsync(dailyProductivity.Day)
             .Returns(dailyProductivity);

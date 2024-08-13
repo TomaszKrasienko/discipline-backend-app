@@ -1,9 +1,8 @@
-using discipline.application.Domain.ActivityRules;
-using discipline.application.Domain.ActivityRules.Entities;
-using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
+using discipline.domain.ActivityRules.Entities;
+using discipline.domain.ActivityRules.Repositories;
 using MongoDB.Driver;
 
 namespace discipline.application.Infrastructure.DAL.Repositories;

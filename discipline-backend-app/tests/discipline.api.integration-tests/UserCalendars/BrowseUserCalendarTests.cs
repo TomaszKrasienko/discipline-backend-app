@@ -16,11 +16,13 @@ public sealed class BrowseUserCalendarTests : BaseTestsController
     public async Task BrowseUserCalendar_GivenExistingUserCalendarWithEvents_ShouldReturn200OkStatusCodeWithUserCalendarDto()
     {
         //arrange 
+        var user = await AuthorizeWithFreeSubscriptionPicked();
         var importantDateDocument = ImportantDateDocumentFactory.Get();
         var calendarEventDocument = CalendarEventDocumentFactory.Get(true);
         var meetingDocument = MeetingDocumentFactory.Get(true, true);
         var userCalendarDocument = UserCalendarDocumentFactory.Get([importantDateDocument, calendarEventDocument, meetingDocument]);
-
+        userCalendarDocument.UserId = user.Id;
+        
         await TestAppDb
             .GetCollection<UserCalendarDocument>()
             .InsertOneAsync(userCalendarDocument);
@@ -55,9 +57,33 @@ public sealed class BrowseUserCalendarTests : BaseTestsController
     public async Task BrowseUserCalendar_GivenNotExistingUserCalendar_ShouldReturn204NoContentStatusCode()
     {
         //act
-        var result = await HttpClient.GetAsync($"user-calendar/{new DateOnly(2024, 1, 1):yyyy-MM-dd}");
+        await AuthorizeWithFreeSubscriptionPicked();
+        var response = await HttpClient.GetAsync($"user-calendar/{new DateOnly(2024, 1, 1):yyyy-MM-dd}");
         
         //assert
-        result.StatusCode.ShouldBe(HttpStatusCode.NoContent);
+        response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
+    }
+    
+    [Fact]
+    public async Task BrowseUserCalendar_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
+    {
+        //act
+        var response = await HttpClient.GetAsync($"user-calendar/{new DateOnly(2024, 1, 1):yyyy-MM-dd}");
+
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task BrowseUserCalendar_GivenAuthorizedWithoutPickedSubscription_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange
+        await AuthorizeWithoutSubscription();
+        
+        //act
+        var response = await HttpClient.GetAsync($"user-calendar/{new DateOnly(2024, 1, 1):yyyy-MM-dd}");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

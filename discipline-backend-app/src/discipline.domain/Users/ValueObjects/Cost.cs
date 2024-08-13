@@ -1,0 +1,24 @@
+using discipline.domain.Users.Exceptions;
+
+namespace discipline.domain.Users.ValueObjects;
+
+public sealed record Cost
+{
+    public decimal Value { get; }
+    
+    internal Cost(decimal value)
+    {
+        if (value < 0)
+        {
+            throw new BillingValueLessThanZeroException(value);
+        }
+
+        Value = value;
+    }
+
+    public static implicit operator decimal(Cost cost)
+        => cost.Value;
+
+    public static implicit operator Cost(decimal value)
+        => new Cost(value);
+}

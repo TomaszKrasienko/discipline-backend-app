@@ -1,12 +1,14 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Domain.ActivityRules.Entities;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Features.DailyProductivities;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
+using discipline.application.Infrastructure.DAL.Documents.Users;
 using discipline.application.Infrastructure.DAL.Repositories;
+using discipline.domain.ActivityRules.Entities;
+using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.domain.Users.Entities;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
 using Shouldly;
@@ -21,8 +23,9 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     public async Task CreateActivityFromRule_GivenExistingActivityRule_ShouldReturn200OkStatusCodeAndAddActivity()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), "test_title", Mode.EveryDayMode());
+        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"test_title", Mode.EveryDayMode());
         await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
+        await AuthorizeWithFreeSubscriptionPicked();
         var command = new CreateActivityFromRuleCommand(Guid.Empty, activityRule.Id);
         
         //act
@@ -45,6 +48,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     public async Task CreateActivityFromRule_GivenNotExistingActivityRule_ShouldReturn400BadRequestStatusCode()
     {
         //arrange
+        await AuthorizeWithFreeSubscriptionPicked();
         var command = new CreateActivityFromRuleCommand(Guid.Empty, Guid.NewGuid());
         
         //act
@@ -55,9 +59,37 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     }
     
     [Fact]
+    public async Task Create_Unauthorized_ShouldReturn401UnauthorizedSStatusCode()
+    {
+        //arrange
+        var command = new CreateActivityFromRuleCommand(Guid.Empty, Guid.NewGuid());
+        
+        //act
+        var response = await HttpClient.PostAsJsonAsync("/daily-productivity/today/add-activity-from-rule", command);
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task Create_AuthorizedByUserWithStatusCreated_ShouldReturnResponse403ForbiddenStatusCode()
+    {
+        //arrange
+        await AuthorizeWithoutSubscription();
+        var command = new CreateActivityFromRuleCommand(Guid.Empty, Guid.NewGuid());
+        
+        //act
+        var response = await HttpClient.PostAsJsonAsync("/daily-productivity/today/add-activity-from-rule", command);
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
+    }
+    
+    [Fact]
     public async Task CreateActivityFromRule_GivenInvalidCommand_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
+        await AuthorizeWithFreeSubscriptionPicked();
         var command = new CreateActivityFromRuleCommand(Guid.Empty, Guid.Empty);
         
         //act

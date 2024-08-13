@@ -1,10 +1,9 @@
-using System.Data;
 using discipline.application.Behaviours;
-using discipline.application.Domain.Users.Enums;
-using discipline.application.Domain.Users.Repositories;
-using discipline.application.Domain.Users.Services.Abstractions;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;
+using discipline.domain.Users.Enums;
+using discipline.domain.Users.Repositories;
+using discipline.domain.Users.Services.Abstractions;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
