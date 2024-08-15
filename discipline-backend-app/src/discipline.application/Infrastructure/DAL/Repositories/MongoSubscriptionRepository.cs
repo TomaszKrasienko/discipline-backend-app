@@ -10,6 +10,10 @@ namespace discipline.application.Infrastructure.DAL.Repositories;
 internal sealed class MongoSubscriptionRepository(
     IDisciplineMongoCollection disciplineMongoCollection) : ISubscriptionRepository
 {
+    public async Task<bool> AnyAsync(CancellationToken cancellationToken = default)
+        => (await disciplineMongoCollection.GetCollection<SubscriptionDocument>()
+            .Find(_ => true).AnyAsync(cancellationToken));
+
     public async Task<Subscription> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         => (await disciplineMongoCollection.GetCollection<SubscriptionDocument>()
             .Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken))?.AsEntity();
