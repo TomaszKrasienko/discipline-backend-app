@@ -8,6 +8,9 @@ public class UserCalendarDocument : IDocument
     [BsonId]
     public DateOnly Day { get; set; }
     
+    [BsonElement("userId")] 
+    public Guid UserId { get; set; }
+    
     [BsonElement("events")] 
     public IEnumerable<EventDocument> Events { get; set; }
 }

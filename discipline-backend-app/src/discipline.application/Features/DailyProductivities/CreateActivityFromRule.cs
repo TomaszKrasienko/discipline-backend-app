@@ -2,10 +2,10 @@
 
 using discipline.application.Behaviours;
 using discipline.application.Configuration;
-using discipline.application.Domain.ActivityRules.Repositories;
-using discipline.application.Domain.DailyProductivities.Entities;
-using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Exceptions;
+using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.DailyProductivities.Entities;
+using discipline.domain.DailyProductivities.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -53,13 +53,16 @@ internal static class CreateActivityFromRule
         })
         .Produces(StatusCodes.Status200OK, typeof(void))
         .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+        .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+        .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
         .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
         .WithName(nameof(CreateActivityFromRule))
         .WithTags(Extensions.DailyProductivityTag)
         .WithOpenApi(operation => new (operation)
         {
             Description = "Adds activity rule from activity rule"
-        });;
+        })
+        .RequireAuthorization();
         return app;
     }
 }
@@ -120,7 +123,7 @@ internal sealed class CreateActivityFromRuleCommandHandler(
         var dailyProductivity = await dailyProductivityRepository.GetByDateAsync(day, cancellationToken);
         if (dailyProductivity is null)
         {
-            dailyProductivity = DailyProductivity.Create(day);
+            dailyProductivity = DailyProductivity.Create(day, activityRule.UserId);
             dailyProductivity.AddActivityFromRule(command.ActivityId, clock.DateNow(), activityRule);
             await dailyProductivityRepository.AddAsync(dailyProductivity, cancellationToken);
             return;

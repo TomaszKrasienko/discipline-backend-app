@@ -1,7 +1,7 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules.Configuration;
+using discipline.domain.ActivityRules.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -20,11 +20,14 @@ internal static class DeleteActivityRule
             })
             .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(void))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
             .WithName(nameof(DeleteActivityRule))
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Deletes activity rule"
-            });
+            })
+            .RequireAuthorization();
         return app;
     }
 }

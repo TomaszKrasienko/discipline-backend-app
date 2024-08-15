@@ -16,6 +16,7 @@ public sealed class DeleteActivityRuleTests : BaseTestsController
     public async Task Delete_GivenExistingActivityRuleId_ShouldReturn200OkStatusCodeAndRemoveActivityRule()
     {
         //arrange
+        await AuthorizeWithFreeSubscriptionPicked();
         var activityRule = ActivityRuleFactory.Get();
         await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
         
@@ -35,10 +36,36 @@ public sealed class DeleteActivityRuleTests : BaseTestsController
     [Fact]
     public async Task Delete_GivenNotExistingActivityRuleId_ShouldReturn400BadRequestStatusCode()
     {
+        //arrange
+        await AuthorizeWithFreeSubscriptionPicked();
+        
         //act
         var response = await HttpClient.DeleteAsync($"activity-rules/{Guid.NewGuid()}/delete");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    }
+    
+    [Fact]
+    public async Task Delete_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
+    {
+        //act
+        var response = await HttpClient.DeleteAsync($"activity-rules/{Guid.NewGuid()}/delete");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task Delete_AuthorizedByUserWithStatusCreated_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange
+        await AuthorizeWithoutSubscription();
+        
+        //act
+        var response = await HttpClient.DeleteAsync($"activity-rules/{Guid.NewGuid()}/delete");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

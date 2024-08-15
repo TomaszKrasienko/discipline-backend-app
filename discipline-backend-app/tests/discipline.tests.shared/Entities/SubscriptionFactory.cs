@@ -1,5 +1,5 @@
 using Bogus;
-using discipline.application.Domain.Users.Entities;
+using discipline.domain.Users.Entities;
 
 namespace discipline.tests.shared.Entities;
 
@@ -13,5 +13,5 @@ internal sealed class SubscriptionFactory
     
     private static Faker<Subscription> GetFaker(decimal perMonth = 0, decimal perYear = 0)
         => new Faker<Subscription>().CustomInstantiator(v
-            => Subscription.Create(Guid.NewGuid(), v.Lorem.Word(), perMonth, perYear));
+            => Subscription.Create(Guid.NewGuid(), v.Lorem.Word(), perMonth, perYear, [v.Random.String(minChar:'a', maxChar:'z')]));
 }

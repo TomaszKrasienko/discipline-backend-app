@@ -1,7 +1,7 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.ActivityRules.Repositories;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules.Configuration;
+using discipline.domain.ActivityRules.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -20,13 +20,16 @@ public static class EditActivityRule
                 })
             .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(EditActivityRule))
             .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Updates activity rule"
-            });
+            })
+            .RequireAuthorization();
         return app;
     }
 }

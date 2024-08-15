@@ -1,3 +1,4 @@
+using discipline.application.Behaviours;
 using discipline.application.DTOs;
 using discipline.application.Features.DailyProductivities.Configuration;
 using discipline.application.Infrastructure.DAL.Connection;
@@ -25,12 +26,15 @@ internal static class GetDailyActivityByDate
             })
             .Produces(StatusCodes.Status200OK, typeof(DailyProductivityDto))
             .Produces(StatusCodes.Status204NoContent, typeof(void))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
             .WithName(nameof(GetDailyActivityByDate))
             .WithTags(Extensions.DailyProductivityTag)
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Gets daily discipline by \"Day\""
-            });
+            })
+            .RequireAuthorization();
         return app;
     }
 }

@@ -1,6 +1,6 @@
 using Bogus;
-using discipline.application.Domain.Users.Entities;
-using discipline.application.Domain.Users.Enums;
+using discipline.domain.Users.Entities;
+using discipline.domain.Users.Enums;
 
 namespace discipline.tests.shared.Entities;
 

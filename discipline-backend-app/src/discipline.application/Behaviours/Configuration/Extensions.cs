@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace discipline.application.Behaviours.Configuration;
 
 internal static class Extensions
 {
-    internal static IServiceCollection AddBehaviours(this IServiceCollection services)
+    internal static IServiceCollection AddBehaviours(this IServiceCollection services, IConfiguration configuration)
         => services
             .AddCommandHandlingBehaviour()
             .AddHandlingException()
@@ -13,9 +14,15 @@ internal static class Extensions
             .AddCreatingTransaction()
             .AddClockBehaviour()
             .AddLoggingBehaviour()
-            .AddPasswordSecureBehaviour();
+            .AddPasswordSecureBehaviour()
+            .AddAuthBehaviour(configuration)
+            .AddTokenStorage()
+            .AddIdentityFromContextBehaviour()
+            .AddUserStateCheckingBehaviour();
 
     internal static WebApplication UseBehaviours(this WebApplication app)
         => app
-            .UseHandlingException();
+            .UseHandlingException()
+            .UseAuthBehaviour()
+            .UseUserStateCheckingBehaviour();
 }

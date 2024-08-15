@@ -1,8 +1,8 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.ActivityRules.Repositories;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules;
+using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.tests.shared.Entities;
 using NSubstitute;
 using Shouldly;

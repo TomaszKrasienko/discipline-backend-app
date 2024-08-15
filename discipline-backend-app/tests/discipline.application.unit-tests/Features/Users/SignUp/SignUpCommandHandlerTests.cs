@@ -1,8 +1,8 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.Users.Entities;
-using discipline.application.Domain.Users.Repositories;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users;
+using discipline.domain.Users.Entities;
+using discipline.domain.Users.Repositories;
 using NSubstitute;
 using Shouldly;
 using Xunit;
@@ -54,7 +54,7 @@ public sealed class SignUpCommandHandlerTests
         await _userRepository
             .Received(1)
             .AddAsync(Arg.Is<User>(arg
-                => arg.Id.Value == command.Id
+                => arg.Id == command.Id
                    && arg.Email == command.Email
                    && arg.Password == securedPassword
                    && arg.FullName.FirstName == command.FirstName

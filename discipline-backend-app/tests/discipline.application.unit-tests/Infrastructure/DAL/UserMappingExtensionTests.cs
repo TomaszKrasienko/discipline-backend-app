@@ -1,7 +1,7 @@
-using discipline.application.Domain.Users.Entities;
-using discipline.application.Domain.Users.Enums;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.Users.Entities;
+using discipline.domain.Users.Enums;
 using discipline.tests.shared.Documents;
 using discipline.tests.shared.Entities;
 using Shouldly;
@@ -12,7 +12,7 @@ namespace discipline.application.unit_tests.Infrastructure.DAL;
 public sealed class UserMappingExtensionsTests
 {
     [Fact]
-    public void AsDocument_GivenUserWithouSubscriptionOrder_ShouldReturnUserDocumentWithSubscriptionOrderAsNull()
+    public void AsDocument_GivenUserWithoutSubscriptionOrder_ShouldReturnUserDocumentWithSubscriptionOrderAsNull()
     {
         //arrange
         var user = UserFactory.Get();
@@ -21,11 +21,12 @@ public sealed class UserMappingExtensionsTests
         var result = user.AsDocument();
          
         //assert
-        result.Id.ShouldBe(user.Id.Value);
+        result.Id.ShouldBe(user.Id);
         result.Email.ShouldBe(user.Email.Value);
         result.Password.ShouldBe(user.Password.Value);
         result.FirstName.ShouldBe(user.FullName.FirstName);
         result.LastName.ShouldBe(user.FullName.LastName);
+        result.Status.ShouldBe(user.Status.Value);
         result.SubscriptionOrder.ShouldBeNull();
     }
     
@@ -45,7 +46,7 @@ public sealed class UserMappingExtensionsTests
          var result = user.AsDocument();
          
          //assert
-         result.Id.ShouldBe(user.Id.Value);
+         result.Id.ShouldBe(user.Id);
          result.Email.ShouldBe(user.Email.Value);
          result.Password.ShouldBe(user.Password.Value);
          result.FirstName.ShouldBe(user.FullName.FirstName);
@@ -76,7 +77,7 @@ public sealed class UserMappingExtensionsTests
          var result = user.AsDocument();
          
          //assert
-         result.Id.ShouldBe(user.Id.Value);
+         result.Id.ShouldBe(user.Id);
          result.Email.ShouldBe(user.Email.Value);
          result.Password.ShouldBe(user.Password.Value);
          result.FirstName.ShouldBe(user.FullName.FirstName);
@@ -99,11 +100,12 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsEntity();
          
          //assert
-         result.Id.Value.ShouldBe(userDocument.Id);
+         result.Id.ShouldBe(userDocument.Id);
          result.Email.Value.ShouldBe(userDocument.Email);
          result.Password.Value.ShouldBe(userDocument.Password);
          result.FullName.FirstName.ShouldBe(userDocument.FirstName);
          result.FullName.LastName.ShouldBe(userDocument.LastName);
+         result.Status.Value.ShouldBe(userDocument.Status);
          result.SubscriptionOrder.ShouldBeNull();
      }
 
@@ -119,7 +121,7 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsEntity();
          
          //assert
-         result.Id.Value.ShouldBe(userDocument.Id);
+         result.Id.ShouldBe(userDocument.Id);
          result.Email.Value.ShouldBe(userDocument.Email);
          result.Password.Value.ShouldBe(userDocument.Password);
          result.FullName.FirstName.ShouldBe(userDocument.FirstName);
@@ -148,7 +150,7 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsEntity();
          
          //assert
-         result.Id.Value.ShouldBe(userDocument.Id);
+         result.Id.ShouldBe(userDocument.Id);
          result.Email.Value.ShouldBe(userDocument.Email);
          result.Password.Value.ShouldBe(userDocument.Password);
          result.FullName.FirstName.ShouldBe(userDocument.FirstName);
@@ -175,5 +177,40 @@ public sealed class UserMappingExtensionsTests
          result.Title.Value.ShouldBe(subscriptionDocument.Title);
          result.Price.PerMonth.ShouldBe(subscriptionDocument.PricePerMonth);
          result.Price.PerYear.ShouldBe(subscriptionDocument.PricePerYear);
+         result.Features.Any(x => x.Value == subscriptionDocument.Features[0]).ShouldBeTrue();
+     }
+
+     [Fact]
+     public void AsDocument_GivenSubscription_ShouldReturnSubscriptionDocument()
+     {
+         //arrange
+         var subscription = SubscriptionFactory.Get();
+         
+         //act
+         var document = subscription.AsDocument();
+         
+         //assert
+         document.Id.ShouldBe(subscription.Id.Value);
+         document.Title.ShouldBe(subscription.Title.Value);
+         document.PricePerMonth.ShouldBe(subscription.Price.PerMonth);
+         document.PricePerYear.ShouldBe(subscription.Price.PerYear);
+         document.Features.Any(x => x == subscription.Features.First().Value).ShouldBeTrue();
+     }
+
+     [Fact]
+     public void AsDto_GivenSubscriptionDocument_ShouldReturnSubscriptionDto()
+     {
+         //arrange
+         var document = SubscriptionDocumentFactory.Get();
+         
+         //act
+         var dto = document.AsDto();
+         
+         //assert
+         dto.Id.ShouldBe(document.Id);
+         dto.Title.ShouldBe(document.Title);
+         dto.PricePerMonth.ShouldBe(document.PricePerMonth);
+         dto.PricePerYear.ShouldBe(document.PricePerYear);
+         dto.Features.Any(x => x == document.Features[0]).ShouldBeTrue();
      }
 }

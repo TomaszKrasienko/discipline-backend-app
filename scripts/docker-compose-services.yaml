@@ -1,0 +1,17 @@
+services:
+  discipline-backend:
+    container_name: discipline-backend
+    build: 
+      context: ./../discipline-backend-app
+    ports:
+      - 6001:8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=docker
+    volumes:
+      - ./../discipline-backend-app/discipline.api/certs:/certs
+    networks:
+      - discipline-network
+
+networks:
+  discipline-network:
+    driver: bridge

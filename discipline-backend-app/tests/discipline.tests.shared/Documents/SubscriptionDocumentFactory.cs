@@ -16,5 +16,6 @@ public static class SubscriptionDocumentFactory
             .RuleFor(f => f.Id, Guid.NewGuid())
             .RuleFor(f => f.Title, v => v.Lorem.Word())
             .RuleFor(f => f.PricePerMonth, perMonth)
-            .RuleFor(f => f.PricePerYear, perYear);
+            .RuleFor(f => f.PricePerYear, perYear)
+            .RuleFor(f => f.Features, v => [v.Random.String(minChar:'a', maxChar:'z')]);
 }

@@ -1,5 +1,5 @@
 using Bogus;
-using discipline.application.Domain.Users.Entities;
+using discipline.domain.Users.Entities;
 
 namespace discipline.tests.shared.Entities;
 
@@ -14,5 +14,5 @@ internal static class UserFactory
     private static Faker<User> GetFaker()
         => new Faker<User>().CustomInstantiator(v =>
             User.Create(Guid.NewGuid(), v.Internet.Email(),
-                v.Random.String(), v.Name.FirstName(), v.Name.LastName()));
+                v.Random.String(minChar:'a', maxChar:'z'), v.Name.FirstName(), v.Name.LastName()));
 }

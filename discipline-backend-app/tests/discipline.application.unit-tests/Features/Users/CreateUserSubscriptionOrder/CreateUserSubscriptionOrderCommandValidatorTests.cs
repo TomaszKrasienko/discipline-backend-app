@@ -1,5 +1,5 @@
-using discipline.application.Domain.Users.Enums;
 using discipline.application.Features.Users;
+using discipline.domain.Users.Enums;
 using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;

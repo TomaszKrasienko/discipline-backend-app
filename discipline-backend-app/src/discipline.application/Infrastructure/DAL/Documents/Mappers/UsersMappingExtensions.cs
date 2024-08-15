@@ -1,8 +1,8 @@
-using System.Diagnostics;
-using discipline.application.Domain.Users.Entities;
-using discipline.application.Domain.Users.Enums;
-using discipline.application.Domain.Users.ValueObjects;
+using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.Users.Entities;
+using discipline.domain.Users.Enums;
+using discipline.domain.Users.ValueObjects;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;
 
@@ -16,6 +16,7 @@ internal static class UsersMappingExtensions
             Password = entity.Password,
             FirstName = entity.FullName.FirstName,
             LastName = entity.FullName.LastName,
+            Status = entity.Status,
             SubscriptionOrder = entity.SubscriptionOrder?.AsDocument()
         };
 
@@ -51,7 +52,7 @@ internal static class UsersMappingExtensions
 
     internal static User AsEntity(this UserDocument document)
         => new (document.Id, document.Email, document.Password, new FullName(document.FirstName, document.LastName),
-            document.SubscriptionOrder?.AsEntity());
+            document.Status, document.SubscriptionOrder?.AsEntity());
 
     private static SubscriptionOrder AsEntity(this SubscriptionOrderDocument document) => document switch
     {
@@ -71,5 +72,26 @@ internal static class UsersMappingExtensions
             new State(document.StateIsCancelled, document.StateActiveTill));
     
     internal static Subscription AsEntity(this SubscriptionDocument document)
-        => new (document.Id, document.Title, new Price(document.PricePerMonth, document.PricePerYear));
+        => new (document.Id, document.Title, new Price(document.PricePerMonth, 
+            document.PricePerYear), document.Features.Select(x => new Feature(x)).ToList());
+
+    internal static SubscriptionDocument AsDocument(this Subscription document)
+        => new()
+        {
+            Id = document.Id,
+            PricePerMonth = document.Price.PerMonth,
+            PricePerYear = document.Price.PerYear,
+            Title = document.Title,
+            Features = document.Features.Select(x => x.Value).ToList()
+        };
+
+    internal static SubscriptionDto AsDto(this SubscriptionDocument document)
+        => new()
+        {
+            Id = document.Id,
+            Title = document.Title,
+            PricePerMonth = document.PricePerMonth,
+            PricePerYear = document.PricePerYear,
+            Features = document.Features
+        };
 }

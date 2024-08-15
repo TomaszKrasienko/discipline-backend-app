@@ -6,4 +6,5 @@ public class SubscriptionDocument : IDocument
     public string Title { get; set; }
     public decimal PricePerMonth { get; set; }
     public decimal PricePerYear { get; set; }
+    public List<string> Features { get; set; }
 }

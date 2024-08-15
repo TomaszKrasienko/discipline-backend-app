@@ -11,10 +11,14 @@ internal static class ClockBehaviour
 internal interface IClock
 {
     DateTime DateNow();
+    DateTime DateTimeNow();
 }
 
 internal sealed class Clock : IClock
 {
     public DateTime DateNow()
         => DateTime.Now.Date;
+
+    public DateTime DateTimeNow()
+        => DateTime.Now;
 }

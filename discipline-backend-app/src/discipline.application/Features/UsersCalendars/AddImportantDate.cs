@@ -1,7 +1,7 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.UsersCalendars.Entities;
-using discipline.application.Domain.UsersCalendars.Repositories;
 using discipline.application.Features.UsersCalendars.Configuration;
+using discipline.domain.UsersCalendars.Entities;
+using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -13,26 +13,33 @@ internal static class AddImportantDate
     internal static WebApplication MapAddImportantDate(this WebApplication app)
     {
         app.MapPost($"{Extensions.UserCalendarTag}/add-important-date", async (AddImportantDateCommand command,
-                    HttpContext httpContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+                    HttpContext httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var eventId = Guid.NewGuid();
-                await commandDispatcher.HandleAsync(command with {Id = eventId}, cancellationToken);
+                await commandDispatcher.HandleAsync(command with
+                {
+                    Id = eventId,
+                    UserId = identityContext.UserId
+                }, cancellationToken);
                 httpContext.AddResourceIdHeader(eventId);
                 return Results.CreatedAtRoute(nameof(GetEventById), new {eventId = eventId}, null);
             })
         .Produces(StatusCodes.Status201Created, typeof(void))
+        .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+        .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
         .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
         .WithName(nameof(AddImportantDate))
         .WithTags(Extensions.UserCalendarTag)
         .WithOpenApi(operation => new (operation)
         {
             Description = "Adds important date to existing user calendar for day or creates user calendar for day"
-        });
+        })
+        .RequireAuthorization();
         return app;
     }
 }
 
-public sealed record AddImportantDateCommand(DateOnly Day, Guid Id, string Title) : ICommand;
+public sealed record AddImportantDateCommand(DateOnly Day, Guid UserId, Guid Id, string Title) : ICommand;
 
 public sealed class AddImportantDateCommandValidator : AbstractValidator<AddImportantDateCommand>
 {
@@ -41,6 +48,10 @@ public sealed class AddImportantDateCommandValidator : AbstractValidator<AddImpo
         RuleFor(x => x.Id)
             .NotEmpty()
             .WithMessage("Important date \"ID\" can not be empty");
+        
+        RuleFor(x => x.UserId)
+            .NotEmpty()
+            .WithMessage("Important date \"UserId\" can not be empty");
 
         RuleFor(x => x.Title)
             .NotNull()
@@ -59,10 +70,10 @@ internal sealed class AddImportantDateCommandHandler(
 {
     public async Task HandleAsync(AddImportantDateCommand command, CancellationToken cancellationToken = default)
     {
-        var userCalendar = await userCalendarRepository.GetByDateAsync(command.Day, cancellationToken);
+        var userCalendar = await userCalendarRepository.GetForUserByDateAsync(command.UserId, command.Day, cancellationToken);
         if (userCalendar is null)
         {
-            userCalendar = UserCalendar.Create(command.Day);
+            userCalendar = UserCalendar.Create(command.Day, command.UserId);
             userCalendar.AddEvent(command.Id, command.Title);
             await userCalendarRepository.AddAsync(userCalendar, cancellationToken);
             return;

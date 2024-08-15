@@ -1,14 +1,13 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.Users.Entities;
-using discipline.application.Domain.Users.Enums;
-using discipline.application.Domain.Users.Repositories;
-using discipline.application.Domain.Users.Services;
-using discipline.application.Domain.Users.Services.Abstractions;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users;
+using discipline.domain.Users.Entities;
+using discipline.domain.Users.Enums;
+using discipline.domain.Users.Repositories;
+using discipline.domain.Users.Services;
+using discipline.domain.Users.Services.Abstractions;
 using discipline.tests.shared.Entities;
 using NSubstitute;
-using NSubstitute.ReceivedExtensions;
 using Shouldly;
 using Xunit;
 

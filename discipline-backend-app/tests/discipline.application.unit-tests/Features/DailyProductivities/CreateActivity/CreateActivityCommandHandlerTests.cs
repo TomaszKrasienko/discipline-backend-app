@@ -1,7 +1,7 @@
 using discipline.application.Behaviours;
-using discipline.application.Domain.DailyProductivities.Entities;
-using discipline.application.Domain.DailyProductivities.Repositories;
 using discipline.application.Features.DailyProductivities;
+using discipline.domain.DailyProductivities.Entities;
+using discipline.domain.DailyProductivities.Repositories;
 using discipline.tests.shared.Entities;
 using NSubstitute;
 using Shouldly;
@@ -18,7 +18,7 @@ public sealed class CreateActivityCommandHandlerTests
     {
         //arrange
         var nowDate = DateOnly.FromDateTime(DateTime.Now.Date);
-        var command = new CreateActivityCommand(Guid.NewGuid(), "New activity", nowDate);
+        var command = new CreateActivityCommand(Guid.NewGuid(), Guid.NewGuid(),"New activity", nowDate);
 
         await _dailyProductivityRepository
             .GetByDateAsync(nowDate, default);
@@ -43,7 +43,7 @@ public sealed class CreateActivityCommandHandlerTests
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
-        var command = new CreateActivityCommand(Guid.NewGuid(), "New activity", dailyProductivity.Day);
+        var command = new CreateActivityCommand(Guid.NewGuid(), Guid.NewGuid(),"New activity", dailyProductivity.Day);
 
         _dailyProductivityRepository
             .GetByDateAsync(command.Day)

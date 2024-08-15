@@ -1,6 +1,6 @@
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.DTOs;
 using discipline.application.Features.ActivityRuleModes.Configuration;
+using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
@@ -24,7 +24,8 @@ internal static class GetActivityRuleModes
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Gets activity rule modes"
-            });
+            })
+            .RequireAuthorization();
         return app;
     }
 }

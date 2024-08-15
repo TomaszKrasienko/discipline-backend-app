@@ -17,6 +17,7 @@ public sealed class GetActivityRuleByIdTests : BaseTestsController
     public async Task GetActivityRuleById_GivenExistingActivityRule_ShouldReturnActivityDto()
     {
         //arrange 
+        await AuthorizeWithFreeSubscriptionPicked();
         var activityRule = ActivityRuleFactory.Get();
         await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
         
@@ -31,10 +32,36 @@ public sealed class GetActivityRuleByIdTests : BaseTestsController
     [Fact]
     public async Task GetActivityRuleById_GivenNotExistingActivityRule_ShouldReturn204NoContentStatusCode()
     {
+        //arrange
+        await AuthorizeWithFreeSubscriptionPicked();
+        
         //act
         var response = await HttpClient.GetAsync($"/activity-rules/{Guid.NewGuid()}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
+    }
+    
+    [Fact]
+    public async Task GetActivityRuleById_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
+    {
+        //act
+        var response = await HttpClient.GetAsync($"/activity-rules/{Guid.NewGuid()}");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task GetActivityRuleById_AuthorizedByUserWithStatusCreated_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange
+        await AuthorizeWithoutSubscription();
+        
+        //act
+        var response = await HttpClient.GetAsync($"/activity-rules/{Guid.NewGuid()}");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

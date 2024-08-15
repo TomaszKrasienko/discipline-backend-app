@@ -1,5 +1,5 @@
-using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.DTOs;
+using discipline.domain.DailyProductivities.Entities;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;
 
@@ -9,12 +9,14 @@ internal static class DailyProductivityMappingExtensions
         => new()
         {
             Day = entity.Day,
+            UserId = entity.UserId,
             Activities = entity.Activities?.Select(x => x.AsDocument())
         };
 
     internal static DailyProductivity AsEntity(this DailyProductivityDocument document)
         => new(
             document.Day, 
+            document.UserId,
             document.Activities?.Select(x => x.AsEntity()).ToList());
 
     internal static DailyProductivityDto AsDto(this DailyProductivityDocument document)

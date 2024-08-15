@@ -1,6 +1,7 @@
-using discipline.application.Domain.ActivityRules.Entities;
-using discipline.application.Domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.application.DTOs;
+using discipline.domain.ActivityRules.Entities;
+using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.domain.SharedKernel;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;
 
@@ -10,6 +11,7 @@ internal static class ActivityRuleMappingExtensions
         => new()
         {
             Id = entity.Id,
+            UserId = entity.UserId,
             Title = entity.Title,
             Mode = entity.Mode,
             SelectedDays = entity.SelectedDays?.Select(x => x.Value).ToList()
@@ -17,9 +19,10 @@ internal static class ActivityRuleMappingExtensions
 
     internal static ActivityRule AsEntity(this ActivityRuleDocument document)
         => new(
-            document.Id,
-            document.Title,
-            document.Mode,
+            (EntityId)document.Id,
+            (EntityId)document.UserId,
+            (Title)document.Title,
+            (Mode)document.Mode,
             document.SelectedDays?.Select(x => new SelectedDay(x)));
 
     internal static ActivityRuleDto AsDto(this ActivityRuleDocument document)

@@ -1,11 +1,11 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Domain.DailyProductivities.Entities;
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Repositories;
+using discipline.domain.DailyProductivities.Entities;
 using Shouldly;
 using Xunit;
 
@@ -18,14 +18,15 @@ public sealed class GetProgressDataTests : BaseTestsController
     public async Task GetProgressData_GivenFilledData_ShouldReturnIEnumerableOfProgressDataDto()
     {
         //arrange
-        var dailyProductivity1 = DailyProductivity.Create(new DateOnly(2024, 6, 10));
+        await AuthorizeWithFreeSubscriptionPicked();
+        var dailyProductivity1 = DailyProductivity.Create(new DateOnly(2024, 6, 10), Guid.NewGuid());
         dailyProductivity1.AddActivity(Guid.NewGuid(), "test 1");
         dailyProductivity1.AddActivity(Guid.NewGuid(), "test 2");
         dailyProductivity1.AddActivity(Guid.NewGuid(), "test 3");
         dailyProductivity1.ChangeActivityCheck(dailyProductivity1.Activities.First(x => x.Title == "test 1").Id);
         dailyProductivity1.ChangeActivityCheck(dailyProductivity1.Activities.First(x => x.Title == "test 2").Id);
         
-        var dailyProductivity2 = DailyProductivity.Create(new DateOnly(2024, 6, 11));
+        var dailyProductivity2 = DailyProductivity.Create(new DateOnly(2024, 6, 11),Guid.NewGuid());
         dailyProductivity2.AddActivity(Guid.NewGuid(), "test 1");
         dailyProductivity2.AddActivity(Guid.NewGuid(), "test 2");
         dailyProductivity2.AddActivity(Guid.NewGuid(), "test 3");
@@ -53,9 +54,33 @@ public sealed class GetProgressDataTests : BaseTestsController
     public async Task GetProgressData_GivenEmptyData_ShouldReturnNoContentStatusCode()
     {
         //act
+        await AuthorizeWithFreeSubscriptionPicked();
         var response = await HttpClient.GetAsync("progress/data");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
+    }
+    
+    [Fact]
+    public async Task GetProgressData_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
+    {
+        //act
+        var response = await HttpClient.GetAsync("progress/data");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task GetProgressData_GivenAuthorizedWithoutPickedSubscription_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange
+        await AuthorizeWithoutSubscription();
+        
+        //act
+        var response = await HttpClient.GetAsync("progress/data");
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

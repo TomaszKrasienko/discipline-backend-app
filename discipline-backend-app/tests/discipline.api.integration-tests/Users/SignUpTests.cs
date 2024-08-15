@@ -14,7 +14,7 @@ namespace discipline.api.integration_tests.Users;
 public sealed class SignUpTests : BaseTestsController
 {
     [Fact]
-    public async Task SignUp_GivenNotExistingEmailAndValidArguments_ShouldAddUser()
+    public async Task SignUp_GivenNotExistingEmailAndValidArguments_ShouldRetrun200OkStatusCodeAndAddUser()
     {
         //arrange
         var command = new SignUpCommand(Guid.Empty, "test@test.pl", "Test123!",

@@ -1,0 +1,19 @@
+services:
+  mongo:
+    image: mongo
+    container_name: discipline-mongo
+    restart: unless-stopped
+    volumes:
+      - mongo:/data/db
+    ports:
+      - 6011:27017
+    networks:
+      - discipline-network
+
+volumes:
+  mongo:
+    driver: local
+
+networks:
+  discipline-network:
+    driver: bridge
