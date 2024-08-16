@@ -2,14 +2,17 @@ using discipline.domain.Users.Entities;
 using discipline.domain.Users.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace discipline.application.Infrastructure.DAL;
 
 internal sealed class DbInitializer(
-    IServiceProvider serviceProvider) : IHostedService
+    IServiceProvider serviceProvider,
+    ILogger<DbInitializer> logger) : IHostedService
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        logger.LogInformation("Starting initialization");
         var subscriptions = new List<Subscription>()
         {
             Subscription.Create(Guid.NewGuid(), "Free", 0, 0, ["Daily habits", "Activity rules"]),

@@ -44,7 +44,7 @@ internal sealed class UserStateMiddleware(
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             return;
         }
-        if (user?.Status.Value == Status.Created().Value)
+        if (user?.Status.Value == Status.Created().Value && context.Request.Path != "users/subscriptions")
         {
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
             var errorDto = new ErrorDto("create_user_state", "User have to have picked subscription");
