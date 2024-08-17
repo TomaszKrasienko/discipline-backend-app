@@ -1,5 +1,6 @@
 using discipline.domain.Users.Repositories;
 using discipline.domain.Users.ValueObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,7 +45,9 @@ internal sealed class UserStateMiddleware(
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             return;
         }
-        if (user?.Status.Value == Status.Created().Value && context.Request.Path != "users/subscriptions")
+        
+        //TODO: Tests + remove magic string
+        if (user?.Status.Value == Status.Created().Value && context.Request.Path != "/users/subscriptions")
         {
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
             var errorDto = new ErrorDto("create_user_state", "User have to have picked subscription");
@@ -52,4 +55,5 @@ internal sealed class UserStateMiddleware(
         }
         await next(context);
     }
-} 
+}
+

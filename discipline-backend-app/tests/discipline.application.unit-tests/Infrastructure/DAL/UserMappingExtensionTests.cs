@@ -194,6 +194,7 @@ public sealed class UserMappingExtensionsTests
          document.Title.ShouldBe(subscription.Title.Value);
          document.PricePerMonth.ShouldBe(subscription.Price.PerMonth);
          document.PricePerYear.ShouldBe(subscription.Price.PerYear);
+         document.IsPaid.ShouldBe(!subscription.IsFreeSubscription());
          document.Features.Any(x => x == subscription.Features.First().Value).ShouldBeTrue();
      }
 
@@ -211,6 +212,7 @@ public sealed class UserMappingExtensionsTests
          dto.Title.ShouldBe(document.Title);
          dto.PricePerMonth.ShouldBe(document.PricePerMonth);
          dto.PricePerYear.ShouldBe(document.PricePerYear);
+         dto.IsPaid.ShouldBe(document.IsPaid);
          dto.Features.Any(x => x == document.Features[0]).ShouldBeTrue();
      }
 }

@@ -71,4 +71,8 @@ public sealed class User : AggregateRoot<Guid>
         SubscriptionOrder = FreeSubscriptionOrder.Create(id, subscription, now);
         Status = Status.FreeSubscriptionPicked();
     }
+
+    //Todo: Tests
+    public bool IsUserActive()
+        => Status?.Value == Status.FreeSubscriptionPicked() || Status?.Value  == Status.PaidSubscriptionPicked();
 }
