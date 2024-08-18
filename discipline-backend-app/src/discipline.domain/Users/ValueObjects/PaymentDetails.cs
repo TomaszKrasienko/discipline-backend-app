@@ -1,8 +1,9 @@
+using discipline.domain.SharedKernel;
 using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.ValueObjects;
 
-public sealed record PaymentDetails
+public sealed class PaymentDetails : ValueObject
 {
     public string CardNumber { get; }
     public string CvvCode { get; }
@@ -21,5 +22,11 @@ public sealed record PaymentDetails
         
         CardNumber = cardNumber;
         CvvCode = cvvCode;
+    }
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return CardNumber;
+        yield return CvvCode;
     }
 }

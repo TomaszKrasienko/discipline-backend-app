@@ -43,7 +43,7 @@ internal static class AuthBehaviour
         var publicKey = new RsaSecurityKey(publicRsa);
         validationParameters.IssuerSigningKey = publicKey;
 
-        services.AddAuthorization();
+
         services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

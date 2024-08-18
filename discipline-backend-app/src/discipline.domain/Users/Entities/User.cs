@@ -74,5 +74,5 @@ public sealed class User : AggregateRoot<Guid>
 
     //Todo: Tests
     public bool IsUserActive()
-        => Status?.Value == Status.FreeSubscriptionPicked() || Status?.Value  == Status.PaidSubscriptionPicked();
+        => Status == Status.FreeSubscriptionPicked() || Status  == Status.PaidSubscriptionPicked();
 }

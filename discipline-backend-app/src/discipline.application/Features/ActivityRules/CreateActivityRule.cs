@@ -4,6 +4,7 @@ using discipline.application.Features.ActivityRules.Configuration;
 using discipline.domain.ActivityRules.Entities;
 using discipline.domain.ActivityRules.Repositories;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
@@ -33,7 +34,8 @@ public static class CreateActivityRule
             {
                 Description = "Adds activity rule"
             })
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
         return app;
     }
 }

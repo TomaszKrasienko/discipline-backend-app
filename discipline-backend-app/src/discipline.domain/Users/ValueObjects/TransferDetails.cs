@@ -1,8 +1,9 @@
+using discipline.domain.SharedKernel;
 using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.ValueObjects;
 
-public sealed record TransferDetails
+public sealed class TransferDetails : ValueObject
 {
     public string Title { get; }
     public string CardNumber { get; }
@@ -19,5 +20,11 @@ public sealed record TransferDetails
             throw new InvalidCardLengthException(cardNumber);
         }
         CardNumber = cardNumber;
+    }
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Title;
+        yield return CardNumber;
     }
 }
