@@ -1,6 +1,8 @@
+using discipline.domain.SharedKernel;
+
 namespace discipline.domain.DailyProductivities.ValueObjects.Activity;
 
-public sealed record IsChecked
+public sealed class IsChecked : ValueObject
 {
     public bool Value { get; }
 
@@ -12,4 +14,9 @@ public sealed record IsChecked
 
     public static implicit operator IsChecked(bool value)
         => new IsChecked(value);
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Value;
+    }
 }

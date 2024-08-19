@@ -1,8 +1,9 @@
 using discipline.domain.ActivityRules.Exceptions;
+using discipline.domain.SharedKernel;
 
 namespace discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 
-public sealed record Title
+public sealed class Title : ValueObject
 {
     public string Value { get; }
 
@@ -25,4 +26,9 @@ public sealed record Title
 
     public static implicit operator Title(string value)
         => new Title(value);
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Value;
+    }
 }

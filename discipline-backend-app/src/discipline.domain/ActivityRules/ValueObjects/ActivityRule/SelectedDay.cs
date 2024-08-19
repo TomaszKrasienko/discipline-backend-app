@@ -1,8 +1,9 @@
 using discipline.domain.ActivityRules.Exceptions;
+using discipline.domain.SharedKernel;
 
 namespace discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 
-public sealed record SelectedDay
+public sealed class SelectedDay : ValueObject
 {
     public int Value { get; }
 
@@ -20,4 +21,9 @@ public sealed record SelectedDay
 
     public static implicit operator SelectedDay(int value)
         => new SelectedDay(value);
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Value;
+    }
 }

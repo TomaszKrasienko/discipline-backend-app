@@ -1,8 +1,9 @@
 using discipline.domain.ActivityRules.Exceptions;
+using discipline.domain.SharedKernel;
 
 namespace discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 
-public sealed record Mode
+public sealed class Mode : ValueObject
 {
     public static readonly Dictionary<string, string> AvailableModes = new Dictionary<string, string>
     {
@@ -53,4 +54,9 @@ public sealed record Mode
 
     public static implicit operator Mode(string value)
         => new Mode(value);
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Value;
+    }
 }
