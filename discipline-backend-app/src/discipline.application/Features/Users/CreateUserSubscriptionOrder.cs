@@ -14,7 +14,7 @@ public static class CreateUserSubscriptionOrder
 {
     internal static WebApplication MapCreateUserSubscriptionOrder(this WebApplication app)
     {
-        app.MapPost($"{Extensions.UsersTag}/crate-subscription-order", async (CreateUserSubscriptionOrderCommand command,
+        app.MapPost($"{Extensions.UsersTag}/create-subscription-order", async (CreateUserSubscriptionOrderCommand command,
             IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var subscriptionOrderId = Guid.NewGuid();

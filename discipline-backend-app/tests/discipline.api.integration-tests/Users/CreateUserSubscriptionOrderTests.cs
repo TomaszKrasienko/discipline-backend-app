@@ -18,20 +18,19 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
     public async Task CreateUserSubscriptionOrder_GivenExistingUserAndPaidSubscription_ShouldReturn200OkStatusCodeAndAddToDb()
     {
         //arrange
-        var userDocument = UserDocumentFactory.Get();
+        var user = await AuthorizeWithoutSubscription();
         var subscriptionDocument = SubscriptionDocumentFactory.Get(10, 100);
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(userDocument);
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
         var command = new CreateUserSubscriptionOrderCommand(Guid.Empty, Guid.Empty, subscriptionDocument.Id,
             SubscriptionOrderFrequency.Monthly, new string('1', 15), "123");
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"/users/{userDocument.Id}/crate-subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"/users/create-subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == userDocument.Id)
+        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == user.Id)
             .FirstOrDefaultAsync();
         updatedUserDocument.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrderDocument>();
     }
@@ -40,47 +39,62 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
     public async Task CreateUserSubscriptionOrder_GivenExistingUserAndFreeSubscription_ShouldReturn200OkStatusCodeAndAddToDb()
     {
         //arrange
-        var userDocument = UserDocumentFactory.Get();
+        var user = await AuthorizeWithoutSubscription();
         var subscriptionDocument = SubscriptionDocumentFactory.Get();
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(userDocument);
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
         var command = new CreateUserSubscriptionOrderCommand(Guid.Empty, Guid.Empty, subscriptionDocument.Id,
             null, null, null);
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"/users/{userDocument.Id}/crate-subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"/users/create-subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == userDocument.Id)
+        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == user.Id)
             .FirstOrDefaultAsync();
         updatedUserDocument.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrderDocument>();
     }
     
     [Fact]
-    public async Task CreateUserSubscriptionOrder_GivenNotExistingUser_ShouldReturn400BadRequestStatusCode()
+    public async Task CreateUserSubscriptionOrder_GivenNotExistingSubscription_ShouldReturn400BadRequestStatusCode()
+    {
+        //arrange
+        await AuthorizeWithoutSubscription();
+        var command = new CreateUserSubscriptionOrderCommand(Guid.Empty, Guid.Empty, Guid.NewGuid(),
+            SubscriptionOrderFrequency.Monthly, new string('1', 14), "123");
+        
+        //act
+        var result = await HttpClient.PostAsJsonAsync($"/users/create-subscription-order", command);
+        
+        //assert
+        result.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    }
+    
+    [Fact]
+    public async Task CreateUserSubscriptionOrder_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
     {
         //arrange
         var command = new CreateUserSubscriptionOrderCommand(Guid.Empty, Guid.Empty, Guid.NewGuid(),
             SubscriptionOrderFrequency.Monthly, new string('1', 14), "123");
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"/users/{Guid.NewGuid()}/crate-subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"/users/create-subscription-order", command);
         
         //assert
-        result.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        result.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 
     [Fact]
     public async Task CreateUserSubscriptionOrder_GivenEmptySubscriptionId_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
+        await AuthorizeWithoutSubscription();
         var command = new CreateUserSubscriptionOrderCommand(Guid.Empty, Guid.Empty, Guid.Empty,
             SubscriptionOrderFrequency.Monthly, new string('1', 15), "123");
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"/users/{Guid.NewGuid()}/crate-subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"/users/create-subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
