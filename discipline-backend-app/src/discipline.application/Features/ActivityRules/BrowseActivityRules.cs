@@ -14,9 +14,9 @@ internal static class BrowseActivityRules
 {
     internal static WebApplication MapBrowseActivityRules(this WebApplication app)
     {
-        app.MapGet($"/{Extensions.ActivityRulesTag}", async ([AsParameters]PaginationDto paginationDto, 
-            HttpContext httpContext, IDisciplineMongoCollection disciplineMongoCollection,
-            IIdentityContext identityContext) =>
+        app.MapGet($"/{Extensions.ActivityRulesTag}", async ([AsParameters] PaginationDto paginationDto,
+                HttpContext httpContext, IDisciplineMongoCollection disciplineMongoCollection,
+                IIdentityContext identityContext) =>
             {
                 var source = disciplineMongoCollection
                     .GetCollection<ActivityRuleDocument>()
@@ -28,14 +28,16 @@ internal static class BrowseActivityRules
             })
             .Produces(StatusCodes.Status200OK, typeof(List<ActivityRuleDto>))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
             .WithName(nameof(BrowseActivityRules))
             .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new(operation)
             {
-                Description = $"Browses activity rules by pagination data. Adds pagination meta data in header with name {PagingBehaviour.HeaderName}"
+                Description =
+                    $"Browses activity rules by pagination data. Adds pagination meta data in header with name {PagingBehaviour.HeaderName}"
             })
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
         return app;
     }
 }

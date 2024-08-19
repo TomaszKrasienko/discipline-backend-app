@@ -27,7 +27,7 @@ internal static class CreateActivity
             .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(CreateActivity))
             .WithTags(Extensions.DailyProductivityTag)
@@ -35,7 +35,8 @@ internal static class CreateActivity
             {
                 Description = "Adds activity rule"
             })
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
         return app;
     }
 }

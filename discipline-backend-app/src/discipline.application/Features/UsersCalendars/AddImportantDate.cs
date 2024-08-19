@@ -14,27 +14,28 @@ internal static class AddImportantDate
     {
         app.MapPost($"{Extensions.UserCalendarTag}/add-important-date", async (AddImportantDateCommand command,
                     HttpContext httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
-            {
-                var eventId = Guid.NewGuid();
-                await commandDispatcher.HandleAsync(command with
                 {
-                    Id = eventId,
-                    UserId = identityContext.UserId
-                }, cancellationToken);
-                httpContext.AddResourceIdHeader(eventId);
-                return Results.CreatedAtRoute(nameof(GetEventById), new {eventId = eventId}, null);
+                    var eventId = Guid.NewGuid();
+                    await commandDispatcher.HandleAsync(command with
+                    {
+                        Id = eventId,
+                        UserId = identityContext.UserId
+                    }, cancellationToken);
+                    httpContext.AddResourceIdHeader(eventId);
+                    return Results.CreatedAtRoute(nameof(GetEventById), new {eventId = eventId}, null);
+                })
+            .Produces(StatusCodes.Status201Created, typeof(void))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .WithName(nameof(AddImportantDate))
+            .WithTags(Extensions.UserCalendarTag)
+            .WithOpenApi(operation => new (operation)
+            {
+                Description = "Adds important date to existing user calendar for day or creates user calendar for day"
             })
-        .Produces(StatusCodes.Status201Created, typeof(void))
-        .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-        .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
-        .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
-        .WithName(nameof(AddImportantDate))
-        .WithTags(Extensions.UserCalendarTag)
-        .WithOpenApi(operation => new (operation)
-        {
-            Description = "Adds important date to existing user calendar for day or creates user calendar for day"
-        })
-        .RequireAuthorization();
+            .RequireAuthorization()
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
         return app;
     }
 }

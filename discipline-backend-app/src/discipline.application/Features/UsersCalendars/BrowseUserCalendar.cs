@@ -26,14 +26,15 @@ internal static class BrowseUserCalendar
             .Produces(StatusCodes.Status200OK, typeof(UserCalendarDto))
             .Produces(StatusCodes.Status204NoContent, typeof(void))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
             .WithName(nameof(BrowseUserCalendar))
             .WithTags(Extensions.UserCalendarTag)
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Gets user calendar by \"Day\""
             })
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
         return app;
     }
 }

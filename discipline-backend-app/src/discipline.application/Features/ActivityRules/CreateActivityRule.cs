@@ -26,7 +26,7 @@ public static class CreateActivityRule
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(CreateActivityRule))
             .WithTags(Extensions.ActivityRulesTag)

@@ -9,6 +9,7 @@ namespace discipline.application.Features.ActivityRuleModes;
 
 internal static class GetActivityRuleModes
 {
+    //TODO: Testy integracyjne + dodanie uwierzytelniania
     internal static WebApplication MapGetActivityRuleModes(this WebApplication app)
     {
         app.MapGet($"/{Extensions.ActivityRuleModesTag}", () 

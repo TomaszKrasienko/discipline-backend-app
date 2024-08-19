@@ -26,7 +26,7 @@ public static class AddMeeting
             })
             .Produces(StatusCodes.Status201Created, typeof(void))            
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(AddMeeting))
             .WithTags(Extensions.UserCalendarTag)
@@ -34,7 +34,8 @@ public static class AddMeeting
             {
                 Description = "Adds meeting to existing user calendar for day or creates user calendar for day"
             })
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
         return app;
     }
 }

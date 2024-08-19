@@ -14,23 +14,25 @@ public static class CreateUserSubscriptionOrder
 {
     internal static WebApplication MapCreateUserSubscriptionOrder(this WebApplication app)
     {
-        app.MapPost($"{Extensions.UsersTag}/{{userId:guid}}/crate-subscription-order", async (CreateUserSubscriptionOrderCommand command,
-            Guid userId,ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+        app.MapPost($"{Extensions.UsersTag}/crate-subscription-order", async (CreateUserSubscriptionOrderCommand command,
+            IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var subscriptionOrderId = Guid.NewGuid();
-                await commandDispatcher.HandleAsync(command with { Id = subscriptionOrderId, UserId = userId },
+                await commandDispatcher.HandleAsync(command with { Id = subscriptionOrderId, UserId = identityContext.UserId },
                     cancellationToken);
                 return Results.Ok();
             })
             .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
             .WithName(nameof(CreateUserSubscriptionOrder))
             .WithTags(Extensions.UsersTag)
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Adds subscription order for user"
-            });
+            })
+            .RequireAuthorization();
         return app;
     }
 }
