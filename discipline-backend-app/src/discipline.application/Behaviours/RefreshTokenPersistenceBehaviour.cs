@@ -5,8 +5,8 @@ internal static class RefreshTokenPersistenceBehaviour
     
 }
 
-internal interface IRefreshToken
+internal interface IRefreshTokenFacade
 {
     Task Save(string refreshToken, Guid userId);
-    Task<string> Is
+    Task<Guid?> GetUserId(string refreshToken);
 }
