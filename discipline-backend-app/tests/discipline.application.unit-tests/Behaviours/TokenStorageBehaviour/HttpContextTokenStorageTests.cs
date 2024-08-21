@@ -13,7 +13,7 @@ public sealed class HttpContextTokenStorageTests
     public void Set_GivenJwtDto_ShouldSaveTokenInHttpContext()
     {
         //arrange
-        var jwtDto = new JwtDto()
+        var jwtDto = new TokensDto()
         {
             Token = Guid.NewGuid().ToString()
         };
@@ -22,19 +22,19 @@ public sealed class HttpContextTokenStorageTests
         _tokenStorage.Set(jwtDto);
         
         //assert
-        object savedJwtDto = new JwtDto();
+        object savedJwtDto = new TokensDto();
         var isExists = _httpContextAccessor?
             .HttpContext?
             .Items.TryGetValue("user_jwt_token", out savedJwtDto!);
         isExists!.Value.ShouldBeTrue();
-        ((JwtDto)savedJwtDto).Token.ShouldBe(jwtDto.Token);
+        ((TokensDto)savedJwtDto).Token.ShouldBe(jwtDto.Token);
     }
 
     [Fact]
     public void Get_GivenExistingJwtDto_ShouldReturnJwtDto()
     {
         //arrange
-        var jwtDto = new JwtDto()
+        var jwtDto = new TokensDto()
         {
             Token = Guid.NewGuid().ToString()
         };

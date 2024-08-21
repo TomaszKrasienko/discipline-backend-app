@@ -84,7 +84,7 @@ internal sealed record AuthOptions
 
 internal interface IAuthenticator
 {
-    JwtDto CreateToken(string userId, string status);
+    string CreateToken(string userId, string status);
 }
 
 internal sealed class JwtAuthenticator : IAuthenticator
@@ -108,7 +108,7 @@ internal sealed class JwtAuthenticator : IAuthenticator
         _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
     }
     
-    public JwtDto CreateToken(string userId, string status)
+    public string CreateToken(string userId, string status)
     {
         SigningCredentials signingCredentials;
         RSA privateRsa = RSA.Create();
@@ -133,10 +133,6 @@ internal sealed class JwtAuthenticator : IAuthenticator
             notBefore: now,
             expires: expirationTime,
             signingCredentials: signingCredentials);
-        var token = _jwtSecurityTokenHandler.WriteToken(jwt);
-        return new JwtDto()
-        {
-            Token = token
-        };
+        return _jwtSecurityTokenHandler.WriteToken(jwt);
     }
 }

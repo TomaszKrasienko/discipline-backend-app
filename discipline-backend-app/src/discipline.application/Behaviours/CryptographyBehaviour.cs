@@ -38,8 +38,8 @@ internal sealed record CryptographyOptions
 
 internal interface ICryptographer
 {
-    Task<string> Encrypt(string value, CancellationToken cancellationToken = default);
-    Task<string> Decrypt(string value, CancellationToken cancellationToken = default);
+    Task<string> EncryptAsync(string value, CancellationToken cancellationToken = default);
+    Task<string> DecryptAsync(string value, CancellationToken cancellationToken = default);
 }
 
 internal sealed class AesCryptographer : ICryptographer
@@ -51,7 +51,7 @@ internal sealed class AesCryptographer : ICryptographer
         _key = key;
     }
     
-    public async Task<string> Encrypt(string value, CancellationToken cancellationToken = default)
+    public async Task<string> EncryptAsync(string value, CancellationToken cancellationToken = default)
     {
         using Aes aes = Aes.Create();
         var keyBytes = Encoding.UTF8.GetBytes(_key);
@@ -67,7 +67,7 @@ internal sealed class AesCryptographer : ICryptographer
         return $"{iv}{Convert.ToBase64String(memoryStream.ToArray())}";
     }
 
-    public async Task<string> Decrypt(string value, CancellationToken cancellationToken = default)
+    public async Task<string> DecryptAsync(string value, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(value))
         {

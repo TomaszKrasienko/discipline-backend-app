@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.DTOs;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;
 using discipline.domain.Users.Repositories;
@@ -58,7 +59,8 @@ internal sealed class SignInCommandHandler(
     IUserRepository userRepository,
     IPasswordManager passwordManager,
     IAuthenticator authenticator,
-    ITokenStorage tokenStorage) : ICommandHandler<SignInCommand>
+    ITokenStorage tokenStorage,
+    IRefreshTokenFacade refreshTokenFacade) : ICommandHandler<SignInCommand>
 {
     public async Task HandleAsync(SignInCommand command, CancellationToken cancellationToken = default)
     {
@@ -75,6 +77,11 @@ internal sealed class SignInCommandHandler(
         }
 
         var token = authenticator.CreateToken(user.Id.ToString(), user.Status);
-        tokenStorage.Set(token);
+        var refreshToken = await refreshTokenFacade.GenerateAsync(user.Id, cancellationToken);
+        tokenStorage.Set(new TokensDto()
+        {
+            Token = token,
+            RefreshToken = refreshToken
+        });
     }
 }

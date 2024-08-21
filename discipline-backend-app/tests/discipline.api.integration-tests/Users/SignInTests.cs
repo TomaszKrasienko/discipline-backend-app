@@ -30,9 +30,10 @@ public sealed class SignInTests : BaseTestsController
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var response = await result.Content.ReadFromJsonAsync<JwtDto>();
+        var response = await result.Content.ReadFromJsonAsync<TokensDto>();
         response.ShouldNotBeNull();
         response.Token.ShouldNotBeEmpty();
+        response.RefreshToken.ShouldNotBeEmpty();
     }
     
     [Fact]

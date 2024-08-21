@@ -1,6 +1,7 @@
 namespace discipline.application.DTOs;
 
-public class JwtDto
+public class TokensDto
 {
     public string Token { get; set; }
+    public string RefreshToken { get; set; }
 }
