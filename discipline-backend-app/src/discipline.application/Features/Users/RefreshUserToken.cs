@@ -23,7 +23,7 @@ internal static class RefreshUserToken
         .Produces(StatusCodes.Status201Created, typeof(void))
         .Produces(StatusCodes.Status401Unauthorized, typeof(void))
         .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
-        .WithName(nameof(SignIn))
+        .WithName(nameof(RefreshUserToken))
         .WithTags(Extensions.UsersTag)
         .WithOpenApi(operation => new (operation)
         {

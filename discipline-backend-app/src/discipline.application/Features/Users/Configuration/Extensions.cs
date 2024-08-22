@@ -11,5 +11,6 @@ internal static class Extensions
             .MapCreateUserSubscriptionOrder()
             .MapSignUp()
             .MapSignIn()
+            .MapRefreshToken()
             .MapBrowseSubscriptions();
 }

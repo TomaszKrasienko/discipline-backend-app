@@ -1,4 +1,7 @@
+using Amazon.Runtime;
 using discipline.application.Behaviours;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
 using Shouldly;
 using Xunit;
 
@@ -22,19 +25,6 @@ public sealed class AesCryptographerTests
     }
 
     [Fact]
-    public async Task DecryptAsync_GivenEmptyValue_ShouldThrowArgumentException()
-    {
-        //arrange
-        var value = string.Empty;
-        
-        //act
-        var exception = await Record.ExceptionAsync(async () => await _cryptographer.DecryptAsync(value));
-        
-        //assert
-        exception.ShouldBeOfType<ArgumentException>();
-    }
-    
-    [Fact]
     public async Task DecryptAsync_GivenEncryptedValue_ShouldReturnDecryptedValue()
     {
         //arrange
@@ -48,12 +38,45 @@ public sealed class AesCryptographerTests
         decryptedValue.ShouldNotBe(encryptedValue);
         decryptedValue.ShouldBe(value);
     }
+    
+    [Fact]
+    public async Task DecryptAsync_GivenEmptyValue_ShouldThrowArgumentException()
+    {
+        //act
+        var exception = await Record.ExceptionAsync(async () => await _cryptographer.DecryptAsync(string.Empty));
+        
+        //assert
+        exception.ShouldBeOfType<ArgumentException>();
+    }
+    
+    [Fact]
+    public async Task DecryptAsync_GivenValueShorterThan24_ShouldReturnNull()
+    {
+        //act
+        var value = await _cryptographer.DecryptAsync(new string('a', 20));
+        
+        //assert
+        value.ShouldBeNull();
+    }
+    
+    [Fact]
+    public async Task DecryptAsync_GivenInvalidValue_ShouldRturnNull()
+    {
+        //act
+        var value = await _cryptographer.DecryptAsync(new string('a', 24));
+        
+        //assert
+        value.ShouldBeNull();
+    }
 
     #region arrange
     private readonly ICryptographer _cryptographer;
 
     public AesCryptographerTests()
-        => _cryptographer = new AesCryptographer("icpJrty2W0wtOSuVHuxPaLokVBlrzg6P");
+    {
+        var logger = Substitute.For<ILogger<AesCryptographer>>();
+        _cryptographer = new AesCryptographer(logger, "icpJrty2W0wtOSuVHuxPaLokVBlrzg6P");
+    }
 
     #endregion
 }
