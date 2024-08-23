@@ -90,7 +90,7 @@ public abstract class BaseTestsController : IDisposable
        var authOptions = optionsProvider.Get<AuthOptions>("Auth");
        var authenticator = new JwtAuthenticator(new Clock(), Options.Create<AuthOptions>(authOptions));
        var token = authenticator.CreateToken(userId.ToString(), status);
-       HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token.Token);
+       HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
    }
    
    public void Dispose()
