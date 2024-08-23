@@ -26,6 +26,7 @@ public sealed class RefreshUserTokenTests : BaseTestsController
         var signInCommand = new SignInCommand(user.Email, user.Password);
         var signInResult = await HttpClient.PostAsJsonAsync("/users/sign-in", signInCommand);
         var signInTokens = await signInResult.Content.ReadFromJsonAsync<TokensDto>();
+        await Task.Delay(TimeSpan.FromSeconds(1));
         var command = new RefreshTokenCommand(signInTokens.RefreshToken);
 
         //act
@@ -51,6 +52,19 @@ public sealed class RefreshUserTokenTests : BaseTestsController
         
        //assert
        result.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task RefreshUserToken_GivenEmptyRefreshToken_ShouldReturn422UnprocessableEntityStatusCode()
+    {
+        //arrange
+        var command = new RefreshTokenCommand(string.Empty);
+       
+        //act
+        var result = await HttpClient.PostAsJsonAsync("users/refresh-token", command);
+        
+        //assert
+        result.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
     }
     
     #region arrange    

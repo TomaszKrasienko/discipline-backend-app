@@ -1,6 +1,8 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
+using Microsoft.AspNetCore.Http.Features;
 using NSubstitute;
+using NSubstitute.ReturnsExtensions;
 using Shouldly;
 using Xunit;
 
@@ -68,10 +70,31 @@ public sealed class RefreshTokenFacadeTests
     }
 
     [Fact]
-    public async Task GetUserIdAsync_GivenNotExistingRefreshToken_ShouldThrowRefreshTokenForUserNotFoundException()
+    public async Task GetUserIdAsync_GivenInvalidRefreshToken_ShouldThrowInvalidRefreshTokenException()
     {
+        //arrange
+        _cryptographer
+            .DecryptAsync(Arg.Any<string>(), default)
+            .ReturnsNull();
+        
         //act
         var exception = await Record.ExceptionAsync(async () => await _facade.GetUserIdAsync(Guid.NewGuid().ToString()));
+        
+        //assert
+        exception.ShouldBeOfType<InvalidRefreshTokenException>();
+    }
+    
+    [Fact]
+    public async Task GetUserIdAsync_GivenNotExistingRefreshToken_ShouldThrowRefreshTokenForUserNotFoundException()
+    {
+        //arrange
+        var refreshToken = Guid.NewGuid().ToString();
+        _cryptographer
+            .DecryptAsync(refreshToken)
+            .Returns(Guid.NewGuid().ToString());
+        
+        //act
+        var exception = await Record.ExceptionAsync(async () => await _facade.GetUserIdAsync(refreshToken));
         
         //assert
         exception.ShouldBeOfType<RefreshTokenForUserNotFoundException>();

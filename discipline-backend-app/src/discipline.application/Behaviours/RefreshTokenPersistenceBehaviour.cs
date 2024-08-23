@@ -49,6 +49,10 @@ internal sealed class RefreshTokenFacade(
     public async Task<Guid> GetUserIdAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
         var decryptedRefreshToken = await cryptographer.DecryptAsync(refreshToken, cancellationToken);
+        if (decryptedRefreshToken is null)
+        {
+            throw new InvalidRefreshTokenException();
+        }
         var userId = await refreshTokenService.GetAsync(decryptedRefreshToken, cancellationToken);
         if (userId is null)
         {
