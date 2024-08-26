@@ -1,9 +1,10 @@
 using discipline.domain.ActivityRules.Exceptions;
+using discipline.domain.SharedKernel;
 using discipline.domain.UsersCalendars.Exceptions;
 
 namespace discipline.domain.UsersCalendars.ValueObjects.Event;
 
-public sealed record Title
+public sealed class Title : ValueObject
 {
     public string Value { get; }
 
@@ -26,4 +27,9 @@ public sealed record Title
 
     public static implicit operator Title(string value)
         => new Title(value);
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Value;
+    }
 }

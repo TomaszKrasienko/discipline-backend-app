@@ -75,14 +75,15 @@ internal static class UsersMappingExtensions
         => new (document.Id, document.Title, new Price(document.PricePerMonth, 
             document.PricePerYear), document.Features.Select(x => new Feature(x)).ToList());
 
-    internal static SubscriptionDocument AsDocument(this Subscription document)
+    internal static SubscriptionDocument AsDocument(this Subscription entity)
         => new()
         {
-            Id = document.Id,
-            PricePerMonth = document.Price.PerMonth,
-            PricePerYear = document.Price.PerYear,
-            Title = document.Title,
-            Features = document.Features.Select(x => x.Value).ToList()
+            Id = entity.Id,
+            PricePerMonth = entity.Price.PerMonth,
+            PricePerYear = entity.Price.PerYear,
+            Title = entity.Title,
+            IsPaid = !entity.IsFreeSubscription(),
+            Features = entity.Features.Select(x => x.Value).ToList()
         };
 
     internal static SubscriptionDto AsDto(this SubscriptionDocument document)
@@ -92,6 +93,7 @@ internal static class UsersMappingExtensions
             Title = document.Title,
             PricePerMonth = document.PricePerMonth,
             PricePerYear = document.PricePerYear,
+            IsPaid = document.IsPaid,
             Features = document.Features
         };
 }

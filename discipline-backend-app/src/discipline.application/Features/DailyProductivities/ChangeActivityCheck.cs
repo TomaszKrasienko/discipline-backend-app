@@ -18,18 +18,19 @@ internal static class ChangeActivityCheck
                 await commandDispatcher.HandleAsync(new ChangeActivityCheckCommand(activityId), cancellationToken);
                 return Results.Ok();
             })
-        .Produces(StatusCodes.Status200OK, typeof(void))
-        .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))        
-        .Produces(StatusCodes.Status401Unauthorized, typeof(void))        
-            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
-        .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
-        .WithName(nameof(ChangeActivityCheck))
-        .WithTags(Extensions.DailyProductivityTag)
-        .WithOpenApi(operation => new(operation)
-        {
-            Description = "Changes activity check"
-        })
-        .RequireAuthorization();
+            .Produces(StatusCodes.Status200OK, typeof(void))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))        
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))        
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .WithName(nameof(ChangeActivityCheck))
+            .WithTags(Extensions.DailyProductivityTag)
+            .WithOpenApi(operation => new(operation)
+            {
+                Description = "Changes activity check"
+            })
+            .RequireAuthorization()
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
         return app;
     }
 }

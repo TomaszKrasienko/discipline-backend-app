@@ -19,8 +19,8 @@ internal static class Extensions
         => services
             .AddServices()
             .AddOptions(configuration)
-            .AddMongoConnection();
-            //.AddInitializer(configuration);
+            .AddMongoConnection()
+            .AddInitializer(configuration);
 
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
         => services.Configure<MongoOptions>(configuration.GetSection(SectionName));

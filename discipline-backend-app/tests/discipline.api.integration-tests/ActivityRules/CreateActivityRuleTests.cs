@@ -78,7 +78,6 @@ public sealed class CreateActivityRuleTests : BaseTestsController
      public async Task Create_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
      {
          //arrange
-         Authorize(Guid.NewGuid(), Status.PaidSubscriptionPicked());
          var command = new CreateActivityRuleCommand(Guid.Empty, Guid.Empty, "test_title",
              Mode.EveryDayMode(), null);
         

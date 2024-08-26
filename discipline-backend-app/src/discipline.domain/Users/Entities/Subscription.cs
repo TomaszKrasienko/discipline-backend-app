@@ -52,7 +52,7 @@ public sealed class Subscription
     private void ChangePrice(decimal pricePerMonth, decimal pricePerYear)
         => Price = new Price(pricePerMonth, pricePerYear);
 
-    internal bool IsFreeSubscription()
+    public bool IsFreeSubscription()
         => Price?.PerMonth == 0 && Price?.PerYear == 0;
 
     internal void AddFeature(string feature)

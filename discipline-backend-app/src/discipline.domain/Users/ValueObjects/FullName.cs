@@ -1,8 +1,9 @@
+using discipline.domain.SharedKernel;
 using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.ValueObjects;
 
-public sealed record FullName
+public sealed class FullName : ValueObject
 {
     public string FirstName { get; }
     public string LastName { get; }
@@ -32,5 +33,11 @@ public sealed record FullName
         
         FirstName = firstName;
         LastName = lastName;
+    }
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return FirstName;
+        yield return LastName;
     }
 }

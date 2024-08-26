@@ -21,14 +21,15 @@ internal static class DeleteActivity
             .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
             .WithName(nameof(DeleteActivity))
             .WithTags(Extensions.DailyProductivityTag)
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Removes activity"
             })
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
         return app;
     }
 }

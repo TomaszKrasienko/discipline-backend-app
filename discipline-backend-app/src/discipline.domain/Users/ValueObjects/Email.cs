@@ -1,9 +1,10 @@
 using System.Text.RegularExpressions;
+using discipline.domain.SharedKernel;
 using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.ValueObjects;
 
-public sealed record Email
+public sealed class Email : ValueObject
 {
     private static readonly Regex Regex = new(
         @"^(?("")("".+?(?<!\\)""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
@@ -26,4 +27,9 @@ public sealed record Email
 
     public static implicit operator Email(string email)
         => new Email(email);
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Value;
+    }
 }

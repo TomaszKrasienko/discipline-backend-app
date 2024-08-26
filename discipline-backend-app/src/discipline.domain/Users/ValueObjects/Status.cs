@@ -1,8 +1,9 @@
+using discipline.domain.SharedKernel;
 using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.ValueObjects;
 
-public sealed record Status
+public sealed class Status : ValueObject
 {
     private readonly List<string> _availableStatuses = ["Created", "PaidSubscriptionPicked", "FreeSubscriptionPicked"];
     public string Value { get; }
@@ -36,4 +37,21 @@ public sealed record Status
 
     public static implicit operator Status(string value)
         => new Status(value);
+
+    public static bool operator ==(Status arg1, Status arg2)
+        => arg1?.Value == arg2?.Value;
+
+    public static bool operator !=(Status arg1, Status arg2) 
+        => !(arg1 == arg2);
+
+    public override bool Equals(object obj)
+        => this == (Status)obj;
+
+    public override int GetHashCode()
+        => HashCode.Combine(_availableStatuses, Value);
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Value;
+    }
 }

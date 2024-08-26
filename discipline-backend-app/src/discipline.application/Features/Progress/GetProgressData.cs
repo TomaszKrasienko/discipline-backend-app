@@ -38,14 +38,15 @@ internal static class GetProgressData
         .Produces(StatusCodes.Status200OK, typeof(IEnumerable<ProgressDataDto>))
         .Produces(StatusCodes.Status204NoContent, typeof(void))
         .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-        .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
+        .Produces(StatusCodes.Status403Forbidden, typeof(void))
         .WithName(nameof(GetProgressData))
         .WithTags(Extensions.ProgressTag)
         .WithOpenApi(operation => new(operation)
         {
             Description = "Gets data progress as day, percent of done activities per day"
         })
-         .RequireAuthorization();
+         .RequireAuthorization()
+         .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
         return app;
     }
 }

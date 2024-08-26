@@ -29,7 +29,7 @@ public sealed class JwtAuthenticatorTests
         RSA privateRsa = RSA.Create();
         privateRsa.ImportFromPem(input: File.ReadAllText(_options.Value.PublicCertPath));
         var publicKey = new RsaSecurityKey(privateRsa);
-        var token = _jwtSecurityTokenHandler.ReadJwtToken(result.Token);
+        var token = _jwtSecurityTokenHandler.ReadJwtToken(result);
         
         token.Claims.FirstOrDefault(x => x.Type == "status")?.Value.ShouldBe(status);
         
@@ -43,7 +43,7 @@ public sealed class JwtAuthenticatorTests
             ValidateLifetime = true
         };
 
-        _jwtSecurityTokenHandler.ValidateToken(result.Token, validationParameters, out SecurityToken validatedToken);
+        _jwtSecurityTokenHandler.ValidateToken(result, validationParameters, out SecurityToken validatedToken);
         
     }
     

@@ -26,14 +26,15 @@ internal static class GetActivityRuleById
             .Produces(StatusCodes.Status200OK, typeof(ActivityRuleDto))
             .Produces(StatusCodes.Status204NoContent, typeof(void))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-            .Produces(StatusCodes.Status403Forbidden, typeof(ErrorDto))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
             .WithName(nameof(GetActivityRuleById))
             .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new(operation)
             {
                 Description = "Gets activity rule by \"ID\""
             })
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
         return app;
     }
 }

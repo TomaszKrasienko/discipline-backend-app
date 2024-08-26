@@ -1,8 +1,9 @@
+using discipline.domain.SharedKernel;
 using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.ValueObjects;
 
-public sealed record Price
+public sealed class Price : ValueObject
 {
     public decimal PerMonth { get; }
     public decimal PerYear { get; }
@@ -20,5 +21,11 @@ public sealed record Price
         }
         PerMonth = perMonth;
         PerYear = perYear;
+    }
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return PerMonth;
+        yield return PerYear;
     }
 }

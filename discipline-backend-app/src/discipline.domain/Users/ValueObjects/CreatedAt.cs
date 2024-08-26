@@ -1,8 +1,9 @@
+using discipline.domain.SharedKernel;
 using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.ValueObjects;
 
-public sealed record CreatedAt
+public sealed class CreatedAt : ValueObject
 {
     public DateTime Value { get; }
 
@@ -20,4 +21,9 @@ public sealed record CreatedAt
 
     public static implicit operator CreatedAt(DateTime value)
         => new CreatedAt(value);
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Value;
+    }
 }

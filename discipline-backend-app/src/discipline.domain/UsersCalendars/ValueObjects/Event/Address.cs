@@ -1,8 +1,9 @@
+using discipline.domain.SharedKernel;
 using discipline.domain.UsersCalendars.Policies;
 
 namespace discipline.domain.UsersCalendars.ValueObjects.Event;
 
-public sealed record Address
+public sealed class Address : ValueObject
 {
     public string Platform { get; }
     public string Uri { get; }
@@ -16,5 +17,12 @@ public sealed record Address
         Platform = platform;
         Uri = uri;
         Place = place;
+    }
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Platform;
+        yield return Uri;
+        yield return Place;
     }
 }

@@ -1,8 +1,9 @@
+using discipline.domain.SharedKernel;
 using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.ValueObjects;
 
-public sealed record Cost
+public sealed class Cost : ValueObject
 {
     public decimal Value { get; }
     
@@ -21,4 +22,9 @@ public sealed record Cost
 
     public static implicit operator Cost(decimal value)
         => new Cost(value);
+
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Value;
+    }
 }

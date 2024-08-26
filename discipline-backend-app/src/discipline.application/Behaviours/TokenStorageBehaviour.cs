@@ -14,8 +14,8 @@ internal static class TokenStorageBehaviour
 
 public interface ITokenStorage
 {
-    void Set(JwtDto jwtDto);
-    JwtDto Get();
+    void Set(TokensDto jwtDto);
+    TokensDto Get();
 }
 
 public sealed class HttpContextTokenStorage(
@@ -23,10 +23,10 @@ public sealed class HttpContextTokenStorage(
 {
     private const string TokenKey = "user_jwt_token";
 
-    public void Set(JwtDto jwtDto)
+    public void Set(TokensDto jwtDto)
         => httpContextAccessor.HttpContext?.Items.TryAdd(TokenKey, jwtDto);
 
-    public JwtDto Get()
+    public TokensDto Get()
     {
         if (httpContextAccessor.HttpContext is null)
         {
@@ -35,7 +35,7 @@ public sealed class HttpContextTokenStorage(
 
         if (httpContextAccessor.HttpContext.Items.TryGetValue(TokenKey, out var jwtDto))
         {
-            return jwtDto as JwtDto;
+            return jwtDto as TokensDto;
         }
 
         return null;

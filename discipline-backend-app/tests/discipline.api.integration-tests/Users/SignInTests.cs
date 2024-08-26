@@ -18,7 +18,7 @@ namespace discipline.api.integration_tests.Users;
 public sealed class SignInTests : BaseTestsController
 {
     [Fact]
-    public async Task SignIn_GivenExistingUserWithValidPassword_ShouldRetrun200OkStatusCodeWithJwtToken()
+    public async Task SignIn_GivenExistingUserWithValidPassword_ShouldReturn200OkStatusCodeWithJwtToken()
     {
         //arrange
         var user = UserFactory.Get();
@@ -30,9 +30,10 @@ public sealed class SignInTests : BaseTestsController
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
-        var response = await result.Content.ReadFromJsonAsync<JwtDto>();
+        var response = await result.Content.ReadFromJsonAsync<TokensDto>();
         response.ShouldNotBeNull();
         response.Token.ShouldNotBeEmpty();
+        response.RefreshToken.ShouldNotBeEmpty();
     }
     
     [Fact]

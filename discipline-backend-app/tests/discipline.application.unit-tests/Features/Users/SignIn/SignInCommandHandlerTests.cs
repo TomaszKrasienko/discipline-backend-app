@@ -28,13 +28,15 @@ public sealed class SignInCommandHandlerTests
             .VerifyPassword(user.Password, command.Password)
             .Returns(true);
 
-        var jwtDto = new JwtDto()
-        {
-            Token = Guid.NewGuid().ToString()
-        };
+        var token = Guid.NewGuid().ToString();
         _authenticator
             .CreateToken(user.Id.ToString(), user.Status.Value)
-            .Returns(jwtDto);
+            .Returns(token);
+
+        var refreshToken = Guid.NewGuid().ToString();
+        _refreshTokenFacade
+            .GenerateAsync(user.Id, default)
+            .Returns(refreshToken);
         
         //act
         await Act(command);
@@ -42,8 +44,9 @@ public sealed class SignInCommandHandlerTests
         //assert
         _tokenStorage
             .Received(1)
-            .Set(Arg.Is<JwtDto>(arg
-                => arg.Token == jwtDto.Token));
+            .Set(Arg.Is<TokensDto>(arg
+                => arg.Token == token
+                && arg.RefreshToken == refreshToken));
     }
     
     [Fact]
@@ -85,6 +88,7 @@ public sealed class SignInCommandHandlerTests
     private readonly IPasswordManager _passwordManager;
     private readonly IAuthenticator _authenticator;
     private readonly ITokenStorage _tokenStorage;
+    private readonly IRefreshTokenFacade _refreshTokenFacade;
     private readonly ICommandHandler<SignInCommand> _handler;
     
     public SignInCommandHandlerTests()
@@ -93,11 +97,13 @@ public sealed class SignInCommandHandlerTests
         _passwordManager = Substitute.For<IPasswordManager>();
         _authenticator = Substitute.For<IAuthenticator>();
         _tokenStorage = Substitute.For<ITokenStorage>();
+        _refreshTokenFacade = Substitute.For<IRefreshTokenFacade>();
         _handler = new SignInCommandHandler(
             _userRepository,
             _passwordManager,
             _authenticator,
-            _tokenStorage);
+            _tokenStorage,
+            _refreshTokenFacade);
     }
     
     #endregion
