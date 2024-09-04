@@ -28,7 +28,7 @@ public static class Extensions
                 policy
                     .AllowAnyOrigin()
                     .AllowAnyHeader()
-                    .AllowAnyHeader();
+                    .AllowAnyMethod();
             });
         });
         return services;
