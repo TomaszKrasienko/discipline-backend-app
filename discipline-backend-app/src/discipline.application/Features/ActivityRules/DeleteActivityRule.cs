@@ -23,6 +23,7 @@ internal static class DeleteActivityRule
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
             .Produces(StatusCodes.Status403Forbidden, typeof(void))
             .WithName(nameof(DeleteActivityRule))
+            .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Deletes activity rule"

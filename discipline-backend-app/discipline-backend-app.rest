@@ -1,6 +1,8 @@
-@url = http://localhost:5097
-@email = tom.krasienko@discipline.com
-@password = Test123!
+@url = http://localhost:6001
+# @url = http://localhost:5097
+
+@email = tom.krasienko@gmail.com
+@password = TomaszK123!
 
 ###
 POST {{url}}/users/sign-up
@@ -30,3 +32,16 @@ Content-Type: application/json
 GET {{url}}/users/subscriptions
 Authorization: bearer {{token}}
 
+###
+POST {{url}}/activity-rules/create
+Authorization: bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "test",
+  "mode": "EveryDay"
+}
+
+###
+GET {{url}}/activity-rules
+Authorization: bearer {{token}}
