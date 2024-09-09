@@ -46,7 +46,7 @@ internal static class GetProgressData
             Description = "Gets data progress as day, percent of done activities per day"
         })
          .RequireAuthorization()
-         .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+         .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
         return app;
     }
 }
@@ -55,5 +55,5 @@ internal static class GetProgressData
 internal static class ProgressCalculator
 {
     internal static int Calculate(int activities, int doneActivities)
-        => (int)(Math.Round((double)doneActivities * 100 / (double)activities));
+        => activities == 0 ? 0 : (int)(Math.Round((double)doneActivities * 100 / (double)activities));
 }
