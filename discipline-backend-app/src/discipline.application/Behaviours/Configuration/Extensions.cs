@@ -27,4 +27,8 @@ internal static class Extensions
             .UseHandlingException()
             .UseAuthBehaviour()
             .UseUserStateCheckingBehaviour();
+
+    internal static WebApplicationBuilder UseBehaviours(this WebApplicationBuilder builder)
+        => builder
+            .UseLoggingBehaviour();
 }

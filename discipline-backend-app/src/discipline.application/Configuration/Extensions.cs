@@ -34,6 +34,10 @@ public static class Extensions
         return services;
     }
 
+    public static WebApplicationBuilder UseApplication(this WebApplicationBuilder builder)
+        => builder
+            .UseBehaviours();
+
     public static WebApplication UseApplication(this WebApplication app)
         => app
             .UseUiDocumentation()
