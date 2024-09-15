@@ -20,7 +20,7 @@ internal static class RefreshUserToken
                 var jwt = tokenStorage.Get();
                 return Results.Ok(jwt);
             })
-        .Produces(StatusCodes.Status201Created, typeof(void))
+        .Produces(StatusCodes.Status200OK, typeof(void))
         .Produces(StatusCodes.Status401Unauthorized, typeof(void))
         .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
         .WithName(nameof(RefreshUserToken))

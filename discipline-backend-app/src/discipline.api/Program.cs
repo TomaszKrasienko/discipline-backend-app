@@ -7,6 +7,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services
     .AddDomain()
     .AddApplication(builder.Configuration);
+builder
+    .UseApplication();
 var app = builder.Build();
 app.UseRouting();
 app.UseApplication();

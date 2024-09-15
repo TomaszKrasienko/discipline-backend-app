@@ -1,5 +1,6 @@
 using System.Text;
 using discipline.application.Exceptions;
+using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace discipline.application.Behaviours;
@@ -18,10 +19,19 @@ internal interface IRefreshTokenFacade
     Task<Guid> GetUserIdAsync(string refreshToken, CancellationToken cancellationToken = default);
 }
 
-internal sealed class RefreshTokenFacade(
-    ICryptographer cryptographer,
-    IRefreshTokenService refreshTokenService) : IRefreshTokenFacade {
+internal sealed class RefreshTokenFacade : IRefreshTokenFacade
+{
+    private readonly ICryptographer _cryptographer;
+    private readonly IRefreshTokenService _refreshTokenService;
 
+    public RefreshTokenFacade(
+        ICryptographer cryptographer,
+        IRefreshTokenService refreshTokenService)
+    {
+        _cryptographer = cryptographer;
+        _refreshTokenService = refreshTokenService;
+    }   
+    
     public async Task<string> GenerateAsync(Guid userId, CancellationToken cancellationToken)
     {
         if (userId == Guid.Empty)
@@ -31,8 +41,8 @@ internal sealed class RefreshTokenFacade(
         
         //TODO: To appsettings
         var refreshToken = GenerateRandom(20);
-        await refreshTokenService.SaveOrReplaceAsync(refreshToken, userId, cancellationToken);
-        return await cryptographer.EncryptAsync(refreshToken, cancellationToken);
+        await _refreshTokenService.SaveOrReplaceAsync(refreshToken, userId, cancellationToken);
+        return await _cryptographer.EncryptAsync(refreshToken, cancellationToken);
     }
 
     private string GenerateRandom(int length)
@@ -48,12 +58,12 @@ internal sealed class RefreshTokenFacade(
 
     public async Task<Guid> GetUserIdAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
-        var decryptedRefreshToken = await cryptographer.DecryptAsync(refreshToken, cancellationToken);
+        var decryptedRefreshToken = await _cryptographer.DecryptAsync(refreshToken, cancellationToken);
         if (decryptedRefreshToken is null)
         {
             throw new InvalidRefreshTokenException();
         }
-        var userId = await refreshTokenService.GetAsync(decryptedRefreshToken, cancellationToken);
+        var userId = await _refreshTokenService.GetAsync(decryptedRefreshToken, cancellationToken);
         if (userId is null)
         {
             throw new RefreshTokenForUserNotFoundException();

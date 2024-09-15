@@ -33,11 +33,13 @@ public sealed class GetProgressDataTests : BaseTestsController
         dailyProductivity2.ChangeActivityCheck(dailyProductivity2.Activities.First(x => x.Title == "test 1").Id);
         dailyProductivity2.ChangeActivityCheck(dailyProductivity2.Activities.First(x => x.Title == "test 2").Id);
         dailyProductivity2.ChangeActivityCheck(dailyProductivity2.Activities.First(x => x.Title == "test 3").Id);
+        
+        var dailyProductivity3 = DailyProductivity.Create(new DateOnly(2024, 6, 12),Guid.NewGuid());
 
         var collection =
             TestAppDb.GetCollection<DailyProductivityDocument>();
 
-        await collection.InsertManyAsync([dailyProductivity1.AsDocument(), dailyProductivity2.AsDocument()]);
+        await collection.InsertManyAsync([dailyProductivity1.AsDocument(), dailyProductivity2.AsDocument(), dailyProductivity3.AsDocument()]);
         
         //act
         var results = await HttpClient.GetFromJsonAsync<IEnumerable<ProgressDataDto>>("progress/data");
@@ -48,6 +50,8 @@ public sealed class GetProgressDataTests : BaseTestsController
         resultsList.ToList()[0].Percent.ShouldBe(67);
         resultsList.ToList()[1].Day.ShouldBe(dailyProductivity2.Day.Value);
         resultsList.ToList()[1].Percent.ShouldBe(100);
+        resultsList.ToList()[2].Day.ShouldBe(dailyProductivity3.Day.Value);
+        resultsList.ToList()[2].Percent.ShouldBe(0);
     }
     
     [Fact]
