@@ -70,6 +70,12 @@ internal static class UsersMappingExtensions
     private static FreeSubscriptionOrder AsEntity(this FreeSubscriptionOrderDocument document)
         => new (document.Id,  document.CreatedAt,document.SubscriptionId,
             new State(document.StateIsCancelled, document.StateActiveTill));
+
+    internal static UserDto AsDto(this UserDocument document)
+        => new UserDto()
+        {
+            
+        };
     
     internal static Subscription AsEntity(this SubscriptionDocument document)
         => new (document.Id, document.Title, new Price(document.PricePerMonth, 

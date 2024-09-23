@@ -164,6 +164,80 @@ public sealed class UserMappingExtensionsTests
      }
 
      [Fact]
+     public void AsDto_GivenUserDocumentWithoutSubscriptionOrder_ShouldReturnUserDtoWithNullAsSubscriptionOrderDto()
+     {
+         //arrange
+         var userDocument = UserDocumentFactory.Get();
+         
+         //act
+         var result = userDocument.AsDto();
+         
+         //assert
+         result.Id.ShouldBe(userDocument.Id);
+         result.Email.ShouldBe(userDocument.Email);
+         result.FirstName.ShouldBe(userDocument.FirstName);
+         result.LastName.ShouldBe(userDocument.LastName);
+         result.Status.ShouldBe(userDocument.Status);
+         result.SubscriptionOrder.ShouldBeNull();
+     }
+     
+     [Fact]
+     public void AsDto_GivenUserDocumentWithFreeSubscriptionOrder_ShouldReturnUserDtoWithSubscriptionOrderDto()
+     {
+         //arrange
+         var userDocument = UserDocumentFactory.Get();
+         var freeSubscriptionOrderDocument = FreeSubscriptionOrderDocumentFactory.Get();
+         userDocument.SubscriptionOrder = freeSubscriptionOrderDocument;
+         
+         //act
+         var result = userDocument.AsDto();
+         
+         //assert
+         result.Id.ShouldBe(userDocument.Id);
+         result.Email.ShouldBe(userDocument.Email);
+         result.FirstName.ShouldBe(userDocument.FirstName);
+         result.LastName.ShouldBe(userDocument.LastName);
+         result.Status.ShouldBe(userDocument.Status);
+         result.SubscriptionOrder.Id.ShouldBe(freeSubscriptionOrderDocument.Id);
+         result.SubscriptionOrder.CreatedAt.ShouldBe(freeSubscriptionOrderDocument.CreatedAt);
+         result.SubscriptionOrder.SubscriptionId.ShouldBe(freeSubscriptionOrderDocument.SubscriptionId);
+         result.SubscriptionOrder.StateIsCancelled.ShouldBe(freeSubscriptionOrderDocument.StateIsCancelled);
+         result.SubscriptionOrder.StateActiveTill.ShouldBe(freeSubscriptionOrderDocument.StateActiveTill);
+         result.SubscriptionOrder.ShouldBeNull();
+         result.SubscriptionOrder.PaymentDetailsCardNumber.ShouldBeNull();
+         result.SubscriptionOrder.PaymentDetailsCvvCode.ShouldBeNull();
+         result.SubscriptionOrder.Type.ShouldBeNull();
+     }
+     
+     [Fact]
+     public void AsDto_GivenUserDocumentWithPaidSubscriptionOrder_ShouldReturnUserDtoWithSubscriptionOrderDto()
+     {
+         //arrange
+         var userDocument = UserDocumentFactory.Get();
+         var paidSubscriptionOrderDocument = PaidSubscriptionOrderDocumentFactory.Get();
+         userDocument.SubscriptionOrder = paidSubscriptionOrderDocument;
+         
+         //act
+         var result = userDocument.AsDto();
+         
+         //assert
+         result.Id.ShouldBe(userDocument.Id);
+         result.Email.ShouldBe(userDocument.Email);
+         result.FirstName.ShouldBe(userDocument.FirstName);
+         result.LastName.ShouldBe(userDocument.LastName);
+         result.Status.ShouldBe(userDocument.Status);
+         result.SubscriptionOrder.Id.ShouldBe(paidSubscriptionOrderDocument.Id);
+         result.SubscriptionOrder.CreatedAt.ShouldBe(paidSubscriptionOrderDocument.CreatedAt);
+         result.SubscriptionOrder.SubscriptionId.ShouldBe(paidSubscriptionOrderDocument.SubscriptionId);
+         result.SubscriptionOrder.StateIsCancelled.ShouldBe(paidSubscriptionOrderDocument.StateIsCancelled);
+         result.SubscriptionOrder.StateActiveTill.ShouldBe(paidSubscriptionOrderDocument.StateActiveTill);
+         result.SubscriptionOrder.Next.ShouldBe(paidSubscriptionOrderDocument.Next);
+         result.SubscriptionOrder.PaymentDetailsCardNumber.ShouldBe(paidSubscriptionOrderDocument.PaymentDetailsCardNumber);
+         result.SubscriptionOrder.PaymentDetailsCvvCode.ShouldBe(paidSubscriptionOrderDocument.PaymentDetailsCvvCode);
+         result.SubscriptionOrder.Type.ShouldBe(paidSubscriptionOrderDocument.Type);
+     }
+
+     [Fact]
      public void AsEntity_GivenSubscriptionDocument_ShouldReturnSubscription()
      {
          //arrange
