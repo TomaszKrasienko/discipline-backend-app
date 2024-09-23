@@ -37,3 +37,7 @@ Discipline was created to enable users to monitor their daily tasks and support 
 - **CQRS (Command Query Responsibility Segregation):** This pattern separates the read and write operations of the application, enhancing scalability and performance:
 
 - **Minimal API:** Each feature slice implements a minimal API to handle its specific functions. This keeps the API endpoints lean and focused, making it easier to manage and scale individual features.
+
+---
+### Discipline WebUI 
+https://github.com/TomaszKrasienko/discipline-web-ui-app
