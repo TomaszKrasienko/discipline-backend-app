@@ -23,9 +23,7 @@ Discipline was created to enable users to monitor their daily tasks and support 
 - **Automatic Activity Generation:** The application automatically generates activities based on the defined rules for a given day.
 
 ### Features to be Implemented
-- **User Registration and Login**: Enable users to create accounts and log in to the application.
 - **User Adaptation**: Modify the application to support multiple users with personalized settings.
-- **Progress Data Generation**: Provide insights and data on users' progress in completing activities.
 
 ---
 ### Architecture
