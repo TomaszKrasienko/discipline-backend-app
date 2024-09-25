@@ -13,4 +13,5 @@ public sealed class ImportantDate : Event
     internal static ImportantDate Create(Guid id, string title)
         => new ImportantDate(id, title);
         
+    
 }

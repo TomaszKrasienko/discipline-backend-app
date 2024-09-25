@@ -1,4 +1,5 @@
 using discipline.domain.UsersCalendars.Entities;
+using discipline.domain.UsersCalendars.Exceptions;
 using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
@@ -100,5 +101,37 @@ public sealed class UserCalendarTests
         ((Meeting)@event).Address.Platform.ShouldBeNullOrWhiteSpace();
         ((Meeting)@event).Address.Uri.ShouldBeNullOrWhiteSpace();
         ((Meeting)@event).Address.Place.ShouldBe(place);
+    }
+
+    [Fact]
+    public void EditEvent_GivenArgumentsForImportantDate_ShouldEditImportantDate()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        var id = Guid.NewGuid();
+        userCalendar.AddEvent(id, "test_important_date");
+        var newImportantDateTitle = "new_test_important_date";
+        
+        //act
+        userCalendar.EditEvent(id, newImportantDateTitle);
+        
+        //assert
+        var importantDate = userCalendar
+            .Events
+            .First(x => x.Id.Value == id);
+        importantDate.Title.Value.ShouldBe(newImportantDateTitle);
+    }
+
+    [Fact]
+    public void EditEvent_GivenNotExistingIdAndArgumentsForImportantDate_ShouldThrowEventNotExistsException()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        
+        //act
+        var exception = Record.Exception(() => userCalendar.EditEvent(Guid.NewGuid(), "test_title"));
+        
+        //assert
+        exception.ShouldBeOfType<EventNotExistsException>();
     }
 }
