@@ -12,5 +12,6 @@ internal static class Extensions
             .MapSignUp()
             .MapSignIn()
             .MapRefreshToken()
-            .MapBrowseSubscriptions();
+            .MapBrowseSubscriptions()
+            .MapBrowseMe();
 }

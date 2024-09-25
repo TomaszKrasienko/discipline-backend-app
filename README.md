@@ -23,9 +23,7 @@ Discipline was created to enable users to monitor their daily tasks and support 
 - **Automatic Activity Generation:** The application automatically generates activities based on the defined rules for a given day.
 
 ### Features to be Implemented
-- **User Registration and Login**: Enable users to create accounts and log in to the application.
 - **User Adaptation**: Modify the application to support multiple users with personalized settings.
-- **Progress Data Generation**: Provide insights and data on users' progress in completing activities.
 
 ---
 ### Architecture
@@ -39,3 +37,7 @@ Discipline was created to enable users to monitor their daily tasks and support 
 - **CQRS (Command Query Responsibility Segregation):** This pattern separates the read and write operations of the application, enhancing scalability and performance:
 
 - **Minimal API:** Each feature slice implements a minimal API to handle its specific functions. This keeps the API endpoints lean and focused, making it easier to manage and scale individual features.
+
+---
+### Discipline WebUI 
+https://github.com/TomaszKrasienko/discipline-web-ui-app
