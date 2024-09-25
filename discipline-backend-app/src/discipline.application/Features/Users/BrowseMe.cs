@@ -21,13 +21,12 @@ internal static class BrowseMe
                 var result = (await disciplineMongoCollection
                     .GetCollection<UserDocument>()
                     .Find(x => x.Id == userId)
-                    .FirstOrDefaultAsync()).AsDto();
+                    .FirstOrDefaultAsync())?.AsDto();
                 return result is null ? Results.NoContent() : Results.Ok(result);
             })
             .Produces(StatusCodes.Status200OK, typeof(UserDto))
             .Produces(StatusCodes.Status204NoContent, typeof(void))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-            .Produces(StatusCodes.Status403Forbidden, typeof(void))
             .WithName(nameof(BrowseMe))
             .WithTags(Extensions.UsersTag)
             .WithOpenApi(operation => new(operation)
