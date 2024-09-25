@@ -74,8 +74,30 @@ internal static class UsersMappingExtensions
     internal static UserDto AsDto(this UserDocument document)
         => new UserDto()
         {
-            
+            Id = document.Id,
+            Email = document.Email,
+            FirstName = document.FirstName,
+            LastName = document.LastName,
+            Status = document.Status,
+            SubscriptionOrder = document.SubscriptionOrder?.AsDto()
         };
+    
+    private static SubscriptionOrderDto AsDto(this SubscriptionOrderDocument document)
+        => new SubscriptionOrderDto()
+        {
+            Id = document.Id,
+            CreatedAt = document.CreatedAt,
+            SubscriptionId = document.SubscriptionId,
+            StateIsCancelled = document.StateIsCancelled,
+            StateActiveTill = document.StateActiveTill,
+            Next = IsPaidSubscriptionOrder(document) ? ((PaidSubscriptionOrderDocument)document).Next : null,
+            PaymentDetailsCardNumber = IsPaidSubscriptionOrder(document) ? ((PaidSubscriptionOrderDocument)document).PaymentDetailsCardNumber : null,
+            PaymentDetailsCvvCode = IsPaidSubscriptionOrder(document) ? ((PaidSubscriptionOrderDocument)document).PaymentDetailsCvvCode : null,
+            Type = IsPaidSubscriptionOrder(document) ? ((PaidSubscriptionOrderDocument)document).Type : null
+        };
+
+    private static bool IsPaidSubscriptionOrder(SubscriptionOrderDocument document)
+        => document.GetType() == typeof(PaidSubscriptionOrderDocument);
     
     internal static Subscription AsEntity(this SubscriptionDocument document)
         => new (document.Id, document.Title, new Price(document.PricePerMonth, 

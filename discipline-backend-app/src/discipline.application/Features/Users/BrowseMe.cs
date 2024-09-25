@@ -9,12 +9,12 @@ internal static class BrowseMe
 {
     internal static WebApplication MapBrowseMe(this WebApplication app)
     {
-        app.MapGet($"{Extensions.UsersTag}/me", 
-                async (IDisciplineMongoCollection disciplineMongoCollection) =>
-                {
-                    
-                })
-            .Produces(StatusCodes.Status200OK, typeof())
+        // app.MapGet($"{Extensions.UsersTag}/me", 
+        //         async (IDisciplineMongoCollection disciplineMongoCollection) =>
+        //         {
+        //             
+        //         })
+        //     .Produces(StatusCodes.Status200OK, typeof())
         return app;
     }
 }

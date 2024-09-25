@@ -203,7 +203,7 @@ public sealed class UserMappingExtensionsTests
          result.SubscriptionOrder.SubscriptionId.ShouldBe(freeSubscriptionOrderDocument.SubscriptionId);
          result.SubscriptionOrder.StateIsCancelled.ShouldBe(freeSubscriptionOrderDocument.StateIsCancelled);
          result.SubscriptionOrder.StateActiveTill.ShouldBe(freeSubscriptionOrderDocument.StateActiveTill);
-         result.SubscriptionOrder.ShouldBeNull();
+         result.SubscriptionOrder.Next.ShouldBeNull();
          result.SubscriptionOrder.PaymentDetailsCardNumber.ShouldBeNull();
          result.SubscriptionOrder.PaymentDetailsCvvCode.ShouldBeNull();
          result.SubscriptionOrder.Type.ShouldBeNull();
