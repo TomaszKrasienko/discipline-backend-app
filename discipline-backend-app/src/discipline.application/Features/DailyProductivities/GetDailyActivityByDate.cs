@@ -35,7 +35,7 @@ internal static class GetDailyActivityByDate
                 Description = "Gets daily discipline by \"Day\""
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
         return app;
     }
 }
