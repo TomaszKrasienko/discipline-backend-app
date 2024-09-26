@@ -1,4 +1,5 @@
 using discipline.domain.SharedKernel;
+using discipline.domain.UsersCalendars.Exceptions;
 using discipline.domain.UsersCalendars.ValueObjects.UserCalendar;
 
 namespace discipline.domain.UsersCalendars.Entities;
@@ -36,6 +37,18 @@ public sealed class UserCalendar : AggregateRoot
 
     public void EditEvent(Guid id, string title)
     {
-        
+        var calendarEvent = _events.FirstOrDefault(x => x.Id.Value == id);
+        if (calendarEvent is null)
+        {
+            throw new EventNotExistsException(id);
+        }
+
+        var type = calendarEvent.GetType();
+        if (type != typeof( ImportantDate))
+        {
+            throw new InvalidEventTypeIdException(id);
+        }
+
+        ((ImportantDate)calendarEvent).Edit(title);
     }
 }

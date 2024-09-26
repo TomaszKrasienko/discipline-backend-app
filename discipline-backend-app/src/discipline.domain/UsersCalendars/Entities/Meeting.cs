@@ -9,7 +9,7 @@ public sealed class Meeting : Event
     public Address Address { get; private set; }
 
 
-    private Meeting(EntityId id, Title title) : base(id, title)
+    private Meeting(EntityId id) : base(id)
     {
     }
 
@@ -23,7 +23,8 @@ public sealed class Meeting : Event
     internal static Meeting Create(Guid id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
         string platform, string uri, string place)
     {
-        var @event = new Meeting(id, title);
+        var @event = new Meeting(id);
+        @event.ChangeTitle(title);
         @event.ChangeMeetingTimeSpan(timeFrom, timeTo);
         @event.ChangeMeetingAddress(platform, uri, place);
         return @event;

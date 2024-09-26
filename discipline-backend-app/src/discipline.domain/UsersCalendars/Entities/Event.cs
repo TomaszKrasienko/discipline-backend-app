@@ -8,10 +8,15 @@ public abstract class Event
     public EntityId Id { get; }
     public Title Title { get; private set; }
 
-    protected Event(EntityId id, Title title)
+    protected Event(EntityId id)
     {
         Id = id;
-        ChangeTitle(title);
+    }
+    
+    protected Event(EntityId id, string title)
+    {
+        Id = id;
+        Title = title;
     }
 
     protected void ChangeTitle(string title)

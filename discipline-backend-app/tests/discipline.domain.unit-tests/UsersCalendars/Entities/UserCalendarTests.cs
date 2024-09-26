@@ -134,4 +134,22 @@ public sealed class UserCalendarTests
         //assert
         exception.ShouldBeOfType<EventNotExistsException>();
     }
+
+    [Fact]
+    public void EditEvent_GivenInvalidEventTypeId_ShouldThrowInvalidEventTypeIdException()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        var id = Guid.NewGuid();
+        userCalendar.AddEvent(id, "test_calendar_event", new TimeOnly(12,00,00),
+            null, "test_action");
+        
+        //act
+        var exception = Record.Exception(() => userCalendar.EditEvent(id, "test"));
+        
+        //assert
+        exception.ShouldBeOfType<InvalidEventTypeIdException>();
+    }
+    
+    
 }
