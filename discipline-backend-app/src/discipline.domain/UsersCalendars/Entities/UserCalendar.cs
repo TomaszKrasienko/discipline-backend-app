@@ -50,6 +50,14 @@ public sealed class UserCalendar : AggregateRoot
         ((CalendarEvent)calendarEvent).Edit(title, timeFrom, timeTo, action);
     }
 
+    public void EditEvent(Guid id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
+        string platform, string uri, string place)
+    {
+        var meeting = GetEvent(id);
+        ValidateEventType(meeting, typeof(Meeting));
+        ((Meeting)meeting).Edit(title, timeFrom, timeTo, platform, uri, place);
+    }
+
     private Event GetEvent(Guid id)
     {       
         var @event = _events.FirstOrDefault(x => x.Id.Value == id);

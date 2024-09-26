@@ -208,5 +208,65 @@ public sealed class UserCalendarTests
         exception.ShouldBeOfType<InvalidEventTypeIdException>();
     }
     
+    /////////////
     
+        [Fact]
+    public void EditEvent_GivenArgumentsForMeeting_ShouldEditMeeting()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        var id = Guid.NewGuid();
+        userCalendar.AddEvent(id, "test_meeting_title", new TimeOnly(12, 00),
+            null, null, null, "test_meeting_place");
+        var newMeetingTitle = "new_meeting_title";
+        var newMeetingTimeFrom = new TimeOnly(13, 00);
+        var newMeetingTimeTo = new TimeOnly(14, 00);
+        var newMeetingPlatform = "new_meeting_platform";
+        var newMeetingUri = "new_meeting_uri";
+        
+        //act
+        userCalendar.EditEvent(id, newMeetingTitle, newMeetingTimeFrom, newMeetingTimeTo,
+            newMeetingPlatform, newMeetingUri, null);
+        
+        //assert
+        var meeting = userCalendar
+            .Events
+            .First(x => x.Id.Value == id);
+        ((Meeting)meeting).Title.Value.ShouldBe(newMeetingTitle);
+        ((Meeting)meeting).MeetingTimeSpan.From.ShouldBe(newMeetingTimeFrom);
+        ((Meeting)meeting).MeetingTimeSpan.To.ShouldBe(newMeetingTimeTo);
+        ((Meeting)meeting).Address.Platform.ShouldBe(newMeetingPlatform);
+        ((Meeting)meeting).Address.Uri.ShouldBe(newMeetingUri);
+        ((Meeting)meeting).Address.Place.ShouldBeNull();
+    }
+
+    [Fact]
+    public void EditEvent_GivenNotExistingIdAndArgumentsForMeeting_ShouldThrowEventNotExistsException()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        
+        //act
+        var exception = Record.Exception(() => userCalendar.EditEvent(Guid.NewGuid(), "test_title", new TimeOnly(12,00),
+            null, "test_platform", "test_uri", null));
+        
+        //assert
+        exception.ShouldBeOfType<EventNotExistsException>();
+    }
+
+    [Fact]
+    public void EditEvent_GivenInvalidEventTypeIdAndArgumentsForMeeting_ShouldThrowInvalidEventTypeIdException()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        var id = Guid.NewGuid();
+        userCalendar.AddEvent(id, "test_important_date");
+        
+        //act
+        var exception = Record.Exception(() => userCalendar.EditEvent(id, "test_title", new TimeOnly(12,00),
+            null, "test_platform", "test_uri", null));
+        
+        //assert
+        exception.ShouldBeOfType<InvalidEventTypeIdException>();
+    }
 }

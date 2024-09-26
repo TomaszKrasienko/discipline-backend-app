@@ -29,6 +29,14 @@ public sealed class Meeting : Event
         @event.ChangeMeetingAddress(platform, uri, place);
         return @event;
     }
+    
+    internal void Edit(string title, TimeOnly timeFrom, TimeOnly? timeTo,
+        string platform, string uri, string place)
+    {
+        ChangeTitle(title);
+        ChangeMeetingTimeSpan(timeFrom, timeTo);
+        ChangeMeetingAddress(platform, uri, place);
+    }
 
     private void ChangeMeetingTimeSpan(TimeOnly timeFrom, TimeOnly? timeTo)
         => MeetingTimeSpan = new MeetingTimeSpan(timeFrom, timeTo);
