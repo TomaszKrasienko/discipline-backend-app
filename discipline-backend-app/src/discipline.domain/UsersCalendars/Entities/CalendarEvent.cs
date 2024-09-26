@@ -29,6 +29,13 @@ public sealed class CalendarEvent : Event
         calendarEvent.ChangeAction(action);
         return calendarEvent;
     }
+
+    internal void Edit(string title, TimeOnly timeFrom, TimeOnly? timeTo, string action)
+    {
+        ChangeTitle(title);
+        ChangeMeetingTimeSpan(timeFrom, timeTo);
+        ChangeAction(action);
+    }
     
     private void ChangeMeetingTimeSpan(TimeOnly timeFrom, TimeOnly? timeTo)
         => MeetingTimeSpan = new MeetingTimeSpan(timeFrom, timeTo);

@@ -37,18 +37,35 @@ public sealed class UserCalendar : AggregateRoot
 
     public void EditEvent(Guid id, string title)
     {
-        var calendarEvent = _events.FirstOrDefault(x => x.Id.Value == id);
-        if (calendarEvent is null)
+        var importantDate = GetEvent(id);
+        ValidateEventType(importantDate, typeof(ImportantDate));
+        ((ImportantDate)importantDate).Edit(title);
+    }
+
+    public void EditEvent(Guid id, string title, TimeOnly timeFrom,
+        TimeOnly? timeTo, string action)
+    {
+        var calendarEvent = GetEvent(id);
+        ValidateEventType(calendarEvent, typeof(CalendarEvent));
+        ((CalendarEvent)calendarEvent).Edit(title, timeFrom, timeTo, action);
+    }
+
+    private Event GetEvent(Guid id)
+    {       
+        var @event = _events.FirstOrDefault(x => x.Id.Value == id);
+        if (@event is null)
         {
             throw new EventNotExistsException(id);
         }
+        return @event;
+    }
 
-        var type = calendarEvent.GetType();
-        if (type != typeof( ImportantDate))
+    private void ValidateEventType(Event @event, Type destinationType)
+    {
+        var type = @event.GetType();
+        if (type != destinationType)
         {
-            throw new InvalidEventTypeIdException(id);
+            throw new InvalidEventTypeIdException(@event.Id);
         }
-
-        ((ImportantDate)calendarEvent).Edit(title);
     }
 }
