@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Exceptions;
 using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
 
@@ -43,8 +44,15 @@ public sealed class EditCalendarEventCommandValidator : AbstractValidator<EditCa
 internal sealed class EditCalendarEventCommandHandler(
     IUserCalendarRepository userCalendarRepository) : ICommandHandler<EditCalendarEventCommand>
 {
-    public Task HandleAsync(EditCalendarEventCommand command, CancellationToken cancellationToken = default)
+    public async Task HandleAsync(EditCalendarEventCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var userCalendar = await userCalendarRepository
+            .GetByEventIdAsync(command.UserId, command.Id, cancellationToken);
+        if (userCalendar is null)
+        {
+            throw new UserCalendarNotFoundException(command.UserId, command.Id);
+        }
+
+        await userCalendarRepository.UpdateAsync(userCalendar, cancellationToken);
     }
 }
