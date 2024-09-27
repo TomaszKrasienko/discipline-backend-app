@@ -5,8 +5,11 @@ using Xunit;
 
 namespace discipline.application.unit_tests.Features.UsersCalendars.EditCalendarEvent;
 
-public sealed class EditCalendarEventValidatorTests
+public sealed class EditCalendarEventCommandValidatorTests
 {
+    private TestValidationResult<EditCalendarEventCommand> Act(EditCalendarEventCommand command)
+        => _validator.TestValidate(command);
+    
     [Fact]
     public void Validate_GivenValidCommand_ShouldNotHaveAnyValidationErrors()
     {
@@ -15,7 +18,7 @@ public sealed class EditCalendarEventValidatorTests
             "test_title", new TimeOnly(11, 00),  null, "test_action");
         
         //act
-        var result = _validator.TestValidate(command);
+        var result = Act(command);
         
         //assert
         result.ShouldNotHaveAnyValidationErrors();
@@ -29,7 +32,7 @@ public sealed class EditCalendarEventValidatorTests
             "test_title", new TimeOnly(11, 00),  null, "test_action");
         
         //act
-        var result = _validator.TestValidate(command);
+        var result = Act(command);
         
         //assert
         result.ShouldHaveValidationErrorFor(x => x.UserId);
@@ -43,7 +46,7 @@ public sealed class EditCalendarEventValidatorTests
             "test_title", new TimeOnly(11, 00),  null, "test_action");
         
         //act
-        var result = _validator.TestValidate(command);
+        var result = Act(command);
         
         //assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
@@ -57,7 +60,7 @@ public sealed class EditCalendarEventValidatorTests
             null, new TimeOnly(11, 00),  null, "test_action");
         
         //act
-        var result = _validator.TestValidate(command);
+        var result = Act(command);
         
         //assert
         result.ShouldHaveValidationErrorFor(x => x.Title);
@@ -74,7 +77,7 @@ public sealed class EditCalendarEventValidatorTests
             title, new TimeOnly(11, 00),  null, "test_action"); 
         
         //act
-        var result = _validator.TestValidate(command);
+        var result = Act(command);
         
         //assert
         result.ShouldHaveValidationErrorFor(x => x.Title);
@@ -88,7 +91,7 @@ public sealed class EditCalendarEventValidatorTests
             "test_title", default, null, "test_action");
         
         //act
-        var result = _validator.TestValidate(command);
+        var result = Act(command);
         
         //assert
         result.ShouldHaveValidationErrorFor(x => x.TimeFrom);
@@ -97,7 +100,7 @@ public sealed class EditCalendarEventValidatorTests
     #region arrange
     private readonly IValidator<EditCalendarEventCommand> _validator;
 
-    public EditCalendarEventValidatorTests()
+    public EditCalendarEventCommandValidatorTests()
         => _validator = new EditCalendarEventCommandValidator();
     #endregion
 }
