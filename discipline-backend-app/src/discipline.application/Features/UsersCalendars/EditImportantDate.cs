@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
 
 namespace discipline.application.Features.UsersCalendars;
@@ -31,5 +32,14 @@ public sealed class EditImportantDateCommandValidator : AbstractValidator<EditIm
             .MinimumLength(3)
             .MaximumLength(100)
             .WithMessage("Important date \"Title\" has invalid length");
+    }
+}
+
+internal sealed class EditImportantDateCommandHandler(
+    IUserCalendarRepository userCalendarRepository) : ICommandHandler<EditImportantDateCommand>
+{
+    public Task HandleAsync(EditImportantDateCommand command, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
 }
