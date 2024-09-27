@@ -1,12 +1,10 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
 using discipline.application.Features.UsersCalendars;
-using discipline.domain.Users.Entities;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Repositories;
 using discipline.tests.shared.Entities;
 using NSubstitute;
-using NSubstitute.ClearExtensions;
 using Shouldly;
 using Xunit;
 
@@ -21,9 +19,10 @@ public sealed class EditCalendarEventCommandHandlerTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        userCalendar.AddEvent(Guid.NewGuid(), "test_title", new TimeOnly(12, 00), null, 
+        var eventId = Guid.NewGuid();
+        userCalendar.AddEvent(eventId, "test_title", new TimeOnly(12, 00), null, 
             "test_action");
-        var command = new EditCalendarEventCommand(Guid.NewGuid(), Guid.NewGuid(), "new_test_title",
+        var command = new EditCalendarEventCommand(Guid.NewGuid(), eventId, "new_test_title",
             new TimeOnly(13, 00), null, "new_test_action");
 
         _userCalendarRepository

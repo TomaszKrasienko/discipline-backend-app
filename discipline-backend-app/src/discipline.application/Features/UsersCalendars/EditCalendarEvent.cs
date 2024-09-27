@@ -1,13 +1,42 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
+using discipline.application.Features.UsersCalendars.Configuration;
 using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace discipline.application.Features.UsersCalendars;
 
-internal sealed class EditCalendarEvent
+internal static class EditCalendarEvent
 {
-    
+    internal static WebApplication MapEditCalendarEvent(this WebApplication app)
+    {
+        app.MapPut($"{Extensions.UserCalendarTag}/edit-calendar-event/{{eventId:guid}}", async (EditCalendarEventCommand command,
+            Guid eventId, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+            {
+                await commandDispatcher.HandleAsync(command with
+                {
+                    UserId = identityContext.UserId,
+                    Id = eventId
+                }, cancellationToken);
+            })
+        .Produces(StatusCodes.Status200OK, typeof(void))
+        .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+        .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+        .Produces(StatusCodes.Status403Forbidden, typeof(void))
+        .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+        .WithName(nameof(EditCalendarEvent))
+        .WithTags(Extensions.UserCalendarTag)
+        .WithOpenApi(operation => new (operation)
+        {
+            Description = "Edits calendar event"
+        })
+        .RequireAuthorization()
+        .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
+        return app;
+    }
 }
 
 public sealed record EditCalendarEventCommand(Guid UserId, Guid Id, string Title, TimeOnly TimeFrom,
@@ -53,6 +82,7 @@ internal sealed class EditCalendarEventCommandHandler(
             throw new UserCalendarNotFoundException(command.UserId, command.Id);
         }
 
+        userCalendar.EditEvent(command.Id, command.Title, command.TimeFrom, command.TimeTo, command.Action);
         await userCalendarRepository.UpdateAsync(userCalendar, cancellationToken);
     }
 }
