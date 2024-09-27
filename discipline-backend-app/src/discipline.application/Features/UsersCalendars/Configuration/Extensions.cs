@@ -13,6 +13,7 @@ internal static class Extensions
             .MapAddMeeting()
             .MapEditImportantDate()
             .MapEditCalendarEvent()
+            .MapEditMeeting()
             .MapGetEventById()
             .MapBrowseUserCalendar();
 }
