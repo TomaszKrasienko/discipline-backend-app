@@ -5,7 +5,6 @@ using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace discipline.application.Features.UsersCalendars;
 

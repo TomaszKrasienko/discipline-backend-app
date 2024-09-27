@@ -1,13 +1,41 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
+using discipline.application.Features.UsersCalendars.Configuration;
 using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 
 namespace discipline.application.Features.UsersCalendars;
 
 internal static class EditImportantDate
 {
-    
+    internal static WebApplication MapEditImportantDate(this WebApplication app)
+    {
+        app.MapPut($"{Extensions.UserCalendarTag}/edit-important-date/{{eventId:guid}}", async (EditImportantDateCommand command,
+                Guid eventId, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+            {
+                await commandDispatcher.HandleAsync(command with
+                {
+                    UserId = identityContext.UserId,
+                    Id = eventId
+                }, cancellationToken);
+            })
+            .Produces(StatusCodes.Status200OK, typeof(void))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .WithName(nameof(EditImportantDate))
+            .WithTags(Extensions.UserCalendarTag)
+            .WithOpenApi(operation => new (operation)
+            {
+                Description = "Edits important date"
+            })
+            .RequireAuthorization()
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
+        return app;
+    }
 }
 
 public sealed record EditImportantDateCommand(Guid UserId, Guid Id, string Title) : ICommand;
