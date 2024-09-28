@@ -8,12 +8,10 @@ internal static class GetEventById
 {
     internal static WebApplication MapGetEventById(this WebApplication app)
     {
-        app.MapGet($"{Extensions.UserCalendarTag}/events/{{eventId:guid}}", async (Guid eventId) =>
+        app.MapGet($"{Extensions.UserCalendarTag}/events/{{eventId:guid}}", (Guid eventId) =>
         {
-            throw new NotImplementedException();
-        })
-        .WithName(nameof(GetEventById))
-        .WithTags(Extensions.UserCalendarTag);
+            return Results.Ok();
+        });
         return app;
     }
 }
