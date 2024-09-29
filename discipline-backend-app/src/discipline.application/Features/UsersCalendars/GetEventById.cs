@@ -9,9 +9,10 @@ internal static class GetEventById
     internal static WebApplication MapGetEventById(this WebApplication app)
     {
         app.MapGet($"{Extensions.UserCalendarTag}/events/{{eventId:guid}}", (Guid eventId) =>
-        {
-            return Results.Ok();
-        });
+                {
+                    return Results.Ok();
+                })
+            .WithName(nameof(GetEventById));
         return app;
     }
 }
