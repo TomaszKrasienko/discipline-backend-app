@@ -2,5 +2,5 @@ namespace discipline.domain.UsersCalendars.Services.Abstractions;
 
 public interface IChangeEventUserCalendarService
 {
-    Task Invoke(Guid eventId, DateOnly newDate);
+    Task Invoke(Guid userId, Guid eventId, DateOnly newDate, CancellationToken cancellationToken);
 }
