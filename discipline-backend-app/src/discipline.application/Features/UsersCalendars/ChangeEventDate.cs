@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using SharpCompress.Archives;
@@ -29,7 +30,8 @@ public sealed class ChangeEventDateCommandValidator : AbstractValidator<ChangeEv
     }
 }
 
-internal sealed class ChangeEventDateCommandHandler : ICommandHandler<ChangeEventDateCommand>
+internal sealed class ChangeEventDateCommandHandler(
+    IUserCalendarRepository userCalendarRepository) : ICommandHandler<ChangeEventDateCommand>
 {
     public Task HandleAsync(ChangeEventDateCommand command, CancellationToken cancellationToken = default)
     {
