@@ -19,6 +19,20 @@ public sealed class ChangeEventDateCommandValidator : AbstractValidator<ChangeEv
 {
     public ChangeEventDateCommandValidator()
     {
-        
+        RuleFor(x => x.EventId)
+            .NotEmpty()
+            .WithMessage("\"EventId\" can not be empty");
+
+        RuleFor(x => x.NewDate)
+            .NotEqual(DateOnly.MinValue)
+            .WithMessage("\"NewDate\" can not be min date");
+    }
+}
+
+internal sealed class ChangeEventDateCommandHandler : ICommandHandler<ChangeEventDateCommand>
+{
+    public Task HandleAsync(ChangeEventDateCommand command, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
 }
