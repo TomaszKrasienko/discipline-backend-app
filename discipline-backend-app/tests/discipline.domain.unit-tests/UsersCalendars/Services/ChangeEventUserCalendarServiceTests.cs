@@ -5,6 +5,7 @@ using discipline.domain.UsersCalendars.Services;
 using discipline.domain.UsersCalendars.Services.Abstractions;
 using discipline.tests.shared.Entities;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 using Shouldly;
 using Xunit;
 
@@ -16,7 +17,7 @@ public sealed class ChangeEventUserCalendarServiceTests
         .Invoke(userId, eventId, newDate, default);
 
     [Fact]
-    public async Task Invoke_GivenNewDateForNotExistingUserCalendar_ShouldAddUserCalendarForDateWithEventAndRemoveEventForPresentUserCalendar()
+    public async Task Invoke_GivenNewDateForNotExistingUserCalendar_ShouldAddUserCalendarForDateWithEventAndRemoveEventAndUpdateForPresentUserCalendar()
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
@@ -38,6 +39,35 @@ public sealed class ChangeEventUserCalendarServiceTests
             .AddAsync(Arg.Is<UserCalendar>(arg
                 => arg.Day.Value == newDate 
                 && arg.Events.Any(x => x.Id.Value == eventId)));
+        await _userCalendarRepository
+            .Received(1)
+            .UpdateAsync(userCalendar);
+    }
+    
+    [Fact]
+    public async Task Invoke_GivenNewDateForNotExistingUserCalendar_ShouldAddEventToUserCalendarAndRemoveEventForPresentUserCalendar()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        var eventId = Guid.NewGuid();
+        userCalendar.AddEvent(eventId, "test_event_title");
+        _userCalendarRepository
+            .GetByEventIdAsync(userCalendar.UserId, eventId, default)
+            .Returns(userCalendar);
+        var newUserCalendar = UserCalendar.Create(userCalendar.Day.Value.AddDays(2), userCalendar.UserId);
+        _userCalendarRepository
+            .GetForUserByDateAsync(userCalendar.UserId, userCalendar.Day)
+            .Returns(newUserCalendar);
+    
+        //act
+        await Act(userCalendar.UserId, eventId, userCalendar.Day);
+        
+        //assert
+        userCalendar.Events.Any(x => x.Id.Value == eventId).ShouldBeFalse();
+        newUserCalendar.Events.Any(x => x.Id.Value == eventId).ShouldBeTrue();
+        await _userCalendarRepository
+            .Received(1)
+            .UpdateAsync(newUserCalendar);
     }
     
     [Fact]

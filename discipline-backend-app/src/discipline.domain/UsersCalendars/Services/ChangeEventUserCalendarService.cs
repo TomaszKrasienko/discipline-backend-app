@@ -17,9 +17,10 @@ internal sealed class ChangeEventUserCalendarService(
         }
 
         var @event = oldUserCalendar.Events.First(x => x.Id.Value == eventId);
-
+        oldUserCalendar.RemoveEvent(eventId);
         var newUserCalendar = UserCalendar.Create(newDate, userId); 
         newUserCalendar.AddEvent(@event);
         await userCalendarRepository.AddAsync(newUserCalendar, cancellationToken);
+        await userCalendarRepository.UpdateAsync(oldUserCalendar, cancellationToken);
     }
 }
