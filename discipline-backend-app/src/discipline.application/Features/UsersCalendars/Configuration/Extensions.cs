@@ -15,5 +15,6 @@ internal static class Extensions
             .MapEditCalendarEvent()
             .MapEditMeeting()
             .MapGetEventById()
-            .MapBrowseUserCalendar();
+            .MapBrowseUserCalendar()
+            .MapChangeEventDate();
 }

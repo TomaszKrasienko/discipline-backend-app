@@ -1,9 +1,9 @@
 using discipline.application.Behaviours;
-using discipline.domain.UsersCalendars.Repositories;
+using discipline.application.Features.UsersCalendars.Configuration;
 using discipline.domain.UsersCalendars.Services.Abstractions;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
-using SharpCompress.Archives;
+using Microsoft.AspNetCore.Http;
 
 namespace discipline.application.Features.UsersCalendars;
 
@@ -11,6 +11,29 @@ internal static class ChangeEventDate
 {
     internal static WebApplication MapChangeEventDate(this WebApplication app)
     {
+        app.MapPatch($"{Extensions.UserCalendarTag}/event/{{eventId:guid}}/change-event-date", async (
+                Guid eventId, ChangeEventDateCommand command, ICommandDispatcher commandDispatcher,
+                IIdentityContext identityContext, CancellationToken cancellationToken) =>
+            {
+                await commandDispatcher.HandleAsync(command with
+                {
+                    UserId = identityContext.UserId,
+                    EventId = eventId
+                }, cancellationToken);
+            })
+            .Produces(StatusCodes.Status200OK, typeof(void))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .WithName(nameof(ChangeEventDate))
+            .WithTags(Extensions.UserCalendarTag)
+            .WithOpenApi(operation => new(operation)
+            {
+                Description = "Changes event date"
+            })
+            .RequireAuthorization()
+            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
         return app;
     }
 }
