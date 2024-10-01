@@ -20,6 +20,7 @@ internal static class ChangeEventDate
                     UserId = identityContext.UserId,
                     EventId = eventId
                 }, cancellationToken);
+                return Results.Ok();
             })
             .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))

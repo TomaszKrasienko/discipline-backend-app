@@ -5,7 +5,7 @@ namespace discipline.domain.UsersCalendars.Services.Configuration;
 
 public static class Extensions
 {
-    public static IServiceCollection AddDomain(this IServiceCollection services)
+    public static IServiceCollection AddUserCalendars(this IServiceCollection services)
         => services
             .AddScoped<IChangeEventUserCalendarService, ChangeEventUserCalendarService>();
 }
