@@ -1,3 +1,4 @@
+using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Exceptions;
 using discipline.domain.UsersCalendars.Repositories;
 using discipline.domain.UsersCalendars.Services.Abstractions;
@@ -14,5 +15,11 @@ internal sealed class ChangeEventUserCalendarService(
         {
             throw new UserCalendarForEventNotFoundException(userId, eventId);
         }
+
+        var @event = oldUserCalendar.Events.First(x => x.Id.Value == eventId);
+
+        var newUserCalendar = UserCalendar.Create(newDate, userId); 
+        newUserCalendar.AddEvent(@event);
+        await userCalendarRepository.AddAsync(newUserCalendar, cancellationToken);
     }
 }

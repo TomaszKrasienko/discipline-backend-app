@@ -35,6 +35,11 @@ public sealed class UserCalendar : AggregateRoot
         string platform, string uri, string place)
         => _events.Add(Meeting.Create(id, title, timeFrom, timeTo, platform, uri, place));
 
+    internal void AddEvent(Event @event)
+    {
+        
+    }
+
     public void EditEvent(Guid id, string title)
     {
         var importantDate = GetEvent(id);

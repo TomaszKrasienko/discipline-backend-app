@@ -104,6 +104,21 @@ public sealed class UserCalendarTests
     }
 
     [Fact]
+    public void AddEvent_GivenIvent_ShouldAddEvent()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        var @event = ImportantDate.Create(Guid.NewGuid(), "test_title");
+        
+        //act
+        userCalendar.AddEvent(@event);
+        
+        //assert
+        userCalendar.Events.Any(x => x.Id == @event.Id && x.Title == @event.Title)
+            .ShouldBeTrue();
+    }
+
+    [Fact]
     public void EditEvent_GivenArgumentsForImportantDate_ShouldEditImportantDate()
     {
         //arrange
@@ -208,9 +223,7 @@ public sealed class UserCalendarTests
         exception.ShouldBeOfType<InvalidEventTypeIdException>();
     }
     
-    /////////////
-    
-        [Fact]
+    [Fact]
     public void EditEvent_GivenArgumentsForMeeting_ShouldEditMeeting()
     {
         //arrange
