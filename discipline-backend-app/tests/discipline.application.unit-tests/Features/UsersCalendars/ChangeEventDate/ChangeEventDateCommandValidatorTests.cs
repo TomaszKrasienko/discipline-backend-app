@@ -14,7 +14,7 @@ public sealed class ChangeEventDateCommandValidatorTests
     public void Validate_GivenAllValidArguments_ShouldNotHaveAnyValidationErrors()
     {
         //arrange
-        var command = new ChangeEventDateCommand(Guid.NewGuid(), new DateOnly(2024,1,1));
+        var command = new ChangeEventDateCommand(Guid.NewGuid(), Guid.NewGuid(), new DateOnly(2024,1,1));
         
         //act
         var result = Act(command);
@@ -22,12 +22,25 @@ public sealed class ChangeEventDateCommandValidatorTests
         //assert
         result.ShouldNotHaveAnyValidationErrors();
     }
+
+    [Fact]
+    public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorForUserId()
+    {
+        //arrange
+        var command = new ChangeEventDateCommand(Guid.Empty, Guid.NewGuid(), new DateOnly(2024, 1, 1));
+        
+        //act
+        var result = Act(command);
+        
+        //assert
+        result.ShouldHaveValidationErrorFor(x => x.EventId);
+    }
     
     [Fact]
     public void Validate_GivenEmptyEventId_ShouldHaveValidationErrorForEventId()
     {
         //arrange
-        var command = new ChangeEventDateCommand(Guid.Empty, new DateOnly(2024, 1, 1));
+        var command = new ChangeEventDateCommand(Guid.NewGuid(), Guid.Empty, new DateOnly(2024, 1, 1));
         
         //act
         var result = Act(command);
@@ -40,7 +53,7 @@ public sealed class ChangeEventDateCommandValidatorTests
     public void Validate_GivenMinDateOnlyAsNewDate_ShouldHaveValidationErrorForNewDate()
     {
         //arrange
-        var command = new ChangeEventDateCommand(Guid.NewGuid(), DateOnly.MinValue);
+        var command = new ChangeEventDateCommand(Guid.NewGuid(), Guid.NewGuid(), DateOnly.MinValue);
         
         //act
         var result = Act(command);

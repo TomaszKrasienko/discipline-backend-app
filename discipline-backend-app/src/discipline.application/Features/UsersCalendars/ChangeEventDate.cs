@@ -1,5 +1,6 @@
 using discipline.application.Behaviours;
 using discipline.domain.UsersCalendars.Repositories;
+using discipline.domain.UsersCalendars.Services.Abstractions;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using SharpCompress.Archives;
@@ -14,12 +15,16 @@ internal static class ChangeEventDate
     }
 }
 
-public sealed record ChangeEventDateCommand(Guid EventId, DateOnly NewDate) : ICommand;
+public sealed record ChangeEventDateCommand(Guid UserId, Guid EventId, DateOnly NewDate) : ICommand;
 
 public sealed class ChangeEventDateCommandValidator : AbstractValidator<ChangeEventDateCommand>
 {
     public ChangeEventDateCommandValidator()
-    {
+    { 
+        RuleFor(x => x.UserId)
+            .NotEmpty()
+            .WithMessage("\"UserId\" can not be empty");
+        
         RuleFor(x => x.EventId)
             .NotEmpty()
             .WithMessage("\"EventId\" can not be empty");
@@ -31,10 +36,9 @@ public sealed class ChangeEventDateCommandValidator : AbstractValidator<ChangeEv
 }
 
 internal sealed class ChangeEventDateCommandHandler(
-    IUserCalendarRepository userCalendarRepository) : ICommandHandler<ChangeEventDateCommand>
+    IChangeEventUserCalendarService service) : ICommandHandler<ChangeEventDateCommand>
 {
-    public Task HandleAsync(ChangeEventDateCommand command, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task HandleAsync(ChangeEventDateCommand command, CancellationToken cancellationToken = default)
+        => await service.Invoke(command.UserId, command.EventId, command.NewDate, cancellationToken);
+    
 }
