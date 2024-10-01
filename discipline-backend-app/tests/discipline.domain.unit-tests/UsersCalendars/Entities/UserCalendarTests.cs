@@ -305,7 +305,7 @@ public sealed class UserCalendarTests
         userCalendar.AddEvent(id, "test_important_date");
         
         //act
-        userCalendar.RemoveEvent(Guid.NewGuid());
+        userCalendar.RemoveEvent(id);
         
         //assert
         userCalendar.Events.Any(x => x.Id.Value == id).ShouldBeFalse();
