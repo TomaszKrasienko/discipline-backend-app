@@ -5,7 +5,6 @@ using discipline.domain.UsersCalendars.Services;
 using discipline.domain.UsersCalendars.Services.Abstractions;
 using discipline.tests.shared.Entities;
 using NSubstitute;
-using NSubstitute.ReceivedExtensions;
 using Shouldly;
 using Xunit;
 
