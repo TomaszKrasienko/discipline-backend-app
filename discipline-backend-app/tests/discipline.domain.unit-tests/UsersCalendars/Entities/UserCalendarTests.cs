@@ -295,4 +295,19 @@ public sealed class UserCalendarTests
         //assert
         exception.ShouldBeOfType<EventNotFoundException>();
     }
+    
+    [Fact]
+    public void RemoveEvent_GivenExistingEvent_ShouldRemoveEvent()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        var id = Guid.NewGuid();
+        userCalendar.AddEvent(id, "test_important_date");
+        
+        //act
+        userCalendar.RemoveEvent(Guid.NewGuid());
+        
+        //assert
+        userCalendar.Events.Any(x => x.Id.Value == id).ShouldBeFalse();
+    }
 }

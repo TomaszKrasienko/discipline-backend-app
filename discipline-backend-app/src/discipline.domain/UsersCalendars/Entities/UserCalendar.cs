@@ -70,13 +70,15 @@ public sealed class UserCalendar : AggregateRoot
         }
     }
 
-    public void RemoveEvent(Guid eventId)
+    internal void RemoveEvent(Guid eventId)
     {
         var @event = GetEvent(eventId);
         if (@event is null)
         {
             throw new EventNotFoundException(eventId);
         }
+
+        _events.Remove(@event);
     }
     
 
