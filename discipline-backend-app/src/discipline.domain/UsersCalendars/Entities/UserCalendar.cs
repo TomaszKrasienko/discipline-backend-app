@@ -36,9 +36,7 @@ public sealed class UserCalendar : AggregateRoot
         => _events.Add(Meeting.Create(id, title, timeFrom, timeTo, platform, uri, place));
 
     internal void AddEvent(Event @event)
-    {
-        
-    }
+        => _events.Add(@event);
 
     public void EditEvent(Guid id, string title)
     {
@@ -63,16 +61,6 @@ public sealed class UserCalendar : AggregateRoot
         ((Meeting)meeting).Edit(title, timeFrom, timeTo, platform, uri, place);
     }
 
-    private Event GetEvent(Guid id)
-    {       
-        var @event = _events.FirstOrDefault(x => x.Id.Value == id);
-        if (@event is null)
-        {
-            throw new EventNotExistsException(id);
-        }
-        return @event;
-    }
-
     private void ValidateEventType(Event @event, Type destinationType)
     {
         var type = @event.GetType();
@@ -80,5 +68,25 @@ public sealed class UserCalendar : AggregateRoot
         {
             throw new InvalidEventTypeIdException(@event.Id);
         }
+    }
+
+    public void RemoveEvent(Guid eventId)
+    {
+        var @event = GetEvent(eventId);
+        if (@event is null)
+        {
+            throw new EventNotFoundException(eventId);
+        }
+    }
+    
+
+    private Event GetEvent(Guid id)
+    {       
+        var @event = _events.FirstOrDefault(x => x.Id.Value == id);
+        if (@event is null)
+        {
+            throw new EventNotFoundException(id);
+        }
+        return @event;
     }
 }

@@ -138,7 +138,7 @@ public sealed class UserCalendarTests
     }
 
     [Fact]
-    public void EditEvent_GivenNotExistingIdAndArgumentsForImportantDate_ShouldThrowEventNotExistsException()
+    public void EditEvent_GivenNotExistingIdAndArgumentsForImportantDate_ShouldThrowEventNotFoundException()
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
@@ -147,7 +147,7 @@ public sealed class UserCalendarTests
         var exception = Record.Exception(() => userCalendar.EditEvent(Guid.NewGuid(), "test_title"));
         
         //assert
-        exception.ShouldBeOfType<EventNotExistsException>();
+        exception.ShouldBeOfType<EventNotFoundException>();
     }
 
     [Fact]
@@ -194,7 +194,7 @@ public sealed class UserCalendarTests
     }
 
     [Fact]
-    public void EditEvent_GivenNotExistingIdAndArgumentsForCalendarEvent_ShouldThrowEventNotExistsException()
+    public void EditEvent_GivenNotExistingIdAndArgumentsForCalendarEvent_ShouldThrowEventNotFoundException()
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
@@ -204,7 +204,7 @@ public sealed class UserCalendarTests
             new TimeOnly(12,00), null, "test_action"));
         
         //assert
-        exception.ShouldBeOfType<EventNotExistsException>();
+        exception.ShouldBeOfType<EventNotFoundException>();
     }
 
     [Fact]
@@ -264,7 +264,7 @@ public sealed class UserCalendarTests
             null, "test_platform", "test_uri", null));
         
         //assert
-        exception.ShouldBeOfType<EventNotExistsException>();
+        exception.ShouldBeOfType<EventNotFoundException>();
     }
 
     [Fact]
@@ -281,5 +281,18 @@ public sealed class UserCalendarTests
         
         //assert
         exception.ShouldBeOfType<InvalidEventTypeIdException>();
+    }
+
+    [Fact]
+    public void RemoveEvent_GivenNotExistingEvent_ShouldThrowEventNotFoundException()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        
+        //act
+        var exception = Record.Exception(() => userCalendar.RemoveEvent(Guid.NewGuid()));
+        
+        //assert
+        exception.ShouldBeOfType<EventNotFoundException>();
     }
 }

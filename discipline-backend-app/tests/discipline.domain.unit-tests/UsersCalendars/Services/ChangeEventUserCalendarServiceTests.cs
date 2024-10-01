@@ -22,6 +22,10 @@ public sealed class ChangeEventUserCalendarServiceTests
         var userCalendar = UserCalendarFactory.Get();
         var eventId = Guid.NewGuid();
         userCalendar.AddEvent(eventId, "test_event_title");
+        _userCalendarRepository
+            .GetByEventIdAsync(userCalendar.UserId, eventId, default)
+            .Returns(userCalendar);
+        
         var newDate = userCalendar.Day.Value.AddDays(1);
 
         //act
