@@ -5,7 +5,6 @@ using discipline.application.Features.UsersCalendars;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
 using discipline.domain.UsersCalendars.Entities;
-using discipline.tests.shared.Entities;
 using MongoDB.Driver;
 using Shouldly;
 using Xunit;
