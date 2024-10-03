@@ -104,6 +104,21 @@ public sealed class UserCalendarTests
     }
 
     [Fact]
+    public void AddEvent_GivenIvent_ShouldAddEvent()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        var @event = ImportantDate.Create(Guid.NewGuid(), "test_title");
+        
+        //act
+        userCalendar.AddEvent(@event);
+        
+        //assert
+        userCalendar.Events.Any(x => x.Id == @event.Id && x.Title == @event.Title)
+            .ShouldBeTrue();
+    }
+
+    [Fact]
     public void EditEvent_GivenArgumentsForImportantDate_ShouldEditImportantDate()
     {
         //arrange
@@ -123,7 +138,7 @@ public sealed class UserCalendarTests
     }
 
     [Fact]
-    public void EditEvent_GivenNotExistingIdAndArgumentsForImportantDate_ShouldThrowEventNotExistsException()
+    public void EditEvent_GivenNotExistingIdAndArgumentsForImportantDate_ShouldThrowEventNotFoundException()
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
@@ -132,7 +147,7 @@ public sealed class UserCalendarTests
         var exception = Record.Exception(() => userCalendar.EditEvent(Guid.NewGuid(), "test_title"));
         
         //assert
-        exception.ShouldBeOfType<EventNotExistsException>();
+        exception.ShouldBeOfType<EventNotFoundException>();
     }
 
     [Fact]
@@ -179,7 +194,7 @@ public sealed class UserCalendarTests
     }
 
     [Fact]
-    public void EditEvent_GivenNotExistingIdAndArgumentsForCalendarEvent_ShouldThrowEventNotExistsException()
+    public void EditEvent_GivenNotExistingIdAndArgumentsForCalendarEvent_ShouldThrowEventNotFoundException()
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
@@ -189,7 +204,7 @@ public sealed class UserCalendarTests
             new TimeOnly(12,00), null, "test_action"));
         
         //assert
-        exception.ShouldBeOfType<EventNotExistsException>();
+        exception.ShouldBeOfType<EventNotFoundException>();
     }
 
     [Fact]
@@ -208,9 +223,7 @@ public sealed class UserCalendarTests
         exception.ShouldBeOfType<InvalidEventTypeIdException>();
     }
     
-    /////////////
-    
-        [Fact]
+    [Fact]
     public void EditEvent_GivenArgumentsForMeeting_ShouldEditMeeting()
     {
         //arrange
@@ -251,7 +264,7 @@ public sealed class UserCalendarTests
             null, "test_platform", "test_uri", null));
         
         //assert
-        exception.ShouldBeOfType<EventNotExistsException>();
+        exception.ShouldBeOfType<EventNotFoundException>();
     }
 
     [Fact]
@@ -268,5 +281,33 @@ public sealed class UserCalendarTests
         
         //assert
         exception.ShouldBeOfType<InvalidEventTypeIdException>();
+    }
+
+    [Fact]
+    public void RemoveEvent_GivenNotExistingEvent_ShouldThrowEventNotFoundException()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        
+        //act
+        var exception = Record.Exception(() => userCalendar.RemoveEvent(Guid.NewGuid()));
+        
+        //assert
+        exception.ShouldBeOfType<EventNotFoundException>();
+    }
+    
+    [Fact]
+    public void RemoveEvent_GivenExistingEvent_ShouldRemoveEvent()
+    {
+        //arrange
+        var userCalendar = UserCalendarFactory.Get();
+        var id = Guid.NewGuid();
+        userCalendar.AddEvent(id, "test_important_date");
+        
+        //act
+        userCalendar.RemoveEvent(id);
+        
+        //assert
+        userCalendar.Events.Any(x => x.Id.Value == id).ShouldBeFalse();
     }
 }
