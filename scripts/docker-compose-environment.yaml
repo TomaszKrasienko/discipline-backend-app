@@ -9,9 +9,19 @@ services:
       - 6011:27017
     networks:
       - discipline-network
+  redis:
+    image: redis
+    container_name: discipline-redis
+    restart: always
+    ports:
+      - 6012:6379
+    volumes: 
+      - cache:/data
 
 volumes:
   mongo:
+    driver: local
+  cache:
     driver: local
 
 networks:

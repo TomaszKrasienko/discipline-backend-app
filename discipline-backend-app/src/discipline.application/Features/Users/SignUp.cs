@@ -85,7 +85,8 @@ public sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
 
 internal sealed class SignUpCommandHandler(
     IUserRepository userRepository,
-    IPasswordManager passwordManager) : ICommandHandler<SignUpCommand>
+    IPasswordManager passwordManager,
+    IEventPublisher eventPublisher) : ICommandHandler<SignUpCommand>
 {
     public async Task HandleAsync(SignUpCommand command, CancellationToken cancellationToken = default)
     {
@@ -97,5 +98,8 @@ internal sealed class SignUpCommandHandler(
         var securedPassword = passwordManager.Secure(command.Password);
         var user = User.Create(command.Id, command.Email, securedPassword, command.FirstName, command.LastName);
         await userRepository.AddAsync(user, cancellationToken);
+        await eventPublisher.PublishAsync(new UserSignedUp(command.Id));
     }
 }
+
+internal sealed record UserSignedUp(Guid UserId) : IEvent;

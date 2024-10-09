@@ -59,19 +59,25 @@ public sealed class SignUpCommandHandlerTests
                    && arg.Password == securedPassword
                    && arg.FullName.FirstName == command.FirstName
                    && arg.FullName.LastName == command.LastName));
-
+        
+        await _eventPublisher
+            .Received(1)
+            .PublishAsync(Arg.Is<UserSignedUp>(
+                arg => arg.UserId == command.Id));
     }
     
     #region arrange
     private readonly IUserRepository _userRepository;
     private readonly IPasswordManager _passwordManager;
+    private readonly IEventPublisher _eventPublisher;
     private readonly ICommandHandler<SignUpCommand> _handler;
 
     public SignUpCommandHandlerTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
         _passwordManager = Substitute.For<IPasswordManager>();
-        _handler = new SignUpCommandHandler(_userRepository, _passwordManager);
+        _eventPublisher = Substitute.For<IEventPublisher>();
+        _handler = new SignUpCommandHandler(_userRepository, _passwordManager, _eventPublisher);
     }
     #endregion
 }
