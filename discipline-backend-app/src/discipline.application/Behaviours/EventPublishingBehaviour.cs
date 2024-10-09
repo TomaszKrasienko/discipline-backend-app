@@ -12,7 +12,8 @@ internal static class EventPublishingBehaviour
     
     internal static IServiceCollection AddEventPublishingBehaviour(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions(configuration)
+        services
+            .AddOptions(configuration)
             .AddSingleton(sp =>
             {
                 var redisOptions = sp.GetRequiredService<IOptions<RedisOptions>>().Value;
