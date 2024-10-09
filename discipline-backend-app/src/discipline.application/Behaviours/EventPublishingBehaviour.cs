@@ -53,7 +53,7 @@ internal sealed class RedisEventPublisher(
         {
             throw new ArgumentException("Event not registered");
         }
-        await subscriber.PublishAsync(@event.AsJson(), channel);
+        await subscriber.PublishAsync( channel, @event.AsJson());
     }
 }
 
