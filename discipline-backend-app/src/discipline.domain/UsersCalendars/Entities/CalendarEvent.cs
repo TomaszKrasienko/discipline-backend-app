@@ -9,18 +9,18 @@ public sealed class CalendarEvent : Event
     public MeetingTimeSpan MeetingTimeSpan { get; set; }
     public Action Action { get; set; }
 
-    private CalendarEvent(Guid id) : base(id)
+    private CalendarEvent(Ulid id) : base(id)
     {
     }
 
     //For mongo
-    public CalendarEvent(Guid id, Title title, MeetingTimeSpan meetingTimeSpan, Action action) : base(id, title)
+    public CalendarEvent(Ulid id, Title title, MeetingTimeSpan meetingTimeSpan, Action action) : base(id, title)
     {
         MeetingTimeSpan = meetingTimeSpan;
         Action = action;
     }
 
-    internal static CalendarEvent Create(Guid id, string title, TimeOnly timeFrom, 
+    internal static CalendarEvent Create(Ulid id, string title, TimeOnly timeFrom, 
         TimeOnly? timeTo, string action)
     {
         var calendarEvent = new CalendarEvent(id);

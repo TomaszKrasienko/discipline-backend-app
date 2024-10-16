@@ -4,48 +4,48 @@ using discipline.domain.UsersCalendars.ValueObjects.UserCalendar;
 
 namespace discipline.domain.UsersCalendars.Entities;
 
-public sealed class UserCalendar : AggregateRoot<Guid>
+public sealed class UserCalendar : AggregateRoot<Ulid>
 {
     private readonly List<Event> _events = [];
     public Day Day { get; }
-    public Guid UserId { get; }
+    public Ulid UserId { get; }
     public IReadOnlyList<Event> Events => _events;
 
-    private UserCalendar(Guid id, Day day, Guid userId) : base(id)
+    private UserCalendar(Ulid id, Day day, Ulid userId) : base(id)
     {
         Day = day;
         UserId = userId;
     } 
     
     //For mongo
-    public UserCalendar(Day day, EntityId userId, List<Event> events) : this(day, userId)
+    public UserCalendar(Ulid id, Day day, Ulid userId, List<Event> events) : this(id, day, userId)
         => _events = events;
 
-    public static UserCalendar Create(DateOnly day, Guid userId)
-        => new UserCalendar(day, userId);
+    public static UserCalendar Create(Ulid id, DateOnly day, Ulid userId)
+        => new UserCalendar(id, day, userId);
 
-    public void AddEvent(Guid id, string title)
+    public void AddEvent(Ulid id, string title)
         => _events.Add(ImportantDate.Create(id, title));
 
-    public void AddEvent(Guid id, string title, TimeOnly timeFrom,
+    public void AddEvent(Ulid id, string title, TimeOnly timeFrom,
         TimeOnly? timeTo, string action)
         => _events.Add(CalendarEvent.Create(id, title, timeFrom, timeTo, action));
 
-    public void AddEvent(Guid id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
+    public void AddEvent(Ulid id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
         string platform, string uri, string place)
         => _events.Add(Meeting.Create(id, title, timeFrom, timeTo, platform, uri, place));
 
     internal void AddEvent(Event @event)
         => _events.Add(@event);
 
-    public void EditEvent(Guid id, string title)
+    public void EditEvent(Ulid id, string title)
     {
         var importantDate = GetEvent(id);
         ValidateEventType(importantDate, typeof(ImportantDate));
         ((ImportantDate)importantDate).Edit(title);
     }
 
-    public void EditEvent(Guid id, string title, TimeOnly timeFrom,
+    public void EditEvent(Ulid id, string title, TimeOnly timeFrom,
         TimeOnly? timeTo, string action)
     {
         var calendarEvent = GetEvent(id);
@@ -53,7 +53,7 @@ public sealed class UserCalendar : AggregateRoot<Guid>
         ((CalendarEvent)calendarEvent).Edit(title, timeFrom, timeTo, action);
     }
 
-    public void EditEvent(Guid id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
+    public void EditEvent(Ulid id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
         string platform, string uri, string place)
     {
         var meeting = GetEvent(id);
@@ -70,7 +70,7 @@ public sealed class UserCalendar : AggregateRoot<Guid>
         }
     }
 
-    internal void RemoveEvent(Guid eventId)
+    internal void RemoveEvent(Ulid eventId)
     {
         var @event = GetEvent(eventId);
         if (@event is null)
@@ -82,9 +82,9 @@ public sealed class UserCalendar : AggregateRoot<Guid>
     }
     
 
-    private Event GetEvent(Guid id)
+    private Event GetEvent(Ulid id)
     {       
-        var @event = _events.FirstOrDefault(x => x.Id.Value == id);
+        var @event = _events.FirstOrDefault(x => x.Id == id);
         if (@event is null)
         {
             throw new EventNotFoundException(id);

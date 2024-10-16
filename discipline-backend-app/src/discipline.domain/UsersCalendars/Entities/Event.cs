@@ -3,17 +3,17 @@ using discipline.domain.UsersCalendars.ValueObjects.Event;
 
 namespace discipline.domain.UsersCalendars.Entities;
 
-public abstract class Event : Entity<Guid>
+public abstract class Event : Entity<Ulid>
 {
-    public Guid Id { get; }
+    public Ulid Id { get; }
     public Title Title { get; private set; }
 
-    protected Event(Guid id) : base(id)
+    protected Event(Ulid id) : base(id)
     {
         
     }
     
-    protected Event(Guid id, string title) : this(id)
+    protected Event(Ulid id, string title) : this(id)
         => Title = title;
 
     protected void ChangeTitle(string title)

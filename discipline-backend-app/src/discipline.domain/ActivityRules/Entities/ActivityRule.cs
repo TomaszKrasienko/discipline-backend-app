@@ -4,23 +4,19 @@ using discipline.domain.SharedKernel;
 
 namespace discipline.domain.ActivityRules.Entities;
 
-public sealed class ActivityRule
+public sealed class ActivityRule : Entity<Ulid> 
 {
-    public EntityId Id { get; }
-    public EntityId UserId { get; }
+    public Ulid UserId { get; }
     public Title Title { get; private set; }
     public Mode Mode { get; private set; }
     private List<SelectedDay> _selectedDays = [];
     public IReadOnlyList<SelectedDay> SelectedDays => _selectedDays;
 
-    private ActivityRule(EntityId id, EntityId userId)
-    {
-        Id = id;
-        UserId = userId;
-    }
+    private ActivityRule(Ulid id, Ulid userId) : base(id)
+        => UserId = userId;
 
     //For mongo
-    public ActivityRule(EntityId id, EntityId userId, Title title, 
+    public ActivityRule(Ulid id, Ulid userId, Title title, 
         Mode mode, IEnumerable<SelectedDay> selectedDays) : this(id, userId)
     {
         Title = title;
@@ -28,7 +24,7 @@ public sealed class ActivityRule
         _selectedDays = selectedDays?.ToList() ?? [];
     }
 
-    public static ActivityRule Create(Guid id, Guid userId, string title, string mode, List<int> selectedDays = null)
+    public static ActivityRule Create(Ulid id, Ulid userId, string title, string mode, List<int> selectedDays = null)
     {
         var item = new ActivityRule(id, userId);
         item.ChangeTitle(title);

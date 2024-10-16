@@ -8,7 +8,7 @@ namespace discipline.domain.UsersCalendars.Services;
 internal sealed class ChangeEventUserCalendarService(
     IUserCalendarRepository userCalendarRepository) : IChangeEventUserCalendarService
 {
-    public async Task Invoke(Guid userId, Guid eventId, DateOnly newDate, CancellationToken cancellationToken)
+    public async Task Invoke(Ulid userId, Ulid eventId, DateOnly newDate, CancellationToken cancellationToken)
     {
         var oldUserCalendar = await userCalendarRepository.GetByEventIdAsync(userId, eventId, cancellationToken);
         if (oldUserCalendar is null)
@@ -16,7 +16,7 @@ internal sealed class ChangeEventUserCalendarService(
             throw new UserCalendarForEventNotFoundException(userId, eventId);
         }
 
-        var @event = oldUserCalendar.Events.First(x => x.Id.Value == eventId);
+        var @event = oldUserCalendar.Events.First(x => x.Id == eventId);
         oldUserCalendar.RemoveEvent(eventId);
 
         UserCalendar newUserCalendar = await userCalendarRepository
@@ -24,7 +24,8 @@ internal sealed class ChangeEventUserCalendarService(
         var isNewUserCalendarExists = true;
         if (newUserCalendar is null)
         {
-            newUserCalendar = UserCalendar.Create(newDate, userId);
+            //TODO: Change
+            newUserCalendar = UserCalendar.Create(Ulid.NewUlid(),newDate, userId);
             isNewUserCalendarExists = false;
         }
         newUserCalendar.AddEvent(@event);

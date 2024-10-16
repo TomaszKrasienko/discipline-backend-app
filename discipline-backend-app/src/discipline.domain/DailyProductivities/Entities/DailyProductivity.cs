@@ -5,37 +5,37 @@ using discipline.domain.SharedKernel;
 
 namespace discipline.domain.DailyProductivities.Entities;
 
-public sealed class DailyProductivity : AggregateRoot
+public sealed class DailyProductivity : AggregateRoot<Ulid>
 {
     private readonly List<Activity> _activities = new();
     public Day Day { get; private set; }
-    public EntityId UserId { get; private set; }
+    public Ulid UserId { get; private set; }
     public IReadOnlyList<Activity> Activities => _activities;
 
-    private DailyProductivity(Day day, EntityId userId) : base()
+    private DailyProductivity(Ulid id, Day day, Ulid userId) : base(id)
     {
         Day = day;
         UserId = userId;
     }
 
     //For mongo
-    public DailyProductivity(Day day, EntityId userId, List<Activity> activities) 
-        : this(day, userId)
+    public DailyProductivity(Ulid id, Day day, Ulid userId, List<Activity> activities) 
+        : this(id, day, userId)
     {
         _activities = activities;
     }
 
-    public static DailyProductivity Create(DateOnly day, Guid userId)
-        => new DailyProductivity(day, userId);
+    public static DailyProductivity Create(Ulid id, DateOnly day, Ulid userId)
+        => new DailyProductivity(id, day, userId);
     
-    public void AddActivity(Guid id, string title)
+    public void AddActivity(Ulid id, string title)
     {
         ValidateActivity(title);
         var activity = Activity.Create(id, title);
         _activities.Add(activity);
     }
 
-    public void AddActivityFromRule(Guid id, DateTime now, ActivityRule activityRule)
+    public void AddActivityFromRule(Ulid id, DateTime now, ActivityRule activityRule)
     {
         ValidateActivity(activityRule.Title);
         var activity = Activity.CreateFromRule(id, now, activityRule);
