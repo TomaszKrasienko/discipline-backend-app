@@ -12,12 +12,12 @@ public sealed class PaidSubscriptionOrder : SubscriptionOrder
     public PaymentDetails PaymentDetails { get; private set; }
     public Type Type { get; private set; }
 
-    private PaidSubscriptionOrder(EntityId id, CreatedAt createdAt) : base(id, createdAt)
+    private PaidSubscriptionOrder(Ulid id, CreatedAt createdAt) : base(id, createdAt)
     {
     }
 
     //For mongo
-    public PaidSubscriptionOrder(EntityId id, EntityId subscriptionId, CreatedAt createdAt, State state,
+    public PaidSubscriptionOrder(Ulid id, Guid subscriptionId, CreatedAt createdAt, State state,
         Next next, PaymentDetails paymentDetails, Type type) : base(id, createdAt, subscriptionId,
         state)
     {
@@ -26,7 +26,7 @@ public sealed class PaidSubscriptionOrder : SubscriptionOrder
         Type = type;
     }
     
-    internal static PaidSubscriptionOrder Create(Guid id, Subscription subscription, SubscriptionOrderFrequency subscriptionOrderFrequency, DateTime now,
+    internal static PaidSubscriptionOrder Create(Ulid id, Subscription subscription, SubscriptionOrderFrequency subscriptionOrderFrequency, DateTime now,
         string cardNumber, string cardCvvNumber)
     {
         if (subscription is null)

@@ -6,11 +6,11 @@ namespace discipline.domain.UsersCalendars.Entities;
 public sealed class ImportantDate : Event
 {
     //For mongo
-    public ImportantDate(EntityId id, string title) : base(id, title)
+    public ImportantDate(Guid id, string title) : base(id, title)
     {
     }    
     
-    private ImportantDate(EntityId id) : base(id)
+    private ImportantDate(Guid id) : base(id)
     {
     }
 

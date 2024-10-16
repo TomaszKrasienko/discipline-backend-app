@@ -4,14 +4,14 @@ using discipline.domain.UsersCalendars.ValueObjects.UserCalendar;
 
 namespace discipline.domain.UsersCalendars.Entities;
 
-public sealed class UserCalendar : AggregateRoot
+public sealed class UserCalendar : AggregateRoot<Guid>
 {
     private readonly List<Event> _events = [];
     public Day Day { get; }
-    public EntityId UserId { get; }
+    public Guid UserId { get; }
     public IReadOnlyList<Event> Events => _events;
 
-    private UserCalendar(Day day, EntityId userId)
+    private UserCalendar(Guid id, Day day, Guid userId) : base(id)
     {
         Day = day;
         UserId = userId;

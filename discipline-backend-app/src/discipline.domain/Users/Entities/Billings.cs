@@ -3,22 +3,19 @@ using discipline.domain.Users.ValueObjects;
 
 namespace discipline.domain.Users.Entities;
 
-public sealed class Billing
+public sealed class Billing : Entity<Guid>
 {
-    public EntityId Id { get; }
     public CreatedAt CreatedAt { get; }
     public IsRealized IsRealized { get; private set; }
     public Cost Cost { get; private set; }
     public TransferDetails TransferDetails { get; private set; }
 
-    private Billing(EntityId id, CreatedAt createdAt)
-    {        
-        Id = id;
-        CreatedAt = createdAt;
-    }
+    private Billing(Guid id, CreatedAt createdAt) : base(id)
+        => CreatedAt = createdAt;
+    
     
     //For mongo
-    public Billing(EntityId id, CreatedAt createdAt, IsRealized isRealized, Cost cost, TransferDetails transferDetails)
+    public Billing(Guid id, CreatedAt createdAt, IsRealized isRealized, Cost cost, TransferDetails transferDetails)
         : this(id, createdAt)
     {
         IsRealized = isRealized;

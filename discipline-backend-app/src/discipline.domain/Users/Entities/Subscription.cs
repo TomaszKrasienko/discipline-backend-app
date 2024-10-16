@@ -7,16 +7,16 @@ namespace discipline.domain.Users.Entities;
 public sealed class Subscription
 {
     private readonly HashSet<Feature> _features = new HashSet<Feature>();
-    public EntityId Id { get; }
+    public Guid Id { get; }
     public Title Title { get; private set; }
     public Price Price { get; private set; }
     public IReadOnlyCollection<Feature> Features => _features;
 
-    private Subscription(EntityId id)
+    private Subscription(Guid id)
         => Id = id;
     
     //For mongo
-    public Subscription(EntityId id, Title title, Price price, List<Feature> features) : this(id)
+    public Subscription(Guid id, Title title, Price price, List<Feature> features) : this(id)
     {
         Title = title;
         Price = price;

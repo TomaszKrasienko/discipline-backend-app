@@ -9,12 +9,12 @@ public sealed class Meeting : Event
     public Address Address { get; private set; }
 
 
-    private Meeting(EntityId id) : base(id)
+    private Meeting(Guid id) : base(id)
     {
     }
 
     //For mongo
-    public Meeting(EntityId id, Title title, MeetingTimeSpan meetingTimeSpan, Address address) : base(id, title)
+    public Meeting(Guid id, Title title, MeetingTimeSpan meetingTimeSpan, Address address) : base(id, title)
     {
         MeetingTimeSpan = meetingTimeSpan;
         Address = address;

@@ -9,12 +9,12 @@ public sealed class CalendarEvent : Event
     public MeetingTimeSpan MeetingTimeSpan { get; set; }
     public Action Action { get; set; }
 
-    private CalendarEvent(EntityId id) : base(id)
+    private CalendarEvent(Guid id) : base(id)
     {
     }
 
     //For mongo
-    public CalendarEvent(EntityId id, Title title, MeetingTimeSpan meetingTimeSpan, Action action) : base(id, title)
+    public CalendarEvent(Guid id, Title title, MeetingTimeSpan meetingTimeSpan, Action action) : base(id, title)
     {
         MeetingTimeSpan = meetingTimeSpan;
         Action = action;

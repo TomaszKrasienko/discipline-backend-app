@@ -6,17 +6,17 @@ namespace discipline.domain.Users.Entities;
 
 public sealed class FreeSubscriptionOrder : SubscriptionOrder
 {
-    private FreeSubscriptionOrder(EntityId id, CreatedAt createdAt) : base(id, createdAt)
+    private FreeSubscriptionOrder(Ulid id, CreatedAt createdAt) : base(id, createdAt)
     {
     }
     
     //for mongo
-    public FreeSubscriptionOrder(EntityId id, CreatedAt createdAt,
-        EntityId subscriptionId, State state) : base(id, createdAt, subscriptionId, state)
+    public FreeSubscriptionOrder(Ulid id, CreatedAt createdAt,
+        Guid subscriptionId, State state) : base(id, createdAt, subscriptionId, state)
     {
     }
 
-    public static FreeSubscriptionOrder Create(Guid id, Subscription subscription, DateTime now)
+    public static FreeSubscriptionOrder Create(Ulid id, Subscription subscription, DateTime now)
     {
         if (subscription is null)
         {
