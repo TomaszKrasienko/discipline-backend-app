@@ -1,4 +1,5 @@
 using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.ValueObjects.Event;
 
 namespace discipline.domain.UsersCalendars.Entities;
@@ -9,18 +10,19 @@ public sealed class Meeting : Event
     public Address Address { get; private set; }
 
 
-    private Meeting(Ulid id) : base(id)
+    private Meeting(EventId id) : base(id)
     {
     }
 
     //For mongo
-    public Meeting(Ulid id, Title title, MeetingTimeSpan meetingTimeSpan, Address address) : base(id, title)
+    public Meeting(EventId id, Title title, MeetingTimeSpan meetingTimeSpan, Address address)
+        : base(id, title)
     {
         MeetingTimeSpan = meetingTimeSpan;
         Address = address;
     }
 
-    internal static Meeting Create(Ulid id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
+    internal static Meeting Create(EventId id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
         string platform, string uri, string place)
     {
         var @event = new Meeting(id);

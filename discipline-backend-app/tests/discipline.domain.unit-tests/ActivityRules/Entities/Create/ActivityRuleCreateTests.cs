@@ -12,8 +12,8 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenWithoutSelectedDaysWithValidMode_ShouldReturnActivityRuleWithFilledFields()
     {
         //arrange
-        var id = Guid.NewGuid();
-        var userId = Guid.NewGuid();
+        var id = Ulid.NewUlid();
+        var userId = Ulid.NewUlid();
         var title = "Test title";
         var mode = Mode.EveryDayMode();
         
@@ -22,8 +22,8 @@ public sealed class ActivityRuleCreateTests
         
         //assert
         result.ShouldBeOfType<ActivityRule>();
-        result.Id.Value.ShouldBe(id);
-        result.UserId.Value.ShouldBe(userId);
+        result.Id.ShouldBe(id);
+        result.UserId.ShouldBe(userId);
         result.Title.Value.ShouldBe(title);
         result.Mode.Value.ShouldBe(mode);
     }
@@ -32,8 +32,8 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenWithSelectedDaysWithValidMode_ShouldReturnActivityRuleWithFilledFields()
     {
         //arrange
-        var id = Guid.NewGuid();
-        var userId = Guid.NewGuid();
+        var id = Ulid.NewUlid();
+        var userId = Ulid.NewUlid();
         var title = "Test title";
         var mode = Mode.CustomMode();
         List<int> selectedDays = [1, 2, 4];
@@ -43,7 +43,7 @@ public sealed class ActivityRuleCreateTests
         
         //assert
         result.ShouldBeOfType<ActivityRule>();
-        result.Id.Value.ShouldBe(id);
+        result.Id.ShouldBe(id);
         result.Title.Value.ShouldBe(title);
         result.Mode.Value.ShouldBe(mode);
         result.SelectedDays.Select(x => x.Value).Contains(selectedDays[0]).ShouldBeTrue();
@@ -55,7 +55,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenEmptyTitle_ShouldThrowEmptyActivityRuleTitleException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),string.Empty,
+        var exception = Record.Exception(() => ActivityRule.Create(Ulid.NewUlid(), Ulid.NewUlid(),string.Empty,
             Mode.EveryDayMode(), null));
         
         //assert
@@ -66,7 +66,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenTitleWithInvalidLength_ShouldThrowEmptyActivityRuleTitleException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"T",
+        var exception = Record.Exception(() => ActivityRule.Create(Ulid.NewUlid(), Ulid.NewUlid(),"T",
             Mode.EveryDayMode(), null));
         
         //assert

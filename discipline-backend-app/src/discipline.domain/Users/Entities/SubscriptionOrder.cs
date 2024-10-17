@@ -1,18 +1,19 @@
 using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.ValueObjects;
 
 namespace discipline.domain.Users.Entities;
 
-public abstract class SubscriptionOrder : Entity<Ulid>
+public abstract class SubscriptionOrder : Entity<SubscriptionOrderId>
 {
     public CreatedAt CreatedAt { get; }
     public Guid SubscriptionId { get; private set; }
     public State State { get; private set; }
 
-    protected SubscriptionOrder(Ulid id, CreatedAt createdAt) : base(id)
+    protected SubscriptionOrder(SubscriptionOrderId id, CreatedAt createdAt) : base(id)
         => CreatedAt = createdAt;
     
-    protected SubscriptionOrder(Ulid id, CreatedAt createdAt,
+    protected SubscriptionOrder(SubscriptionOrderId id, CreatedAt createdAt,
         Guid subscriptionId, State state) : this(id, createdAt)
     {
         SubscriptionId = subscriptionId;

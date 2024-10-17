@@ -1,7 +1,7 @@
 namespace discipline.domain.SharedKernel;
 
-public abstract class AggregateRoot<TIdentifier>(TIdentifier id) : Entity<TIdentifier>(id), IAggregateRoot
-    where TIdentifier : struct
+public abstract class AggregateRoot<TIdentifier>(TIdentifier id) : Entity<TIdentifier>(id), IAggregateRoot 
+    where TIdentifier : ITypeId
 {
     private readonly List<DomainEvent> _domainEvents = [];
     

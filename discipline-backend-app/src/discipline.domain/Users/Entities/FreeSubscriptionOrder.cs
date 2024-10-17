@@ -1,4 +1,4 @@
-using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Exceptions;
 using discipline.domain.Users.ValueObjects;
 
@@ -6,17 +6,17 @@ namespace discipline.domain.Users.Entities;
 
 public sealed class FreeSubscriptionOrder : SubscriptionOrder
 {
-    private FreeSubscriptionOrder(Ulid id, CreatedAt createdAt) : base(id, createdAt)
+    private FreeSubscriptionOrder(SubscriptionOrderId id, CreatedAt createdAt) : base(id, createdAt)
     {
     }
     
     //for mongo
-    public FreeSubscriptionOrder(Ulid id, CreatedAt createdAt,
+    public FreeSubscriptionOrder(SubscriptionOrderId id, CreatedAt createdAt,
         Guid subscriptionId, State state) : base(id, createdAt, subscriptionId, state)
     {
     }
 
-    public static FreeSubscriptionOrder Create(Ulid id, Subscription subscription, DateTime now)
+    public static FreeSubscriptionOrder Create(SubscriptionOrderId id, Subscription subscription, DateTime now)
     {
         if (subscription is null)
         {
