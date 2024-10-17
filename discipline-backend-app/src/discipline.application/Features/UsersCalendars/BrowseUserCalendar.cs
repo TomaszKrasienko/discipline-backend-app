@@ -15,12 +15,13 @@ internal static class BrowseUserCalendar
     internal static WebApplication MapBrowseUserCalendar(this WebApplication app)
     {
         app.MapGet($"{Extensions.UserCalendarTag}/{{day:datetime}}", async (DateOnly day,
-            IIdentityContext identityContext, IDisciplineMongoCollection disciplineMongoCollection) =>
+            IIdentityContext identityContext, IDisciplineMongoCollection disciplineMongoCollection,
+            CancellationToken cancellationToken) =>
             {
                 var result = await disciplineMongoCollection
                     .GetCollection<UserCalendarDocument>()
                     .Find(x => x.Day == day && x.UserId == identityContext.UserId)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefaultAsync(cancellationToken);
                 return result is null ? Results.NoContent() : Results.Ok(result.AsDto());
             })
             .Produces(StatusCodes.Status200OK, typeof(UserCalendarDto))

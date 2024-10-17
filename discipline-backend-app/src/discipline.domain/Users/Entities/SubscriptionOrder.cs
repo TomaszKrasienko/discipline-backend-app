@@ -3,21 +3,17 @@ using discipline.domain.Users.ValueObjects;
 
 namespace discipline.domain.Users.Entities;
 
-public abstract class SubscriptionOrder
+public abstract class SubscriptionOrder : Entity<Ulid>
 {
-    public EntityId Id { get; }
     public CreatedAt CreatedAt { get; }
-    public EntityId SubscriptionId { get; private set; }
+    public Guid SubscriptionId { get; private set; }
     public State State { get; private set; }
 
-    protected SubscriptionOrder(EntityId id, CreatedAt createdAt)
-    {
-        Id = id;
-        CreatedAt = createdAt;
-    }
-
-    protected SubscriptionOrder(EntityId id, CreatedAt createdAt,
-        EntityId subscriptionId, State state) : this(id, createdAt)
+    protected SubscriptionOrder(Ulid id, CreatedAt createdAt) : base(id)
+        => CreatedAt = createdAt;
+    
+    protected SubscriptionOrder(Ulid id, CreatedAt createdAt,
+        Guid subscriptionId, State state) : this(id, createdAt)
     {
         SubscriptionId = subscriptionId;
         State = state;

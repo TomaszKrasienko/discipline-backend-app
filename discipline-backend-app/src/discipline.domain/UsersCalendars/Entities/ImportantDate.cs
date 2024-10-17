@@ -6,11 +6,23 @@ namespace discipline.domain.UsersCalendars.Entities;
 public sealed class ImportantDate : Event
 {
     //For mongo
-    public ImportantDate(EntityId id, Title title) : base(id, title)
+    public ImportantDate(Ulid id, string title) : base(id, title)
+    {
+    }    
+    
+    private ImportantDate(Ulid id) : base(id)
     {
     }
 
-    internal static ImportantDate Create(Guid id, string title)
-        => new ImportantDate(id, title);
-        
+    internal static ImportantDate Create(Ulid id, string title)
+    {
+       var @event = new ImportantDate(id);
+       @event.ChangeTitle(title);
+       return @event;
+    } 
+
+    internal void Edit(string title)
+    {
+        ChangeTitle(title);
+    }
 }
