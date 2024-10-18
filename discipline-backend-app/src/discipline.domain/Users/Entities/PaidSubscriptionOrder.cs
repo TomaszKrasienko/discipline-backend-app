@@ -18,7 +18,7 @@ public sealed class PaidSubscriptionOrder : SubscriptionOrder
     }
 
     //For mongo
-    public PaidSubscriptionOrder(SubscriptionOrderId id, Guid subscriptionId, CreatedAt createdAt, State state,
+    public PaidSubscriptionOrder(SubscriptionOrderId id, SubscriptionId subscriptionId, CreatedAt createdAt, State state,
         Next next, PaymentDetails paymentDetails, Type type) : base(id, createdAt, subscriptionId,
         state)
     {

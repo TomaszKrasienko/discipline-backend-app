@@ -4,7 +4,7 @@ using discipline.domain.Users.ValueObjects;
 
 namespace discipline.domain.Users.Entities;
 
-public sealed class FreeSubscriptionOrder : SubscriptionOrder
+public sealed class  FreeSubscriptionOrder : SubscriptionOrder
 {
     private FreeSubscriptionOrder(SubscriptionOrderId id, CreatedAt createdAt) : base(id, createdAt)
     {
@@ -12,7 +12,7 @@ public sealed class FreeSubscriptionOrder : SubscriptionOrder
     
     //for mongo
     public FreeSubscriptionOrder(SubscriptionOrderId id, CreatedAt createdAt,
-        Guid subscriptionId, State state) : base(id, createdAt, subscriptionId, state)
+        SubscriptionId subscriptionId, State state) : base(id, createdAt, subscriptionId, state)
     {
     }
 

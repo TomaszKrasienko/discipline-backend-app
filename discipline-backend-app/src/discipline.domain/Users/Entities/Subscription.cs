@@ -1,29 +1,31 @@
 using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Exceptions;
 using discipline.domain.Users.ValueObjects;
 
 namespace discipline.domain.Users.Entities;
 
-public sealed class Subscription
+public sealed class Subscription : Entity<SubscriptionId>
 {
     private readonly HashSet<Feature> _features = new HashSet<Feature>();
-    public Guid Id { get; }
     public Title Title { get; private set; }
     public Price Price { get; private set; }
     public IReadOnlyCollection<Feature> Features => _features;
 
-    private Subscription(Guid id)
-        => Id = id;
+    private Subscription(SubscriptionId id) : base(id)
+    {
+        
+    }
     
     //For mongo
-    public Subscription(Guid id, Title title, Price price, List<Feature> features) : this(id)
+    public Subscription(SubscriptionId id, Title title, Price price, List<Feature> features) : this(id)
     {
         Title = title;
         Price = price;
         _features = features.ToHashSet();
     }
 
-    public static Subscription Create(Guid id, string title, decimal pricePerMonth, decimal pricePerYear,
+    public static Subscription Create(SubscriptionId id, string title, decimal pricePerMonth, decimal pricePerYear,
         List<string> features)
     {
         var subscription = new Subscription(id);
