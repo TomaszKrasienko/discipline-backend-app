@@ -3,7 +3,6 @@ using discipline.domain.DailyProductivities.Exceptions;
 using discipline.domain.DailyProductivities.ValueObjects.DailyProductivity;
 using discipline.domain.SharedKernel;
 using discipline.domain.SharedKernel.TypeIdentifiers;
-using discipline.domain.UsersCalendars.Entities;
 
 namespace discipline.domain.DailyProductivities.Entities;
 
@@ -55,9 +54,9 @@ public sealed class DailyProductivity : AggregateRoot<DailyProductivityId>
         }
     }
 
-    public void DeleteActivity(Guid activityId)
+    public void DeleteActivity(ActivityId activityId)
     {
-        var activity = _activities.FirstOrDefault(x => x.Id.Equals(activityId));
+        var activity = _activities.FirstOrDefault(x => x.Id == activityId);
         if (activity is null)
         {
             throw new ActivityNotFoundException(activityId);
@@ -66,9 +65,9 @@ public sealed class DailyProductivity : AggregateRoot<DailyProductivityId>
         _activities.Remove(activity);
     }
 
-    public void ChangeActivityCheck(Guid activityId)
+    public void ChangeActivityCheck(ActivityId activityId)
     {
-        var activity = _activities.FirstOrDefault(x => x.Id.Equals(activityId));
+        var activity = _activities.FirstOrDefault(x => x.Id == activityId);
         if (activity is null)
         {
             throw new ActivityNotFoundException(activityId);
