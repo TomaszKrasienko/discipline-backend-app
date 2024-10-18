@@ -1,7 +1,7 @@
 namespace discipline.domain.SharedKernel.TypeIdentifiers;
 
-public sealed record UserCalendarId(Ulid Value) : ITypeId
+public sealed record UserCalendarId(Ulid Value) : ITypeId<UserCalendarId>
 {
-    public static ITypeId New()
-        => new BillingId(Ulid.NewUlid());
+    public static UserCalendarId New()
+        => new (Ulid.NewUlid());
 }

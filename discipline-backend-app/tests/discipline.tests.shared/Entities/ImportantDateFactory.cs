@@ -1,4 +1,5 @@
 using Bogus;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 
 namespace discipline.tests.shared.Entities;
@@ -21,5 +22,5 @@ internal static class ImportantDateFactory
     private static Faker<ImportantDate> GetFaker()
         => new Faker<ImportantDate>()
             .CustomInstantiator(v => ImportantDate.Create(
-                Guid.NewGuid(), v.Random.String(10, 'A', 'z')));
+                EventId.New(), v.Random.String(10, 'A', 'z')));
 }

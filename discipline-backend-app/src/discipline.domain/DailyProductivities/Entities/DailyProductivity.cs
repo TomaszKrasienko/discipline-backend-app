@@ -2,40 +2,42 @@ using discipline.domain.ActivityRules.Entities;
 using discipline.domain.DailyProductivities.Exceptions;
 using discipline.domain.DailyProductivities.ValueObjects.DailyProductivity;
 using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.UsersCalendars.Entities;
 
 namespace discipline.domain.DailyProductivities.Entities;
 
-public sealed class DailyProductivity : AggregateRoot<Ulid>
+public sealed class DailyProductivity : AggregateRoot<DailyProductivityId>
 {
     private readonly List<Activity> _activities = new();
     public Day Day { get; private set; }
-    public Ulid UserId { get; private set; }
+    public UserId UserId { get; private set; }
     public IReadOnlyList<Activity> Activities => _activities;
 
-    private DailyProductivity(Ulid id, Day day, Ulid userId) : base(id)
+    private DailyProductivity(DailyProductivityId id, Day day, UserId userId) : base(id)
     {
         Day = day;
         UserId = userId;
     }
 
     //For mongo
-    public DailyProductivity(Ulid id, Day day, Ulid userId, List<Activity> activities) 
+    public DailyProductivity(DailyProductivityId id, Day day, UserId userId, List<Activity> activities) 
         : this(id, day, userId)
     {
         _activities = activities;
     }
 
-    public static DailyProductivity Create(Ulid id, DateOnly day, Ulid userId)
+    public static DailyProductivity Create(DailyProductivityId id, DateOnly day, UserId userId)
         => new DailyProductivity(id, day, userId);
     
-    public void AddActivity(Ulid id, string title)
+    public void AddActivity(ActivityId id, string title)
     {
         ValidateActivity(title);
         var activity = Activity.Create(id, title);
         _activities.Add(activity);
     }
 
-    public void AddActivityFromRule(Ulid id, DateTime now, ActivityRule activityRule)
+    public void AddActivityFromRule(ActivityId id, DateTime now, ActivityRule activityRule)
     {
         ValidateActivity(activityRule.Title);
         var activity = Activity.CreateFromRule(id, now, activityRule);

@@ -1,9 +1,9 @@
 namespace discipline.domain.SharedKernel.TypeIdentifiers;
 
-public sealed record SubscriptionOrderId(Ulid Value) : ITypeId
+public sealed record SubscriptionOrderId(Ulid Value) : ITypeId<SubscriptionOrderId>
 {
-    public static ITypeId New()
-        => new SubscriptionOrderId(Ulid.NewUlid());
+    public static SubscriptionOrderId New()
+        => new (Ulid.NewUlid());
 
     public override string ToString()
         => Value.ToString();

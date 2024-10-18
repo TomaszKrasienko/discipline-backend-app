@@ -1,9 +1,9 @@
 namespace discipline.domain.SharedKernel.TypeIdentifiers;
 
-public sealed record EventId(Ulid Value) : ITypeId
+public sealed record EventId(Ulid Value) : ITypeId<EventId>
 {
-    public static ITypeId New()
-        => new EventId(Ulid.NewUlid());
+    public static EventId New()
+        => new (Ulid.NewUlid());
 
     public override string ToString()
         => Value.ToString();

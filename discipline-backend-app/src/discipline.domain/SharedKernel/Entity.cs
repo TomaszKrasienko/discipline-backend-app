@@ -1,7 +1,7 @@
 namespace discipline.domain.SharedKernel;
 
 public abstract class Entity<TIdentifier>(TIdentifier id) : IEntity 
-    where TIdentifier : ITypeId
+    where TIdentifier : class, ITypeId<TIdentifier>
 {
     public TIdentifier Id { get; } = id;
     

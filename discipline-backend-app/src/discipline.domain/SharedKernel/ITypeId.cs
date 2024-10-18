@@ -1,6 +1,7 @@
 namespace discipline.domain.SharedKernel;
 
-public interface ITypeId
+//Marker
+public interface ITypeId<TType> where TType : class
 {
-    static abstract ITypeId New();
+    static abstract TType New();
 }
