@@ -1,5 +1,6 @@
 using Bogus;
 using discipline.domain.DailyProductivities.Entities;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 
 namespace discipline.tests.shared.Entities;
 
@@ -21,6 +22,6 @@ internal static class ActivityFactory
     private static Faker<Activity> GetFaker()
         => new Faker<Activity>()
             .CustomInstantiator(x => Activity.Create(
-                Guid.NewGuid(),
+                ActivityId.New(),
                 x.Random.String(10, minChar: 'A', maxChar: 'z')));
 }

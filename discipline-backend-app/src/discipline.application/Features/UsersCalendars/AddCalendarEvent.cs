@@ -35,7 +35,7 @@ internal static class AddCalendarEvent
             Description = "Adds calendar event to existing user calendar for day or creates user calendar for day"
         })
         .RequireAuthorization()
-        .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+        .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
         return app;
     }
 }

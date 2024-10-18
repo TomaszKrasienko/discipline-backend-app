@@ -1,6 +1,7 @@
 using Bogus;
 using discipline.domain.ActivityRules.Entities;
 using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 
 namespace discipline.tests.shared.Entities;
 
@@ -15,8 +16,8 @@ internal static class ActivityRuleFactory
     private static Faker<ActivityRule> GetFaker(List<int> selectedDays)
         => new Faker<ActivityRule>()
             .CustomInstantiator(arg => ActivityRule.Create(
-                Guid.NewGuid(),
-                Guid.NewGuid(),
+                ActivityRuleId.New(), 
+                UserId.New(), 
                 arg.Random.String2(length: 10),
                 selectedDays is null ? arg.PickRandom<string>(Mode.AvailableModes.Keys.Where(x => x != Mode.CustomMode()).ToList()) : Mode.CustomMode(),
                 selectedDays));

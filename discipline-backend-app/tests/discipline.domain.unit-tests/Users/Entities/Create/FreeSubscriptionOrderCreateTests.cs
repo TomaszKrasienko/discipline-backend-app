@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Exceptions;
 using Shouldly;
@@ -11,7 +12,7 @@ public sealed class FreeSubscriptionOrderCreateTests
     public void Create_GivenAllValidArguments_ShouldReturnFreeSubscriptionWithNullActiveTillField()
     {
         //arrange
-        var subscription = Subscription.Create(Guid.NewGuid(), "test_title_subscription",
+        var subscription = Subscription.Create(SubscriptionId.New(), "test_title_subscription",
             0, 0, ["test"]);
         var id = Guid.NewGuid();
         var now = DateTime.Now;

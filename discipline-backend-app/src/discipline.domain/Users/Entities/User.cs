@@ -1,11 +1,12 @@
 using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.Exceptions;
 using discipline.domain.Users.ValueObjects;
 
 namespace discipline.domain.Users.Entities;
 
-public sealed class User : AggregateRoot<Guid>
+public sealed class User : AggregateRoot<UserId>
 {
     public Email Email { get; private set; }
     public Password Password { get; private set; }
@@ -13,13 +14,13 @@ public sealed class User : AggregateRoot<Guid>
     public Status Status { get; private set; }
     public SubscriptionOrder SubscriptionOrder { get; private set; }
 
-    private User(EntityId id) : base(id)
+    private User(UserId id) : base(id)
     {
         
     }
 
     //For mongo
-    public User(EntityId id, Email email, Password password, FullName fullName,
+    public User(UserId id, Email email, Password password, FullName fullName,
         Status status, SubscriptionOrder subscriptionOrder) : this(id)
     {
         Email = email;
@@ -29,7 +30,7 @@ public sealed class User : AggregateRoot<Guid>
         SubscriptionOrder = subscriptionOrder;
     }
 
-    public static User Create(Guid id, string email, string password, string firstName, string lastName)
+    public static User Create(UserId id, string email, string password, string firstName, string lastName)
     {
         var user = new User(id);
         user.ChangeEmail(email);
@@ -48,7 +49,7 @@ public sealed class User : AggregateRoot<Guid>
     private void ChangeFullName(string firstName, string lastName)
         => FullName = new FullName(firstName, lastName);
 
-    internal void CreatePaidSubscriptionOrder(Guid id, Subscription subscription,
+    internal void CreatePaidSubscriptionOrder(SubscriptionOrderId id, Subscription subscription,
         SubscriptionOrderFrequency subscriptionOrderFrequency, DateTime now,
         string cardNumber, string cardCvvNumber)
     {
@@ -61,7 +62,7 @@ public sealed class User : AggregateRoot<Guid>
         Status = Status.PaidSubscriptionPicked();
     }
 
-    internal void CreateFreeSubscriptionOrder(Guid id, Subscription subscription,
+    internal void CreateFreeSubscriptionOrder(SubscriptionOrderId id, Subscription subscription,
         DateTime now)
     {        
         if (SubscriptionOrder is FreeSubscriptionOrder)

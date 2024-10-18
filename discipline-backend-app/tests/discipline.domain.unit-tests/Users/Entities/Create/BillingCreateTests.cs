@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Exceptions;
 using Shouldly;
@@ -11,7 +12,7 @@ public sealed class BillingCreateTests
     public void Create_GivenValidArguments_ShouldReturnBillingWithFilledFields()
     {
         //arrange
-        var id = Guid.NewGuid();
+        var id = BillingId.New();
         var createdAt = DateTime.Now;
         var isRealized = true;
         var cost = 12m;
@@ -22,7 +23,7 @@ public sealed class BillingCreateTests
         var result = Billing.Create(id, createdAt, isRealized, cost, title, cardNumber);
         
         //assert
-        result.Id.Value.ShouldBe(id);
+        result.Id.ShouldBe(id);
         result.CreatedAt.Value.ShouldBe(createdAt);
         result.IsRealized.Value.ShouldBe(isRealized);
         result.Cost.Value.ShouldBe(cost);
@@ -34,7 +35,7 @@ public sealed class BillingCreateTests
     public void Create_GivenDefaultCreatedAtDateTime_ShouldThrowDefaultCreatedAtException()
     {
         //act
-        var exception = Record.Exception(() => Billing.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Billing.Create(BillingId.New(), 
             default, true, 12m, "test_title", new string('1',13)));
         
         //assert
@@ -45,7 +46,7 @@ public sealed class BillingCreateTests
     public void Create_GivenValueLessThanZero_ShouldThrowBillingValueLessThanZeroException()
     {
         //act
-        var exception = Record.Exception(() => Billing.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Billing.Create(BillingId.New(),
             DateTime.Now, true, -12m, "test_title", new string('1',13)));
         
         //assert
@@ -56,7 +57,7 @@ public sealed class BillingCreateTests
     public void Create_GivenEmptyTransferDetailsTitle_ShouldThrowEmptyBillingTitleException()
     {
         //act
-        var exception = Record.Exception(() => Billing.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Billing.Create(BillingId.New(), 
             DateTime.Now, true, 12m, string.Empty, new string('1', 13)));
         
         //assert
@@ -69,7 +70,7 @@ public sealed class BillingCreateTests
     public void Create_GivenInvalidTransferDetailsCardNumberLength_ShouldThrowInvalidCardLengthException(int multiplier)
     {
         //act
-        var exception = Record.Exception(() => Billing.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Billing.Create(BillingId.New(),
             DateTime.Now, true, 12m, "test_billing_title", new string('1', multiplier)));
         
         //assert
