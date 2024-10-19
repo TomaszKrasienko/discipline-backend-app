@@ -17,12 +17,6 @@ public sealed class Day : ValueObject
     public static implicit operator Day(DateOnly dateTime)
         => new Day(dateTime);
 
-    public static bool operator ==(Day day, DateOnly value)
-        => day?.Value == value;
-
-    public static bool operator !=(Day day, DateOnly value) 
-        => !(day == value);
-
     protected override IEnumerable<object> GetAtomicValues()
     {
         yield return Value;
