@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Exceptions;
 using Shouldly;
@@ -11,7 +12,7 @@ public sealed class UserCreateTests
     public void Create_GivenAllValidArguments_ShouldReturnUserWithAllFillFields()
     {
         //arrange
-        var id = Guid.NewGuid();
+        var id = UserId.New();
         var email = "test@test.pl";
         var password = "test_password";
         var firstName = "test_first_name";
@@ -33,7 +34,7 @@ public sealed class UserCreateTests
     public void Create_GivenEmptyEmail_ShouldThrowEmptyUserEmailException()
     {
         //act
-        var exception = Record.Exception(() => User.Create(Guid.NewGuid(), string.Empty,
+        var exception = Record.Exception(() => User.Create(UserId.New(), string.Empty,
             "test_password", "test_first_name", "test_last_name"));
         
         //assert
@@ -44,7 +45,7 @@ public sealed class UserCreateTests
     public void Create_GivenInvalidEmail_ShouldThrowInvalidUserEmailException()
     {
         //act
-        var exception = Record.Exception(() => User.Create(Guid.NewGuid(), "test_email",
+        var exception = Record.Exception(() => User.Create(UserId.New(), "test_email",
             "test_password", "test_first_name", "test_last_name"));
         
         //assert
@@ -55,7 +56,7 @@ public sealed class UserCreateTests
     public void Create_GivenEmptyUserFirstName_ShouldThrowEmptyUserFirstNameException()
     {
         //act
-        var exception = Record.Exception(() => User.Create(Guid.NewGuid(), "test@test.pl",
+        var exception = Record.Exception(() => User.Create(UserId.New(), "test@test.pl",
             "test_password", string.Empty, "test_last_name"));
         
         //assert
@@ -71,7 +72,7 @@ public sealed class UserCreateTests
         var firstName = new string(character, multiplier);
         
         //act
-        var exception = Record.Exception(() => User.Create(Guid.NewGuid(), "test@test.pl",
+        var exception = Record.Exception(() => User.Create(UserId.New(), "test@test.pl",
             "test_password", firstName, "test_last_name"));
         
         //assert
@@ -82,7 +83,7 @@ public sealed class UserCreateTests
     public void Create_GivenEmptyLastFirstName_ShouldThrowEmptyUserLastNameException()
     {
         //act
-        var exception = Record.Exception(() => User.Create(Guid.NewGuid(), "test@test.pl",
+        var exception = Record.Exception(() => User.Create(UserId.New(), "test@test.pl",
             "test_password", "test_first_name",string.Empty));
         
         //assert
@@ -98,7 +99,7 @@ public sealed class UserCreateTests
         var lastName = new string(character, multiplier);
         
         //act
-        var exception = Record.Exception(() => User.Create(Guid.NewGuid(), "test@test.pl",
+        var exception = Record.Exception(() => User.Create(UserId.New(), "test@test.pl",
             "test_password", "test_first_name", lastName));
         
         //assert

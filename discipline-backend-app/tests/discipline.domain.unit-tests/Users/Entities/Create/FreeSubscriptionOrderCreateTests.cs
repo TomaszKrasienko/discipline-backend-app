@@ -14,14 +14,14 @@ public sealed class FreeSubscriptionOrderCreateTests
         //arrange
         var subscription = Subscription.Create(SubscriptionId.New(), "test_title_subscription",
             0, 0, ["test"]);
-        var id = Guid.NewGuid();
+        var id = SubscriptionOrderId.New();
         var now = DateTime.Now;
         
         //act
         var result = FreeSubscriptionOrder.Create(id, subscription, now);
         
         //assert
-        result.Id.Value.ShouldBe(id);
+        result.Id.ShouldBe(id);
         result.CreatedAt.Value.ShouldBe(now);
         result.SubscriptionId.Value.ShouldBe(subscription.Id.Value);
         result.State.IsCancelled.ShouldBeFalse();
@@ -32,7 +32,7 @@ public sealed class FreeSubscriptionOrderCreateTests
     public void Create_GivenNullSubscription_ShouldThrowNullSubscriptionException()
     {
         //act
-        var exception = Record.Exception(() => FreeSubscriptionOrder.Create(Guid.NewGuid(), null,
+        var exception = Record.Exception(() => FreeSubscriptionOrder.Create(SubscriptionOrderId.New(), null,
             DateTime.Now));
            
         //arrange
@@ -43,11 +43,11 @@ public sealed class FreeSubscriptionOrderCreateTests
     public void Create_GivenNotFreeSubscription_ShouldThrowInvalidSubscriptionTypeException()
     {
         //arrange
-        var subscription = Subscription.Create(Guid.NewGuid(), "test_title_subscription",
+        var subscription = Subscription.Create(SubscriptionId.New(), "test_title_subscription",
             10, 100, ["test"]);
         
         //act
-        var exception = Record.Exception(() => FreeSubscriptionOrder.Create(Guid.NewGuid(), subscription,
+        var exception = Record.Exception(() => FreeSubscriptionOrder.Create(SubscriptionOrderId.New(), subscription,
             DateTime.Now));
         
         //assert

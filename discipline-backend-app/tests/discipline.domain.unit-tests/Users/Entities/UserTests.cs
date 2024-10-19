@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.Exceptions;
@@ -15,7 +16,7 @@ public sealed class UserTests
         //arrange
         var user = UserFactory.Get();
         var subscription = SubscriptionFactory.Get(10, 100);
-        var subscriptionOrderId = Guid.NewGuid();
+        var subscriptionOrderId = SubscriptionOrderId.New();
         
         //act
         user.CreatePaidSubscriptionOrder(subscriptionOrderId, subscription,
@@ -23,7 +24,7 @@ public sealed class UserTests
         
         //assert
         user.SubscriptionOrder.ShouldNotBeNull();
-        user.SubscriptionOrder.Id.Value.ShouldBe(subscriptionOrderId);
+        user.SubscriptionOrder.Id.ShouldBe(subscriptionOrderId);
         user.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrder>();
         user.Status.Value.ShouldBe("PaidSubscriptionPicked");
     }
@@ -34,11 +35,11 @@ public sealed class UserTests
         //arrange
         var user = UserFactory.Get();
         var subscription = SubscriptionFactory.Get(10, 100);
-        user.CreatePaidSubscriptionOrder(Guid.NewGuid(), subscription,
+        user.CreatePaidSubscriptionOrder(SubscriptionOrderId.New(), subscription,
             SubscriptionOrderFrequency.Monthly, DateTime.Now, new string('1', 15), "123");
         
         //act
-        var exception = Record.Exception(() => user.CreatePaidSubscriptionOrder(Guid.NewGuid(), subscription,
+        var exception = Record.Exception(() => user.CreatePaidSubscriptionOrder(SubscriptionOrderId.New(), subscription,
             SubscriptionOrderFrequency.Monthly, DateTime.Now, new string('1', 15), "123"));
         
         //assert
@@ -51,14 +52,14 @@ public sealed class UserTests
         //arrange
         var user = UserFactory.Get();
         var subscription = SubscriptionFactory.Get();
-        var subscriptionOrderId = Guid.NewGuid();
+        var subscriptionOrderId = SubscriptionOrderId.New();
         
         //act
         user.CreateFreeSubscriptionOrder(subscriptionOrderId, subscription, DateTime.Now);
         
         //assert
         user.SubscriptionOrder.ShouldNotBeNull();
-        user.SubscriptionOrder.Id.Value.ShouldBe(subscriptionOrderId);
+        user.SubscriptionOrder.Id.ShouldBe(subscriptionOrderId);
         user.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrder>();
         user.Status.Value.ShouldBe("FreeSubscriptionPicked");
     }
@@ -69,10 +70,10 @@ public sealed class UserTests
         //arrange
         var user = UserFactory.Get();
         var subscription = SubscriptionFactory.Get();
-        user.CreateFreeSubscriptionOrder(Guid.NewGuid(), subscription, DateTime.Now);
+        user.CreateFreeSubscriptionOrder(SubscriptionOrderId.New(), subscription, DateTime.Now);
         
         //act
-        var exception = Record.Exception(() => user.CreateFreeSubscriptionOrder(Guid.NewGuid(),
+        var exception = Record.Exception(() => user.CreateFreeSubscriptionOrder(SubscriptionOrderId.New(), 
             subscription, DateTime.Now));
         
         //assert

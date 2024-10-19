@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Exceptions;
 using discipline.domain.UsersCalendars.Repositories;
@@ -12,7 +13,7 @@ namespace discipline.domain.unit_tests.UsersCalendars.Services;
 
 public sealed class ChangeEventUserCalendarServiceTests
 {
-    private Task Act(Guid userId, Guid eventId, DateOnly newDate) => _changeEventUserCalendarService
+    private Task Act(UserId userId, EventId eventId, DateOnly newDate) => _changeEventUserCalendarService
         .Invoke(userId, eventId, newDate, default);
 
     [Fact]
@@ -20,7 +21,7 @@ public sealed class ChangeEventUserCalendarServiceTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var eventId = Guid.NewGuid();
+        var eventId = EventId.New();
         userCalendar.AddEvent(eventId, "test_event_title");
         _userCalendarRepository
             .GetByEventIdAsync(userCalendar.UserId, eventId, default)
@@ -32,12 +33,12 @@ public sealed class ChangeEventUserCalendarServiceTests
         await Act(userCalendar.UserId, eventId, newDate);
         
         //assert
-        userCalendar.Events.Any(x => x.Id.Value == eventId).ShouldBeFalse();
+        userCalendar.Events.Any(x => x.Id == eventId).ShouldBeFalse();
         await _userCalendarRepository
             .Received(1)
             .AddAsync(Arg.Is<UserCalendar>(arg
                 => arg.Day.Value == newDate 
-                && arg.Events.Any(x => x.Id.Value == eventId)));
+                && arg.Events.Any(x => x.Id == eventId)));
         await _userCalendarRepository
             .Received(1)
             .UpdateAsync(userCalendar);
@@ -48,12 +49,12 @@ public sealed class ChangeEventUserCalendarServiceTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var eventId = Guid.NewGuid();
+        var eventId = EventId.New();
         userCalendar.AddEvent(eventId, "test_event_title");
         _userCalendarRepository
             .GetByEventIdAsync(userCalendar.UserId, eventId, default)
             .Returns(userCalendar);
-        var newUserCalendar = UserCalendar.Create(userCalendar.Day.Value.AddDays(2), userCalendar.UserId);
+        var newUserCalendar = UserCalendar.Create(UserCalendarId.New(), userCalendar.Day.Value.AddDays(2), userCalendar.UserId);
         _userCalendarRepository
             .GetForUserByDateAsync(userCalendar.UserId, userCalendar.Day)
             .Returns(newUserCalendar);
@@ -62,8 +63,8 @@ public sealed class ChangeEventUserCalendarServiceTests
         await Act(userCalendar.UserId, eventId, userCalendar.Day);
         
         //assert
-        userCalendar.Events.Any(x => x.Id.Value == eventId).ShouldBeFalse();
-        newUserCalendar.Events.Any(x => x.Id.Value == eventId).ShouldBeTrue();
+        userCalendar.Events.Any(x => x.Id == eventId).ShouldBeFalse();
+        newUserCalendar.Events.Any(x => x.Id == eventId).ShouldBeTrue();
         await _userCalendarRepository
             .Received(1)
             .UpdateAsync(newUserCalendar);
@@ -73,7 +74,7 @@ public sealed class ChangeEventUserCalendarServiceTests
     public async Task Invoke_GivenEventIdForNotExistingUserCalendar_ShouldThrowUserCalendarForEventNotFoundException()
     {
         //act
-        var exception = await Record.ExceptionAsync(async () => await Act(Guid.NewGuid(), Guid.NewGuid(), new DateOnly(2024, 1, 1)));
+        var exception = await Record.ExceptionAsync(async () => await Act(UserId.New(), EventId.New(), new DateOnly(2024, 1, 1)));
         
         //assert
         exception.ShouldBeOfType<UserCalendarForEventNotFoundException>();

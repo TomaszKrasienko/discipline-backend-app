@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Exceptions;
 using Shouldly;
@@ -11,7 +12,7 @@ public sealed class SubscriptionTests
     public void IsFreeSubscription_GivenSubscriptionWithZeroPrice_ShouldBeTrue()
     {
         //arrange
-        var subscription = Subscription.Create(Guid.NewGuid(), "test_subscription_title", 0, 0,
+        var subscription = Subscription.Create(SubscriptionId.New(), "test_subscription_title", 0, 0,
             ["test"]);
         
         //act
@@ -28,7 +29,7 @@ public sealed class SubscriptionTests
     public void IsFreeSubscription_GivenSubscriptionNotWithZeroPrice_ShouldBeFalse(decimal perMonth, decimal perYear)
     {
         //arrange
-        var subscription = Subscription.Create(Guid.NewGuid(), "test_subscription_title", perMonth, perYear,
+        var subscription = Subscription.Create(SubscriptionId.New(), "test_subscription_title", perMonth, perYear,
             ["test"]);
         
         //act
@@ -43,7 +44,7 @@ public sealed class SubscriptionTests
     {
         //arrange
         var feature = "test_added_feature";
-        var subscription = Subscription.Create(Guid.NewGuid(), "test_subscription_title", 1, 1,
+        var subscription = Subscription.Create(SubscriptionId.New(), "test_subscription_title", 1, 1,
             ["test_feature"]);
         
         //act
@@ -58,7 +59,7 @@ public sealed class SubscriptionTests
     {
         //arrange
         var feature = string.Empty;
-        var subscription = Subscription.Create(Guid.NewGuid(), "test_subscription_title", 1, 1,
+        var subscription = Subscription.Create(SubscriptionId.New(), "test_subscription_title", 1, 1,
             ["test_feature"]);
         
         //act

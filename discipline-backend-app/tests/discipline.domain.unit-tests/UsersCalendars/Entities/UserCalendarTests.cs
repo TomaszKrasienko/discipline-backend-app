@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Exceptions;
 using discipline.tests.shared.Entities;
@@ -13,7 +14,7 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         var title = "test_title";
         
         //act
@@ -31,7 +32,7 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         var title = "test_title";
         var timeFrom = new TimeOnly(15, 0, 0);
         var timeTo = new TimeOnly(17, 0, 0);
@@ -55,7 +56,7 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         var title = "test_title";
         var timeFrom = new TimeOnly(15, 0, 0);
         var timeTo = new TimeOnly(17, 0, 0);
@@ -82,7 +83,7 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         var title = "test_title";
         var timeFrom = new TimeOnly(15, 0, 0);
         var timeTo = new TimeOnly(17, 0, 0);
@@ -108,7 +109,7 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var @event = ImportantDate.Create(Guid.NewGuid(), "test_title");
+        var @event = ImportantDate.Create(EventId.New(), "test_title");
         
         //act
         userCalendar.AddEvent(@event);
@@ -123,7 +124,7 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         userCalendar.AddEvent(id, "test_important_date");
         var newImportantDateTitle = "new_test_important_date";
         
@@ -133,7 +134,7 @@ public sealed class UserCalendarTests
         //assert
         var importantDate = userCalendar
             .Events
-            .First(x => x.Id.Value == id);
+            .First(x => x.Id == id);
         importantDate.Title.Value.ShouldBe(newImportantDateTitle);
     }
 
@@ -144,7 +145,7 @@ public sealed class UserCalendarTests
         var userCalendar = UserCalendarFactory.Get();
         
         //act
-        var exception = Record.Exception(() => userCalendar.EditEvent(Guid.NewGuid(), "test_title"));
+        var exception = Record.Exception(() => userCalendar.EditEvent(EventId.New(), "test_title"));
         
         //assert
         exception.ShouldBeOfType<EventNotFoundException>();
@@ -155,7 +156,7 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         userCalendar.AddEvent(id, "test_calendar_event", new TimeOnly(12,00,00),
             null, "test_action");
         
@@ -171,7 +172,7 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         userCalendar.AddEvent(id, "test_calendar_event_title", new TimeOnly(12,00),
             null, "test_calendar_event_action");
         var newCalendarEventTitle = "new_calendar_event_title";
@@ -186,7 +187,7 @@ public sealed class UserCalendarTests
         //assert
         var calendarEvent = userCalendar
             .Events
-            .First(x => x.Id.Value == id);
+            .First(x => x.Id == id);
         ((CalendarEvent)calendarEvent).Title.Value.ShouldBe(newCalendarEventTitle);
         ((CalendarEvent)calendarEvent).MeetingTimeSpan.From.ShouldBe(newCalendarEventTimeFrom);
         ((CalendarEvent)calendarEvent).MeetingTimeSpan.To.ShouldBe(newCalendarEventTimeTo);
@@ -200,7 +201,7 @@ public sealed class UserCalendarTests
         var userCalendar = UserCalendarFactory.Get();
         
         //act
-        var exception = Record.Exception(() => userCalendar.EditEvent(Guid.NewGuid(), "test_title",
+        var exception = Record.Exception(() => userCalendar.EditEvent(EventId.New(), "test_title",
             new TimeOnly(12,00), null, "test_action"));
         
         //assert
@@ -212,7 +213,7 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         userCalendar.AddEvent(id, "test_important_date");
         
         //act
@@ -228,7 +229,7 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         userCalendar.AddEvent(id, "test_meeting_title", new TimeOnly(12, 00),
             null, null, null, "test_meeting_place");
         var newMeetingTitle = "new_meeting_title";
@@ -244,7 +245,7 @@ public sealed class UserCalendarTests
         //assert
         var meeting = userCalendar
             .Events
-            .First(x => x.Id.Value == id);
+            .First(x => x.Id == id);
         ((Meeting)meeting).Title.Value.ShouldBe(newMeetingTitle);
         ((Meeting)meeting).MeetingTimeSpan.From.ShouldBe(newMeetingTimeFrom);
         ((Meeting)meeting).MeetingTimeSpan.To.ShouldBe(newMeetingTimeTo);
@@ -260,7 +261,7 @@ public sealed class UserCalendarTests
         var userCalendar = UserCalendarFactory.Get();
         
         //act
-        var exception = Record.Exception(() => userCalendar.EditEvent(Guid.NewGuid(), "test_title", new TimeOnly(12,00),
+        var exception = Record.Exception(() => userCalendar.EditEvent(EventId.New(), "test_title", new TimeOnly(12,00),
             null, "test_platform", "test_uri", null));
         
         //assert
@@ -272,7 +273,7 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         userCalendar.AddEvent(id, "test_important_date");
         
         //act
@@ -290,7 +291,7 @@ public sealed class UserCalendarTests
         var userCalendar = UserCalendarFactory.Get();
         
         //act
-        var exception = Record.Exception(() => userCalendar.RemoveEvent(Guid.NewGuid()));
+        var exception = Record.Exception(() => userCalendar.RemoveEvent(EventId.New()));
         
         //assert
         exception.ShouldBeOfType<EventNotFoundException>();
@@ -301,13 +302,13 @@ public sealed class UserCalendarTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         userCalendar.AddEvent(id, "test_important_date");
         
         //act
         userCalendar.RemoveEvent(id);
         
         //assert
-        userCalendar.Events.Any(x => x.Id.Value == id).ShouldBeFalse();
+        userCalendar.Events.Any(x => x.Id == id).ShouldBeFalse();
     }
 }
