@@ -4,6 +4,7 @@ using discipline.application.Features.ActivityRules.Configuration;
 using discipline.domain.ActivityRules.Entities;
 using discipline.domain.ActivityRules.Repositories;
 using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -49,10 +50,10 @@ public sealed class CreateActivityRuleCommandValidator : AbstractValidator<Creat
     public CreateActivityRuleCommandValidator()
     {
         RuleFor(x => x.UserId)
-            .NotEmpty()
+            .Must(id => id != new UserId(Ulid.Empty))
             .WithMessage("Activity rule \"UserId\" can not be empty");
         RuleFor(x => x.Id)
-            .NotEmpty()
+            .Must(id => id != new ActivityRuleId(Ulid.Empty))
             .WithMessage("Activity rule \"ID\" can not be empty");
         RuleFor(x => x.Title)
             .NotNull()

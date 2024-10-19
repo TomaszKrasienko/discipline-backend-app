@@ -28,7 +28,7 @@ public sealed class CreateActivityRuleCommandValidatorTests
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
+        var command = new CreateActivityRuleCommand(new ActivityRuleId(Ulid.Empty), UserId.New(), 
             "Title", "Mode", null);
         
         //act
@@ -42,7 +42,7 @@ public sealed class CreateActivityRuleCommandValidatorTests
     public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorFor()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
+        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), new UserId(Ulid.Empty), 
             "Title", "Mode", null);
         
         //act

@@ -28,13 +28,13 @@ public sealed class ChangeEventDateCommandValidatorTests
     public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorForUserId()
     {
         //arrange
-        var command = new ChangeEventDateCommand(new UserId(Ulid.Empty),EventId.New(), new DateOnly(2024, 1, 1));
+        var command = new ChangeEventDateCommand(new UserId(Ulid.Empty), EventId.New(), new DateOnly(2024, 1, 1));
         
         //act
         var result = Act(command);
         
         //assert
-        result.ShouldHaveValidationErrorFor(x => x.EventId);
+        result.ShouldHaveValidationErrorFor(x => x.UserId);
     }
     
     [Fact]

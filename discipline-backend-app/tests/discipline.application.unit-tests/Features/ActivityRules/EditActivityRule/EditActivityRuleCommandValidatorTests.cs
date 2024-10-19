@@ -12,7 +12,7 @@ public class EditActivityRuleCommandValidatorTests
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new EditActivityRuleCommand(ActivityRuleId.New(), "Title", "Mode", null);
+        var command = new EditActivityRuleCommand(new ActivityRuleId(Ulid.Empty), "Title", "Mode", null);
         
         //act
         var result = _validator.TestValidate(command);

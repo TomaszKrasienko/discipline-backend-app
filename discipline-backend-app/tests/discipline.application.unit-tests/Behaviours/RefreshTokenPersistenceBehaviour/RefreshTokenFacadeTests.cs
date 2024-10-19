@@ -37,7 +37,7 @@ public sealed class RefreshTokenFacadeTests
     public async Task GenerateAsync_GivenEmptyUserId_ShouldThrowEmptyUserIdException()
     {
         //arrange
-        var userId = UserId.New();
+        var userId = new UserId(Ulid.Empty);
         var refreshToken = Guid.NewGuid().ToString();
         
         //act

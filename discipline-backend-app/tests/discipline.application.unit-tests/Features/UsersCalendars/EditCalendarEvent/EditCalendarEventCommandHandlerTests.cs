@@ -20,10 +20,10 @@ public sealed class EditCalendarEventCommandHandlerTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var eventId = Guid.NewGuid();
-        userCalendar.AddEvent(EventId.New(), "test_title", new TimeOnly(12, 00), null, 
+        var eventId = EventId.New();
+        userCalendar.AddEvent(eventId, "test_title", new TimeOnly(12, 00), null, 
             "test_action");
-        var command = new EditCalendarEventCommand(UserId.New(), EventId.New(), "new_test_title",
+        var command = new EditCalendarEventCommand(UserId.New(), eventId, "new_test_title",
             new TimeOnly(13, 00), null, "new_test_action");
 
         _userCalendarRepository

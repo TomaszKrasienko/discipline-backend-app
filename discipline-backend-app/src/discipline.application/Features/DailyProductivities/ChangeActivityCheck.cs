@@ -43,7 +43,7 @@ public sealed class ChangeActivityCheckCommandValidator : AbstractValidator<Chan
     public ChangeActivityCheckCommandValidator()
     {
         RuleFor(x => x.ActivityId)
-            .NotEmpty()
+            .Must(id => id != new ActivityId(Ulid.Empty))
             .WithMessage("\"ActivityID\" can not be empty");
     }
 }

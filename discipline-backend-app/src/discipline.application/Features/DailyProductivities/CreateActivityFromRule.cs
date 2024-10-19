@@ -100,10 +100,10 @@ public sealed class CreateActivityFromRuleCommandValidator : AbstractValidator<C
     public CreateActivityFromRuleCommandValidator()
     {
         RuleFor(x => x.ActivityId)
-            .NotEmpty()
+            .Must(activityId => activityId != new ActivityId(Ulid.Empty))
             .WithMessage("\"ActivityId\" can not be empty");
         RuleFor(x => x.ActivityRuleId)
-            .NotEmpty()
+            .Must(activityRuleId => activityRuleId != new ActivityRuleId(Ulid.Empty))
             .WithMessage("\"ActivityRuleId\" can not be empty");
     }
 }

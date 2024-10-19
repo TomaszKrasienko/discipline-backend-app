@@ -25,7 +25,7 @@ public sealed class SignUpCommandValidatorTests
     public void Validate_GivenEmptyGuid_ShouldHaveValidationErrorForId()
     {
         //act
-        var result = Act(new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
+        var result = Act(new SignUpCommand(new UserId(Ulid.Empty), "test@test.pl", "Test123!",
             "test_first_name", "test_last_name"));
         
         //assert

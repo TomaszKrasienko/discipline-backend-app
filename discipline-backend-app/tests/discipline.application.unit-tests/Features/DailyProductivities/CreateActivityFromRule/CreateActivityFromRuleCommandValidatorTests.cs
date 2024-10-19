@@ -38,13 +38,13 @@ public sealed class CreateActivityFromRuleCommandValidatorTests
     public void Validate_GivenEmptyActivityId_ShouldHaveValidationErrorForActivityId()
     {
         //arrange
-        var command = new CreateActivityFromRuleCommand(new ActivityId(Ulid.Empty),ActivityRuleId.New());
+        var command = new CreateActivityFromRuleCommand(new ActivityId(Ulid.Empty), ActivityRuleId.New());
         
         //act
         var result = _validator.TestValidate(command);
         
         //assert
-        result.ShouldHaveValidationErrorFor(x => x.ActivityRuleId);
+        result.ShouldHaveValidationErrorFor(x => x.ActivityId);
     }
     
     #region arrange

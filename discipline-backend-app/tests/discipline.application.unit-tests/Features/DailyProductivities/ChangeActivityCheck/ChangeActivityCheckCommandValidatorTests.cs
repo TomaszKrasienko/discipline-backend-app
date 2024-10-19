@@ -25,7 +25,7 @@ public sealed class ChangeActivityCheckCommandValidatorTests
     public void Validate_GivenEmptyActivityId_ShouldHaveValidationErrorForActivityId()
     {
         //arrange
-        var command = new ChangeActivityCheckCommand(ActivityId.New());
+        var command = new ChangeActivityCheckCommand(new ActivityId(Ulid.Empty));
     
         //act
         var result = _validator.TestValidate(command);

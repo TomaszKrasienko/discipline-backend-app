@@ -44,7 +44,7 @@ public sealed class EditActivityRuleCommandValidator : AbstractValidator<EditAct
     public EditActivityRuleCommandValidator()
     {
         RuleFor(x => x.Id)
-            .NotEmpty()
+            .Must(id => id != new ActivityRuleId(Ulid.Empty))
             .WithMessage("Activity rule \"ID\" can not be empty");
         RuleFor(x => x.Title)
             .NotNull()

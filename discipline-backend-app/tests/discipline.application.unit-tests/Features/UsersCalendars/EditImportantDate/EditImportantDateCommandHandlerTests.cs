@@ -22,8 +22,8 @@ public sealed class EditImportantDateCommandHandlerTests
         //arrange
         var userCalendar = UserCalendarFactory.Get();
         var eventId = EventId.New();
-        userCalendar.AddEvent(EventId.New(), "test_title");
-        var command = new EditImportantDateCommand(UserId.New(), eventId, "new_test_title");
+        userCalendar.AddEvent(eventId, "test_title");
+        var command = new EditImportantDateCommand(userCalendar.UserId, eventId, "new_test_title");
 
         _userCalendarRepository
             .GetByEventIdAsync(command.UserId, command.Id)

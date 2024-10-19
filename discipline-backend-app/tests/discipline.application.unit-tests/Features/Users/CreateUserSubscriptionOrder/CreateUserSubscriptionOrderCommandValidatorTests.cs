@@ -60,7 +60,7 @@ public sealed class CreateUserSubscriptionOrderCommandValidatorTests
     {
         //arrange
         var command = new CreateUserSubscriptionOrderCommand(UserId.New(), SubscriptionOrderId.New(), 
-            SubscriptionId.New(), null, new string('1', 14), "132");
+            new SubscriptionId(Ulid.Empty), null, new string('1', 14), "132");
         
         //act
         var result = _validator.TestValidate(command);

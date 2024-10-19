@@ -47,11 +47,11 @@ public sealed class ChangeEventDateCommandValidator : AbstractValidator<ChangeEv
     public ChangeEventDateCommandValidator()
     { 
         RuleFor(x => x.UserId)
-            .NotEmpty()
+            .Must(userId => userId != new UserId(Ulid.Empty))
             .WithMessage("\"UserId\" can not be empty");
         
         RuleFor(x => x.EventId)
-            .NotEmpty()
+            .Must(id => id != new EventId(Ulid.Empty))
             .WithMessage("\"EventId\" can not be empty");
 
         RuleFor(x => x.NewDate)

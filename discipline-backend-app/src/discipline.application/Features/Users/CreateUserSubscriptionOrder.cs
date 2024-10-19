@@ -47,15 +47,15 @@ public sealed class CreateUserSubscriptionOrderCommandValidator : AbstractValida
     public CreateUserSubscriptionOrderCommandValidator()
     {
         RuleFor(x => x.UserId)
-            .NotEmpty()
+            .Must(userId => userId != new UserId(Ulid.Empty))
             .WithMessage("\"User Id\" can not be empty");
 
         RuleFor(x => x.Id)
-            .NotEmpty()
+            .Must(id => id != new SubscriptionOrderId(Ulid.Empty))
             .WithMessage("\"Id\" can not be empty");
         
         RuleFor(x => x.SubscriptionId)
-            .NotEmpty()
+            .Must(subscriptionId => subscriptionId != new SubscriptionId(Ulid.Empty))
             .WithMessage("\"SubscriptionId\" can not be empty");
     }
 }

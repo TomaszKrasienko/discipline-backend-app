@@ -49,11 +49,11 @@ public sealed class CreateActivityCommandValidator : AbstractValidator<CreateAct
     public CreateActivityCommandValidator()
     {
         RuleFor(x => x.Id)
-            .NotEmpty()
+            .Must(id => id != new ActivityId(Ulid.Empty))
             .WithMessage("Activity \"ID\" can not be empty");
 
         RuleFor(x => x.UserId)
-            .NotEmpty()
+            .Must(userId => userId != new UserId(Ulid.Empty))
             .WithMessage("Activity \"UserId\" can not be empty");
 
         RuleFor(x => x.Title)

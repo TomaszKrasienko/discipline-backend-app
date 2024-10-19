@@ -47,11 +47,11 @@ public sealed class EditCalendarEventCommandValidator : AbstractValidator<EditCa
     public EditCalendarEventCommandValidator()
     {
         RuleFor(x => x.Id)
-            .NotEmpty()
+            .Must(id => id != new EventId(Ulid.Empty))
             .WithMessage("Important date \"ID\" can not be empty");
 
         RuleFor(x => x.UserId)
-            .NotEmpty()
+            .Must(userId => userId != new UserId(Ulid.Empty))
             .WithMessage("Important date \"UserId\" can not be empty");
         
         RuleFor(x => x.Title)

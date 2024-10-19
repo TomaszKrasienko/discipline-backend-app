@@ -41,7 +41,7 @@ public sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
     public SignUpCommandValidator()
     {
         RuleFor(x => x.Id)
-            .NotEmpty()
+            .Must(id => id != new UserId(Ulid.Empty))
             .WithMessage("User \"ID\" can not be empty");
 
         RuleFor(x => x.Email)

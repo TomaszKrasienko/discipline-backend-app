@@ -77,7 +77,7 @@ internal sealed class RefreshTokenFacade : IRefreshTokenFacade
 internal interface IRefreshTokenService
 {
     Task SaveOrReplaceAsync(string refreshToken, UserId userId, CancellationToken cancellationToken = default);
-    Task<UserId?> GetAsync(string refreshToken, CancellationToken cancellationToken = default);
+    Task<UserId> GetAsync(string refreshToken, CancellationToken cancellationToken = default);
 }
 
 internal sealed class RefreshTokenService : IRefreshTokenService
@@ -94,13 +94,19 @@ internal sealed class RefreshTokenService : IRefreshTokenService
         return Task.CompletedTask;
     }
 
-    public Task<UserId?> GetAsync(string refreshToken, CancellationToken cancellationToken = default)
+    public Task<UserId> GetAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
         if (_dictionary.All(x => x.Value != refreshToken))
         {
             return null;
         }
 
-        return Task.FromResult(_dictionary.First(x => x.Value == refreshToken).Key);
+        var userId = _dictionary.First(x => x.Value == refreshToken).Key;
+        if (userId.IsEmpty())
+        {
+            throw new EmptyUserIdException();
+        }
+        
+        return Task.FromResult(userId);
     }
 }
