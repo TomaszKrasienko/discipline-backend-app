@@ -14,7 +14,7 @@ internal static class GetActivityRuleById
 {
     internal static WebApplication MapGetActivityRuleById(this WebApplication app)
     {
-        app.MapGet($"/{Extensions.ActivityRulesTag}/{{activityRuleId:guid}}", async (Guid activityRuleId, 
+        app.MapGet($"/{Extensions.ActivityRulesTag}/{{activityRuleId}}", async (Ulid activityRuleId, 
                 IDisciplineMongoCollection disciplineMongoCollection, CancellationToken cancellationToken) =>
             {
                 var result = await disciplineMongoCollection

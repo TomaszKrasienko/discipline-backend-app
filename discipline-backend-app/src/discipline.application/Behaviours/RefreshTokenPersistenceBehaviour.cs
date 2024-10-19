@@ -1,5 +1,6 @@
 using System.Text;
 using discipline.application.Exceptions;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using Microsoft.AspNetCore.Routing.Matching;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,8 +16,8 @@ internal static class RefreshTokenBehaviour
 
 internal interface IRefreshTokenFacade
 {
-    Task<string> GenerateAsync(Guid userId, CancellationToken cancellationToken = default);
-    Task<Guid> GetUserIdAsync(string refreshToken, CancellationToken cancellationToken = default);
+    Task<string> GenerateAsync(UserId userId, CancellationToken cancellationToken = default);
+    Task<UserId> GetUserIdAsync(string refreshToken, CancellationToken cancellationToken = default);
 }
 
 internal sealed class RefreshTokenFacade : IRefreshTokenFacade
@@ -32,9 +33,9 @@ internal sealed class RefreshTokenFacade : IRefreshTokenFacade
         _refreshTokenService = refreshTokenService;
     }   
     
-    public async Task<string> GenerateAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<string> GenerateAsync(UserId userId, CancellationToken cancellationToken)
     {
-        if (userId == Guid.Empty)
+        if (userId.IsEmpty())
         {
             throw new EmptyUserIdException();
         }
@@ -56,7 +57,7 @@ internal sealed class RefreshTokenFacade : IRefreshTokenFacade
         return refreshTokenSb.ToString();
     }
 
-    public async Task<Guid> GetUserIdAsync(string refreshToken, CancellationToken cancellationToken = default)
+    public async Task<UserId> GetUserIdAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
         var decryptedRefreshToken = await _cryptographer.DecryptAsync(refreshToken, cancellationToken);
         if (decryptedRefreshToken is null)
@@ -69,21 +70,21 @@ internal sealed class RefreshTokenFacade : IRefreshTokenFacade
             throw new RefreshTokenForUserNotFoundException();
         }
 
-        return userId.Value;
+        return userId;
     }
 }
 
 internal interface IRefreshTokenService
 {
-    Task SaveOrReplaceAsync(string refreshToken, Guid userId, CancellationToken cancellationToken = default);
-    Task<Guid?> GetAsync(string refreshToken, CancellationToken cancellationToken = default);
+    Task SaveOrReplaceAsync(string refreshToken, UserId userId, CancellationToken cancellationToken = default);
+    Task<UserId?> GetAsync(string refreshToken, CancellationToken cancellationToken = default);
 }
 
 internal sealed class RefreshTokenService : IRefreshTokenService
 {
-    private readonly Dictionary<Guid, string> _dictionary = new Dictionary<Guid, string>();
+    private readonly Dictionary<UserId, string> _dictionary = new Dictionary<UserId, string>();
     
-    public Task SaveOrReplaceAsync(string refreshToken, Guid userId, CancellationToken cancellationToken = default)
+    public Task SaveOrReplaceAsync(string refreshToken, UserId userId, CancellationToken cancellationToken = default)
     {
         if (_dictionary.Any(x => x.Key == userId))
         {
@@ -93,13 +94,13 @@ internal sealed class RefreshTokenService : IRefreshTokenService
         return Task.CompletedTask;
     }
 
-    public Task<Guid?> GetAsync(string refreshToken, CancellationToken cancellationToken = default)
+    public Task<UserId?> GetAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
         if (_dictionary.All(x => x.Value != refreshToken))
         {
             return null;
         }
 
-        return Task.FromResult((Guid?)_dictionary.First(x => x.Value == refreshToken).Key);
+        return Task.FromResult(_dictionary.First(x => x.Value == refreshToken).Key);
     }
 }

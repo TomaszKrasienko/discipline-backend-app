@@ -2,6 +2,7 @@ using discipline.application.Behaviours;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -12,10 +13,10 @@ public static class EditActivityRule
 {
     public static WebApplication MapEditActivityRule(this WebApplication app)
     {
-        app.MapPut($"/{Extensions.ActivityRulesTag}/{{activityRuleId:guid}}/edit", async (Guid activityRuleId, EditActivityRuleCommand command, HttpContext httpContext, 
+        app.MapPut($"/{Extensions.ActivityRulesTag}/{{activityRuleId}}/edit", async (Ulid activityRuleId, EditActivityRuleCommand command, HttpContext httpContext, 
                     ICommandDispatcher dispatcher, CancellationToken cancellationToken) 
                 => {
-                        await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
+                        await dispatcher.HandleAsync(command with { Id = new ActivityRuleId(activityRuleId) }, cancellationToken);
                         return Results.Ok();
                 })
             .Produces(StatusCodes.Status200OK, typeof(void))
@@ -35,7 +36,7 @@ public static class EditActivityRule
     }
 }
 
-public sealed record EditActivityRuleCommand(Guid Id, string Title, string Mode, 
+public sealed record EditActivityRuleCommand(ActivityRuleId Id, string Title, string Mode, 
     List<int> SelectedDays) : ICommand;
 
 public sealed class EditActivityRuleCommandValidator : AbstractValidator<EditActivityRuleCommand>

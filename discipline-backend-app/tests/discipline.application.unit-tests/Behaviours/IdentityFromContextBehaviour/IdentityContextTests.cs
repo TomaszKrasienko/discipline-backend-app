@@ -12,7 +12,7 @@ public class IdentityContextTests
     public void New_GivenAuthenticatedContextWithNameAsGuidAndStatus_ShouldReturnIdentityContext()
     {
         //arrange
-        var name = Guid.NewGuid();
+        var name = Ulid.NewUlid();
         var status = "test_status";
         
         var claims = new List<Claim>() 
@@ -32,7 +32,7 @@ public class IdentityContextTests
         
         //assert
         result.IsAuthenticated.ShouldBeTrue();
-        result.UserId.ShouldBe(name);
+        result.UserId.Value.ShouldBe(name);
         result.Status.ShouldBe(status);
     }
     

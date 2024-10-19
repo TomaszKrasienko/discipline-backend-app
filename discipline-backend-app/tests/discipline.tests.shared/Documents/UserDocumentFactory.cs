@@ -13,7 +13,7 @@ internal static class UserDocumentFactory
 
     private static Faker<UserDocument> GetFaker()
         => new Faker<UserDocument>()
-            .RuleFor(f => f.Id, Guid.NewGuid())
+            .RuleFor(f => f.Id, Ulid.NewUlid())
             .RuleFor(f => f.Email, v => v.Internet.Email())
             .RuleFor(f => f.Password, v => "Test123!")
             .RuleFor(f => f.FirstName, v => v.Name.FirstName())

@@ -6,7 +6,7 @@ public class ActivityDocument : IDocument
 {
     [BsonId] 
     [BsonElement("id")]
-    public Guid Id { get; set; }
+    public Ulid Id { get; set; }
     
     [BsonElement("title")] 
     public string Title { get; set; }
@@ -15,5 +15,5 @@ public class ActivityDocument : IDocument
     public bool IsChecked { get; set; }
     
     [BsonElement("parentRuleId")]
-    public Guid? ParentRuleId { get; set; }
+    public Ulid? ParentRuleId { get; set; }
 }

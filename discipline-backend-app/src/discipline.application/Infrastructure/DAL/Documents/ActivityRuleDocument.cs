@@ -6,10 +6,10 @@ public sealed class ActivityRuleDocument : IDocument
 {
     [BsonId]
     [BsonElement("id")]
-    public Guid Id { get; init; }
+    public Ulid Id { get; init; }
     
     [BsonElement("userId")] 
-    public Guid UserId { get; set; }
+    public Ulid UserId { get; set; }
     
     [BsonElement("title")]
     public string Title { get; init; }

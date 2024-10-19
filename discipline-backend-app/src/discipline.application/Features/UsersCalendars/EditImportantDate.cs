@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
 using discipline.application.Features.UsersCalendars.Configuration;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
@@ -12,13 +13,13 @@ internal static class EditImportantDate
 {
     internal static WebApplication MapEditImportantDate(this WebApplication app)
     {
-        app.MapPut($"{Extensions.UserCalendarTag}/edit-important-date/{{eventId:guid}}", async (EditImportantDateCommand command,
-                Guid eventId, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+        app.MapPut($"{Extensions.UserCalendarTag}/edit-important-date/{{eventId}}", async (EditImportantDateCommand command,
+                Ulid eventId, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 await commandDispatcher.HandleAsync(command with
                 {
                     UserId = identityContext.UserId,
-                    Id = eventId
+                    Id = new EventId(eventId)
                 }, cancellationToken);
             })
             .Produces(StatusCodes.Status200OK, typeof(void))
@@ -38,7 +39,7 @@ internal static class EditImportantDate
     }
 }
 
-public sealed record EditImportantDateCommand(Guid UserId, Guid Id, string Title) : ICommand;
+public sealed record EditImportantDateCommand(UserId UserId, EventId Id, string Title) : ICommand;
 
 public sealed class EditImportantDateCommandValidator : AbstractValidator<EditImportantDateCommand>
 {

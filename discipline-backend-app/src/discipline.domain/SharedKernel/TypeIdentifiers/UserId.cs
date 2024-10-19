@@ -9,4 +9,7 @@ public sealed record UserId(Ulid Value) : ITypeId<UserId>
 
     public override string ToString()
         => Value.ToString();
+
+    public bool IsEmpty()
+        => Value == Ulid.Empty;
 }

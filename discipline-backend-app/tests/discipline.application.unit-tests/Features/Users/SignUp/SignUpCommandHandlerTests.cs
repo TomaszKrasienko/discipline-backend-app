@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Repositories;
 using NSubstitute;
@@ -17,7 +18,7 @@ public sealed class SignUpCommandHandlerTests
     public async Task HandleAsync_GivenExistingEmail_ShouldThrowEmailAlreadyExistsException()
     {
         //arrange
-        var command = new SignUpCommand(Guid.NewGuid(), "test@test.pl", "Test123!",
+        var command = new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "first_name", "last_name");
 
         _userRepository
@@ -36,7 +37,7 @@ public sealed class SignUpCommandHandlerTests
     {
         //arrange
         var securedPassword = Guid.NewGuid().ToString();
-        var command = new SignUpCommand(Guid.NewGuid(), "test@test.pl", "Test123!",
+        var command = new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "test_first_name", "test_last_name");
 
         _userRepository
@@ -63,7 +64,7 @@ public sealed class SignUpCommandHandlerTests
         await _eventPublisher
             .Received(1)
             .PublishAsync(Arg.Is<UserSignedUp>(
-                arg => arg.UserId == command.Id));
+                arg => arg.UserId == command.Id.Value));
     }
     
     #region arrange

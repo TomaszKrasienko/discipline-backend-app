@@ -20,7 +20,7 @@ internal static class BrowseActivityRules
             {
                 var source = disciplineMongoCollection
                     .GetCollection<ActivityRuleDocument>()
-                    .Find(x => x.UserId == identityContext.UserId);
+                    .Find(x => x.UserId == identityContext.UserId.Value);
                 var pagedList = await PagedList<ActivityRuleDocument>
                     .ToPagedList(source, paginationDto.PageNumber, paginationDto.PageSize);
                 httpContext.AddPaginationToHeader(pagedList);

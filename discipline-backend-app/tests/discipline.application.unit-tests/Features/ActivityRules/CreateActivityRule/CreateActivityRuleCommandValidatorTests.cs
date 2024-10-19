@@ -1,4 +1,5 @@
 using discipline.application.Features.ActivityRules;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
@@ -13,7 +14,7 @@ public sealed class CreateActivityRuleCommandValidatorTests
     public void Validate_GivenValidCommand_ShouldNotHaveAnyValidationError()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(Guid.NewGuid(), Guid.NewGuid(),
+        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
             "Title", "Mode", null);
         
         //act
@@ -27,7 +28,7 @@ public sealed class CreateActivityRuleCommandValidatorTests
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(Guid.Empty, Guid.NewGuid(),
+        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
             "Title", "Mode", null);
         
         //act
@@ -41,7 +42,7 @@ public sealed class CreateActivityRuleCommandValidatorTests
     public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorFor()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(Guid.NewGuid(), Guid.Empty,
+        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
             "Title", "Mode", null);
         
         //act
@@ -59,8 +60,8 @@ public sealed class CreateActivityRuleCommandValidatorTests
     public void Validate_GivenInvalidTitle_ShouldHaveValidationErrorForTitle(string title)
     {
         //arrange
-        var command = new CreateActivityRuleCommand(Guid.NewGuid(),
-            Guid.NewGuid(), title, "Mode", null);
+        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), 
+            UserId.New(), title, "Mode", null);
         
         //act
         var result = Act(command);
@@ -75,7 +76,8 @@ public sealed class CreateActivityRuleCommandValidatorTests
     public void Validate_GivenInvalidMode_ShouldHaveValidationErrorForMode(string mode)
     {
         //arrange
-        var command = new CreateActivityRuleCommand(Guid.NewGuid(), Guid.NewGuid(), "Title", mode, null);
+        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
+            "Title", mode, null);
         
         //act
         var result = _validator.TestValidate(command);

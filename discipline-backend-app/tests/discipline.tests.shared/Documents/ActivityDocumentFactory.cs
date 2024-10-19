@@ -1,5 +1,6 @@
 using Bogus;
 using discipline.application.Infrastructure.DAL.Documents;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 
 namespace discipline.tests.shared.Documents;
 
@@ -13,7 +14,7 @@ internal static class ActivityDocumentFactory
     
     private static Faker<ActivityDocument> GetFaker()
         => new Faker<ActivityDocument>()
-            .RuleFor(f => f.Id, v => Guid.NewGuid())
+            .RuleFor(f => f.Id, v => Ulid.NewUlid())
             .RuleFor(f => f.Title, v => v.Random.String(length: 10, minChar: 'A', maxChar: 'z'))
             .RuleFor(f => f.IsChecked, v => false)
             .RuleFor(f => f.ParentRuleId, v => null);

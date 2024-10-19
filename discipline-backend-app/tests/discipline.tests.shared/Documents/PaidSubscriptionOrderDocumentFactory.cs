@@ -13,9 +13,9 @@ internal static class PaidSubscriptionOrderDocumentFactory
     
     private static Faker<PaidSubscriptionOrderDocument> GetFaker()
         => new Faker<PaidSubscriptionOrderDocument>()
-            .RuleFor(f => f.Id, Guid.NewGuid())
+            .RuleFor(f => f.Id, Ulid.NewUlid())
             .RuleFor(f => f.CreatedAt, DateTime.Now)
-            .RuleFor(f => f.SubscriptionId, Guid.NewGuid())
+            .RuleFor(f => f.SubscriptionId, Ulid.NewUlid())
             .RuleFor(f => f.StateIsCancelled, v => v.PickRandom<bool>(true, false))
             .RuleFor(f => f.StateActiveTill, DateOnly.FromDateTime(DateTime.Now.AddMonths(1)))
             .RuleFor(f => f.Next, DateOnly.FromDateTime(DateTime.Now.AddMonths(2)))

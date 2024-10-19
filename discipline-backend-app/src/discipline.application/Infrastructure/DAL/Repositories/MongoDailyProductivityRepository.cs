@@ -3,6 +3,7 @@ using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.domain.DailyProductivities.Entities;
 using discipline.domain.DailyProductivities.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using MongoDB.Driver;
 
 namespace discipline.application.Infrastructure.DAL.Repositories;
@@ -25,7 +26,7 @@ internal sealed class MongoDailyProductivityRepository(
                 .FirstOrDefaultAsync(cancellationToken))?
             .AsEntity();
 
-    public async Task<DailyProductivity> GetByActivityId(Guid activityId, CancellationToken cancellationToken = default)
+    public async Task<DailyProductivity> GetByActivityId(ActivityId activityId, CancellationToken cancellationToken = default)
         => (await _collection.Find(x 
                     => x.Activities != null && x.Activities.Any(a => a.Id.Equals(activityId)))
                 .FirstOrDefaultAsync(cancellationToken))?

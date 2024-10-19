@@ -1,5 +1,6 @@
 using discipline.application.Behaviours;
 using discipline.application.Features.UsersCalendars.Configuration;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
@@ -15,13 +16,13 @@ internal static class AddCalendarEvent
         app.MapPost($"{Extensions.UserCalendarTag}/add-calendar-event", async (AddCalendarEventCommand command,
             HttpContext httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
         {
-            var eventId = Guid.NewGuid();
+            var eventId = EventId.New();
             await commandDispatcher.HandleAsync(command with
             {
                 Id = eventId,
                 UserId = identityContext.UserId
             }, cancellationToken);
-            httpContext.AddResourceIdHeader(eventId);
+            httpContext.AddResourceIdHeader(eventId.ToString());
             return Results.CreatedAtRoute(nameof(GetEventById), new {eventId = eventId}, null);
         })
         .Produces(StatusCodes.Status201Created, typeof(void))
@@ -40,7 +41,7 @@ internal static class AddCalendarEvent
     }
 }
 
-public sealed record AddCalendarEventCommand(DateOnly Day, Guid UserId, Guid Id, string Title, TimeOnly TimeFrom,
+public sealed record AddCalendarEventCommand(DateOnly Day, UserId UserId, EventId Id, string Title, TimeOnly TimeFrom,
     TimeOnly? TimeTo, string Action) : ICommand;
 
 
@@ -80,7 +81,7 @@ internal sealed class AddCalendarEventCommandHandler(
         var userCalendar = await userCalendarRepository.GetForUserByDateAsync(command.UserId, command.Day, cancellationToken);
         if (userCalendar is null)
         {
-            userCalendar = UserCalendar.Create(command.Day, command.UserId);
+            userCalendar = UserCalendar.Create(UserCalendarId.New(), command.Day, command.UserId);
             userCalendar.AddEvent(command.Id, command.Title, command.TimeFrom, command.TimeTo,
                 command.Action);
             await userCalendarRepository.AddAsync(userCalendar, cancellationToken);

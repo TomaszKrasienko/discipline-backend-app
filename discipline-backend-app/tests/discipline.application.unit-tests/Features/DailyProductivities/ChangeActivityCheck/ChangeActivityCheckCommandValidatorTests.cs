@@ -1,4 +1,5 @@
 using discipline.application.Features.DailyProductivities;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
@@ -11,7 +12,7 @@ public sealed class ChangeActivityCheckCommandValidatorTests
     public void Validate_GivenValidArguments_ShouldNotHaveAnyValidationErrors()
     {
         //arrange
-        var command = new ChangeActivityCheckCommand(Guid.NewGuid());
+        var command = new ChangeActivityCheckCommand(ActivityId.New());
         
         //act
         var result = _validator.TestValidate(command);
@@ -24,7 +25,7 @@ public sealed class ChangeActivityCheckCommandValidatorTests
     public void Validate_GivenEmptyActivityId_ShouldHaveValidationErrorForActivityId()
     {
         //arrange
-        var command = new ChangeActivityCheckCommand(Guid.Empty);
+        var command = new ChangeActivityCheckCommand(ActivityId.New());
     
         //act
         var result = _validator.TestValidate(command);

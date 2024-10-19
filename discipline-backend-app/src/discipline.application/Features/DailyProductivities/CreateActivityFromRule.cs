@@ -6,6 +6,7 @@ using discipline.application.Exceptions;
 using discipline.domain.ActivityRules.Repositories;
 using discipline.domain.DailyProductivities.Entities;
 using discipline.domain.DailyProductivities.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -47,7 +48,7 @@ internal static class CreateActivityFromRule
         app.MapPost($"/{Extensions.DailyProductivityTag}/today/add-activity-from-rule", async (CreateActivityFromRuleCommand command,
             CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
         {
-            var activityId = Guid.NewGuid();
+            var activityId = ActivityId.New();
             await commandDispatcher.HandleAsync(command with { ActivityId = activityId }, cancellationToken);
             return Results.Ok();
         })
@@ -87,12 +88,12 @@ internal sealed class CronActivityFromRuleService(IServiceProvider serviceProvid
         var activities = await activityRuleRepository.BrowseAsync();
         foreach (var activityRule in activities)
         {
-            await commandDispatcher.HandleAsync(new CreateActivityFromRuleCommand(Guid.NewGuid(), activityRule.Id));
+            await commandDispatcher.HandleAsync(new CreateActivityFromRuleCommand(ActivityId.New(), activityRule.Id));
         }
     }
 }
 
-public sealed record CreateActivityFromRuleCommand(Guid ActivityId, Guid ActivityRuleId) : ICommand;
+public sealed record CreateActivityFromRuleCommand(ActivityId ActivityId, ActivityRuleId ActivityRuleId) : ICommand;
 
 public sealed class CreateActivityFromRuleCommandValidator : AbstractValidator<CreateActivityFromRuleCommand>
 {
@@ -124,7 +125,7 @@ internal sealed class CreateActivityFromRuleCommandHandler(
         var dailyProductivity = await dailyProductivityRepository.GetByDateAsync(day, cancellationToken);
         if (dailyProductivity is null)
         {
-            dailyProductivity = DailyProductivity.Create(day, activityRule.UserId);
+            dailyProductivity = DailyProductivity.Create(DailyProductivityId.New(), day, activityRule.UserId);
             dailyProductivity.AddActivityFromRule(command.ActivityId, clock.DateNow(), activityRule);
             await dailyProductivityRepository.AddAsync(dailyProductivity, cancellationToken);
             return;

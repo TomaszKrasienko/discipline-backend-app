@@ -22,7 +22,7 @@ public sealed class AddingResourceIdHeaderBehaviourTests
         var id = Guid.NewGuid();
         
         //act
-        httpContext.AddResourceIdHeader(id);
+        httpContext.AddResourceIdHeader(id.ToString());
         
         //assert
         headers.TryGetValue(AddingResourceIdHeaderBehaviour.HeaderName, out var value).ShouldBeTrue();

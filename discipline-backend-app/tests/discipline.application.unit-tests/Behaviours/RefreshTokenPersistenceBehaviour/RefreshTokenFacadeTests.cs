@@ -1,5 +1,6 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using Microsoft.AspNetCore.Http.Features;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
@@ -14,7 +15,7 @@ public sealed class RefreshTokenFacadeTests
     public async Task GenerateAsync_GivenNotEmptyRefreshTokenAndUserId_ShouldSaveByRefreshTokenServiceAndReturnDecryptedString()
     {
         //arrange
-        var userId = Guid.NewGuid();
+        var userId = UserId.New();
         var encryptedRefreshToken = Guid.NewGuid().ToString();
         var refreshToken = Guid.NewGuid().ToString();
         _cryptographer
@@ -36,7 +37,7 @@ public sealed class RefreshTokenFacadeTests
     public async Task GenerateAsync_GivenEmptyUserId_ShouldThrowEmptyUserIdException()
     {
         //arrange
-        var userId = Guid.Empty;
+        var userId = UserId.New();
         var refreshToken = Guid.NewGuid().ToString();
         
         //act
@@ -50,7 +51,7 @@ public sealed class RefreshTokenFacadeTests
     public async Task GetUserIdAsync_GivenExistingRefreshToken_ShouldReturnUserId()
     {
         //arrange
-        var userId = Guid.NewGuid();
+        var userId = UserId.New();
         var encryptedRefreshToken = Guid.NewGuid().ToString();
         var decryptedRefreshToken = Guid.NewGuid().ToString();
 

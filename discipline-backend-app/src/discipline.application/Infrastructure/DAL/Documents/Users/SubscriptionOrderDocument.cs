@@ -8,13 +8,13 @@ public class SubscriptionOrderDocument : IDocument
 {
     [BsonId]
     [BsonElement("id")]
-    public Guid Id { get; set; }
+    public Ulid Id { get; set; }
     
     [BsonElement("createdAt")]
     public DateTime CreatedAt { get; set; }
     
     [BsonElement("subscriptionId")]
-    public Guid SubscriptionId { get; set; }
+    public Ulid SubscriptionId { get; set; }
     
     [BsonElement("stateIsCancelled")]
     public bool StateIsCancelled { get; set; }

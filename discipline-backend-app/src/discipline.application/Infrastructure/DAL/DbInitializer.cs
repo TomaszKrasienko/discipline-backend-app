@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +16,8 @@ internal sealed class DbInitializer(
         logger.LogInformation("Starting initialization");
         var subscriptions = new List<Subscription>()
         {
-            Subscription.Create(Guid.NewGuid(), "Free", 0, 0, ["Daily habits", "Activity rules"]),
-            Subscription.Create(Guid.NewGuid(), "Premium", 10, 100, ["Daily habits", "Activity rules", "Calendar", "Chat"])
+            Subscription.Create(SubscriptionId.New(), "Free", 0, 0, ["Daily habits", "Activity rules"]),
+            Subscription.Create(SubscriptionId.New(), "Premium", 10, 100, ["Daily habits", "Activity rules", "Calendar", "Chat"])
         };
         
         using var scope = serviceProvider.CreateScope();

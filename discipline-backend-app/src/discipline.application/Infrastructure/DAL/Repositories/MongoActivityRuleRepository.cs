@@ -3,6 +3,7 @@ using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.domain.ActivityRules.Entities;
 using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using MongoDB.Driver;
 
 namespace discipline.application.Infrastructure.DAL.Repositories;
@@ -27,8 +28,8 @@ internal sealed class MongoActivityRuleRepository(
     public Task<bool> ExistsAsync(string title, CancellationToken cancellationToken = default)
         => _collection.Find(x => x.Title == title).AnyAsync(cancellationToken);
 
-    public async Task<ActivityRule> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        => (await _collection.Find(x => x.Id == id)
+    public async Task<ActivityRule> GetByIdAsync(ActivityRuleId id, CancellationToken cancellationToken = default)
+        => (await _collection.Find(x => x.Id == id.Value)
             .FirstOrDefaultAsync(cancellationToken))?
             .AsEntity();
 

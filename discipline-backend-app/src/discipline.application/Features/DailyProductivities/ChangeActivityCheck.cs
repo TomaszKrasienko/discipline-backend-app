@@ -2,6 +2,7 @@ using discipline.application.Behaviours;
 using discipline.application.Features.DailyProductivities.Configuration;
 using discipline.domain.DailyProductivities.Exceptions;
 using discipline.domain.DailyProductivities.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -12,10 +13,10 @@ internal static class ChangeActivityCheck
 {
     internal static WebApplication MapChangeActivityCheck(this WebApplication app)
     {
-        app.MapPatch($"/{Extensions.DailyProductivityTag}/activity/{{activityId:guid}}/change-check", async (Guid activityId,
+        app.MapPatch($"/{Extensions.DailyProductivityTag}/activity/{{activityId}}/change-check", async (Ulid activityId,
             CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
             {
-                await commandDispatcher.HandleAsync(new ChangeActivityCheckCommand(activityId), cancellationToken);
+                await commandDispatcher.HandleAsync(new ChangeActivityCheckCommand( new ActivityId(activityId)), cancellationToken);
                 return Results.Ok();
             })
             .Produces(StatusCodes.Status200OK, typeof(void))
@@ -35,7 +36,7 @@ internal static class ChangeActivityCheck
     }
 }
 
-public sealed record ChangeActivityCheckCommand(Guid ActivityId) : ICommand;
+public sealed record ChangeActivityCheckCommand(ActivityId ActivityId) : ICommand;
 
 public sealed class ChangeActivityCheckCommandValidator : AbstractValidator<ChangeActivityCheckCommand>
 {

@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.Repositories;
 using discipline.domain.Users.Services.Abstractions;
@@ -17,7 +18,7 @@ public static class CreateUserSubscriptionOrder
         app.MapPost($"{Extensions.UsersTag}/create-subscription-order", async (CreateUserSubscriptionOrderCommand command,
             IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
-                var subscriptionOrderId = Guid.NewGuid();
+                var subscriptionOrderId = SubscriptionOrderId.New();
                 await commandDispatcher.HandleAsync(command with { Id = subscriptionOrderId, UserId = identityContext.UserId },
                     cancellationToken);
                 return Results.Ok();
@@ -37,8 +38,8 @@ public static class CreateUserSubscriptionOrder
     }
 }
 
-public sealed record CreateUserSubscriptionOrderCommand(Guid UserId, Guid Id, 
-    Guid SubscriptionId, SubscriptionOrderFrequency? SubscriptionOrderFrequency,
+public sealed record CreateUserSubscriptionOrderCommand(UserId UserId, SubscriptionOrderId Id, 
+    SubscriptionId SubscriptionId, SubscriptionOrderFrequency? SubscriptionOrderFrequency,
     string CardNumber, string CardCvvNumber) : ICommand;
 
 public sealed class CreateUserSubscriptionOrderCommandValidator : AbstractValidator<CreateUserSubscriptionOrderCommand>

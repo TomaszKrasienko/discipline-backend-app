@@ -1,4 +1,5 @@
 using discipline.application.Features.Users;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
@@ -13,7 +14,7 @@ public sealed class SignUpCommandValidatorTests
     public void Validate_GivenValidCommand_ShouldNotHaveAnyValidationErrors()
     {
         //act
-        var result = Act(new SignUpCommand(Guid.NewGuid(), "test@test.pl", "Test123!",
+        var result = Act(new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "test_first_name", "test_last_name"));
         
         //assert
@@ -24,7 +25,7 @@ public sealed class SignUpCommandValidatorTests
     public void Validate_GivenEmptyGuid_ShouldHaveValidationErrorForId()
     {
         //act
-        var result = Act(new SignUpCommand(Guid.Empty, "test@test.pl", "Test123!",
+        var result = Act(new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "test_first_name", "test_last_name"));
         
         //assert
@@ -35,7 +36,7 @@ public sealed class SignUpCommandValidatorTests
     public void Validate_GivenEmptyEmail_ShouldHaveValidationErrorForEmail()
     {
         //act
-        var result = Act(new SignUpCommand(Guid.NewGuid(), string.Empty, "Test123!",
+        var result = Act(new SignUpCommand(UserId.New(), string.Empty, "Test123!",
             "test_first_name", "test_last_name"));
         
         //assert
@@ -46,7 +47,7 @@ public sealed class SignUpCommandValidatorTests
     public void Validate_GivenInvalidEmail_ShouldHaveValidationErrorForEmail()
     {
         //act
-        var result = Act(new SignUpCommand(Guid.NewGuid(), "test_invalid_email", "Test123!",
+        var result = Act(new SignUpCommand(UserId.New(), "test_invalid_email", "Test123!",
             "test_first_name", "test_last_name"));
         
         //assert
@@ -61,7 +62,7 @@ public sealed class SignUpCommandValidatorTests
     public void Validate_GivenInvalidPassword_ShouldHaveValidationErrorForPassword(string password)
     {
         //act
-        var result = Act(new SignUpCommand(Guid.NewGuid(), "test@test.pl", password,
+        var result = Act(new SignUpCommand(UserId.New(), "test@test.pl", password,
             "test_first_name", "test_last_name"));
         
         //assert
@@ -72,7 +73,7 @@ public sealed class SignUpCommandValidatorTests
     public void Validate_GivenEmptyFirstName_ShouldHaveValidationErrorForFistName()
     {
         //act
-        var result = Act(new SignUpCommand(Guid.NewGuid(), "test@test.pl", "Test123!",
+        var result = Act(new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             string.Empty, "test_last_name"));
         
         //assert
@@ -88,7 +89,7 @@ public sealed class SignUpCommandValidatorTests
         var firstName = new string(character, multiplier);
         
         //act
-        var result = Act(new SignUpCommand(Guid.NewGuid(), "test@test.pl", "Test123!",
+        var result = Act(new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             firstName, "test_last_name"));
         
         //assert
@@ -99,7 +100,7 @@ public sealed class SignUpCommandValidatorTests
     public void Validate_GivenEmptyLastName_ShouldHaveValidationErrorForLastName()
     {
         //act
-        var result = Act(new SignUpCommand(Guid.NewGuid(), "test@test.pl", "Test123!",
+        var result = Act(new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "test_first_name", string.Empty));
         
         //assert
@@ -115,7 +116,7 @@ public sealed class SignUpCommandValidatorTests
         var lastName = new string(character, multiplier);
         
         //act
-        var result = Act(new SignUpCommand(Guid.NewGuid(), "test@test.pl", "Test123!",
+        var result = Act(new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "test_first_name", lastName));
         
         //assert

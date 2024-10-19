@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
 using discipline.application.Features.UsersCalendars.Configuration;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
@@ -12,13 +13,13 @@ internal static class EditMeeting
 {
     internal static WebApplication MapEditMeeting(this WebApplication app)
     {
-        app.MapPut($"{Extensions.UserCalendarTag}/edit-meeting/{{eventId:guid}}", async (EditMeetingCommand command,
-            Guid eventId, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+        app.MapPut($"{Extensions.UserCalendarTag}/edit-meeting/{{eventId}}", async (EditMeetingCommand command,
+            Ulid eventId, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 await commandDispatcher.HandleAsync(command with
                 {
                     UserId = identityContext.UserId,
-                    Id = eventId
+                    Id = new EventId(eventId)
                 }, cancellationToken);
             })
         .Produces(StatusCodes.Status200OK, typeof(void))
@@ -38,7 +39,7 @@ internal static class EditMeeting
     }
 }
 
-public sealed record EditMeetingCommand(Guid UserId, Guid Id, string Title, TimeOnly TimeFrom,
+public sealed record EditMeetingCommand(UserId UserId, EventId Id, string Title, TimeOnly TimeFrom,
     TimeOnly? TimeTo, string Platform, string Uri, string Place) : ICommand;
 
 public sealed class EditMeetingCommandValidator : AbstractValidator<EditMeetingCommand>
