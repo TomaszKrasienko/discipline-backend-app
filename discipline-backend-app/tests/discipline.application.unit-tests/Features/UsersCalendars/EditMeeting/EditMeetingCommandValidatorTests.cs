@@ -1,4 +1,5 @@
 using discipline.application.Features.UsersCalendars;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
@@ -14,7 +15,7 @@ public sealed class EditMeetingCommandValidatorTests
     public void Validate_GivenValidArguments_ShouldNotHaveAnyValidationErrors()
     {
         //arrange
-        var command = new EditMeetingCommand(Guid.NewGuid(), Guid.NewGuid(),
+        var command = new EditMeetingCommand(UserId.New(), EventId.New(), 
             "test_title", new TimeOnly(11, 00),  new TimeOnly(12, 00), 
             "platform", "uri", "place");
         
@@ -29,7 +30,7 @@ public sealed class EditMeetingCommandValidatorTests
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new EditMeetingCommand(Guid.NewGuid(), Guid.Empty,
+        var command = new EditMeetingCommand(UserId.New(), new EventId(Ulid.Empty),
             "test_title", new TimeOnly(11, 00),  new TimeOnly(12, 00), 
             "platform", "uri", "place");
         
@@ -44,7 +45,7 @@ public sealed class EditMeetingCommandValidatorTests
     public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorForUserId()
     {
         //arrange
-        var command = new EditMeetingCommand( Guid.Empty, Guid.NewGuid(),
+        var command = new EditMeetingCommand( new UserId(Ulid.Empty), EventId.New(), 
             "test_title", new TimeOnly(11, 00),  new TimeOnly(12, 00), 
             "platform", "uri", "place");
         
@@ -59,7 +60,7 @@ public sealed class EditMeetingCommandValidatorTests
     public void Validate_GivenNullTitle_ShouldHaveValidationErrorForTitle()
     {
         //arrange
-        var command = new EditMeetingCommand(Guid.NewGuid(), Guid.NewGuid(),
+        var command = new EditMeetingCommand(UserId.New(), EventId.New(), 
             null, new TimeOnly(11, 00),new TimeOnly(12, 00), 
             "platform", "uri", "place");
         
@@ -77,7 +78,7 @@ public sealed class EditMeetingCommandValidatorTests
     {
         //arrange
         var title = new string(letter, multiplier);
-        var command = new EditMeetingCommand(Guid.NewGuid(),Guid.NewGuid(),
+        var command = new EditMeetingCommand(UserId.New(), EventId.New(), 
             title, new TimeOnly(11, 00),  new TimeOnly(12, 00), 
             "platform", "uri", "place"); 
         
@@ -92,7 +93,7 @@ public sealed class EditMeetingCommandValidatorTests
     public void Validate_GivenEmptyTimeFrom_ShouldHaveValidationErrorForTimeFrom()
     {
         //arrange
-        var command = new EditMeetingCommand( Guid.NewGuid(),Guid.NewGuid(),
+        var command = new EditMeetingCommand( UserId.New(), EventId.New(), 
             "test_title", default, new TimeOnly(12, 00), 
             "platform", "uri", "place");
         

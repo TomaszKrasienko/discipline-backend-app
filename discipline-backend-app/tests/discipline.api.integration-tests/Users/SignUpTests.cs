@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Features.Users;
 using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.tests.shared.Documents;
 using MongoDB.Driver;
 using Shouldly;
@@ -17,7 +18,7 @@ public sealed class SignUpTests : BaseTestsController
     public async Task SignUp_GivenNotExistingEmailAndValidArguments_ShouldRetrun200OkStatusCodeAndAddUser()
     {
         //arrange
-        var command = new SignUpCommand(Guid.Empty, "test@test.pl", "Test123!",
+        var command = new SignUpCommand(new UserId(Ulid.Empty), "test@test.pl", "Test123!",
             "test_first_name", "test_last_name");
         
         //act
@@ -42,7 +43,7 @@ public sealed class SignUpTests : BaseTestsController
         await TestAppDb
             .GetCollection<UserDocument>()
             .InsertOneAsync(userDocument);
-        var command = new SignUpCommand(Guid.Empty, userDocument.Email, "Test132!", "test_first_name",
+        var command = new SignUpCommand(new UserId(Ulid.Empty), userDocument.Email, "Test132!", "test_first_name",
             "test_last_name");
         
         //act
@@ -56,7 +57,7 @@ public sealed class SignUpTests : BaseTestsController
     public async Task SignUp_GivenTooWeakPassword_ShouldReturn422UnprocessableEntityStatusCode()
     {
         //arrange
-        var command = new SignUpCommand(Guid.Empty, "test@test.pl", "Test132", "test_first_name",
+        var command = new SignUpCommand(new UserId(Ulid.Empty), "test@test.pl", "Test132", "test_first_name",
             "test_last_name");
         
         //act

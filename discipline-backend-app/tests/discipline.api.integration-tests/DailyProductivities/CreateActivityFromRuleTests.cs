@@ -8,6 +8,7 @@ using discipline.application.Infrastructure.DAL.Documents.Users;
 using discipline.application.Infrastructure.DAL.Repositories;
 using discipline.domain.ActivityRules.Entities;
 using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
@@ -23,10 +24,10 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     public async Task CreateActivityFromRule_GivenExistingActivityRule_ShouldReturn200OkStatusCodeAndAddActivity()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"test_title", Mode.EveryDayMode());
+        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test_title", Mode.EveryDayMode());
         await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
         await AuthorizeWithFreeSubscriptionPicked();
-        var command = new CreateActivityFromRuleCommand(Guid.Empty, activityRule.Id);
+        var command = new CreateActivityFromRuleCommand(new ActivityId(Ulid.Empty), activityRule.Id);
         
         //act
         var response = await HttpClient.PostAsJsonAsync("/daily-productivity/today/add-activity-from-rule", command);
@@ -49,7 +50,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithFreeSubscriptionPicked();
-        var command = new CreateActivityFromRuleCommand(Guid.Empty, Guid.NewGuid());
+        var command = new CreateActivityFromRuleCommand(new ActivityId(Ulid.Empty), ActivityRuleId.New());
         
         //act
         var response = await HttpClient.PostAsJsonAsync("/daily-productivity/today/add-activity-from-rule", command);
@@ -62,7 +63,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     public async Task Create_Unauthorized_ShouldReturn401UnauthorizedSStatusCode()
     {
         //arrange
-        var command = new CreateActivityFromRuleCommand(Guid.Empty, Guid.NewGuid());
+        var command = new CreateActivityFromRuleCommand(new ActivityId(Ulid.Empty), ActivityRuleId.New());
         
         //act
         var response = await HttpClient.PostAsJsonAsync("/daily-productivity/today/add-activity-from-rule", command);
@@ -76,7 +77,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithoutSubscription();
-        var command = new CreateActivityFromRuleCommand(Guid.Empty, Guid.NewGuid());
+        var command = new CreateActivityFromRuleCommand(new ActivityId(Ulid.Empty), ActivityRuleId.New());
         
         //act
         var response = await HttpClient.PostAsJsonAsync("/daily-productivity/today/add-activity-from-rule", command);
@@ -90,7 +91,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithFreeSubscriptionPicked();
-        var command = new CreateActivityFromRuleCommand(Guid.Empty, Guid.Empty);
+        var command = new CreateActivityFromRuleCommand(new ActivityId(Ulid.Empty), ActivityRuleId.New());
         
         //act
         var response = await HttpClient.PostAsJsonAsync("/daily-productivity/today/add-activity-from-rule", command);

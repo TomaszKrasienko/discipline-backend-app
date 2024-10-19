@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
 using discipline.application.Features.UsersCalendars;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Repositories;
@@ -20,9 +21,9 @@ public sealed class EditImportantDateCommandHandlerTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var eventId = Guid.NewGuid();
-        userCalendar.AddEvent(eventId, "test_title");
-        var command = new EditImportantDateCommand(Guid.NewGuid(), eventId, "new_test_title");
+        var eventId = EventId.New();
+        userCalendar.AddEvent(EventId.New(), "test_title");
+        var command = new EditImportantDateCommand(UserId.New(), eventId, "new_test_title");
 
         _userCalendarRepository
             .GetByEventIdAsync(command.UserId, command.Id)
@@ -32,7 +33,7 @@ public sealed class EditImportantDateCommandHandlerTests
         await Act(command);
         
         //assert
-        var @event = userCalendar.Events.First(x => x.Id.Value == command.Id);
+        var @event = userCalendar.Events.First(x => x.Id == command.Id);
         @event.Title.Value.ShouldBe(command.Title);
         
         await _userCalendarRepository
@@ -43,7 +44,7 @@ public sealed class EditImportantDateCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingUserCalendarForUserAndEventId_ShouldThrowUserCalendarNotFoundException()
     {
         //arrange
-        var command = new EditImportantDateCommand(Guid.NewGuid(), Guid.NewGuid(), "test_title");
+        var command = new EditImportantDateCommand(UserId.New(), EventId.New(), "test_title");
         
         //act
         var exception = await Record.ExceptionAsync(async () => await _handler.HandleAsync(command));

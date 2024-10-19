@@ -4,6 +4,7 @@ using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.ValueObjects;
 using discipline.tests.shared.Entities;
 using Shouldly;
@@ -26,14 +27,14 @@ public sealed class MapBrowseMeTests : BaseTestsController
         var result = await HttpClient.GetFromJsonAsync<UserDto>("users/me");
         
         //arrange
-        result.Id.ShouldBe(user.Id);
+        result.Id.ShouldBe(user.Id.Value);
     }
     
     [Fact]
     public async Task BrowseMe_GivenNotExistingUserId_ShouldReturn204NoContentStatusCode()
     {
         //arrange
-        Authorize(Guid.NewGuid(), Status.FreeSubscriptionPicked());
+        Authorize(UserId.New(), Status.FreeSubscriptionPicked());
         
         //act
         var result = await HttpClient.GetAsync("users/me");

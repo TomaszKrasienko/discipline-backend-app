@@ -1,5 +1,6 @@
 using discipline.application.Behaviours;
 using discipline.application.Features.UsersCalendars;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Services.Abstractions;
 using NSubstitute;
 using Xunit;
@@ -14,7 +15,7 @@ public sealed class ChangeEventDateCommandHandlerTests
     public async Task Handle_GivenCommand_ShouldInvokeChangeEventUserCalendarService()
     {
         //arrange
-        var command = new ChangeEventDateCommand(Guid.NewGuid(), Guid.NewGuid(), new DateOnly(2024, 1, 1));
+        var command = new ChangeEventDateCommand(UserId.New(), EventId.New(), new DateOnly(2024, 1, 1));
         
         //act
         await Act(command);

@@ -4,6 +4,7 @@ using discipline.api.integration_tests._Helpers;
 using discipline.application.Features.UsersCalendars;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
 using Shouldly;
@@ -20,16 +21,16 @@ public sealed class EditImportantDateTests : BaseTestsController
         //arrange
         var user = await AuthorizeWithFreeSubscriptionPicked();
         var userDocument = user.AsDocument();
-        userDocument.Id = user.Id;
+        userDocument.Id = user.Id.Value;
         
         var userCalendar = UserCalendarFactory.Get();
-        var eventId = Guid.NewGuid();
+        var eventId = EventId.New();
         userCalendar.AddEvent(eventId, "test_title");
         var userCalendarDocument = userCalendar.AsDocument();
-        userCalendarDocument.UserId = user.Id;
+        userCalendarDocument.UserId = user.Id.Value;
         await TestAppDb.GetCollection<UserCalendarDocument>().InsertOneAsync(userCalendarDocument);
 
-        var command = new EditImportantDateCommand(Guid.Empty, Guid.Empty, "new_test_title");
+        var command = new EditImportantDateCommand(new UserId(Ulid.Empty), new EventId(Ulid.Empty), "new_test_title");
         
         //act
         var result = await HttpClient.PutAsJsonAsync($"user-calendar/edit-important-date/{eventId}",
@@ -39,9 +40,9 @@ public sealed class EditImportantDateTests : BaseTestsController
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var updatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Events.Any(y => y.Id == eventId))
+            .Find(x => x.Events.Any(y => y.Id == eventId.Value))
             .FirstAsync();
-        var @event = updatedUserCalendar.Events.First(x => x.Id == eventId);
+        var @event = updatedUserCalendar.Events.First(x => x.Id == eventId.Value);
         ((ImportantDateDocument)@event!).Title.ShouldBe(command.Title);
     }
     
@@ -50,10 +51,10 @@ public sealed class EditImportantDateTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithFreeSubscriptionPicked();
-        var command = new EditImportantDateCommand(Guid.Empty, Guid.Empty, "new_test_title");
+        var command = new EditImportantDateCommand(new UserId(Ulid.Empty), new EventId(Ulid.Empty), "new_test_title");
         
         //act
-        var result = await HttpClient.PutAsJsonAsync($"user-calendar/edit-important-date/{Guid.NewGuid()}",
+        var result = await HttpClient.PutAsJsonAsync($"user-calendar/edit-important-date/{Ulid.NewUlid()}",
             command);
         
         //assert
@@ -65,10 +66,10 @@ public sealed class EditImportantDateTests : BaseTestsController
     public async Task EditImportantDate_Unauthorized_ShouldReturnStatusCode401Unauthorized()
     {
         //arrange
-        var command = new EditImportantDateCommand(Guid.Empty, Guid.Empty, "new_test_title");
+        var command = new EditImportantDateCommand(new UserId(Ulid.Empty), new EventId(Ulid.Empty), "new_test_title");
         
         //act
-        var result = await HttpClient.PutAsJsonAsync($"user-calendar/edit-important-date/{Guid.NewGuid()}",
+        var result = await HttpClient.PutAsJsonAsync($"user-calendar/edit-important-date/{Ulid.NewUlid()}",
             command);
         
         //assert
@@ -80,10 +81,10 @@ public sealed class EditImportantDateTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithoutSubscription();
-        var command = new EditImportantDateCommand(Guid.Empty, Guid.Empty, "new_test_title");
+        var command = new EditImportantDateCommand(new UserId(Ulid.Empty), new EventId(Ulid.Empty), "new_test_title");
         
         //act
-        var result = await HttpClient.PutAsJsonAsync($"user-calendar/edit-important-date/{Guid.NewGuid()}",
+        var result = await HttpClient.PutAsJsonAsync($"user-calendar/edit-important-date/{Ulid.NewUlid()}",
             command);
         
         //assert
@@ -95,7 +96,7 @@ public sealed class EditImportantDateTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithFreeSubscriptionPicked();
-        var command = new EditImportantDateCommand(Guid.Empty, Guid.Empty, string.Empty);
+        var command = new EditImportantDateCommand(new UserId(Ulid.Empty), new EventId(Ulid.Empty), string.Empty);
         
         //act
         var result = await HttpClient.PutAsJsonAsync($"user-calendar/edit-important-date/{Guid.NewGuid()}",

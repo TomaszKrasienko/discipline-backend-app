@@ -18,7 +18,7 @@ public sealed class BrowseActivityRulesTests : BaseTestsController
         //arrange
         var user = await AuthorizeWithFreeSubscriptionPicked();
         var activityRules = ActivityRuleDocumentFactory.Get(5);
-        activityRules.ForEach(x => x.UserId = user.Id);
+        activityRules.ForEach(x => x.UserId = user.Id.Value);
         var notUserActivityRules = ActivityRuleDocumentFactory.Get(2);
         await TestAppDb.GetCollection<ActivityRuleDocument>()
             .InsertManyAsync(activityRules);

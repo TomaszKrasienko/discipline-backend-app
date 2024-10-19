@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
 using discipline.application.Features.UsersCalendars;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Repositories;
 using discipline.tests.shared.Entities;
@@ -19,10 +20,10 @@ public sealed class EditCalendarEventCommandHandlerTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var eventId = Guid.NewGuid();
-        userCalendar.AddEvent(eventId, "test_title", new TimeOnly(12, 00), null, 
+        var eventId = EventId.New();
+        userCalendar.AddEvent(EventId.New(), "test_title", new TimeOnly(12, 00), null, 
             "test_platform", "test_uri", null);
-        var command = new EditMeetingCommand(Guid.NewGuid(), eventId, "new_test_title",
+        var command = new EditMeetingCommand(UserId.New(), eventId, "new_test_title",
             new TimeOnly(13, 00), null, "new_test_platform",
             "new_test_uri", null);
 
@@ -34,7 +35,7 @@ public sealed class EditCalendarEventCommandHandlerTests
         await Act(command);
         
         //assert
-        var @event = userCalendar.Events.First(x => x.Id.Value == command.Id);
+        var @event = userCalendar.Events.First(x => x.Id == command.Id);
         @event.Title.Value.ShouldBe(command.Title);
         ((Meeting)@event).MeetingTimeSpan.From.ShouldBe(command.TimeFrom);
         ((Meeting)@event).MeetingTimeSpan.To.ShouldBe(command.TimeTo);
@@ -50,7 +51,7 @@ public sealed class EditCalendarEventCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingUserCalendarForUserAndEventId_ShouldThrowUserCalendarNotFoundException()
     {
         //arrange
-        var command = new EditMeetingCommand(Guid.NewGuid(), Guid.NewGuid(), "new_test_title",
+        var command = new EditMeetingCommand(UserId.New(), EventId.New(), "new_test_title",
             new TimeOnly(13, 00), null, "new_test_platform",
             "new_test_uri", null);
         

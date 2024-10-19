@@ -6,6 +6,7 @@ using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Repositories;
 using discipline.domain.DailyProductivities.Entities;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using Shouldly;
 using Xunit;
 
@@ -19,22 +20,25 @@ public sealed class GetProgressDataTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithFreeSubscriptionPicked();
-        var dailyProductivity1 = DailyProductivity.Create(new DateOnly(2024, 6, 10), Guid.NewGuid());
-        dailyProductivity1.AddActivity(Guid.NewGuid(), "test 1");
-        dailyProductivity1.AddActivity(Guid.NewGuid(), "test 2");
-        dailyProductivity1.AddActivity(Guid.NewGuid(), "test 3");
+        var dailyProductivity1 = DailyProductivity.Create(DailyProductivityId.New(),  new DateOnly(2024, 6, 10), 
+            UserId.New());
+        dailyProductivity1.AddActivity(ActivityId.New(), "test 1");
+        dailyProductivity1.AddActivity(ActivityId.New(), "test 2");
+        dailyProductivity1.AddActivity(ActivityId.New(), "test 3");
         dailyProductivity1.ChangeActivityCheck(dailyProductivity1.Activities.First(x => x.Title == "test 1").Id);
         dailyProductivity1.ChangeActivityCheck(dailyProductivity1.Activities.First(x => x.Title == "test 2").Id);
         
-        var dailyProductivity2 = DailyProductivity.Create(new DateOnly(2024, 6, 11),Guid.NewGuid());
-        dailyProductivity2.AddActivity(Guid.NewGuid(), "test 1");
-        dailyProductivity2.AddActivity(Guid.NewGuid(), "test 2");
-        dailyProductivity2.AddActivity(Guid.NewGuid(), "test 3");
+        var dailyProductivity2 = DailyProductivity.Create(DailyProductivityId.New(), new DateOnly(2024, 6, 11),
+            UserId.New());
+        dailyProductivity2.AddActivity(ActivityId.New(), "test 1");
+        dailyProductivity2.AddActivity(ActivityId.New(), "test 2");
+        dailyProductivity2.AddActivity(ActivityId.New(), "test 3");
         dailyProductivity2.ChangeActivityCheck(dailyProductivity2.Activities.First(x => x.Title == "test 1").Id);
         dailyProductivity2.ChangeActivityCheck(dailyProductivity2.Activities.First(x => x.Title == "test 2").Id);
         dailyProductivity2.ChangeActivityCheck(dailyProductivity2.Activities.First(x => x.Title == "test 3").Id);
         
-        var dailyProductivity3 = DailyProductivity.Create(new DateOnly(2024, 6, 12),Guid.NewGuid());
+        var dailyProductivity3 = DailyProductivity.Create(DailyProductivityId.New(), new DateOnly(2024, 6, 12),
+            UserId.New());
 
         var collection =
             TestAppDb.GetCollection<DailyProductivityDocument>();

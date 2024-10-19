@@ -4,6 +4,7 @@ using discipline.api.integration_tests._Helpers;
 using discipline.application.Features.UsersCalendars;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
 using Shouldly;
@@ -20,8 +21,8 @@ public class AddMeetingTests : BaseTestsController
     {
         //arrange
         var user = await AuthorizeWithFreeSubscriptionPicked();
-        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, Guid.Empty, "test_title",
-            new TimeOnly(15,00), null, "test_platform", "test_uri", null);
+        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), new UserId(Ulid.Empty), 
+            new EventId(Ulid.Empty), "test_title", new TimeOnly(15,00), null, "test_platform", "test_uri", null);
         
         //act
         var response = await HttpClient.PostAsJsonAsync("user-calendar/add-meeting", command);
@@ -30,15 +31,15 @@ public class AddMeetingTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         var userCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == command.Day && x.UserId == user.Id)
+            .Find(x => x.Day == command.Day && x.UserId == user.Id.Value)
             .FirstOrDefaultAsync();
 
         var resourceId = GetResourceIdFromHeader(response);
         resourceId.ShouldNotBeNull();
-        resourceId.ShouldNotBe(Guid.Empty);
+        resourceId.ShouldNotBe(Ulid.Empty.ToString());
         
         userCalendar.ShouldNotBeNull();
-        var eventDocument = userCalendar.Events.FirstOrDefault(x => x.Id == resourceId);
+        var eventDocument = userCalendar.Events.FirstOrDefault(x => x.Id.ToString() == resourceId);
         eventDocument.ShouldBeOfType<MeetingDocument>();
         eventDocument.Title.ShouldBe(command.Title);
     }
@@ -51,10 +52,10 @@ public class AddMeetingTests : BaseTestsController
         var userCalendar = UserCalendarFactory.Get();
         var @event = MeetingFactory.GetInUserCalender(userCalendar);
         var userCalendarDocument = userCalendar.AsDocument();
-        userCalendarDocument.UserId = user.Id;
+        userCalendarDocument.UserId = user.Id.Value;
         await TestAppDb.GetCollection<UserCalendarDocument>().InsertOneAsync(userCalendarDocument);
-        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now),Guid.Empty, Guid.Empty, "test_title",
-            new TimeOnly(15,00), null, null, null, "test_place");
+        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now),new UserId(Ulid.Empty),
+            new EventId(Ulid.Empty),"test_title", new TimeOnly(15,00), null, null, null, "test_place");
         
         //act
         var response = await HttpClient.PostAsJsonAsync("user-calendar/add-meeting", command);
@@ -63,15 +64,15 @@ public class AddMeetingTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         var updatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == command.Day && x.UserId == user.Id)
+            .Find(x => x.Day == command.Day && x.UserId == user.Id.Value)
             .FirstOrDefaultAsync();
 
         var resourceId = GetResourceIdFromHeader(response);
         resourceId.ShouldNotBeNull();
-        resourceId.ShouldNotBe(Guid.Empty);
+        resourceId.ShouldNotBe(Ulid.Empty.ToString());
         
         updatedUserCalendar.ShouldNotBeNull();
-        var eventDocument = updatedUserCalendar.Events.FirstOrDefault(x => x.Id == resourceId);
+        var eventDocument = updatedUserCalendar.Events.FirstOrDefault(x => x.Id.ToString() == resourceId);
         eventDocument.ShouldBeOfType<MeetingDocument>();
         eventDocument.Title.ShouldBe(command.Title);
     }
@@ -80,7 +81,8 @@ public class AddMeetingTests : BaseTestsController
     public async Task AddMeeting_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
     {
         //arrange
-        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, Guid.Empty, "test_title",
+        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), new UserId(Ulid.Empty),
+            new EventId(Ulid.Empty), "test_title",
             new TimeOnly(15,00), null, "test_platform", "test_uri", null);
         
         //act
@@ -95,7 +97,8 @@ public class AddMeetingTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithoutSubscription();
-        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty, Guid.Empty, "test_title",
+        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), new UserId(Ulid.Empty),
+            new EventId(Ulid.Empty), "test_title",
             new TimeOnly(15,00), null, "test_platform", "test_uri", null);
         
         //act
@@ -110,7 +113,8 @@ public class AddMeetingTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithFreeSubscriptionPicked();
-        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), Guid.Empty,Guid.Empty, string.Empty,
+        var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now), new UserId(Ulid.Empty),
+            new EventId(Ulid.Empty), string.Empty,
             new TimeOnly(15,00), null, "test_platform", "test_uri", null);
         
         //act

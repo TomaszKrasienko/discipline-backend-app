@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Exceptions;
 using discipline.application.Features.UsersCalendars;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Repositories;
 using discipline.tests.shared.Entities;
@@ -20,9 +21,9 @@ public sealed class EditCalendarEventCommandHandlerTests
         //arrange
         var userCalendar = UserCalendarFactory.Get();
         var eventId = Guid.NewGuid();
-        userCalendar.AddEvent(eventId, "test_title", new TimeOnly(12, 00), null, 
+        userCalendar.AddEvent(EventId.New(), "test_title", new TimeOnly(12, 00), null, 
             "test_action");
-        var command = new EditCalendarEventCommand(Guid.NewGuid(), eventId, "new_test_title",
+        var command = new EditCalendarEventCommand(UserId.New(), EventId.New(), "new_test_title",
             new TimeOnly(13, 00), null, "new_test_action");
 
         _userCalendarRepository
@@ -33,7 +34,7 @@ public sealed class EditCalendarEventCommandHandlerTests
         await Act(command);
         
         //assert
-        var @event = userCalendar.Events.First(x => x.Id.Value == command.Id);
+        var @event = userCalendar.Events.First(x => x.Id == command.Id);
         @event.Title.Value.ShouldBe(command.Title);
         ((CalendarEvent)@event).MeetingTimeSpan.From.ShouldBe(command.TimeFrom);
         ((CalendarEvent)@event).MeetingTimeSpan.To.ShouldBe(command.TimeTo);
@@ -47,7 +48,7 @@ public sealed class EditCalendarEventCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingUserCalendarForUserAndEventId_ShouldThrowUserCalendarNotFoundException()
     {
         //arrange
-        var command = new EditCalendarEventCommand(Guid.NewGuid(), Guid.NewGuid(), "test_title",
+        var command = new EditCalendarEventCommand(UserId.New(), EventId.New(), "test_title",
             new TimeOnly(12, 00), null, "test_action");
         
         //act

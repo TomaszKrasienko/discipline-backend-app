@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Features.Users;
 using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Enums;
 using discipline.tests.shared.Documents;
 using MongoDB.Driver;
@@ -21,7 +22,7 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
         var user = await AuthorizeWithoutSubscription();
         var subscriptionDocument = SubscriptionDocumentFactory.Get(10, 100);
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
-        var command = new CreateUserSubscriptionOrderCommand(Guid.Empty, Guid.Empty, subscriptionDocument.Id,
+        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), new SubscriptionId(subscriptionDocument.Id),
             SubscriptionOrderFrequency.Monthly, new string('1', 15), "123");
         
         //act
@@ -30,7 +31,7 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == user.Id)
+        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == user.Id.Value)
             .FirstOrDefaultAsync();
         updatedUserDocument.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrderDocument>();
     }
@@ -42,7 +43,8 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
         var user = await AuthorizeWithoutSubscription();
         var subscriptionDocument = SubscriptionDocumentFactory.Get();
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
-        var command = new CreateUserSubscriptionOrderCommand(Guid.Empty, Guid.Empty, subscriptionDocument.Id,
+        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), 
+            new SubscriptionId(subscriptionDocument.Id),
             null, null, null);
         
         //act
@@ -51,7 +53,7 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == user.Id)
+        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == user.Id.Value)
             .FirstOrDefaultAsync();
         updatedUserDocument.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrderDocument>();
     }
@@ -61,7 +63,8 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithoutSubscription();
-        var command = new CreateUserSubscriptionOrderCommand(Guid.Empty, Guid.Empty, Guid.NewGuid(),
+        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty),
+            SubscriptionId.New(), 
             SubscriptionOrderFrequency.Monthly, new string('1', 14), "123");
         
         //act
@@ -75,7 +78,8 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
     public async Task CreateUserSubscriptionOrder_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
     {
         //arrange
-        var command = new CreateUserSubscriptionOrderCommand(Guid.Empty, Guid.Empty, Guid.NewGuid(),
+        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty),
+            SubscriptionId.New(), 
             SubscriptionOrderFrequency.Monthly, new string('1', 14), "123");
         
         //act
@@ -90,7 +94,8 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithoutSubscription();
-        var command = new CreateUserSubscriptionOrderCommand(Guid.Empty, Guid.Empty, Guid.Empty,
+        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty),
+            new SubscriptionId(Ulid.Empty),
             SubscriptionOrderFrequency.Monthly, new string('1', 15), "123");
         
         //act

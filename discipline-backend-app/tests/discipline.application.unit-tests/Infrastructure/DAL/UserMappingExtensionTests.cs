@@ -21,7 +21,7 @@ public sealed class UserMappingExtensionsTests
         var result = user.AsDocument();
          
         //assert
-        result.Id.ShouldBe(user.Id);
+        result.Id.ShouldBe(user.Id.Value);
         result.Email.ShouldBe(user.Email.Value);
         result.Password.ShouldBe(user.Password.Value);
         result.FirstName.ShouldBe(user.FullName.FirstName);
@@ -46,7 +46,7 @@ public sealed class UserMappingExtensionsTests
          var result = user.AsDocument();
          
          //assert
-         result.Id.ShouldBe(user.Id);
+         result.Id.ShouldBe(user.Id.Value);
          result.Email.ShouldBe(user.Email.Value);
          result.Password.ShouldBe(user.Password.Value);
          result.FirstName.ShouldBe(user.FullName.FirstName);
@@ -77,7 +77,7 @@ public sealed class UserMappingExtensionsTests
          var result = user.AsDocument();
          
          //assert
-         result.Id.ShouldBe(user.Id);
+         result.Id.ShouldBe(user.Id.Value);
          result.Email.ShouldBe(user.Email.Value);
          result.Password.ShouldBe(user.Password.Value);
          result.FirstName.ShouldBe(user.FullName.FirstName);
@@ -100,7 +100,7 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsEntity();
          
          //assert
-         result.Id.ShouldBe(userDocument.Id);
+         result.Id.Value.ShouldBe(userDocument.Id);
          result.Email.Value.ShouldBe(userDocument.Email);
          result.Password.Value.ShouldBe(userDocument.Password);
          result.FullName.FirstName.ShouldBe(userDocument.FirstName);
@@ -121,7 +121,7 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsEntity();
          
          //assert
-         result.Id.ShouldBe(userDocument.Id);
+         result.Id.Value.ShouldBe(userDocument.Id);
          result.Email.Value.ShouldBe(userDocument.Email);
          result.Password.Value.ShouldBe(userDocument.Password);
          result.FullName.FirstName.ShouldBe(userDocument.FirstName);
@@ -150,7 +150,7 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsEntity();
          
          //assert
-         result.Id.ShouldBe(userDocument.Id);
+         result.Id.Value.ShouldBe(userDocument.Id);
          result.Email.Value.ShouldBe(userDocument.Email);
          result.Password.Value.ShouldBe(userDocument.Password);
          result.FullName.FirstName.ShouldBe(userDocument.FirstName);

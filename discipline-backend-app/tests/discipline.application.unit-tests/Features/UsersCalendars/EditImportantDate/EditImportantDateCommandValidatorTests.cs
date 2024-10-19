@@ -1,4 +1,5 @@
 using discipline.application.Features.UsersCalendars;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
@@ -14,7 +15,7 @@ public sealed class EditImportantDateCommandValidatorTests
     public void Validate_GivenValidCommand_ShouldNotHaveAnyValidationErrors()
     {
         //arrange
-        var command = new EditImportantDateCommand( Guid.NewGuid(), Guid.NewGuid(),
+        var command = new EditImportantDateCommand( UserId.New(), EventId.New(), 
             "test_title");
         
         //act
@@ -28,7 +29,7 @@ public sealed class EditImportantDateCommandValidatorTests
     public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorForUserId()
     {
         //arrange
-        var command = new EditImportantDateCommand( Guid.Empty, Guid.NewGuid(),
+        var command = new EditImportantDateCommand( UserId.New(), EventId.New(), 
             "test_title");
         
         //act
@@ -42,7 +43,7 @@ public sealed class EditImportantDateCommandValidatorTests
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new EditImportantDateCommand( Guid.NewGuid(), Guid.Empty,
+        var command = new EditImportantDateCommand( UserId.New(), new EventId(Ulid.Empty),
             "test_title");
         
         //act
@@ -56,7 +57,7 @@ public sealed class EditImportantDateCommandValidatorTests
     public void Validate_GivenNullTitle_ShouldHaveValidationErrorForTitle()
     {
         //arrange
-        var command = new EditImportantDateCommand( Guid.NewGuid(), Guid.NewGuid(),
+        var command = new EditImportantDateCommand( UserId.New(), EventId.New(), 
             null);
         
         //act
@@ -73,7 +74,7 @@ public sealed class EditImportantDateCommandValidatorTests
     {
         //arrange
         var title = new string(letter, multiplier);
-        var command = new EditImportantDateCommand( Guid.NewGuid(),Guid.NewGuid(),
+        var command = new EditImportantDateCommand( UserId.New(), EventId.New(), 
             title); 
         
         //act
