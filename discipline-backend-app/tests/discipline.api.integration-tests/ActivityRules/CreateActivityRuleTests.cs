@@ -41,7 +41,7 @@ public sealed class CreateActivityRuleTests : BaseTestsController
              .SingleOrDefaultAsync(); 
 
          newActivityRuleDocument.ShouldNotBeNull();
-         newActivityRuleDocument.UserId.ShouldBe(user.Id.Value);
+         newActivityRuleDocument.UserId.ShouldBe(user.Id.ToString());
      }
      
      [Fact]

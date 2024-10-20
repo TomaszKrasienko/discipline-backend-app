@@ -19,7 +19,7 @@ public sealed class ActivityRuleMappingExtensionsTests
         
         //assert
         result.Id.ShouldBe(activityRule.Id.ToString());
-        result.UserId.ShouldBe(activityRule.UserId.Value);
+        result.UserId.ShouldBe(activityRule.UserId.ToString());
         result.Title.ShouldBe(activityRule.Title.Value);
         result.Mode.ShouldBe(activityRule.Mode.Value);
         result.SelectedDays.ShouldBeNull();
@@ -37,7 +37,7 @@ public sealed class ActivityRuleMappingExtensionsTests
         
         //assert
         result.Id.ShouldBe(activityRule.Id.ToString());
-        result.UserId.ShouldBe(activityRule.UserId.Value);
+        result.UserId.ShouldBe(activityRule.UserId.ToString());
         result.Mode.ShouldBe(activityRule.Mode.Value);
         result.Title.ShouldBe(activityRule.Title.Value);
         result.SelectedDays.Contains(selectedDays[0]).ShouldBeTrue();
@@ -56,7 +56,7 @@ public sealed class ActivityRuleMappingExtensionsTests
         
         //assert
         result.Id.Value.ShouldBe(Ulid.Parse(activityRuleDocument.Id));
-        result.UserId.Value.ShouldBe(activityRuleDocument.UserId);
+        result.UserId.Value.ShouldBe(Ulid.Parse(activityRuleDocument.UserId));
         result.Title.Value.ShouldBe(activityRuleDocument.Title);
         result.Mode.Value.ShouldBe(activityRuleDocument.Mode);
         result.SelectedDays.ShouldBeEmpty();
@@ -74,7 +74,7 @@ public sealed class ActivityRuleMappingExtensionsTests
         
         //assert
         result.Id.Value.ShouldBe(Ulid.Parse(activityRuleDocument.Id));
-        result.UserId.Value.ShouldBe(activityRuleDocument.UserId);
+        result.UserId.Value.ShouldBe(Ulid.Parse(activityRuleDocument.UserId));
         result.Title.Value.ShouldBe(activityRuleDocument.Title);
         result.Mode.Value.ShouldBe(activityRuleDocument.Mode);
         result.SelectedDays.Select(x => x.Value).ToList().Contains(selectedDays[0]).ShouldBeTrue();

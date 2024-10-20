@@ -9,7 +9,7 @@ public sealed class ActivityRuleDocument : IDocument
     public string Id { get; init; }
     
     [BsonElement("userId")] 
-    public Ulid UserId { get; set; }
+    public string UserId { get; set; }
     
     [BsonElement("title")]
     public string Title { get; init; }
