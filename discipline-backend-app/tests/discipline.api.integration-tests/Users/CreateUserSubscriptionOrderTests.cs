@@ -22,7 +22,7 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
         var user = await AuthorizeWithoutSubscription();
         var subscriptionDocument = SubscriptionDocumentFactory.Get(10, 100);
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
-        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), new SubscriptionId(subscriptionDocument.Id),
+        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), new SubscriptionId(Ulid.Parse(subscriptionDocument.Id)),
             SubscriptionOrderFrequency.Monthly, new string('1', 15), "123");
         
         //act
@@ -31,7 +31,7 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == user.Id.Value)
+        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == user.Id.ToString())
             .FirstOrDefaultAsync();
         updatedUserDocument.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrderDocument>();
     }
@@ -44,7 +44,7 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
         var subscriptionDocument = SubscriptionDocumentFactory.Get();
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
         var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), 
-            new SubscriptionId(subscriptionDocument.Id),
+            new SubscriptionId(Ulid.Parse(subscriptionDocument.Id)),
             null, null, null);
         
         //act
@@ -53,7 +53,7 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == user.Id.Value)
+        var updatedUserDocument = await TestAppDb.GetCollection<UserDocument>().Find(x => x.Id == user.Id.ToString())
             .FirstOrDefaultAsync();
         updatedUserDocument.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrderDocument>();
     }

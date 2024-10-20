@@ -29,7 +29,7 @@ internal sealed class MongoActivityRuleRepository(
         => _collection.Find(x => x.Title == title).AnyAsync(cancellationToken);
 
     public async Task<ActivityRule> GetByIdAsync(ActivityRuleId id, CancellationToken cancellationToken = default)
-        => (await _collection.Find(x => x.Id == id.Value)
+        => (await _collection.Find(x => x.Id == id.Value.ToString())
             .FirstOrDefaultAsync(cancellationToken))?
             .AsEntity();
 

@@ -10,7 +10,7 @@ internal static class ActivityRuleMappingExtensions
     internal static ActivityRuleDocument AsDocument(this ActivityRule entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id.Value.ToString(),
             UserId = entity.UserId.Value,
             Title = entity.Title,
             Mode = entity.Mode,
@@ -19,7 +19,7 @@ internal static class ActivityRuleMappingExtensions
 
     internal static ActivityRule AsEntity(this ActivityRuleDocument document)
         => new(
-            new(document.Id),
+            new(Ulid.Parse(document.Id)),
             new(document.UserId),
             (Title)document.Title,
             (Mode)document.Mode,
@@ -28,7 +28,7 @@ internal static class ActivityRuleMappingExtensions
     internal static ActivityRuleDto AsDto(this ActivityRuleDocument document)
         => new()
         {
-            Id = document.Id,
+            Id = Ulid.Parse(document.Id),
             Title = document.Title,
             Mode = document.Mode,
             SelectedDays = document.SelectedDays?.ToList()

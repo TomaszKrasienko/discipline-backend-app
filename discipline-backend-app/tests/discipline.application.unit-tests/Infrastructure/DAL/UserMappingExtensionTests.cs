@@ -21,7 +21,7 @@ public sealed class UserMappingExtensionsTests
         var result = user.AsDocument();
          
         //assert
-        result.Id.ShouldBe(user.Id.Value);
+        result.Id.ShouldBe(user.Id.ToString());
         result.Email.ShouldBe(user.Email.Value);
         result.Password.ShouldBe(user.Password.Value);
         result.FirstName.ShouldBe(user.FullName.FirstName);
@@ -46,13 +46,13 @@ public sealed class UserMappingExtensionsTests
          var result = user.AsDocument();
          
          //assert
-         result.Id.ShouldBe(user.Id.Value);
+         result.Id.ShouldBe(user.Id.ToString());
          result.Email.ShouldBe(user.Email.Value);
          result.Password.ShouldBe(user.Password.Value);
          result.FirstName.ShouldBe(user.FullName.FirstName);
          result.LastName.ShouldBe(user.FullName.LastName);
          result.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrderDocument>();
-         result.SubscriptionOrder.Id.ShouldBe(subscriptionOrder.Id.Value);
+         result.SubscriptionOrder.Id.ShouldBe(subscriptionOrder.Id.ToString());
          result.SubscriptionOrder.CreatedAt.ShouldBe(now);
          result.SubscriptionOrder.SubscriptionId.ShouldBe(subscription.Id.Value);
          result.SubscriptionOrder.StateIsCancelled.ShouldBe(subscriptionOrder.State.IsCancelled);
@@ -77,13 +77,13 @@ public sealed class UserMappingExtensionsTests
          var result = user.AsDocument();
          
          //assert
-         result.Id.ShouldBe(user.Id.Value);
+         result.Id.ShouldBe(user.Id.ToString());
          result.Email.ShouldBe(user.Email.Value);
          result.Password.ShouldBe(user.Password.Value);
          result.FirstName.ShouldBe(user.FullName.FirstName);
          result.LastName.ShouldBe(user.FullName.LastName);
          result.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrderDocument>();
-         result.SubscriptionOrder.Id.ShouldBe(subscriptionOrder.Id.Value);
+         result.SubscriptionOrder.Id.ShouldBe(subscriptionOrder.Id.ToString());
          result.SubscriptionOrder.CreatedAt.ShouldBe(now);
          result.SubscriptionOrder.SubscriptionId.ShouldBe(subscription.Id.Value);
          result.SubscriptionOrder.StateIsCancelled.ShouldBe(subscriptionOrder.State.IsCancelled);
@@ -100,7 +100,7 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsEntity();
          
          //assert
-         result.Id.Value.ShouldBe(userDocument.Id);
+         result.Id.Value.ShouldBe(Ulid.Parse(userDocument.Id));
          result.Email.Value.ShouldBe(userDocument.Email);
          result.Password.Value.ShouldBe(userDocument.Password);
          result.FullName.FirstName.ShouldBe(userDocument.FirstName);
@@ -121,13 +121,13 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsEntity();
          
          //assert
-         result.Id.Value.ShouldBe(userDocument.Id);
+         result.Id.Value.ShouldBe(Ulid.Parse(userDocument.Id));
          result.Email.Value.ShouldBe(userDocument.Email);
          result.Password.Value.ShouldBe(userDocument.Password);
          result.FullName.FirstName.ShouldBe(userDocument.FirstName);
          result.FullName.LastName.ShouldBe(userDocument.LastName);
          result.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrder>();
-         result.SubscriptionOrder.Id.Value.ShouldBe(paidSubscriptionOrder.Id);
+         result.SubscriptionOrder.Id.Value.ShouldBe(Ulid.Parse(paidSubscriptionOrder.Id));
          result.SubscriptionOrder.CreatedAt.Value.ShouldBe(paidSubscriptionOrder.CreatedAt);
          result.SubscriptionOrder.SubscriptionId.Value.ShouldBe(paidSubscriptionOrder.SubscriptionId);
          result.SubscriptionOrder.State.ActiveTill.ShouldBe(paidSubscriptionOrder.StateActiveTill);
@@ -150,13 +150,13 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsEntity();
          
          //assert
-         result.Id.Value.ShouldBe(userDocument.Id);
+         result.Id.Value.ShouldBe(Ulid.Parse(userDocument.Id));
          result.Email.Value.ShouldBe(userDocument.Email);
          result.Password.Value.ShouldBe(userDocument.Password);
          result.FullName.FirstName.ShouldBe(userDocument.FirstName);
          result.FullName.LastName.ShouldBe(userDocument.LastName);
          result.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrder>();
-         result.SubscriptionOrder.Id.Value.ShouldBe(freeSubscriptionOrderDocument.Id);
+         result.SubscriptionOrder.Id.Value.ShouldBe(Ulid.Parse(freeSubscriptionOrderDocument.Id));
          result.SubscriptionOrder.CreatedAt.Value.ShouldBe(freeSubscriptionOrderDocument.CreatedAt);
          result.SubscriptionOrder.SubscriptionId.Value.ShouldBe(freeSubscriptionOrderDocument.SubscriptionId);
          result.SubscriptionOrder.State.ActiveTill.ShouldBe(freeSubscriptionOrderDocument.StateActiveTill);
@@ -173,7 +173,7 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsDto();
          
          //assert
-         result.Id.ShouldBe(userDocument.Id);
+         result.Id.ShouldBe(Ulid.Parse(userDocument.Id));
          result.Email.ShouldBe(userDocument.Email);
          result.FirstName.ShouldBe(userDocument.FirstName);
          result.LastName.ShouldBe(userDocument.LastName);
@@ -193,12 +193,12 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsDto();
          
          //assert
-         result.Id.ShouldBe(userDocument.Id);
+         result.Id.ShouldBe(Ulid.Parse(userDocument.Id));
          result.Email.ShouldBe(userDocument.Email);
          result.FirstName.ShouldBe(userDocument.FirstName);
          result.LastName.ShouldBe(userDocument.LastName);
          result.Status.ShouldBe(userDocument.Status);
-         result.SubscriptionOrder.Id.ShouldBe(freeSubscriptionOrderDocument.Id);
+         result.SubscriptionOrder.Id.ShouldBe(Ulid.Parse(freeSubscriptionOrderDocument.Id));
          result.SubscriptionOrder.CreatedAt.ShouldBe(freeSubscriptionOrderDocument.CreatedAt);
          result.SubscriptionOrder.SubscriptionId.ShouldBe(freeSubscriptionOrderDocument.SubscriptionId);
          result.SubscriptionOrder.StateIsCancelled.ShouldBe(freeSubscriptionOrderDocument.StateIsCancelled);
@@ -221,12 +221,12 @@ public sealed class UserMappingExtensionsTests
          var result = userDocument.AsDto();
          
          //assert
-         result.Id.ShouldBe(userDocument.Id);
+         result.Id.ShouldBe(Ulid.Parse(userDocument.Id));
          result.Email.ShouldBe(userDocument.Email);
          result.FirstName.ShouldBe(userDocument.FirstName);
          result.LastName.ShouldBe(userDocument.LastName);
          result.Status.ShouldBe(userDocument.Status);
-         result.SubscriptionOrder.Id.ShouldBe(paidSubscriptionOrderDocument.Id);
+         result.SubscriptionOrder.Id.ShouldBe(Ulid.Parse(paidSubscriptionOrderDocument.Id));
          result.SubscriptionOrder.CreatedAt.ShouldBe(paidSubscriptionOrderDocument.CreatedAt);
          result.SubscriptionOrder.SubscriptionId.ShouldBe(paidSubscriptionOrderDocument.SubscriptionId);
          result.SubscriptionOrder.StateIsCancelled.ShouldBe(paidSubscriptionOrderDocument.StateIsCancelled);
@@ -247,7 +247,7 @@ public sealed class UserMappingExtensionsTests
          var result = subscriptionDocument.AsEntity();
          
          //assert
-         result.Id.Value.ShouldBe(subscriptionDocument.Id);
+         result.Id.Value.ShouldBe(Ulid.Parse(subscriptionDocument.Id));
          result.Title.Value.ShouldBe(subscriptionDocument.Title);
          result.Price.PerMonth.ShouldBe(subscriptionDocument.PricePerMonth);
          result.Price.PerYear.ShouldBe(subscriptionDocument.PricePerYear);
@@ -264,7 +264,7 @@ public sealed class UserMappingExtensionsTests
          var document = subscription.AsDocument();
          
          //assert
-         document.Id.ShouldBe(subscription.Id.Value);
+         document.Id.ShouldBe(subscription.Id.ToString());
          document.Title.ShouldBe(subscription.Title.Value);
          document.PricePerMonth.ShouldBe(subscription.Price.PerMonth);
          document.PricePerYear.ShouldBe(subscription.Price.PerYear);
@@ -282,7 +282,7 @@ public sealed class UserMappingExtensionsTests
          var dto = document.AsDto();
          
          //assert
-         dto.Id.ShouldBe(document.Id);
+         dto.Id.ShouldBe(Ulid.Parse(document.Id));
          dto.Title.ShouldBe(document.Title);
          dto.PricePerMonth.ShouldBe(document.PricePerMonth);
          dto.PricePerYear.ShouldBe(document.PricePerYear);

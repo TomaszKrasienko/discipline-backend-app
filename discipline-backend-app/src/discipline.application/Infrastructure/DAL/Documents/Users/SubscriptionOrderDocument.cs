@@ -8,7 +8,7 @@ public class SubscriptionOrderDocument : IDocument
 {
     [BsonId]
     [BsonElement("id")]
-    public Ulid Id { get; set; }
+    public string Id { get; set; }
     
     [BsonElement("createdAt")]
     public DateTime CreatedAt { get; set; }

@@ -11,7 +11,7 @@ internal static class UsersMappingExtensions
     internal static UserDocument AsDocument(this User entity)
         => new ()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id.Value.ToString(),
             Email = entity.Email,
             Password = entity.Password,
             FirstName = entity.FullName.FirstName,
@@ -29,7 +29,7 @@ internal static class UsersMappingExtensions
     private static PaidSubscriptionOrderDocument AsDocument(this PaidSubscriptionOrder entity)
         => new ()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id.Value.ToString(),
             CreatedAt = entity.CreatedAt,
             SubscriptionId = entity.SubscriptionId.Value,
             StateIsCancelled = entity.State.IsCancelled,
@@ -43,7 +43,7 @@ internal static class UsersMappingExtensions
     private static FreeSubscriptionOrderDocument AsDocument(this FreeSubscriptionOrder entity)
         => new ()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id.Value.ToString(),
             CreatedAt = entity.CreatedAt,
             SubscriptionId = entity.SubscriptionId.Value,
             StateIsCancelled = entity.State.IsCancelled,
@@ -51,7 +51,7 @@ internal static class UsersMappingExtensions
         };
 
     internal static User AsEntity(this UserDocument document)
-        => new (new(document.Id), document.Email, document.Password, new FullName(document.FirstName, document.LastName),
+        => new (new(Ulid.Parse(document.Id)), document.Email, document.Password, new FullName(document.FirstName, document.LastName),
             document.Status, document.SubscriptionOrder?.AsEntity());
 
     private static SubscriptionOrder AsEntity(this SubscriptionOrderDocument document) => document switch
@@ -61,20 +61,20 @@ internal static class UsersMappingExtensions
     };
     
     private static PaidSubscriptionOrder AsEntity(this PaidSubscriptionOrderDocument document)
-        => new (new(document.Id), new(document.SubscriptionId), document.CreatedAt,
+        => new (new(Ulid.Parse(document.Id)), new(document.SubscriptionId), document.CreatedAt,
             new State(document.StateIsCancelled, document.StateActiveTill),
             new Next(document.Next),
             new PaymentDetails(document.PaymentDetailsCardNumber, document.PaymentDetailsCvvCode),
             (SubscriptionOrderFrequency)document.Type);
 
     private static FreeSubscriptionOrder AsEntity(this FreeSubscriptionOrderDocument document)
-        => new (new(document.Id),  document.CreatedAt, new(document.SubscriptionId),
+        => new (new(Ulid.Parse(document.Id)),  document.CreatedAt, new(document.SubscriptionId),
             new State(document.StateIsCancelled, document.StateActiveTill));
 
     internal static UserDto AsDto(this UserDocument document)
         => new UserDto()
         {
-            Id = document.Id,
+            Id = Ulid.Parse(document.Id),
             Email = document.Email,
             FirstName = document.FirstName,
             LastName = document.LastName,
@@ -83,9 +83,9 @@ internal static class UsersMappingExtensions
         };
     
     private static SubscriptionOrderDto AsDto(this SubscriptionOrderDocument document)
-        => new SubscriptionOrderDto()
+        => new()
         {
-            Id = document.Id,
+            Id = Ulid.Parse(document.Id),
             CreatedAt = document.CreatedAt,
             SubscriptionId = document.SubscriptionId,
             StateIsCancelled = document.StateIsCancelled,
@@ -100,13 +100,13 @@ internal static class UsersMappingExtensions
         => document.GetType() == typeof(PaidSubscriptionOrderDocument);
     
     internal static Subscription AsEntity(this SubscriptionDocument document)
-        => new (new(document.Id), document.Title, new Price(document.PricePerMonth, 
+        => new (new(Ulid.Parse(document.Id)), document.Title, new Price(document.PricePerMonth, 
             document.PricePerYear), document.Features.Select(x => new Feature(x)).ToList());
 
     internal static SubscriptionDocument AsDocument(this Subscription entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id.ToString(),
             PricePerMonth = entity.Price.PerMonth,
             PricePerYear = entity.Price.PerYear,
             Title = entity.Title,
@@ -117,7 +117,7 @@ internal static class UsersMappingExtensions
     internal static SubscriptionDto AsDto(this SubscriptionDocument document)
         => new()
         {
-            Id = document.Id,
+            Id = Ulid.Parse(document.Id),
             Title = document.Title,
             PricePerMonth = document.PricePerMonth,
             PricePerYear = document.PricePerYear,

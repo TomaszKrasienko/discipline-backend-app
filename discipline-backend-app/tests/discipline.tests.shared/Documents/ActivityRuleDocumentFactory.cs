@@ -14,7 +14,7 @@ internal static class ActivityRuleDocumentFactory
     
     private static Faker<ActivityRuleDocument> GetFaker(List<int> selectedDays = null)
         => new Faker<ActivityRuleDocument>()
-            .RuleFor(f => f.Id, v => Ulid.NewUlid())
+            .RuleFor(f => f.Id, v => Ulid.NewUlid().ToString())
             .RuleFor(f => f.Title, v => v.Random.String(length: 10, minChar: 'A', maxChar: 'z'))
             .RuleFor(f => f.Mode,
                 v => selectedDays is null

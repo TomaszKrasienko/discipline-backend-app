@@ -17,7 +17,8 @@ internal sealed class MongoSubscriptionRepository(
 
     public async Task<Subscription> GetByIdAsync(SubscriptionId id, CancellationToken cancellationToken = default)
         => (await disciplineMongoCollection.GetCollection<SubscriptionDocument>()
-            .Find(x => x.Id == id.Value).FirstOrDefaultAsync(cancellationToken))?.AsEntity();
+            .Find(x => x.Id == id.Value.ToString())
+            .FirstOrDefaultAsync(cancellationToken))?.AsEntity();
 
     public async Task AddAsync(Subscription subscription, CancellationToken cancellationToken = default)
         => await disciplineMongoCollection.GetCollection<SubscriptionDocument>()

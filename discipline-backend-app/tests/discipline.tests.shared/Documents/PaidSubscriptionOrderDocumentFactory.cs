@@ -13,7 +13,7 @@ internal static class PaidSubscriptionOrderDocumentFactory
     
     private static Faker<PaidSubscriptionOrderDocument> GetFaker()
         => new Faker<PaidSubscriptionOrderDocument>()
-            .RuleFor(f => f.Id, Ulid.NewUlid())
+            .RuleFor(f => f.Id, Ulid.NewUlid().ToString())
             .RuleFor(f => f.CreatedAt, DateTime.Now)
             .RuleFor(f => f.SubscriptionId, Ulid.NewUlid())
             .RuleFor(f => f.StateIsCancelled, v => v.PickRandom<bool>(true, false))

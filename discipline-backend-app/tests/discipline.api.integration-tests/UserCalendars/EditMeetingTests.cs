@@ -22,7 +22,7 @@ public sealed class EditMeetingTests : BaseTestsController
         //arrange
         var user = await AuthorizeWithFreeSubscriptionPicked();
         var userDocument = user.AsDocument();
-        userDocument.Id = user.Id.Value;
+        userDocument.Id = user.Id.ToString();
         
         var userCalendar = UserCalendarFactory.Get();
         var eventId = EventId.New();

@@ -4,9 +4,9 @@ namespace discipline.application.Infrastructure.DAL.Documents;
 
 public sealed class ActivityRuleDocument : IDocument
 {
-    [BsonId]
     [BsonElement("id")]
-    public Ulid Id { get; init; }
+    [BsonId]
+    public string Id { get; init; }
     
     [BsonElement("userId")] 
     public Ulid UserId { get; set; }

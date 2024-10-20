@@ -21,7 +21,8 @@ internal sealed class MongoUserRepository(
 
     public async Task<User> GetByIdAsync(UserId id, CancellationToken cancellationToken = default)
         => (await disciplineMongoCollection.GetCollection<UserDocument>()
-            .Find(x => x.Id == id.Value).FirstOrDefaultAsync(cancellationToken))?.AsEntity();
+            .Find(x => x.Id == id.Value.ToString())
+            .FirstOrDefaultAsync(cancellationToken))?.AsEntity();
 
     public async Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
         => (await disciplineMongoCollection.GetCollection<UserDocument>()
@@ -34,6 +35,6 @@ internal sealed class MongoUserRepository(
 
     public Task<bool> IsUserExists(UserId userId, CancellationToken cancellationToken = default)
         =>  disciplineMongoCollection.GetCollection<UserDocument>()
-            .Find(x => x.Id == userId.Value)
+            .Find(x => x.Id == userId.Value.ToString())
             .AnyAsync(cancellationToken);
 }

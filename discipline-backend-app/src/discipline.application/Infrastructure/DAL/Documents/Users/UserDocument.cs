@@ -6,7 +6,7 @@ public sealed class UserDocument : IDocument
 {
     [BsonId]
     [BsonElement("id")]
-    public Ulid Id { get; set; }
+    public string Id { get; set; }
     
     [BsonElement("email")]
     public string Email { get; set; }

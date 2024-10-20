@@ -20,7 +20,7 @@ internal static class BrowseMe
                 var userId = identityContext.UserId;
                 var result = (await disciplineMongoCollection
                     .GetCollection<UserDocument>()
-                    .Find(x => x.Id == userId.Value)
+                    .Find(x => x.Id == userId.ToString())
                     .FirstOrDefaultAsync())?.AsDto();
                 return result is null ? Results.NoContent() : Results.Ok(result);
             })

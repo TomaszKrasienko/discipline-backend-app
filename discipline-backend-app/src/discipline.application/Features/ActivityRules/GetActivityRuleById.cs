@@ -20,7 +20,7 @@ internal static class GetActivityRuleById
             {
                 var result = await disciplineMongoCollection
                     .GetCollection<ActivityRuleDocument>()
-                    .Find(x => x.Id == activityRuleId)
+                    .Find(x => x.Id == activityRuleId.ToString())
                     .FirstOrDefaultAsync(cancellationToken);
                 return result is null ? Results.NoContent() : Results.Ok(result.AsDto());
             })
