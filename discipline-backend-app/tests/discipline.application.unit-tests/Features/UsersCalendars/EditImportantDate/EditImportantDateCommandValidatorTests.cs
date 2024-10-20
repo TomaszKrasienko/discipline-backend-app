@@ -29,7 +29,7 @@ public sealed class EditImportantDateCommandValidatorTests
     public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorForUserId()
     {
         //arrange
-        var command = new EditImportantDateCommand( UserId.New(), EventId.New(), 
+        var command = new EditImportantDateCommand(new UserId(Ulid.Empty) , EventId.New(), 
             "test_title");
         
         //act

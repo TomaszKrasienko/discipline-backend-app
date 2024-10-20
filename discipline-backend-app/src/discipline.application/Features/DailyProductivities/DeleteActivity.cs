@@ -13,10 +13,10 @@ internal static class DeleteActivity
 {
     internal static WebApplication MapDeleteActivity(this WebApplication app)
     {
-        app.MapDelete($"/{Extensions.DailyProductivityTag}/activity/{{activityId}}", async (ActivityId activityId,
+        app.MapDelete($"/{Extensions.DailyProductivityTag}/activity/{{activityId}}", async (Ulid activityId,
             CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
             {
-                await commandDispatcher.HandleAsync(new DeleteActivityCommand(activityId), cancellationToken);
+                await commandDispatcher.HandleAsync(new DeleteActivityCommand(new ActivityId(activityId)), cancellationToken);
                 return Results.Ok();
             })
             .Produces(StatusCodes.Status200OK, typeof(void))

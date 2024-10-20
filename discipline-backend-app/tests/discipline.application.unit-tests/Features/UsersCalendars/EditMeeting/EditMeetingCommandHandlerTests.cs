@@ -21,7 +21,7 @@ public sealed class EditCalendarEventCommandHandlerTests
         //arrange
         var userCalendar = UserCalendarFactory.Get();
         var eventId = EventId.New();
-        userCalendar.AddEvent(EventId.New(), "test_title", new TimeOnly(12, 00), null, 
+        userCalendar.AddEvent(eventId, "test_title", new TimeOnly(12, 00), null, 
             "test_platform", "test_uri", null);
         var command = new EditMeetingCommand(UserId.New(), eventId, "new_test_title",
             new TimeOnly(13, 00), null, "new_test_platform",

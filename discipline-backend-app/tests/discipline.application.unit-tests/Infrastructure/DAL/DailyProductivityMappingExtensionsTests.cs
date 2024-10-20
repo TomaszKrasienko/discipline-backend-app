@@ -36,7 +36,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         result.Day.ShouldBe(dailyProductivity.Day.Value);
         result.UserId.ShouldBe(dailyProductivity.UserId.Value);
         result.Activities.Any(x
-            => x.Id.Equals(activity.Id)
+            => x.Id == activity.Id.Value
                && x.Title == activity.Title
                && x.IsChecked == activity.IsChecked).ShouldBeTrue();
     }
