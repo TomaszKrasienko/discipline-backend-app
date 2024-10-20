@@ -22,7 +22,7 @@ internal sealed class MongoActivityRuleRepository(
             activityRule.AsDocument(), null, cancellationToken);
 
     public Task DeleteAsync(ActivityRule activityRule, CancellationToken cancellationToken = default)
-        => _collection.FindOneAndDeleteAsync(x => x.Id.Equals(activityRule.Id),
+        => _collection.FindOneAndDeleteAsync(x => x.Id == activityRule.Id.ToString(),
             null, cancellationToken);
 
     public Task<bool> ExistsAsync(string title, CancellationToken cancellationToken = default)

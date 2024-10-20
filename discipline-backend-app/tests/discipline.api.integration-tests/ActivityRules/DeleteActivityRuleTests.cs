@@ -28,7 +28,7 @@ public sealed class DeleteActivityRuleTests : BaseTestsController
 
         var isActivityRuleExists = await TestAppDb
             .GetCollection<ActivityRuleDocument>()
-            .Find(x => x.Id.Equals(activityRule.Id))
+            .Find(x => x.Id == activityRule.Id.ToString())
             .AnyAsync();
         isActivityRuleExists.ShouldBeFalse();
     }
