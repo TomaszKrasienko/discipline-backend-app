@@ -33,7 +33,7 @@ public class EditActivityRuleTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var result = (await TestAppDb
             .GetCollection<ActivityRuleDocument>()
-            .Find(x => x.Id.Equals(activityRule.Id))
+            .Find(x => x.Id == activityRule.Id.ToString())
             .FirstOrDefaultAsync()).AsEntity();
 
         result.ShouldNotBeNull();
