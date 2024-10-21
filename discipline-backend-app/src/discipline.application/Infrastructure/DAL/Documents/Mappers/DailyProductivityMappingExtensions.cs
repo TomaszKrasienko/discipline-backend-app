@@ -11,7 +11,7 @@ internal static class DailyProductivityMappingExtensions
         {
             Id = entity.Id.ToString(),
             Day = entity.Day,
-            UserId = entity.UserId.Value,
+            UserId = entity.UserId.ToString(),
             Activities = entity.Activities?.Select(x => x.AsDocument())
         };
 
@@ -19,7 +19,7 @@ internal static class DailyProductivityMappingExtensions
         => new(
             new(Ulid.Parse(document.Id)),
             document.Day, 
-            new(document.UserId),
+            new(Ulid.Parse(document.UserId)),
             document.Activities?.Select(x => x.AsEntity()).ToList());
 
     internal static DailyProductivityDto AsDto(this DailyProductivityDocument document)

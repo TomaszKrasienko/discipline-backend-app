@@ -12,7 +12,7 @@ public class DailyProductivityDocument : IDocument
     public DateOnly Day { get; set; }
     
     [BsonElement("userId")] 
-    public Ulid UserId { get; set; }
+    public string UserId { get; set; }
 
     [BsonElement("activities")]
     public IEnumerable<ActivityDocument> Activities { get; set; }

@@ -19,9 +19,9 @@ public sealed class GetProgressDataTests : BaseTestsController
     public async Task GetProgressData_GivenFilledData_ShouldReturnIEnumerableOfProgressDataDto()
     {
         //arrange
-        await AuthorizeWithFreeSubscriptionPicked();
+        var user = await AuthorizeWithFreeSubscriptionPicked();
         var dailyProductivity1 = DailyProductivity.Create(DailyProductivityId.New(),  new DateOnly(2024, 6, 10), 
-            UserId.New());
+            user.Id);
         dailyProductivity1.AddActivity(ActivityId.New(), "test 1");
         dailyProductivity1.AddActivity(ActivityId.New(), "test 2");
         dailyProductivity1.AddActivity(ActivityId.New(), "test 3");
@@ -29,7 +29,7 @@ public sealed class GetProgressDataTests : BaseTestsController
         dailyProductivity1.ChangeActivityCheck(dailyProductivity1.Activities.First(x => x.Title == "test 2").Id);
         
         var dailyProductivity2 = DailyProductivity.Create(DailyProductivityId.New(), new DateOnly(2024, 6, 11),
-            UserId.New());
+            user.Id);
         dailyProductivity2.AddActivity(ActivityId.New(), "test 1");
         dailyProductivity2.AddActivity(ActivityId.New(), "test 2");
         dailyProductivity2.AddActivity(ActivityId.New(), "test 3");
@@ -38,7 +38,7 @@ public sealed class GetProgressDataTests : BaseTestsController
         dailyProductivity2.ChangeActivityCheck(dailyProductivity2.Activities.First(x => x.Title == "test 3").Id);
         
         var dailyProductivity3 = DailyProductivity.Create(DailyProductivityId.New(), new DateOnly(2024, 6, 12),
-            UserId.New());
+            user.Id);
 
         var collection =
             TestAppDb.GetCollection<DailyProductivityDocument>();

@@ -33,7 +33,7 @@ public sealed class CreateActivityTests : BaseTestsController
 
         var dailyProductivityDocument = await TestAppDb
             .GetCollection<DailyProductivityDocument>()
-            .Find(x => x.Day == DateOnly.FromDateTime(DateTime.Now.Date) && x.UserId == user.Id.Value)
+            .Find(x => x.Day == DateOnly.FromDateTime(DateTime.Now.Date) && x.UserId == user.Id.ToString())
             .FirstOrDefaultAsync();
 
         dailyProductivityDocument.ShouldNotBeNull();

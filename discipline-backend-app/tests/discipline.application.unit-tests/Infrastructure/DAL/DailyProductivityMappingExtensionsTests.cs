@@ -19,7 +19,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         
         //assert
         result.Day.ShouldBe(dailyProductivity.Day.Value);
-        result.UserId.ShouldBe(dailyProductivity.UserId.Value);
+        result.UserId.ShouldBe(dailyProductivity.UserId.ToString());
     }
     
     [Fact]
@@ -34,7 +34,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         
         //assert
         result.Day.ShouldBe(dailyProductivity.Day.Value);
-        result.UserId.ShouldBe(dailyProductivity.UserId.Value);
+        result.UserId.ShouldBe(dailyProductivity.UserId.ToString());
         result.Activities.Any(x
             => x.Id == activity.Id.ToString()
                && x.Title == activity.Title
@@ -52,7 +52,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         
         //assert
         result.Day.Value.ShouldBe(dailyProductivityDocument.Day);
-        result.UserId.Value.ShouldBe(dailyProductivityDocument.UserId);
+        result.UserId.ToString().ShouldBe(dailyProductivityDocument.UserId);
     }
     
     [Fact]
@@ -67,7 +67,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         
         //assert
         result.Day.Value.ShouldBe(dailyProductivityDocument.Day);
-        result.UserId.Value.ShouldBe(dailyProductivityDocument.UserId);
+        result.UserId.ToString().ShouldBe(dailyProductivityDocument.UserId);
         result.Activities.Any(x
             => x.Id.Value.Equals(activityDocuments[0].Id)
                && x.Title == activityDocuments[0].Title
