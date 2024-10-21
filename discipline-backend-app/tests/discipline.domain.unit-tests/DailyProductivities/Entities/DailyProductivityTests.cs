@@ -1,6 +1,7 @@
 using discipline.domain.ActivityRules.Entities;
 using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.domain.DailyProductivities.Exceptions;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
@@ -14,8 +15,9 @@ public sealed class DailyProductivityTests
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
-        var id = Guid.NewGuid();
+        var id = ActivityId.New();
         var title = "title";
+        
         //act
         dailyProductivity.AddActivity(id, title);
         
@@ -32,10 +34,10 @@ public sealed class DailyProductivityTests
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
         var title = "Activity title";
-        dailyProductivity.AddActivity(Guid.NewGuid(), title);
+        dailyProductivity.AddActivity(ActivityId.New(), title);
         
         //act
-        var exception = Record.Exception(() => dailyProductivity.AddActivity(Guid.NewGuid(), title));
+        var exception = Record.Exception(() => dailyProductivity.AddActivity(ActivityId.New(), title));
         
         //assert
         exception.ShouldBeOfType<ActivityTitleAlreadyRegisteredException>();
@@ -46,9 +48,9 @@ public sealed class DailyProductivityTests
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "activity title",
+        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "activity title",
             Mode.EveryDayMode());
-        var id = Guid.NewGuid();
+        var id = ActivityId.New();
         
         //act
         dailyProductivity.AddActivityFromRule(id, DateTime.Now, activityRule);
@@ -57,7 +59,7 @@ public sealed class DailyProductivityTests
         dailyProductivity
             .Activities
             .Any(x 
-                => x.Id.Equals(id) 
+                => x.Id == id  
                 && x.Title == activityRule.Title
                 && x.ParentRuleId.Equals(activityRule.Id))
             .ShouldBeTrue();
@@ -68,9 +70,9 @@ public sealed class DailyProductivityTests
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"activity title",
+        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "activity title",
             Mode.FirstDayOfMonth());
-        var id = Guid.NewGuid();
+        var id = ActivityId.New();
         
         //act
         dailyProductivity.AddActivityFromRule(id, new DateTime(2024, 06, 2), activityRule);
@@ -91,13 +93,13 @@ public sealed class DailyProductivityTests
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
         var title = "Activity title";
-        dailyProductivity.AddActivity(Guid.NewGuid(), title);
+        dailyProductivity.AddActivity(ActivityId.New(), title);
         
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), title,
+        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), title,
             Mode.EveryDayMode());
     
         //act
-        var exception = Record.Exception(() => dailyProductivity.AddActivityFromRule(Guid.NewGuid(), 
+        var exception = Record.Exception(() => dailyProductivity.AddActivityFromRule(ActivityId.New(), 
             DateTime.Now, activityRule));
     
         //assert
@@ -123,10 +125,10 @@ public sealed class DailyProductivityTests
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
-        var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
+        ActivityFactory.GetInDailyProductivity(dailyProductivity);
         
         //act
-        var exception = Record.Exception(() => dailyProductivity.DeleteActivity(Guid.NewGuid()));
+        var exception = Record.Exception(() => dailyProductivity.DeleteActivity(ActivityId.New()));
         
         //assert
         exception.ShouldBeOfType<ActivityNotFoundException>();
@@ -153,10 +155,10 @@ public sealed class DailyProductivityTests
     {
         //arrange
         var dailyProductivity = DailyProductivityFactory.Get();
-        var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
+        ActivityFactory.GetInDailyProductivity(dailyProductivity);
         
         //act
-        var exception = Record.Exception(() => dailyProductivity.ChangeActivityCheck(Guid.NewGuid()));
+        var exception = Record.Exception(() => dailyProductivity.ChangeActivityCheck(ActivityId.New()));
         
         //assert
         exception.ShouldBeOfType<ActivityNotFoundException>();

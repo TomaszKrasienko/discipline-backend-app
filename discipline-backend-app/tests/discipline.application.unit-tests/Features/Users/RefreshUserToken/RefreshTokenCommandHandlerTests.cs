@@ -2,6 +2,7 @@ using discipline.application.Behaviours;
 using discipline.application.DTOs;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.Repositories;
 using discipline.tests.shared.Entities;
@@ -60,7 +61,7 @@ public sealed class RefreshTokenCommandHandlerTests
 
         _refreshTokenFacade
             .GetUserIdAsync(command.RefreshToken)
-            .Returns(Guid.NewGuid());
+            .Returns(UserId.New());
         
         //act
         var exception = await Record.ExceptionAsync(async () => await Act(command));

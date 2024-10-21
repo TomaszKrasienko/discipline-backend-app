@@ -1,26 +1,24 @@
 using discipline.domain.ActivityRules.Exceptions;
 using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.domain.DailyProductivities.Entities;
 using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 
 namespace discipline.domain.ActivityRules.Entities;
 
-public sealed class ActivityRule
+public sealed class ActivityRule : Entity<ActivityRuleId> 
 {
-    public EntityId Id { get; }
-    public EntityId UserId { get; }
+    public UserId UserId { get; }
     public Title Title { get; private set; }
     public Mode Mode { get; private set; }
     private List<SelectedDay> _selectedDays = [];
     public IReadOnlyList<SelectedDay> SelectedDays => _selectedDays;
 
-    private ActivityRule(EntityId id, EntityId userId)
-    {
-        Id = id;
-        UserId = userId;
-    }
+    private ActivityRule(ActivityRuleId id, UserId userId) : base(id)
+        => UserId = userId;
 
     //For mongo
-    public ActivityRule(EntityId id, EntityId userId, Title title, 
+    public ActivityRule(ActivityRuleId id, UserId userId, Title title, 
         Mode mode, IEnumerable<SelectedDay> selectedDays) : this(id, userId)
     {
         Title = title;
@@ -28,7 +26,7 @@ public sealed class ActivityRule
         _selectedDays = selectedDays?.ToList() ?? [];
     }
 
-    public static ActivityRule Create(Guid id, Guid userId, string title, string mode, List<int> selectedDays = null)
+    public static ActivityRule Create(ActivityRuleId id, UserId userId, string title, string mode, List<int> selectedDays = null)
     {
         var item = new ActivityRule(id, userId);
         item.ChangeTitle(title);

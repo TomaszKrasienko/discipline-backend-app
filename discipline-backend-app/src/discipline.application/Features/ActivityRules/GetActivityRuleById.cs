@@ -6,6 +6,7 @@ using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
 namespace discipline.application.Features.ActivityRules;
@@ -14,12 +15,12 @@ internal static class GetActivityRuleById
 {
     internal static WebApplication MapGetActivityRuleById(this WebApplication app)
     {
-        app.MapGet($"/{Extensions.ActivityRulesTag}/{{activityRuleId:guid}}", async (Guid activityRuleId, 
+        app.MapGet($"/{Extensions.ActivityRulesTag}/{{activityRuleId}}", async (Ulid activityRuleId, 
                 IDisciplineMongoCollection disciplineMongoCollection, CancellationToken cancellationToken) =>
             {
                 var result = await disciplineMongoCollection
                     .GetCollection<ActivityRuleDocument>()
-                    .Find(x => x.Id == activityRuleId)
+                    .Find(x => x.Id == activityRuleId.ToString())
                     .FirstOrDefaultAsync(cancellationToken);
                 return result is null ? Results.NoContent() : Results.Ok(result.AsDto());
             })

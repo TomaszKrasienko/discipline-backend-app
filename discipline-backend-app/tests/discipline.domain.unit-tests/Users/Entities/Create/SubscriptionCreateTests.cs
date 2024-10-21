@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Exceptions;
 using Shouldly;
@@ -11,7 +12,7 @@ public sealed class SubscriptionCreateTests
     public void Create_GivenValidArguments_ShouldReturnSubscriptionWithFilledFields()
     {
         //arrange
-        var id = Guid.NewGuid();
+        var id = SubscriptionId.New();
         var title = "test_title";
         var pricePerMonth = 10m;
         var pricePerYear = 100m;
@@ -22,7 +23,7 @@ public sealed class SubscriptionCreateTests
             [feature]);
         
         //assert
-        result.Id.Value.ShouldBe(id);
+        result.Id.ShouldBe(id);
         result.Title.Value.ShouldBe(title);
         result.Price.PerMonth.ShouldBe(pricePerMonth);
         result.Price.PerYear.ShouldBe(pricePerYear);
@@ -33,7 +34,7 @@ public sealed class SubscriptionCreateTests
     public void Create_GivenEmptyTitle_ShouldThrowEmptySubscriptionTitleException()
     {
         //act
-        var exception = Record.Exception(() => Subscription.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Subscription.Create(SubscriptionId.New(),
             string.Empty, 12, 123, ["test"]));
         
         //assert
@@ -46,7 +47,7 @@ public sealed class SubscriptionCreateTests
     public void Create_GivenInvalidPrice_ShouldThrowSubscriptionValueLessThanZeroException(decimal pricePerMonth, decimal pricePerYear)
     {
         //act
-        var exception = Record.Exception(() => Subscription.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Subscription.Create(SubscriptionId.New(),
             "test_title", pricePerMonth, pricePerYear, ["test"]));
         
         //assert
@@ -57,7 +58,7 @@ public sealed class SubscriptionCreateTests
     public void Create_GivenEmptyFeaturesList_ShouldThrowEmptyFeaturesListException()
     {
         //act
-        var exception = Record.Exception(() => Subscription.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Subscription.Create(SubscriptionId.New(),
             "test_title", 1, 1, []));
         
         //assert
@@ -68,7 +69,7 @@ public sealed class SubscriptionCreateTests
     public void Create_GivenEmptyFeature_ShouldThrowEmptyFeatureValueException()
     {
         //act
-        var exception = Record.Exception(() => Subscription.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Subscription.Create(SubscriptionId.New(),
             "test_title", 1, 1, [string.Empty]));
         
         //assert

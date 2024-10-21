@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using discipline.application.Behaviours;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using Microsoft.AspNetCore.Http;
 using Shouldly;
 using Xunit;
@@ -12,7 +13,7 @@ public class IdentityContextTests
     public void New_GivenAuthenticatedContextWithNameAsGuidAndStatus_ShouldReturnIdentityContext()
     {
         //arrange
-        var name = Guid.NewGuid();
+        var name = UserId.New();
         var status = "test_status";
         
         var claims = new List<Claim>() 
@@ -55,7 +56,7 @@ public class IdentityContextTests
     }
 
     [Fact]
-    public void New_GivenIdentityNameNotAsGuid_ShouldThrowArgumentException()
+    public void New_GivenIdentityNameNotAsUlid_ShouldThrowArgumentException()
     {
         //arrange
         var claims = new List<Claim>() 

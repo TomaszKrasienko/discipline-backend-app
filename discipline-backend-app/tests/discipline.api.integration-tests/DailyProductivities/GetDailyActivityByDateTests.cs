@@ -30,9 +30,9 @@ public class GetDailyActivityByDateTests : BaseTestsController
         //assert
         result.Day.ShouldBe(DateOnly.FromDateTime(DateTime.Now));
         result.Activities.Any(x
-            => x.Id.Equals(activity.Id)
-            && x.Title == activity.Title
-            && x.IsChecked == activity.IsChecked).ShouldBeTrue();
+            => x.Id == activity.Id.Value
+               && x.Title == activity.Title 
+               && x.IsChecked == activity.IsChecked).ShouldBeTrue();
     }
 
     [Fact]

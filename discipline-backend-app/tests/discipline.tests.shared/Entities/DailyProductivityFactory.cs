@@ -1,5 +1,6 @@
 using Bogus;
 using discipline.domain.DailyProductivities.Entities;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 
 namespace discipline.tests.shared.Entities;
 
@@ -14,5 +15,7 @@ internal static class DailyProductivityFactory
     private static Faker<DailyProductivity> GetFaker(DateOnly? now = null)
         => new Faker<DailyProductivity>()
             .CustomInstantiator(x => DailyProductivity.Create(
-                now ?? DateOnly.FromDateTime(DateTime.Now.Date), Guid.NewGuid()));
+                DailyProductivityId.New(), 
+                now ?? DateOnly.FromDateTime(DateTime.Now.Date), 
+                UserId.New()));
 }

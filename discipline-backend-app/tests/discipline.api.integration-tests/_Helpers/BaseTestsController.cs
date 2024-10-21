@@ -5,6 +5,7 @@ using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.tests.shared.Entities;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,7 @@ public abstract class BaseTestsController : IDisposable
        services.AddSingleton<IMongoCollectionNameConvention, TestsMongoCollectionNameConvention>();
    }
    
-   protected virtual Guid? GetResourceIdFromHeader(HttpResponseMessage httpResponseMessage) 
+   protected virtual string? GetResourceIdFromHeader(HttpResponseMessage httpResponseMessage) 
    {
        if (httpResponseMessage is null)
        {
@@ -41,13 +42,7 @@ public abstract class BaseTestsController : IDisposable
            return null;
        }
 
-       var stringId = value.Single();
-       if (!Guid.TryParse(stringId, out var id))
-       {
-           throw new InvalidOperationException("Resource id is not GUID type");
-       }
-
-       return id;
+       return value.Single();
    }
 
    protected virtual MetaDataDto GetMetaDataFromHeader(HttpResponseMessage httpResponseMessage)
@@ -70,7 +65,7 @@ public abstract class BaseTestsController : IDisposable
    {
        var subscription = SubscriptionFactory.Get();
        var user = UserFactory.Get();
-       user.CreateFreeSubscriptionOrder(Guid.NewGuid(), subscription, DateTime.Now);
+       user.CreateFreeSubscriptionOrder(SubscriptionOrderId.New(), subscription, DateTime.Now);
        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
        Authorize(user.Id, user.Status);
        return user;
@@ -84,7 +79,7 @@ public abstract class BaseTestsController : IDisposable
        return user;
    }
 
-   protected virtual void Authorize(Guid userId, string status)
+   protected virtual void Authorize(UserId userId, string status)
    {
        var optionsProvider = new OptionsProvider();
        var authOptions = optionsProvider.Get<AuthOptions>("Auth");

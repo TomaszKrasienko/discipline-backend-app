@@ -13,6 +13,6 @@ internal static class ImportantDateDocumentFactory
 
     private static Faker<ImportantDateDocument> GetFaker()
         => new Faker<ImportantDateDocument>()
-            .RuleFor(f => f.Id, v => Guid.NewGuid())
+            .RuleFor(f => f.Id, v => Ulid.NewUlid())
             .RuleFor(f => f.Title, v => v.Random.String(10, 'A', 'z'));
 }

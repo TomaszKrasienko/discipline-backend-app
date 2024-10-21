@@ -1,4 +1,5 @@
 using discipline.application.Features.DailyProductivities;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
@@ -11,7 +12,7 @@ public sealed class CreateActivityFromRuleCommandValidatorTests
     public void Validate_GivenValidCommand_ShouldNotHaveAnyValidationErrors()
     {
         //arrange
-        var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),Guid.NewGuid());
+        var command = new CreateActivityFromRuleCommand(ActivityId.New(), ActivityRuleId.New());
         
         //act
         var result = _validator.TestValidate(command);
@@ -24,7 +25,7 @@ public sealed class CreateActivityFromRuleCommandValidatorTests
     public void Validate_GivenEmptyActivityRuleId_ShouldHaveValidationErrorForActivityRuleId()
     {
         //arrange
-        var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),Guid.Empty);
+        var command = new CreateActivityFromRuleCommand(ActivityId.New(), new ActivityRuleId(Ulid.Empty));
         
         //act
         var result = _validator.TestValidate(command);
@@ -37,13 +38,13 @@ public sealed class CreateActivityFromRuleCommandValidatorTests
     public void Validate_GivenEmptyActivityId_ShouldHaveValidationErrorForActivityId()
     {
         //arrange
-        var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),Guid.Empty);
+        var command = new CreateActivityFromRuleCommand(new ActivityId(Ulid.Empty), ActivityRuleId.New());
         
         //act
         var result = _validator.TestValidate(command);
         
         //assert
-        result.ShouldHaveValidationErrorFor(x => x.ActivityRuleId);
+        result.ShouldHaveValidationErrorFor(x => x.ActivityId);
     }
     
     #region arrange

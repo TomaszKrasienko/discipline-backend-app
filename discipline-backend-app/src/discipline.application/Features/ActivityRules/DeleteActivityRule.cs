@@ -2,6 +2,7 @@ using discipline.application.Behaviours;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -12,10 +13,10 @@ internal static class DeleteActivityRule
 {
     internal static WebApplication MapDeleteActivityRule(this WebApplication app)
     {
-        app.MapDelete($"/{Extensions.ActivityRulesTag}/{{activityRuleId:guid}}/delete", async (Guid activityRuleId,
+        app.MapDelete($"/{Extensions.ActivityRulesTag}/{{activityRuleId}}/delete", async (Ulid activityRuleId,
                 CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
             {
-                await commandDispatcher.HandleAsync(new DeleteActivityRuleCommand(activityRuleId), cancellationToken);
+                await commandDispatcher.HandleAsync(new DeleteActivityRuleCommand(new ActivityRuleId(activityRuleId)), cancellationToken);
                 return Results.Ok();
             })
             .Produces(StatusCodes.Status200OK, typeof(void))
@@ -34,7 +35,7 @@ internal static class DeleteActivityRule
     }
 }
 
-public sealed record DeleteActivityRuleCommand(Guid Id) : ICommand;
+public sealed record DeleteActivityRuleCommand(ActivityRuleId Id) : ICommand;
 
 public sealed class DeleteActivityRuleCommandValidator : AbstractValidator<DeleteActivityRuleCommand>
 {

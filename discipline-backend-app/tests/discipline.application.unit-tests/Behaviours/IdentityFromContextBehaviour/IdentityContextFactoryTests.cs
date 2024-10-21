@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using discipline.application.Behaviours;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using Microsoft.AspNetCore.Http;
 using Shouldly;
 using Xunit;
@@ -12,14 +13,15 @@ public sealed class IdentityContextFactoryTests
     public void Create_GivenHttpContextAccessorByConstructor_ShouldReturnIIdentityContext()
     {
         //arrange
-        var name = Guid.NewGuid();
+        var name = UserId.New();
         var status = "test_status";
         
         var claims = new List<Claim>() 
         { 
-            new Claim(ClaimTypes.Name, name.ToString()),
-            new Claim("Status", status)
+            new(ClaimTypes.Name, name.ToString()),
+            new("Status", status)
         };
+        
         var identity = new ClaimsIdentity(claims, "authentication");
         var claimsPrincipal = new ClaimsPrincipal(identity);
         var httpContext = new DefaultHttpContext()

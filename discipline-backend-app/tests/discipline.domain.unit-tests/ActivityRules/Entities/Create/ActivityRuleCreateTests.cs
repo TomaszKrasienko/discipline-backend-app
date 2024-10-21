@@ -1,6 +1,7 @@
 using discipline.domain.ActivityRules.Entities;
 using discipline.domain.ActivityRules.Exceptions;
 using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using Shouldly;
 using Xunit;
 
@@ -12,8 +13,8 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenWithoutSelectedDaysWithValidMode_ShouldReturnActivityRuleWithFilledFields()
     {
         //arrange
-        var id = Guid.NewGuid();
-        var userId = Guid.NewGuid();
+        var id = ActivityRuleId.New();
+        var userId = UserId.New();
         var title = "Test title";
         var mode = Mode.EveryDayMode();
         
@@ -22,8 +23,8 @@ public sealed class ActivityRuleCreateTests
         
         //assert
         result.ShouldBeOfType<ActivityRule>();
-        result.Id.Value.ShouldBe(id);
-        result.UserId.Value.ShouldBe(userId);
+        result.Id.ShouldBe(id);
+        result.UserId.ShouldBe(userId);
         result.Title.Value.ShouldBe(title);
         result.Mode.Value.ShouldBe(mode);
     }
@@ -32,8 +33,8 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenWithSelectedDaysWithValidMode_ShouldReturnActivityRuleWithFilledFields()
     {
         //arrange
-        var id = Guid.NewGuid();
-        var userId = Guid.NewGuid();
+        var id = ActivityRuleId.New();
+        var userId = UserId.New();
         var title = "Test title";
         var mode = Mode.CustomMode();
         List<int> selectedDays = [1, 2, 4];
@@ -43,7 +44,7 @@ public sealed class ActivityRuleCreateTests
         
         //assert
         result.ShouldBeOfType<ActivityRule>();
-        result.Id.Value.ShouldBe(id);
+        result.Id.ShouldBe(id);
         result.Title.Value.ShouldBe(title);
         result.Mode.Value.ShouldBe(mode);
         result.SelectedDays.Select(x => x.Value).Contains(selectedDays[0]).ShouldBeTrue();
@@ -55,7 +56,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenEmptyTitle_ShouldThrowEmptyActivityRuleTitleException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),string.Empty,
+        var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(), string.Empty,
             Mode.EveryDayMode(), null));
         
         //assert
@@ -66,7 +67,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenTitleWithInvalidLength_ShouldThrowEmptyActivityRuleTitleException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"T",
+        var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(),"T",
             Mode.EveryDayMode(), null));
         
         //assert
@@ -77,7 +78,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenEmptyMode_ShouldThrowEmptyActivityRuleModeException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"Test title",
+        var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(),"Test title",
             string.Empty, null));
         
         //assert
@@ -88,7 +89,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenRandomMode_ShouldThrowModeUnavailableException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"Test title",
+        var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(),"Test title",
             Guid.NewGuid().ToString(), null));
         
         //assert
@@ -99,7 +100,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenSelectedDaysNotEmptyAndModeOtherThanCustom_ShouldThrowInvalidModeForSelectedDaysException()
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "Test title",
+        var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "Test title",
             Mode.EveryDayMode(), [1, 2, 3]));
         
         //assert
@@ -112,7 +113,7 @@ public sealed class ActivityRuleCreateTests
     public void Create_GivenInvalidSelectedDay_ShouldThrowSelectedDayOutOfRangeException(int selectedDay)
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(),"Test title",
+        var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(),"Test title",
             Mode.CustomMode(), [selectedDay]));
         
         //assert

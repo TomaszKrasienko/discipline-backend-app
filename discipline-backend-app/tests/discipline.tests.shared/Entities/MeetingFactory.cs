@@ -1,4 +1,5 @@
 using Bogus;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 
 namespace discipline.tests.shared.Entities;
@@ -24,7 +25,7 @@ internal static class MeetingFactory
     private static Faker<Meeting> GetFaker(bool withTimeTo = false, bool online = true)
         => new Faker<Meeting>()
             .CustomInstantiator(v => Meeting.Create(
-                Guid.NewGuid(),
+                EventId.New(),
                 v.Random.String(10, 'A', 'z'),
                 new TimeOnly(v.Random.Int(5, 10), 0, 0),
                 withTimeTo ? new TimeOnly(v.Random.Int(10, 22), 1, 0) : null,

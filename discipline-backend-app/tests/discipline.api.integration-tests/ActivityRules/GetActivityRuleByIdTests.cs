@@ -36,7 +36,7 @@ public sealed class GetActivityRuleByIdTests : BaseTestsController
         await AuthorizeWithFreeSubscriptionPicked();
         
         //act
-        var response = await HttpClient.GetAsync($"/activity-rules/{Guid.NewGuid()}");
+        var response = await HttpClient.GetAsync($"/activity-rules/{Ulid.NewUlid()}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);

@@ -4,12 +4,12 @@ namespace discipline.application.Infrastructure.DAL.Documents;
 
 public sealed class ActivityRuleDocument : IDocument
 {
-    [BsonId]
     [BsonElement("id")]
-    public Guid Id { get; init; }
+    [BsonId]
+    public string Id { get; init; }
     
     [BsonElement("userId")] 
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
     
     [BsonElement("title")]
     public string Title { get; init; }

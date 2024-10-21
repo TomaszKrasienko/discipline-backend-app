@@ -1,4 +1,5 @@
 using discipline.domain.ActivityRules.Exceptions;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Exceptions;
 using Shouldly;
@@ -12,14 +13,14 @@ public sealed class MeetingCreateTests
     public void Create_GivenValidArguments_ShouldReturnMeeting(TimeOnly timeFrom, TimeOnly? timeTo, string platform, string uri, string place)
     {
         //arrange
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         var title = "test_title";
         
         //act
         var result = Meeting.Create(id, title, timeFrom, timeTo, platform, uri, place);
         
         //assert
-        result.Id.Value.ShouldBe(id);
+        result.Id.ShouldBe(id);
         result.Title.Value.ShouldBe(title);
         result.MeetingTimeSpan.From.ShouldBe(timeFrom);
         result.MeetingTimeSpan.To.ShouldBe(timeTo);
@@ -42,7 +43,7 @@ public sealed class MeetingCreateTests
     public void Create_GivenEmptyTitle_ShouldThrowEmptyEventTitleException()
     {
         //act
-        var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Meeting.Create(EventId.New(), 
             string.Empty, new TimeOnly(15, 00),
             null, "test", "test", null));
         
@@ -59,7 +60,7 @@ public sealed class MeetingCreateTests
         string title = new string(text, multiplier);
         
         //act
-        var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Meeting.Create(EventId.New(), 
             title, new TimeOnly(15, 00),
             null, "test", "test", null));
         
@@ -71,7 +72,7 @@ public sealed class MeetingCreateTests
     public void Create_GivenTimeFromAfterTimeTo_ShouldThrowInvalidMeetingTimeSpanException()
     {
         //act
-        var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Meeting.Create(EventId.New(), 
             "title", new TimeOnly(15, 00),
             new TimeOnly(14, 00), "test", "test", null));
         
@@ -83,7 +84,7 @@ public sealed class MeetingCreateTests
     public void Create_GivenAllEmptyOrNullAddressFields_ShouldReturnEmptyAddressException()
     {
         //act
-        var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Meeting.Create(EventId.New(), 
             "title", new TimeOnly(15, 00),
             new TimeOnly(16, 00),string.Empty, string.Empty, string.Empty));
         
@@ -97,7 +98,7 @@ public sealed class MeetingCreateTests
     public void Create_GivenInconsistentAddress_ShouldThrowInconsistentAddressTypeException(string platform, string uri, string place)
     {
         //act
-        var exception = Record.Exception(() => Meeting.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => Meeting.Create(EventId.New(), 
             "title",  new TimeOnly(15, 00),
             new TimeOnly(16, 00), platform, uri, place));
         

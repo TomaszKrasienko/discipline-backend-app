@@ -1,4 +1,5 @@
 using discipline.application.Features.DailyProductivities;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
@@ -14,7 +15,7 @@ public sealed class CreateActivityCommandValidatorTests
     public void Validate_GivenValidArguments_ShouldNotHaveAnyValidationErrors()
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.NewGuid(), Guid.NewGuid(),"Tests", DateOnly.FromDateTime(DateTime.Now));
+        var command = new CreateActivityCommand(ActivityId.New(), UserId.New(), "Tests", DateOnly.FromDateTime(DateTime.Now));
         
         //act
         var result = Act(command);
@@ -27,7 +28,7 @@ public sealed class CreateActivityCommandValidatorTests
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.Empty,Guid.NewGuid(), "Title", DateOnly.FromDateTime(DateTime.Now));
+        var command = new CreateActivityCommand(new ActivityId(Ulid.Empty), UserId.New(), "Title", DateOnly.FromDateTime(DateTime.Now));
     
         //act
         var result = Act(command);
@@ -40,7 +41,7 @@ public sealed class CreateActivityCommandValidatorTests
     public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorForUserId()
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.NewGuid(), Guid.Empty, "test_title", new DateOnly(2024, 1, 1));
+        var command = new CreateActivityCommand(ActivityId.New(), new UserId(Ulid.Empty), "test_title", new DateOnly(2024, 1, 1));
         
         //act
         var result = Act(command);
@@ -55,7 +56,7 @@ public sealed class CreateActivityCommandValidatorTests
     public void Validate_GivenEmptyOrNullTitle_ShouldHaveValidationErrorForTitle(string title)
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.NewGuid(), Guid.NewGuid(), title, DateOnly.FromDateTime(DateTime.Now));
+        var command = new CreateActivityCommand(ActivityId.New(), UserId.New(), title, DateOnly.FromDateTime(DateTime.Now));
     
         //act
         var result = Act(command);
@@ -71,7 +72,7 @@ public sealed class CreateActivityCommandValidatorTests
     {
         //arrange
         var title = new string(character, multiplier);
-        var command = new CreateActivityCommand(Guid.NewGuid(), Guid.NewGuid(), title, DateOnly.FromDateTime(DateTime.Now));
+        var command = new CreateActivityCommand(ActivityId.New(), UserId.New(), title, DateOnly.FromDateTime(DateTime.Now));
     
         //act
         var result = Act(command);
@@ -84,7 +85,7 @@ public sealed class CreateActivityCommandValidatorTests
     public void Validate_GivenEmptyDateTime_ShouldHaveValidationErrorForDay()
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.NewGuid(), Guid.NewGuid(),"Title", DateOnly.FromDateTime(default));
+        var command = new CreateActivityCommand(ActivityId.New(), UserId.New(), "Title", DateOnly.FromDateTime(default));
     
         //act
         var result = _validator.TestValidate(command);

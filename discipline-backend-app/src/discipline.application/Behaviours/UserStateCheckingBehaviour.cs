@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Repositories;
 using discipline.domain.Users.ValueObjects;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,7 +40,7 @@ internal sealed class UserStateAuthorizationHandler(
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, UserStateRequirement requirement)
     {
-        if (!(Guid.TryParse(context?.User?.Identity?.Name, out var userId)))
+        if (!(Ulid.TryParse(context?.User?.Identity?.Name, out var userId)))
         {
             context.Succeed(requirement);
             return;
@@ -47,7 +48,7 @@ internal sealed class UserStateAuthorizationHandler(
 
         using var scope = serviceProvider.CreateScope();
         var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
-        var user = await userRepository.GetByIdAsync(userId);
+        var user = await userRepository.GetByIdAsync(new UserId(userId));
         if (!user.IsUserActive())
         {
             context.Fail();
@@ -68,7 +69,7 @@ internal sealed class UserStateMiddleware(
             return;
         }
 
-        if (!(Guid.TryParse(context?.User?.Identity?.Name, out var userId)))
+        if (!(Ulid.TryParse(context?.User?.Identity?.Name, out var userId)))
         {
             await next(context);
             return;
@@ -76,7 +77,7 @@ internal sealed class UserStateMiddleware(
 
         using var scope = serviceProvider.CreateScope();
         var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
-        var user = await userRepository.GetByIdAsync(userId);
+        var user = await userRepository.GetByIdAsync(new UserId(userId));
         if (user is null)
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;

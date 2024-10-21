@@ -1,5 +1,6 @@
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.ValueObjects.Event;
 using discipline.domain.UsersCalendars.ValueObjects.UserCalendar;
@@ -11,8 +12,9 @@ internal static class UserCalendarMappingExtensions
     internal static UserCalendarDocument AsDocument(this UserCalendar entity)
         => new()
         {
+            Id = entity.Id.Value,
             Day = entity.Day,
-            UserId = entity.UserId,
+            UserId = entity.UserId.Value,
             Events = entity.Events?.Select(x => x.AsEventDocument())
         };
 
@@ -26,14 +28,14 @@ internal static class UserCalendarMappingExtensions
     private static ImportantDateDocument AsDocument(this ImportantDate entity)
         => new()
         {
-            Id = entity.Id,
+            Id = entity.Id.Value,
             Title = entity.Title
         };
 
     private static CalendarEventDocument AsDocument(this CalendarEvent entity)
         => new()
         {
-            Id = entity.Id,
+            Id = entity.Id.Value,
             Title = entity.Title,
             Action = entity.Action,
             TimeFrom = entity.MeetingTimeSpan.From,
@@ -43,7 +45,7 @@ internal static class UserCalendarMappingExtensions
     private static MeetingDocument AsDocument(this Meeting entity)
         => new()
         {
-            Id = entity.Id,
+            Id = entity.Id.Value,
             Title = entity.Title,
             TimeFrom = entity.MeetingTimeSpan.From,
             TimeTo = entity.MeetingTimeSpan.To,
@@ -53,7 +55,7 @@ internal static class UserCalendarMappingExtensions
         };
 
     internal static UserCalendar AsEntity(this UserCalendarDocument document)
-        => new((Day)document.Day, document.UserId, 
+        => new(new(document.Id), (Day)document.Day, new(document.UserId), 
             (List<Event>)document.Events?.Select(x => x.AsEntity()).ToList());
 
     private static Event AsEntity(this EventDocument document) => document switch
@@ -65,19 +67,19 @@ internal static class UserCalendarMappingExtensions
 
     private static ImportantDate AsEntity(this ImportantDateDocument document)
         => new(
-            document.Id,
+            new(document.Id),
             document.Title);
 
     private static CalendarEvent AsEntity(this CalendarEventDocument document)
         => new(
-            document.Id,
+            new(document.Id),
             document.Title,
             new MeetingTimeSpan(document.TimeFrom, document.TimeTo),
             document.Action);
 
     private static Meeting AsEntity(this MeetingDocument document)
         => new(
-            document.Id,
+            new(document.Id),
             document.Title,
             new MeetingTimeSpan(document.TimeFrom, document.TimeTo),
             new Address(document.Platform, document.Uri, document.Place));

@@ -6,6 +6,7 @@ using discipline.application.Infrastructure.DAL.Documents;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
 namespace discipline.application.Features.ActivityRules;
@@ -20,7 +21,7 @@ internal static class BrowseActivityRules
             {
                 var source = disciplineMongoCollection
                     .GetCollection<ActivityRuleDocument>()
-                    .Find(x => x.UserId == identityContext.UserId);
+                    .Find(x => x.UserId == identityContext.UserId.ToString());
                 var pagedList = await PagedList<ActivityRuleDocument>
                     .ToPagedList(source, paginationDto.PageNumber, paginationDto.PageSize);
                 httpContext.AddPaginationToHeader(pagedList);
