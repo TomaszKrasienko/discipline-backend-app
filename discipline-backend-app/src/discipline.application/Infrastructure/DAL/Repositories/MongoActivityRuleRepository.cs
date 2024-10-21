@@ -18,7 +18,7 @@ internal sealed class MongoActivityRuleRepository(
         => _collection.InsertOneAsync(activityRule.AsDocument(), null, cancellationToken);
 
     public Task UpdateAsync(ActivityRule activityRule, CancellationToken cancellationToken = default)
-        => _collection.FindOneAndReplaceAsync(x => x.Id.Equals(activityRule.Id),
+        => _collection.FindOneAndReplaceAsync(x => x.Id == activityRule.Id.ToString(),
             activityRule.AsDocument(), null, cancellationToken);
 
     public Task DeleteAsync(ActivityRule activityRule, CancellationToken cancellationToken = default)

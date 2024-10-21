@@ -93,7 +93,7 @@ public class EditActivityRuleTests : BaseTestsController
         var command = new EditActivityRuleCommand(new ActivityRuleId(Ulid.Empty), string.Empty, Mode.EveryDayMode(), null);
         
         //act
-        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{Guid.NewGuid()}/edit",
+        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{Ulid.NewUlid()}/edit",
             command);
         
         //assert
