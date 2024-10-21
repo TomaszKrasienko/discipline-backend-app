@@ -69,7 +69,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         result.Day.Value.ShouldBe(dailyProductivityDocument.Day);
         result.UserId.ToString().ShouldBe(dailyProductivityDocument.UserId);
         result.Activities.Any(x
-            => x.Id.Value.Equals(activityDocuments[0].Id)
+            => x.Id.ToString() == activityDocuments[0].Id
                && x.Title == activityDocuments[0].Title
                && x.IsChecked == activityDocuments[0].IsChecked).ShouldBeTrue();
     }
@@ -100,9 +100,9 @@ public sealed class DailyProductivityMappingExtensionsTests
         //assert
         result.Day.ShouldBe(dailyProductivityDocument.Day);
         result.Activities.Any(x
-            => x.Id.Equals(activityDocuments[0].Id)
-               && x.Title == activityDocuments[0].Title
-               && x.IsChecked == activityDocuments[0].IsChecked).ShouldBeTrue();
+            => x.Id.ToString() == activityDocuments[0].Id 
+            && x.Title == activityDocuments[0].Title
+            && x.IsChecked == activityDocuments[0].IsChecked).ShouldBeTrue();
     }
     
     [Fact]

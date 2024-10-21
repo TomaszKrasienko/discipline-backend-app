@@ -20,5 +20,6 @@ internal static class ActivityRuleDocumentFactory
                 v => selectedDays is null
                     ? v.PickRandom<string>(Mode.AvailableModes.Keys.Where(x => x != Mode.CustomMode()).ToList())
                     : Mode.CustomMode())
-            .RuleFor(f => f.SelectedDays, v => selectedDays);
+            .RuleFor(f => f.SelectedDays, v => selectedDays)
+            .RuleFor(f => f.UserId, v => Ulid.NewUlid().ToString());
 }
