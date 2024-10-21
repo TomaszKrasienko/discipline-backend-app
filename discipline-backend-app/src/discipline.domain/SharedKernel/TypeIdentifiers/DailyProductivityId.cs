@@ -4,4 +4,7 @@ public sealed record DailyProductivityId(Ulid Value) : ITypeId<DailyProductivity
 {
     public static DailyProductivityId New()
         => new (Ulid.NewUlid());
+
+    public override string ToString()
+        => Value.ToString();
 }

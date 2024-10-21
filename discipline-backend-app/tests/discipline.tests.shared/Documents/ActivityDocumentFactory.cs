@@ -14,7 +14,7 @@ internal static class ActivityDocumentFactory
     
     private static Faker<ActivityDocument> GetFaker()
         => new Faker<ActivityDocument>()
-            .RuleFor(f => f.Id, v => Ulid.NewUlid())
+            .RuleFor(f => f.Id, v => Ulid.NewUlid().ToString())
             .RuleFor(f => f.Title, v => v.Random.String(length: 10, minChar: 'A', maxChar: 'z'))
             .RuleFor(f => f.IsChecked, v => false)
             .RuleFor(f => f.ParentRuleId, v => null);

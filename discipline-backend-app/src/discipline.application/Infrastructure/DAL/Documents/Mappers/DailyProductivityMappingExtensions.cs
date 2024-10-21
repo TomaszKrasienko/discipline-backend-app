@@ -9,7 +9,7 @@ internal static class DailyProductivityMappingExtensions
     internal static DailyProductivityDocument AsDocument(this DailyProductivity entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id.ToString(),
             Day = entity.Day,
             UserId = entity.UserId.Value,
             Activities = entity.Activities?.Select(x => x.AsDocument())
@@ -17,7 +17,7 @@ internal static class DailyProductivityMappingExtensions
 
     internal static DailyProductivity AsEntity(this DailyProductivityDocument document)
         => new(
-            new(document.Id),
+            new(Ulid.Parse(document.Id)),
             document.Day, 
             new(document.UserId),
             document.Activities?.Select(x => x.AsEntity()).ToList());
@@ -32,25 +32,25 @@ internal static class DailyProductivityMappingExtensions
     internal static ActivityDocument AsDocument(this Activity entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id.ToString(),
             IsChecked = entity.IsChecked,
             Title = entity.Title,
-            ParentRuleId = entity.ParentRuleId?.Value
+            ParentRuleId = entity.ParentRuleId?.ToString()
         };
 
     internal static Activity AsEntity(this ActivityDocument document)
         => new Activity(
-            new(document.Id),
+            new(Ulid.Parse(document.Id)),
             document.Title,
             document.IsChecked,
-            document.ParentRuleId is null ? null : new ActivityRuleId(document.ParentRuleId.Value));
+            document.ParentRuleId is null ? null : new ActivityRuleId(Ulid.Parse(document.ParentRuleId)));
 
     internal static ActivityDto AsDto(this ActivityDocument document)
         => new()
         {
-            Id = document.Id,
+            Id = Ulid.Parse(document.Id),
             Title = document.Title,
             IsChecked = document.IsChecked,
-            ParentRuleId = document.ParentRuleId
+            ParentRuleId = document.ParentRuleId is not null ? Ulid.Parse(document.ParentRuleId) : null
         };
 }

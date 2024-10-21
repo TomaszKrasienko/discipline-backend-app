@@ -6,7 +6,7 @@ public class DailyProductivityDocument : IDocument
 {
     [BsonElement("id")]
     [BsonId]
-    public Ulid Id { get; set; }
+    public string Id { get; set; }
     
     [BsonElement("day")]
     public DateOnly Day { get; set; }

@@ -36,7 +36,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         result.Day.ShouldBe(dailyProductivity.Day.Value);
         result.UserId.ShouldBe(dailyProductivity.UserId.Value);
         result.Activities.Any(x
-            => x.Id == activity.Id.Value
+            => x.Id == activity.Id.ToString()
                && x.Title == activity.Title
                && x.IsChecked == activity.IsChecked).ShouldBeTrue();
     }
@@ -115,7 +115,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         var result = activity.AsDocument();
         
         //assert
-        result.Id.ShouldBe(activity.Id.Value);
+        result.Id.ShouldBe(activity.Id.ToString());
         result.Title.ShouldBe(activity.Title.Value);
         result.IsChecked.ShouldBe(activity.IsChecked.Value);
         result.ParentRuleId.ShouldBeNull();
@@ -131,7 +131,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         var result = activityDocument.AsEntity();
         
         //assert
-        result.Id.Value.ShouldBe(activityDocument.Id);
+        result.Id.Value.ShouldBe(Ulid.Parse(activityDocument.Id));
         result.Title.Value.ShouldBe(activityDocument.Title);
         result.IsChecked.Value.ShouldBe(activityDocument.IsChecked);
         result.ParentRuleId.ShouldBeNull();

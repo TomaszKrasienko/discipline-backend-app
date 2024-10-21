@@ -28,7 +28,7 @@ internal sealed class MongoDailyProductivityRepository(
 
     public async Task<DailyProductivity> GetByActivityId(ActivityId activityId, CancellationToken cancellationToken = default)
         => (await _collection.Find(x 
-                    => x.Activities != null && x.Activities.Any(a => a.Id.Equals(activityId)))
+                    => x.Activities != null && x.Activities.Any(a => a.Id == activityId.ToString()))
                 .FirstOrDefaultAsync(cancellationToken))?
             .AsEntity();
 }

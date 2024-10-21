@@ -38,7 +38,7 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
             .FirstOrDefaultAsync();
         dailyProductivityDocument.Activities
             .Any(x 
-                => x.Id.Equals(activity.Id)
+                => x.Id == activity.Id.ToString()
                 && x.IsChecked == !isChecked).ShouldBeTrue();
     }
     
@@ -88,7 +88,7 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
         await AuthorizeWithFreeSubscriptionPicked();
         
         //act
-        var response = await HttpClient.PatchAsync($"daily-productivity/activity/{Guid.Empty}/change-check", null);
+        var response = await HttpClient.PatchAsync($"daily-productivity/activity/{Ulid.Empty}/change-check", null);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

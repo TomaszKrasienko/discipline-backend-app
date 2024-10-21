@@ -39,7 +39,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
             .GetCollection<DailyProductivityDocument>()
             .Find(x 
                 => x.Activities.Any(a 
-                    => a.ParentRuleId.Equals(command.ActivityRuleId)
+                    => a.ParentRuleId == command.ActivityRuleId.ToString()
                     && a.Title == activityRule.Title.Value))
             .AnyAsync();
         isExists.ShouldBeTrue();
@@ -60,7 +60,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     }
     
     [Fact]
-    public async Task Create_Unauthorized_ShouldReturn401UnauthorizedSStatusCode()
+    public async Task CreateActivityFromRule_Unauthorized_ShouldReturn401UnauthorizedSStatusCode()
     {
         //arrange
         var command = new CreateActivityFromRuleCommand(new ActivityId(Ulid.Empty), ActivityRuleId.New());
@@ -73,7 +73,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     }
     
     [Fact]
-    public async Task Create_AuthorizedByUserWithStatusCreated_ShouldReturnResponse403ForbiddenStatusCode()
+    public async Task CreateActivityFromRule_AuthorizedByUserWithStatusCreated_ShouldReturnResponse403ForbiddenStatusCode()
     {
         //arrange
         await AuthorizeWithoutSubscription();
@@ -91,7 +91,7 @@ public sealed class CreateActivityFromRuleTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithFreeSubscriptionPicked();
-        var command = new CreateActivityFromRuleCommand(new ActivityId(Ulid.Empty), ActivityRuleId.New());
+        var command = new CreateActivityFromRuleCommand(new ActivityId(Ulid.Empty), new ActivityRuleId(Ulid.Empty));
         
         //act
         var response = await HttpClient.PostAsJsonAsync("/daily-productivity/today/add-activity-from-rule", command);
