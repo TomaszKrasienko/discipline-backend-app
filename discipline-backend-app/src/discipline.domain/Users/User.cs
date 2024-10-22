@@ -1,10 +1,12 @@
 using discipline.domain.SharedKernel;
 using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
+using discipline.domain.Users.Events;
 using discipline.domain.Users.Exceptions;
 using discipline.domain.Users.ValueObjects;
 
-namespace discipline.domain.Users.Entities;
+namespace discipline.domain.Users;
 
 public sealed class User : AggregateRoot<UserId>
 {
@@ -12,42 +14,36 @@ public sealed class User : AggregateRoot<UserId>
     public Password Password { get; private set; }
     public FullName FullName { get; private set; }
     public Status Status { get; private set; }
-    public SubscriptionOrder SubscriptionOrder { get; private set; }
+    public SubscriptionOrder? SubscriptionOrder { get; private set; }
 
-    private User(UserId id) : base(id)
-    {
-        
-    }
-
-    //For mongo
-    public User(UserId id, Email email, Password password, FullName fullName,
-        Status status, SubscriptionOrder subscriptionOrder) : this(id)
+    private User(UserId id, Email email, Password password, FullName fullName,
+        Status status) : base(id)
     {
         Email = email;
         Password = password;
         FullName = fullName;
         Status = status;
+        
+        var @event = new UserCreated(id, email);
+        AddDomainEvent(@event);
+    }
+    
+    /// <summary>
+    /// Constructor for mapping to mongo documents
+    /// </summary>
+    public User(UserId id, Email email, Password password, FullName fullName,
+        Status status, SubscriptionOrder? subscriptionOrder) : this(id, email, password, fullName,
+        status)
+    {
         SubscriptionOrder = subscriptionOrder;
     }
 
     public static User Create(UserId id, string email, string password, string firstName, string lastName)
     {
-        var user = new User(id);
-        user.ChangeEmail(email);
-        user.ChangePassword(password);
-        user.ChangeFullName(firstName, lastName);
-        user.Status = Status.Created();
+        var user = new User(id, email, password,  new FullName(firstName, lastName), 
+            Status.Created());
         return user;
     }
-
-    private void ChangeEmail(string email)
-        => Email = email;
-
-    private void ChangePassword(string password)
-        => Password = password;
-
-    private void ChangeFullName(string firstName, string lastName)
-        => FullName = new FullName(firstName, lastName);
 
     internal void CreatePaidSubscriptionOrder(SubscriptionOrderId id, Subscription subscription,
         SubscriptionOrderFrequency subscriptionOrderFrequency, DateTime now,

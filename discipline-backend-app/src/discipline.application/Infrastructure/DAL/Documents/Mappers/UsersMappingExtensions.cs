@@ -1,5 +1,6 @@
 using discipline.application.DTOs;
 using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.domain.Users;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.ValueObjects;

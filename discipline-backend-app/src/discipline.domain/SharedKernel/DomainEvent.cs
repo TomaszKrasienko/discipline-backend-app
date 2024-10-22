@@ -1,6 +1,6 @@
 namespace discipline.domain.SharedKernel;
 
-public abstract class DomainEvent
+public abstract record DomainEvent
 {
     
 }

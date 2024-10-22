@@ -6,6 +6,7 @@ using discipline.application.Infrastructure.DAL.Connection;
 using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.application.Infrastructure.DAL.Documents.Users;
 using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users;
 using discipline.domain.Users.Entities;
 using discipline.tests.shared.Entities;
 using Microsoft.Extensions.DependencyInjection;

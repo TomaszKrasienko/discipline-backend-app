@@ -1,15 +1,17 @@
 using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users;
 using discipline.domain.Users.Entities;
+using discipline.domain.Users.Events;
 using discipline.domain.Users.Exceptions;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Domain.Users.Entities.Create;
+namespace discipline.application.unit_tests.Domain.Users;
 
 public sealed class UserCreateTests
 {
     [Fact]
-    public void Create_GivenAllValidArguments_ShouldReturnUserWithAllFillFields()
+    public void Create_GivenAllValidArguments_ShouldReturnUserWithAllFillFieldsAndDomainEvent()
     {
         //arrange
         var id = UserId.New();
@@ -28,6 +30,7 @@ public sealed class UserCreateTests
         result.FullName.FirstName.ShouldBe(firstName);
         result.FullName.LastName.ShouldBe(lastName);
         result.Status.Value.ShouldBe("Created");
+        result.DomainEvents.Any(x => x is UserCreated).ShouldBeTrue();
     }
     
     [Fact]
