@@ -30,7 +30,7 @@ public abstract class BaseTestsController : IDisposable
        services.AddSingleton<IMongoCollectionNameConvention, TestsMongoCollectionNameConvention>();
    }
    
-   protected virtual string? GetResourceIdFromHeader(HttpResponseMessage httpResponseMessage) 
+   protected virtual string GetResourceIdFromHeader(HttpResponseMessage httpResponseMessage) 
    {
        if (httpResponseMessage is null)
        {

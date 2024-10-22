@@ -43,9 +43,9 @@ public sealed class EditMeetingTests : BaseTestsController
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var updatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Events.Any(y => y.Id == eventId.Value))
+            .Find(x => x.Events.Any(y => y.Id == eventId.ToString()))
             .FirstAsync();
-        var @event = updatedUserCalendar.Events.First(x => x.Id == eventId.Value);
+        var @event = updatedUserCalendar.Events.First(x => x.Id == eventId.ToString());
         ((MeetingDocument)@event!).Title.ShouldBe(command.Title);
         ((MeetingDocument)@event!).TimeFrom.ShouldBe(command.TimeFrom);
         ((MeetingDocument)@event!).TimeTo.ShouldBe(command.TimeTo);

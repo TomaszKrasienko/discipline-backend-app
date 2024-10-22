@@ -28,14 +28,14 @@ internal static class UserCalendarMappingExtensions
     private static ImportantDateDocument AsDocument(this ImportantDate entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id.ToString(),
             Title = entity.Title
         };
 
     private static CalendarEventDocument AsDocument(this CalendarEvent entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id.ToString(),
             Title = entity.Title,
             Action = entity.Action,
             TimeFrom = entity.MeetingTimeSpan.From,
@@ -45,7 +45,7 @@ internal static class UserCalendarMappingExtensions
     private static MeetingDocument AsDocument(this Meeting entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id.ToString(),
             Title = entity.Title,
             TimeFrom = entity.MeetingTimeSpan.From,
             TimeTo = entity.MeetingTimeSpan.To,
@@ -67,19 +67,19 @@ internal static class UserCalendarMappingExtensions
 
     private static ImportantDate AsEntity(this ImportantDateDocument document)
         => new(
-            new(document.Id),
+            new(Ulid.Parse(document.Id)),
             document.Title);
 
     private static CalendarEvent AsEntity(this CalendarEventDocument document)
         => new(
-            new(document.Id),
+            new(Ulid.Parse(document.Id)),
             document.Title,
             new MeetingTimeSpan(document.TimeFrom, document.TimeTo),
             document.Action);
 
     private static Meeting AsEntity(this MeetingDocument document)
         => new(
-            new(document.Id),
+            new(Ulid.Parse(document.Id)),
             document.Title,
             new MeetingTimeSpan(document.TimeFrom, document.TimeTo),
             new Address(document.Platform, document.Uri, document.Place));
@@ -105,14 +105,14 @@ internal static class UserCalendarMappingExtensions
 private static ImportantDateDto AsDto(this ImportantDateDocument document)
         => new()
         {
-            Id = document.Id,
+            Id = Ulid.Parse(document.Id),
             Title = document.Title
         };
 
     private static CalendarEventDto AsDto(this CalendarEventDocument document)
         => new()
         {
-            Id = document.Id,
+            Id = Ulid.Parse(document.Id),
             Title = document.Title,
             TimeFrom = document.TimeFrom,
             TimeTo = document.TimeTo,
@@ -122,7 +122,7 @@ private static ImportantDateDto AsDto(this ImportantDateDocument document)
     private static MeetingDto AsDto(this MeetingDocument document)
         => new ()
         {
-            Id = document.Id,
+            Id = Ulid.Parse(document.Id),
             Title = document.Title,
             TimeFrom = document.TimeFrom,
             TimeTo = document.TimeTo,

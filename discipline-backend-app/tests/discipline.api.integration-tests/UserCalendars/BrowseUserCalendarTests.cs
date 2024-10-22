@@ -33,18 +33,18 @@ public sealed class BrowseUserCalendarTests : BaseTestsController
         //assert
         result.Day.ShouldBe(userCalendarDocument.Day);
         result.ImportantDates.Any(x
-            => x.Id == importantDateDocument.Id
+            => x.Id.ToString() == importantDateDocument.Id
                && x.Title == importantDateDocument.Title).ShouldBeTrue();
         
         result.CalendarEvents.Any(x
-            => x.Id == calendarEventDocument.Id
+            => x.Id.ToString() == calendarEventDocument.Id
                && x.Title == calendarEventDocument.Title
                && x.TimeFrom == calendarEventDocument.TimeFrom
                && x.TimeTo == calendarEventDocument.TimeTo
                && x.Action == calendarEventDocument.Action).ShouldBeTrue();
 
         result.Meetings.Any(x
-            => x.Id == meetingDocument.Id
+            => x.Id.ToString() == meetingDocument.Id
                && x.Title == meetingDocument.Title
                && x.TimeFrom == meetingDocument.TimeFrom
                && x.TimeTo == meetingDocument.TimeTo

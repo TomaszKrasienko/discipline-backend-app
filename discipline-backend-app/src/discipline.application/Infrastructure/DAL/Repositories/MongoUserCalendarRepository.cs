@@ -27,6 +27,6 @@ internal sealed class MongoUserCalendarRepository(
 
     public async Task<UserCalendar> GetByEventIdAsync(UserId userId, EventId eventId, CancellationToken cancellationToken = default)
         => (await disciplineMongoCollection.GetCollection<UserCalendarDocument>()
-            .Find(x => x.UserId == userId.Value && x.Events.Any(y => y.Id == eventId.Value))
+            .Find(x => x.UserId == userId.Value && x.Events.Any(y => y.Id == eventId.ToString()))
             .FirstOrDefaultAsync(cancellationToken))?.AsEntity();
 }

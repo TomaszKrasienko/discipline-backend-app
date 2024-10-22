@@ -23,7 +23,7 @@ internal static class AddCalendarEvent
                 UserId = identityContext.UserId
             }, cancellationToken);
             httpContext.AddResourceIdHeader(eventId.ToString());
-            return Results.CreatedAtRoute(nameof(GetEventById), new {eventId = eventId}, null);
+            return Results.CreatedAtRoute(nameof(GetEventById), new {eventId = eventId.ToString()}, null);
         })
         .Produces(StatusCodes.Status201Created, typeof(void))
         .Produces(StatusCodes.Status401Unauthorized, typeof(void))

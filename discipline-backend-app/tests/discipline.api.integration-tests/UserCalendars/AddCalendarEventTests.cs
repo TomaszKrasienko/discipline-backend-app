@@ -72,7 +72,7 @@ public sealed class AddCalendarEventTests : BaseTestsController
         resourceId.ShouldNotBe(Ulid.Empty.ToString());
         
         updatedUserCalendar.ShouldNotBeNull();
-        var eventDocument = updatedUserCalendar.Events.FirstOrDefault(x => x.Id.ToString() == resourceId);
+        var eventDocument = updatedUserCalendar.Events.FirstOrDefault(x => x.Id == resourceId);
         eventDocument.ShouldBeOfType<CalendarEventDocument>();
         eventDocument.Title.ShouldBe(command.Title);
     }

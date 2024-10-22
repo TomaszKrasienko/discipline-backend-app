@@ -8,7 +8,7 @@ public class EventDocument : IDocument
 {    
     [BsonElement("id")]
     [BsonId]
-    public Ulid Id { get; set; }
+    public string Id { get; set; }
     
     [BsonElement("title")]
     public string Title { get; set; }

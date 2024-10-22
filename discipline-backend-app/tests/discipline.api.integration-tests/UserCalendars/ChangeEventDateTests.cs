@@ -42,12 +42,12 @@ public sealed class ChangeEventDateTests : BaseTestsController
         var newUpdatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
             .Find(x => x.Day == command.NewDate)
             .FirstOrDefaultAsync();
-        newUpdatedUserCalendar.Events.Any(x => x.Id == eventId.Value).ShouldBeTrue();
+        newUpdatedUserCalendar.Events.Any(x => x.Id == eventId.ToString()).ShouldBeTrue();
         
         var oldUpdatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
             .Find(x => x.Day == oldUserCalendar.Day)
             .FirstOrDefaultAsync();
-        oldUpdatedUserCalendar.Events.Any(x => x.Id == eventId.Value).ShouldBeFalse();
+        oldUpdatedUserCalendar.Events.Any(x => x.Id == eventId.ToString()).ShouldBeFalse();
     }
     
     [Fact]
@@ -74,12 +74,12 @@ public sealed class ChangeEventDateTests : BaseTestsController
         var newUpdatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
             .Find(x => x.Day == command.NewDate)
             .FirstOrDefaultAsync();
-        newUpdatedUserCalendar.Events.Any(x => x.Id == eventId.Value).ShouldBeTrue();
+        newUpdatedUserCalendar.Events.Any(x => x.Id == eventId.ToString()).ShouldBeTrue();
         
         var oldUpdatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
             .Find(x => x.Day == oldUserCalendar.Day)
             .FirstOrDefaultAsync();
-        oldUpdatedUserCalendar.Events.Any(x => x.Id == eventId.Value).ShouldBeFalse();
+        oldUpdatedUserCalendar.Events.Any(x => x.Id == eventId.ToString()).ShouldBeFalse();
     }
     
     [Fact]

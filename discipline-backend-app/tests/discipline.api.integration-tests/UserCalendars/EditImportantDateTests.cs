@@ -40,9 +40,9 @@ public sealed class EditImportantDateTests : BaseTestsController
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var updatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Events.Any(y => y.Id == eventId.Value))
+            .Find(x => x.Events.Any(y => y.Id == eventId.ToString()))
             .FirstAsync();
-        var @event = updatedUserCalendar.Events.First(x => x.Id == eventId.Value);
+        var @event = updatedUserCalendar.Events.First(x => x.Id == eventId.ToString());
         ((ImportantDateDocument)@event!).Title.ShouldBe(command.Title);
     }
     
