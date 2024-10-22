@@ -20,7 +20,7 @@ internal static class BrowseUserCalendar
             {
                 var result = await disciplineMongoCollection
                     .GetCollection<UserCalendarDocument>()
-                    .Find(x => x.Day == day && x.UserId == identityContext.UserId.Value)
+                    .Find(x => x.Day == day && x.UserId == identityContext.UserId.ToString())
                     .FirstOrDefaultAsync(cancellationToken);
                 return result is null ? Results.NoContent() : Results.Ok(result.AsDto());
             })

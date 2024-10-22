@@ -29,7 +29,7 @@ public sealed class EditMeetingTests : BaseTestsController
         userCalendar.AddEvent(eventId, "test_meeting_title", new TimeOnly(12, 00), new TimeOnly(13,00),
             "test_platform", "test_uri", null);
         var userCalendarDocument = userCalendar.AsDocument();
-        userCalendarDocument.UserId = user.Id.Value;
+        userCalendarDocument.UserId = user.Id.ToString();
         await TestAppDb.GetCollection<UserCalendarDocument>().InsertOneAsync(userCalendarDocument);
 
         var command = new EditMeetingCommand(new UserId(Ulid.Empty), new EventId(Ulid.Empty), "new_test_title",

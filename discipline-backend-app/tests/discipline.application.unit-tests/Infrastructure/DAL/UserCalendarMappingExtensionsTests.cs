@@ -24,7 +24,7 @@ public sealed class UserCalendarMappingExtensionsTests
         
         //assert
         result.Day.ShouldBe(userCalendar.Day.Value);
-        result.UserId.ShouldBe(userCalendar.UserId.Value);
+        result.UserId.ShouldBe(userCalendar.UserId.ToString());
         var importantDateDocument = result.Events.SingleOrDefault(x => x.Id == importantDate.Id.ToString());
         importantDateDocument.ShouldBeOfType<ImportantDateDocument>();
         ((ImportantDateDocument)importantDateDocument!).Title.ShouldBe(importantDate.Title);
@@ -58,7 +58,7 @@ public sealed class UserCalendarMappingExtensionsTests
         
         //assert
         result.Day.ShouldBe(userCalendar.Day.Value);
-        result.UserId.ShouldBe(userCalendar.UserId.Value);
+        result.UserId.ShouldBe(userCalendar.UserId.ToString());
         result.Events.ShouldBeEmpty();
     }
 
@@ -76,7 +76,7 @@ public sealed class UserCalendarMappingExtensionsTests
         
         //assert
         result.Day.Value.ShouldBe(userCalendarDocument.Day);
-        result.UserId.Value.ShouldBe(userCalendarDocument.UserId);
+        result.UserId.ToString().ShouldBe(userCalendarDocument.UserId);
         var importantDate = result.Events.SingleOrDefault(x => x.Id.ToString() == importantDateDocument.Id);
         importantDate.ShouldBeOfType<ImportantDate>();
         ((ImportantDate)importantDate).Title.Value.ShouldBe(importantDateDocument.Title);
@@ -109,8 +109,9 @@ public sealed class UserCalendarMappingExtensionsTests
         var result = userCalendarDocument.AsEntity();
         
         //assert
+        result.Id.ToString().ShouldBe(userCalendarDocument.Id);
         result.Day.Value.ShouldBe(userCalendarDocument.Day);
-        result.UserId.Value.ShouldBe(userCalendarDocument.UserId);
+        result.UserId.ToString().ShouldBe(userCalendarDocument.UserId);
         result.Events.ShouldBeEmpty();
     }
 

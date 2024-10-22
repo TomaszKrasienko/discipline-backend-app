@@ -23,10 +23,10 @@ internal sealed class MongoUserCalendarRepository(
 
     public async Task<UserCalendar> GetForUserByDateAsync(UserId userId, DateOnly day, CancellationToken cancellationToken = default)
         => (await disciplineMongoCollection.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == day && x.UserId == userId.Value).FirstOrDefaultAsync(cancellationToken))?.AsEntity();
+            .Find(x => x.Day == day && x.UserId == userId.ToString()).FirstOrDefaultAsync(cancellationToken))?.AsEntity();
 
     public async Task<UserCalendar> GetByEventIdAsync(UserId userId, EventId eventId, CancellationToken cancellationToken = default)
         => (await disciplineMongoCollection.GetCollection<UserCalendarDocument>()
-            .Find(x => x.UserId == userId.Value && x.Events.Any(y => y.Id == eventId.ToString()))
+            .Find(x => x.UserId == userId.ToString() && x.Events.Any(y => y.Id == eventId.ToString()))
             .FirstOrDefaultAsync(cancellationToken))?.AsEntity();
 }

@@ -6,13 +6,13 @@ public class UserCalendarDocument : IDocument
 {
     [BsonElement("id")]
     [BsonId]
-    public Ulid Id { get; set; }
+    public string Id { get; set; }
     
     [BsonElement("day")]
     public DateOnly Day { get; set; }
     
     [BsonElement("userId")] 
-    public Ulid UserId { get; set; }
+    public string UserId { get; set; }
     
     [BsonElement("events")] 
     public IEnumerable<EventDocument> Events { get; set; }

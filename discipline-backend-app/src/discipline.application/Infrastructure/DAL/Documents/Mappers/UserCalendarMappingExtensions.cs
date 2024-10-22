@@ -12,9 +12,9 @@ internal static class UserCalendarMappingExtensions
     internal static UserCalendarDocument AsDocument(this UserCalendar entity)
         => new()
         {
-            Id = entity.Id.Value,
+            Id = entity.Id.ToString(),
             Day = entity.Day,
-            UserId = entity.UserId.Value,
+            UserId = entity.UserId.ToString(),
             Events = entity.Events?.Select(x => x.AsEventDocument())
         };
 
@@ -55,7 +55,7 @@ internal static class UserCalendarMappingExtensions
         };
 
     internal static UserCalendar AsEntity(this UserCalendarDocument document)
-        => new(new(document.Id), (Day)document.Day, new(document.UserId), 
+        => new(new(Ulid.Parse(document.Id)), (Day)document.Day, new(Ulid.Parse(document.UserId)), 
             (List<Event>)document.Events?.Select(x => x.AsEntity()).ToList());
 
     private static Event AsEntity(this EventDocument document) => document switch

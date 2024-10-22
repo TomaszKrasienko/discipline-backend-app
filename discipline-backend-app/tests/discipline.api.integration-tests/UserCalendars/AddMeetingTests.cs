@@ -7,6 +7,7 @@ using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
+using NSubstitute.ExceptionExtensions;
 using Shouldly;
 using Xunit;
 
@@ -31,7 +32,7 @@ public class AddMeetingTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         var userCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == command.Day && x.UserId == user.Id.Value)
+            .Find(x => x.Day == command.Day && x.UserId == user.Id.ToString())
             .FirstOrDefaultAsync();
 
         var resourceId = GetResourceIdFromHeader(response);
@@ -52,7 +53,7 @@ public class AddMeetingTests : BaseTestsController
         var userCalendar = UserCalendarFactory.Get();
         var @event = MeetingFactory.GetInUserCalender(userCalendar);
         var userCalendarDocument = userCalendar.AsDocument();
-        userCalendarDocument.UserId = user.Id.Value;
+        userCalendarDocument.UserId = user.Id.ToString();
         await TestAppDb.GetCollection<UserCalendarDocument>().InsertOneAsync(userCalendarDocument);
         var command = new AddMeetingCommand(DateOnly.FromDateTime(DateTime.Now),new UserId(Ulid.Empty),
             new EventId(Ulid.Empty),"test_title", new TimeOnly(15,00), null, null, null, "test_place");
@@ -64,7 +65,7 @@ public class AddMeetingTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         var updatedUserCalendar = await TestAppDb.GetCollection<UserCalendarDocument>()
-            .Find(x => x.Day == command.Day && x.UserId == user.Id.Value)
+            .Find(x => x.Day == command.Day && x.UserId == user.Id.ToString())
             .FirstOrDefaultAsync();
 
         var resourceId = GetResourceIdFromHeader(response);

@@ -131,7 +131,7 @@ public sealed class ChangeEventDateTests : BaseTestsController
         var command = new ChangeEventDateCommand(new UserId(Ulid.Empty), new EventId(Ulid.Empty), new DateOnly(2021,1,1));
         
         //act
-        var response = await HttpClient.PatchAsJsonAsync($"user-calendar/event/{Guid.Empty}/change-event-date", command);
+        var response = await HttpClient.PatchAsJsonAsync($"user-calendar/event/{Ulid.Empty}/change-event-date", command);
 
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

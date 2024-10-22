@@ -17,7 +17,7 @@ internal sealed class MongoUserRepository(
 
     public async Task UpdateAsync(User user, CancellationToken cancellationToken = default)
         => await disciplineMongoCollection.GetCollection<UserDocument>()
-            .FindOneAndReplaceAsync(x => x.Id.Equals(user.Id), user.AsDocument(), null, cancellationToken);
+            .FindOneAndReplaceAsync(x => x.Id == user.Id.ToString(), user.AsDocument(), null, cancellationToken);
 
     public async Task<User> GetByIdAsync(UserId id, CancellationToken cancellationToken = default)
         => (await disciplineMongoCollection.GetCollection<UserDocument>()

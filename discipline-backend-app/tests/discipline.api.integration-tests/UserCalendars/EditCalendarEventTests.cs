@@ -28,7 +28,7 @@ public sealed class EditCalendarEventTests : BaseTestsController
         userCalendar.AddEvent(eventId, "test_title", new TimeOnly(12, 00), null,
             "test_action");
         var userCalendarDocument = userCalendar.AsDocument();
-        userCalendarDocument.UserId = user.Id.Value;
+        userCalendarDocument.UserId = user.Id.ToString();
         await TestAppDb.GetCollection<UserCalendarDocument>().InsertOneAsync(userCalendarDocument);
 
         var command = new EditCalendarEventCommand(new UserId(Ulid.Empty), new EventId(Ulid.Empty), "new_test_title",

@@ -21,7 +21,7 @@ public sealed class BrowseUserCalendarTests : BaseTestsController
         var calendarEventDocument = CalendarEventDocumentFactory.Get(true);
         var meetingDocument = MeetingDocumentFactory.Get(true, true);
         var userCalendarDocument = UserCalendarDocumentFactory.Get([importantDateDocument, calendarEventDocument, meetingDocument]);
-        userCalendarDocument.UserId = user.Id.Value;
+        userCalendarDocument.UserId = user.Id.ToString();
         
         await TestAppDb
             .GetCollection<UserCalendarDocument>()

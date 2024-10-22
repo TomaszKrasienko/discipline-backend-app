@@ -27,7 +27,7 @@ public sealed class EditImportantDateTests : BaseTestsController
         var eventId = EventId.New();
         userCalendar.AddEvent(eventId, "test_title");
         var userCalendarDocument = userCalendar.AsDocument();
-        userCalendarDocument.UserId = user.Id.Value;
+        userCalendarDocument.UserId = user.Id.ToString();
         await TestAppDb.GetCollection<UserCalendarDocument>().InsertOneAsync(userCalendarDocument);
 
         var command = new EditImportantDateCommand(new UserId(Ulid.Empty), new EventId(Ulid.Empty), "new_test_title");
@@ -99,7 +99,7 @@ public sealed class EditImportantDateTests : BaseTestsController
         var command = new EditImportantDateCommand(new UserId(Ulid.Empty), new EventId(Ulid.Empty), string.Empty);
         
         //act
-        var result = await HttpClient.PutAsJsonAsync($"user-calendar/edit-important-date/{Guid.NewGuid()}",
+        var result = await HttpClient.PutAsJsonAsync($"user-calendar/edit-important-date/{Ulid.Empty}",
             command);
         
         //assert
