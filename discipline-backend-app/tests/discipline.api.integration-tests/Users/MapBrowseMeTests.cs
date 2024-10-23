@@ -34,7 +34,7 @@ public sealed class MapBrowseMeTests : BaseTestsController
     public async Task BrowseMe_GivenNotExistingUserId_ShouldReturn204NoContentStatusCode()
     {
         //arrange
-        Authorize(UserId.New(), Status.FreeSubscriptionPicked());
+        Authorize(UserId.New(), Status.FreeSubscriptionPicked);
         
         //act
         var result = await HttpClient.GetAsync("users/me");

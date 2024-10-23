@@ -42,7 +42,7 @@ public sealed class User : AggregateRoot<UserId>
     public static User Create(UserId id, string email, string password, string firstName, string lastName)
     {
         var user = new User(id, email, password,  new FullName(firstName, lastName), 
-            Status.Created());
+            Status.Created);
         return user;
     }
 
@@ -56,7 +56,7 @@ public sealed class User : AggregateRoot<UserId>
         }
         SubscriptionOrder = PaidSubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency,
             now, cardNumber, cardCvvNumber);
-        Status = Status.PaidSubscriptionPicked();
+        Status = Status.PaidSubscriptionPicked;
     }
 
     internal void CreateFreeSubscriptionOrder(SubscriptionOrderId id, Subscription subscription,
@@ -67,10 +67,10 @@ public sealed class User : AggregateRoot<UserId>
             throw new SubscriptionOrderForUserAlreadyExistsException(Id);
         }
         SubscriptionOrder = FreeSubscriptionOrder.Create(id, subscription, now);
-        Status = Status.FreeSubscriptionPicked();
+        Status = Status.FreeSubscriptionPicked;
     }
 
     //Todo: Tests
     public bool IsUserActive()
-        => Status == Status.FreeSubscriptionPicked() || Status  == Status.PaidSubscriptionPicked();
+        => Status == Status.FreeSubscriptionPicked || Status  == Status.PaidSubscriptionPicked;
 }

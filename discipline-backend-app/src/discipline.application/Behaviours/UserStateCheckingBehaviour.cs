@@ -85,7 +85,7 @@ internal sealed class UserStateMiddleware(
         }
         
         //TODO: Tests + remove magic string
-        if (user?.Status.Value == Status.Created().Value 
+        if (user?.Status.Value == Status.Created 
             && context.Request.Path != "/users/subscriptions"
             && context.Request.Path != "/users/subscriptions")
         {
