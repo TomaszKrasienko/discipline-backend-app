@@ -1,7 +1,7 @@
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.BusinessRules.Titles;
 
-namespace discipline.domain.Users.ValueObjects;
+namespace discipline.domain.Users.ValueObjects.Subscriptions;
 
 public sealed class Title : ValueObject
 {

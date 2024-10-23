@@ -4,6 +4,7 @@ using discipline.domain.Users;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.ValueObjects;
+using discipline.domain.Users.ValueObjects.Subscriptions;
 using discipline.domain.Users.ValueObjects.Users;
 
 namespace discipline.application.Infrastructure.DAL.Documents.Mappers;

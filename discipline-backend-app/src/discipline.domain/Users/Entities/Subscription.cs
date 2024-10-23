@@ -2,6 +2,7 @@ using discipline.domain.SharedKernel;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Exceptions;
 using discipline.domain.Users.ValueObjects;
+using discipline.domain.Users.ValueObjects.Subscriptions;
 
 namespace discipline.domain.Users.Entities;
 
