@@ -5,13 +5,14 @@ using discipline.domain.Users.Enums;
 using discipline.domain.Users.Events;
 using discipline.domain.Users.Exceptions;
 using discipline.domain.Users.ValueObjects;
+using discipline.domain.Users.ValueObjects.Users;
 
 namespace discipline.domain.Users;
 
 public sealed class User : AggregateRoot<UserId>
 {
-    public Email Email { get; private set; }
-    public Password Password { get; private set; }
+    public Email Email { get; }
+    public Password Password { get; }
     public FullName FullName { get; private set; }
     public Status Status { get; private set; }
     public SubscriptionOrder? SubscriptionOrder { get; private set; }

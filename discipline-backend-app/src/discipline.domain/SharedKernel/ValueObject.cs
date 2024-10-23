@@ -17,6 +17,14 @@ public abstract class ValueObject : IEquatable<ValueObject>
         return a.Equals(b);
     }
 
+    protected void CheckRule(IBusinessRule businessRule)
+    {
+        if (businessRule.IsBroken())
+        {
+            throw businessRule.Exception;
+        }
+    }
+
     public static bool operator !=(ValueObject a, ValueObject b) =>
         !(a == b);
 
