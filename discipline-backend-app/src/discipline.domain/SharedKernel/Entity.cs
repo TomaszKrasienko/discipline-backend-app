@@ -9,4 +9,12 @@ public abstract class Entity<TIdentifier>(TIdentifier id) : IEntity
 
     public void IncreaseVersion()
         => Version++;
+    
+    protected static void CheckRule(IBusinessRule businessRule)
+    {
+        if (businessRule.IsBroken())
+        {
+            throw businessRule.Exception;
+        }
+    }
 }

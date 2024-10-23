@@ -17,7 +17,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
         return a.Equals(b);
     }
 
-    protected void CheckRule(IBusinessRule businessRule)
+    protected static void CheckRule(IBusinessRule businessRule)
     {
         if (businessRule.IsBroken())
         {

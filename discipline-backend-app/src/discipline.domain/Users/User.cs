@@ -1,9 +1,9 @@
 using discipline.domain.SharedKernel;
 using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users.BusinessRules.SubscriptionOrders;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.Events;
-using discipline.domain.Users.Exceptions;
 using discipline.domain.Users.ValueObjects;
 using discipline.domain.Users.ValueObjects.Users;
 
@@ -11,11 +11,20 @@ namespace discipline.domain.Users;
 
 public sealed class User : AggregateRoot<UserId>
 {
+    private SubscriptionOrder? _subscriptionOrder;
     public Email Email { get; }
     public Password Password { get; }
-    public FullName FullName { get; private set; }
+    public FullName FullName { get; }
     public Status Status { get; private set; }
-    public SubscriptionOrder? SubscriptionOrder { get; private set; }
+    public SubscriptionOrder? SubscriptionOrder
+    {
+        get => _subscriptionOrder;
+        private set
+        {
+            CheckRule(new SubscriptionOrderAlreadyPickedRule(Id, _subscriptionOrder, value!));
+            _subscriptionOrder = value;
+        }
+    }
 
     private User(UserId id, Email email, Password password, FullName fullName,
         Status status) : base(id)
@@ -50,10 +59,6 @@ public sealed class User : AggregateRoot<UserId>
         SubscriptionOrderFrequency subscriptionOrderFrequency, DateTime now,
         string cardNumber, string cardCvvNumber)
     {
-        if (SubscriptionOrder is PaidSubscriptionOrder)
-        {
-            throw new SubscriptionOrderForUserAlreadyExistsException(Id);
-        }
         SubscriptionOrder = PaidSubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency,
             now, cardNumber, cardCvvNumber);
         Status = Status.PaidSubscriptionPicked;
@@ -61,11 +66,7 @@ public sealed class User : AggregateRoot<UserId>
 
     internal void CreateFreeSubscriptionOrder(SubscriptionOrderId id, Subscription subscription,
         DateTime now)
-    {        
-        if (SubscriptionOrder is FreeSubscriptionOrder)
-        {
-            throw new SubscriptionOrderForUserAlreadyExistsException(Id);
-        }
+    {     
         SubscriptionOrder = FreeSubscriptionOrder.Create(id, subscription, now);
         Status = Status.FreeSubscriptionPicked;
     }
