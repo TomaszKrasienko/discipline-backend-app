@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.Exceptions;
 
-namespace discipline.domain.Users.BusinessRules;
+namespace discipline.domain.Users.BusinessRules.Emails;
 
 internal sealed class EmailValidFormatRule(string email) : IBusinessRule
 {

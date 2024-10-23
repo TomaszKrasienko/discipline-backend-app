@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.BusinessRules;
+using discipline.domain.Users.BusinessRules.Emails;
 using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.ValueObjects.Users;

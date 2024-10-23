@@ -1,7 +1,7 @@
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.Exceptions;
 
-namespace discipline.domain.Users.BusinessRules;
+namespace discipline.domain.Users.BusinessRules.Emails;
 
 internal sealed class EmailCanNotBeEmptyRule(string email) : IBusinessRule
 {
