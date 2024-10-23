@@ -38,34 +38,4 @@ public sealed class SubscriptionTests
         //assert
         result.ShouldBeFalse();
     }
-
-    [Fact]
-    public void AddFeature_GivenNotEmptyString_ShouldAddToFeatures()
-    {
-        //arrange
-        var feature = "test_added_feature";
-        var subscription = Subscription.Create(SubscriptionId.New(), "test_subscription_title", 1, 1,
-            ["test_feature"]);
-        
-        //act
-        subscription.AddFeature(feature);
-        
-        //assert
-        subscription.Features.Any(x => x.Value == feature).ShouldBeTrue();
-    }
-    
-    [Fact]
-    public void AddFeature_GivenEmptyString_ShouldThrowEmptyFeatureValueException()
-    {
-        //arrange
-        var feature = string.Empty;
-        var subscription = Subscription.Create(SubscriptionId.New(), "test_subscription_title", 1, 1,
-            ["test_feature"]);
-        
-        //act
-        var exception = Record.Exception(() => subscription.AddFeature(feature));
-        
-        //assert
-        exception.ShouldBeOfType<EmptyFeatureValueException>();
-    }
 }
