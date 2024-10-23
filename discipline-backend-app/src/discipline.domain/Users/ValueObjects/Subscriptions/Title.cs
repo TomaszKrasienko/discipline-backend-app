@@ -24,7 +24,7 @@ public sealed class Title : ValueObject
         => title.Value;
 
     public static implicit operator Title(string value)
-        => new Title(value);
+        => new(value);
 
     protected override IEnumerable<object> GetAtomicValues()
     {
