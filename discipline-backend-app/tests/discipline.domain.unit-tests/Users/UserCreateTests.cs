@@ -67,7 +67,7 @@ public sealed class UserCreateTests
     }
 
     [Theory]
-    [InlineData('t', 2)]
+    [InlineData('t', 1)]
     [InlineData('t', 101)]
     public void Create_GivenInvalidFirstName_ShouldThrowInvalidUserFirstNameException(char character, int multiplier)
     {
@@ -94,7 +94,7 @@ public sealed class UserCreateTests
     }
     
     [Theory]
-    [InlineData('t', 2)]
+    [InlineData('t', 1)]
     [InlineData('t', 101)]
     public void Create_GivenInvalidLastName_ShouldThrowInvalidUserLastNameException(char character, int multiplier)
     {
