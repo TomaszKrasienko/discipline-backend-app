@@ -1,20 +1,24 @@
 using discipline.domain.SharedKernel;
-using discipline.domain.Users.Exceptions;
+using discipline.domain.Users.BusinessRules.Titles;
 
 namespace discipline.domain.Users.ValueObjects;
 
 public sealed class Title : ValueObject
 {
-    public string Value { get; }
+    private readonly string _value = null!;
 
-    public Title(string value)
+    public string Value
     {
-        if (string.IsNullOrWhiteSpace(value))
+        get => _value;
+        private init
         {
-            throw new EmptySubscriptionTitleException();
+            CheckRule(new TitleCanNotBeEmptyRule(value));
+            _value = value;
         }
-        Value = value;
     }
+
+    private Title(string value)
+        => Value = value;
 
     public static implicit operator string(Title title)
         => title.Value;
