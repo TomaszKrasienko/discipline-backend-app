@@ -1,4 +1,6 @@
 using Bogus;
+using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
 
@@ -15,6 +17,6 @@ internal static class PaidSubscriptionOrderFactory
     private static Faker<PaidSubscriptionOrder> GetFaker(Subscription subscription)
         => new Faker<PaidSubscriptionOrder>()
             .CustomInstantiator(v => PaidSubscriptionOrder.Create(
-                Guid.NewGuid(), subscription, v.PickRandom<SubscriptionOrderFrequency>(), DateTime.Now,
+                SubscriptionOrderId.New(), subscription, v.PickRandom<SubscriptionOrderFrequency>(), DateTime.Now,
                 v.Random.String(minLength: 13, maxLength: 19), v.Random.String(length: 3)));
 }

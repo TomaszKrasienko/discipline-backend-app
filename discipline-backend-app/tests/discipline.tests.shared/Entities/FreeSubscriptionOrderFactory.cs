@@ -1,4 +1,6 @@
 using Bogus;
+using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users;
 using discipline.domain.Users.Entities;
 
 namespace discipline.tests.shared.Entities;
@@ -13,5 +15,5 @@ internal static class FreeSubscriptionOrderFactory
     
     private static Faker<FreeSubscriptionOrder> GetFaker(Subscription subscription)
         => new Faker<FreeSubscriptionOrder>().CustomInstantiator(v
-            => FreeSubscriptionOrder.Create(Guid.NewGuid(), subscription, DateTime.Now));
+            => FreeSubscriptionOrder.Create(SubscriptionOrderId.New(), subscription, DateTime.Now));
 }

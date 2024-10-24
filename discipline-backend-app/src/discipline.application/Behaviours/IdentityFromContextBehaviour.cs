@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,14 +20,14 @@ internal static class IdentityFromContextBehaviour
 public interface IIdentityContext
 {
     public bool IsAuthenticated { get; }
-    public Guid UserId { get; }
+    public UserId UserId { get; }
     public string Status { get; }
 }
 
 internal sealed class IdentityContext : IIdentityContext
 {
     public bool IsAuthenticated { get; }
-    public Guid UserId { get; }
+    public UserId UserId { get; }
     public string Status { get; }
 
     public IdentityContext(HttpContext httpContext)
@@ -39,12 +40,12 @@ internal sealed class IdentityContext : IIdentityContext
             return;
         }
 
-        if (!Guid.TryParse(user.Identity?.Name, out var userId))
+        if (!Ulid.TryParse(user.Identity?.Name, out var userId))
         {
             throw new ArgumentException("Bad user id");
         }
 
-        UserId = userId;
+        UserId = new UserId(userId);
         Status = user.Claims.SingleOrDefault(x => x.Type == "Status")?.Value;
     }
 }

@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using Shouldly;
 using Xunit;
@@ -11,13 +12,15 @@ public sealed class UserCalendarCreateTests
     {
         //arrange
         var day = new DateOnly(2024, 1, 1);
-        var userId = Guid.NewGuid();
+        var userId = UserId.New();
+        var id = UserCalendarId.New();
         
         //act
-        var result = UserCalendar.Create(day, userId);
+        var result = UserCalendar.Create(id, day, userId);
         
         //assert
+        result.Id.ShouldBe(id);
         result.Day.Value.ShouldBe(day);
-        result.UserId.Value.ShouldBe(userId);
+        result.UserId.ShouldBe(userId);
     }
 }

@@ -24,20 +24,20 @@ public sealed class UserCalendarMappingExtensionsTests
         
         //assert
         result.Day.ShouldBe(userCalendar.Day.Value);
-        result.UserId.ShouldBe(userCalendar.UserId.Value);
-        var importantDateDocument = result.Events.SingleOrDefault(x => x.Id == importantDate.Id.Value);
+        result.UserId.ShouldBe(userCalendar.UserId.ToString());
+        var importantDateDocument = result.Events.SingleOrDefault(x => x.Id == importantDate.Id.ToString());
         importantDateDocument.ShouldBeOfType<ImportantDateDocument>();
         ((ImportantDateDocument)importantDateDocument!).Title.ShouldBe(importantDate.Title);
         
         
-        var calendarEventDocument = result.Events.SingleOrDefault(x => x.Id == calendarEvent.Id.Value);
+        var calendarEventDocument = result.Events.SingleOrDefault(x => x.Id == calendarEvent.Id.ToString());
         calendarEventDocument.ShouldBeOfType<CalendarEventDocument>();
         ((CalendarEventDocument)calendarEventDocument!).Title.ShouldBe(calendarEvent.Title.Value);
         ((CalendarEventDocument)calendarEventDocument!).TimeFrom.ShouldBe(calendarEvent.MeetingTimeSpan.From);
         ((CalendarEventDocument)calendarEventDocument!).TimeTo.ShouldBe(calendarEvent.MeetingTimeSpan.To);
         ((CalendarEventDocument)calendarEventDocument!).Action.ShouldBe(calendarEvent.Action.Value);
         
-        var meetingDocument = result.Events.SingleOrDefault(x => x.Id == meeting.Id.Value);
+        var meetingDocument = result.Events.SingleOrDefault(x => x.Id == meeting.Id.ToString());
         meetingDocument.ShouldBeOfType<MeetingDocument>();
         ((MeetingDocument)meetingDocument).Title.ShouldBe(meeting.Title.Value);
         ((MeetingDocument)meetingDocument).TimeFrom.ShouldBe(meeting.MeetingTimeSpan.From);
@@ -58,7 +58,7 @@ public sealed class UserCalendarMappingExtensionsTests
         
         //assert
         result.Day.ShouldBe(userCalendar.Day.Value);
-        result.UserId.ShouldBe(userCalendar.UserId.Value);
+        result.UserId.ShouldBe(userCalendar.UserId.ToString());
         result.Events.ShouldBeEmpty();
     }
 
@@ -76,20 +76,20 @@ public sealed class UserCalendarMappingExtensionsTests
         
         //assert
         result.Day.Value.ShouldBe(userCalendarDocument.Day);
-        result.UserId.Value.ShouldBe(userCalendarDocument.UserId);
-        var importantDate = result.Events.SingleOrDefault(x => x.Id.Value == importantDateDocument.Id);
+        result.UserId.ToString().ShouldBe(userCalendarDocument.UserId);
+        var importantDate = result.Events.SingleOrDefault(x => x.Id.ToString() == importantDateDocument.Id);
         importantDate.ShouldBeOfType<ImportantDate>();
         ((ImportantDate)importantDate).Title.Value.ShouldBe(importantDateDocument.Title);
         
         
-        var calendarEvent = result.Events.SingleOrDefault(x => x.Id.Value == calendarEventDocument.Id);
+        var calendarEvent = result.Events.SingleOrDefault(x => x.Id.ToString() == calendarEventDocument.Id);
         calendarEvent.ShouldBeOfType<CalendarEvent>();
         ((CalendarEvent)calendarEvent).Title.Value.ShouldBe(calendarEventDocument.Title);
         ((CalendarEvent)calendarEvent).MeetingTimeSpan.From.ShouldBe(calendarEventDocument.TimeFrom);
         ((CalendarEvent)calendarEvent).MeetingTimeSpan.To.ShouldBe(calendarEventDocument.TimeTo);
         ((CalendarEvent)calendarEvent).Action.Value.ShouldBe(calendarEventDocument.Action);
         
-        var meeting = result.Events.SingleOrDefault(x => x.Id.Value == meetingDocument.Id);
+        var meeting = result.Events.SingleOrDefault(x => x.Id.ToString() == meetingDocument.Id);
         meeting.ShouldBeOfType<Meeting>();
         ((Meeting)meeting).Title.Value.ShouldBe(meetingDocument.Title);
         ((Meeting)meeting).MeetingTimeSpan.From.ShouldBe(meetingDocument.TimeFrom);
@@ -109,8 +109,9 @@ public sealed class UserCalendarMappingExtensionsTests
         var result = userCalendarDocument.AsEntity();
         
         //assert
+        result.Id.ToString().ShouldBe(userCalendarDocument.Id);
         result.Day.Value.ShouldBe(userCalendarDocument.Day);
-        result.UserId.Value.ShouldBe(userCalendarDocument.UserId);
+        result.UserId.ToString().ShouldBe(userCalendarDocument.UserId);
         result.Events.ShouldBeEmpty();
     }
 
@@ -129,18 +130,18 @@ public sealed class UserCalendarMappingExtensionsTests
         //assert
         result.Day.ShouldBe(userCalendarDocument.Day);
         result.ImportantDates.Any(x
-            => x.Id == importantDateDocument.Id
+            => x.Id.ToString() == importantDateDocument.Id
             && x.Title == importantDateDocument.Title).ShouldBeTrue();
         
         result.CalendarEvents.Any(x
-            => x.Id == calendarEventDocument.Id
+            => x.Id.ToString() == calendarEventDocument.Id
             && x.Title == calendarEventDocument.Title
             && x.TimeFrom == calendarEventDocument.TimeFrom
             && x.TimeTo == calendarEventDocument.TimeTo
             && x.Action == calendarEventDocument.Action).ShouldBeTrue();
 
         result.Meetings.Any(x
-            => x.Id == meetingDocument.Id
+            => x.Id.ToString() == meetingDocument.Id
             && x.Title == meetingDocument.Title
             && x.TimeFrom == meetingDocument.TimeFrom
             && x.TimeTo == meetingDocument.TimeTo

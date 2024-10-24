@@ -3,6 +3,8 @@ using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.domain.ActivityRules.Entities;
 using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -17,10 +19,10 @@ public static class CreateActivityRule
         app.MapPost($"/{Extensions.ActivityRulesTag}/create", async (CreateActivityRuleCommand command, HttpContext httpContext, 
                     ICommandDispatcher dispatcher, CancellationToken cancellationToken, IIdentityContext identityContext) => 
             {
-                var activityRuleId = Guid.NewGuid();
+                var activityRuleId = ActivityRuleId.New();
                 var userId = identityContext.UserId;
                 await dispatcher.HandleAsync(command with { Id = activityRuleId, UserId = userId }, cancellationToken);
-                httpContext.AddResourceIdHeader(activityRuleId);
+                httpContext.AddResourceIdHeader(activityRuleId.ToString());
                 return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId}, null);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
@@ -40,7 +42,7 @@ public static class CreateActivityRule
     }
 }
 
-public sealed record CreateActivityRuleCommand(Guid Id, Guid UserId, string Title, string Mode,
+public sealed record CreateActivityRuleCommand(ActivityRuleId Id, UserId UserId, string Title, string Mode,
     List<int> SelectedDays) : ICommand;
 
 public sealed class CreateActivityRuleCommandValidator : AbstractValidator<CreateActivityRuleCommand>
@@ -48,10 +50,10 @@ public sealed class CreateActivityRuleCommandValidator : AbstractValidator<Creat
     public CreateActivityRuleCommandValidator()
     {
         RuleFor(x => x.UserId)
-            .NotEmpty()
+            .Must(id => id != new UserId(Ulid.Empty))
             .WithMessage("Activity rule \"UserId\" can not be empty");
         RuleFor(x => x.Id)
-            .NotEmpty()
+            .Must(id => id != new ActivityRuleId(Ulid.Empty))
             .WithMessage("Activity rule \"ID\" can not be empty");
         RuleFor(x => x.Title)
             .NotNull()

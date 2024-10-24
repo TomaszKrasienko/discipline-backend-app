@@ -1,4 +1,5 @@
 using discipline.domain.DailyProductivities.Entities;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using Shouldly;
 using Xunit;
 
@@ -10,14 +11,16 @@ public sealed class DailyProductivityCreateTests
     public void Create_GivenWithArguments_ShouldReturnDailyProductivityWithFilledFields()
     {
         //arrange
+        var id = DailyProductivityId.New();
         var day = DateTime.Now;
-        var userId = Guid.NewGuid();
+        var userId = UserId.New();
         
         //act
-        var result = DailyProductivity.Create(DateOnly.FromDateTime(day), userId);
+        var result = DailyProductivity.Create(id, DateOnly.FromDateTime(day), userId);
         
         //assert
+        result.Id.ShouldBe(id);
         result.Day.Value.ShouldBe(DateOnly.FromDateTime(day));
-        result.UserId.Value.ShouldBe(userId);
+        result.UserId.ShouldBe(userId);
     } 
 }

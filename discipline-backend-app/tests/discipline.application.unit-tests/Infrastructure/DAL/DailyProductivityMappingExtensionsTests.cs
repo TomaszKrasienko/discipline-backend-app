@@ -19,7 +19,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         
         //assert
         result.Day.ShouldBe(dailyProductivity.Day.Value);
-        result.UserId.ShouldBe(dailyProductivity.UserId.Value);
+        result.UserId.ShouldBe(dailyProductivity.UserId.ToString());
     }
     
     [Fact]
@@ -34,9 +34,9 @@ public sealed class DailyProductivityMappingExtensionsTests
         
         //assert
         result.Day.ShouldBe(dailyProductivity.Day.Value);
-        result.UserId.ShouldBe(dailyProductivity.UserId.Value);
+        result.UserId.ShouldBe(dailyProductivity.UserId.ToString());
         result.Activities.Any(x
-            => x.Id.Equals(activity.Id)
+            => x.Id == activity.Id.ToString()
                && x.Title == activity.Title
                && x.IsChecked == activity.IsChecked).ShouldBeTrue();
     }
@@ -52,7 +52,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         
         //assert
         result.Day.Value.ShouldBe(dailyProductivityDocument.Day);
-        result.UserId.Value.ShouldBe(dailyProductivityDocument.UserId);
+        result.UserId.ToString().ShouldBe(dailyProductivityDocument.UserId);
     }
     
     [Fact]
@@ -67,9 +67,9 @@ public sealed class DailyProductivityMappingExtensionsTests
         
         //assert
         result.Day.Value.ShouldBe(dailyProductivityDocument.Day);
-        result.UserId.Value.ShouldBe(dailyProductivityDocument.UserId);
+        result.UserId.ToString().ShouldBe(dailyProductivityDocument.UserId);
         result.Activities.Any(x
-            => x.Id.Value.Equals(activityDocuments[0].Id)
+            => x.Id.ToString() == activityDocuments[0].Id
                && x.Title == activityDocuments[0].Title
                && x.IsChecked == activityDocuments[0].IsChecked).ShouldBeTrue();
     }
@@ -100,9 +100,9 @@ public sealed class DailyProductivityMappingExtensionsTests
         //assert
         result.Day.ShouldBe(dailyProductivityDocument.Day);
         result.Activities.Any(x
-            => x.Id.Equals(activityDocuments[0].Id)
-               && x.Title == activityDocuments[0].Title
-               && x.IsChecked == activityDocuments[0].IsChecked).ShouldBeTrue();
+            => x.Id.ToString() == activityDocuments[0].Id 
+            && x.Title == activityDocuments[0].Title
+            && x.IsChecked == activityDocuments[0].IsChecked).ShouldBeTrue();
     }
     
     [Fact]
@@ -115,7 +115,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         var result = activity.AsDocument();
         
         //assert
-        result.Id.ShouldBe(activity.Id.Value);
+        result.Id.ShouldBe(activity.Id.ToString());
         result.Title.ShouldBe(activity.Title.Value);
         result.IsChecked.ShouldBe(activity.IsChecked.Value);
         result.ParentRuleId.ShouldBeNull();
@@ -131,7 +131,7 @@ public sealed class DailyProductivityMappingExtensionsTests
         var result = activityDocument.AsEntity();
         
         //assert
-        result.Id.Value.ShouldBe(activityDocument.Id);
+        result.Id.Value.ShouldBe(Ulid.Parse(activityDocument.Id));
         result.Title.Value.ShouldBe(activityDocument.Title);
         result.IsChecked.Value.ShouldBe(activityDocument.IsChecked);
         result.ParentRuleId.ShouldBeNull();

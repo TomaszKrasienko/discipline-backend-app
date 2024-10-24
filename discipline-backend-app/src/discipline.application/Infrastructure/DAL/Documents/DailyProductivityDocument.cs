@@ -4,12 +4,15 @@ namespace discipline.application.Infrastructure.DAL.Documents;
 
 public class DailyProductivityDocument : IDocument
 {
-    [BsonElement("day")]
+    [BsonElement("id")]
     [BsonId]
+    public string Id { get; set; }
+    
+    [BsonElement("day")]
     public DateOnly Day { get; set; }
     
     [BsonElement("userId")] 
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
 
     [BsonElement("activities")]
     public IEnumerable<ActivityDocument> Activities { get; set; }

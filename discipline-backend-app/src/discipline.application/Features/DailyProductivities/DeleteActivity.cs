@@ -2,6 +2,7 @@ using discipline.application.Behaviours;
 using discipline.application.Features.DailyProductivities.Configuration;
 using discipline.domain.DailyProductivities.Exceptions;
 using discipline.domain.DailyProductivities.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -12,10 +13,10 @@ internal static class DeleteActivity
 {
     internal static WebApplication MapDeleteActivity(this WebApplication app)
     {
-        app.MapDelete($"/{Extensions.DailyProductivityTag}/activity/{{activityId:guid}}", async (Guid activityId,
+        app.MapDelete($"/{Extensions.DailyProductivityTag}/activity/{{activityId}}", async (Ulid activityId,
             CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
             {
-                await commandDispatcher.HandleAsync(new DeleteActivityCommand(activityId), cancellationToken);
+                await commandDispatcher.HandleAsync(new DeleteActivityCommand(new ActivityId(activityId)), cancellationToken);
                 return Results.Ok();
             })
             .Produces(StatusCodes.Status200OK, typeof(void))
@@ -34,7 +35,7 @@ internal static class DeleteActivity
     }
 }
 
-public sealed record DeleteActivityCommand(Guid Id) : ICommand;
+public sealed record DeleteActivityCommand(ActivityId Id) : ICommand;
 
 public sealed class DeleteActivityCommandValidator : AbstractValidator<DeleteActivityCommand>
 {

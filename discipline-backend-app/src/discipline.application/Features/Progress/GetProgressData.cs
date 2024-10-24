@@ -14,12 +14,13 @@ internal static class GetProgressData
 {
     internal static WebApplication MapGetProgressData(this WebApplication app)
     {
-        app.MapGet($"{Extensions.ProgressTag}/data", async (CancellationToken cancellationToken, 
+        app.MapGet($"{Extensions.ProgressTag}/data", async (IIdentityContext identityContext,
+                CancellationToken cancellationToken, 
                 IDisciplineMongoCollection disciplineMongoCollection) =>
         {
             var result = (await disciplineMongoCollection
                 .GetCollection<DailyProductivityDocument>()
-                .Find(_ => true)
+                .Find(x => x.UserId == identityContext.UserId.ToString())
                 .ToListAsync(cancellationToken));
 
             if (!result.Any())

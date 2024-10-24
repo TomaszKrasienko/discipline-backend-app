@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Exceptions;
 using Shouldly;
@@ -8,14 +9,14 @@ namespace discipline.application.unit_tests.Domain.UsersCalendars.Entities.Creat
 public sealed class CalendarEventCreateTests
 {
     [Theory, MemberData(nameof(GetCreatePositivePathDate))]
-    public void Create_GivenValidArguments_ShouldReturnCalendarEventWithFilledFields(Guid id,
+    public void Create_GivenValidArguments_ShouldReturnCalendarEventWithFilledFields(EventId id,
         string title, TimeOnly timeFrom, TimeOnly? timeTo, string action)
     {
         //act
         var result = CalendarEvent.Create(id, title, timeFrom, timeTo, action);
         
         //assert
-        result.Id.Value.ShouldBe(id);
+        result.Id.ShouldBe(id);
         result.Title.Value.ShouldBe(title);
         result.MeetingTimeSpan.From.ShouldBe(timeFrom);
         result.MeetingTimeSpan.To.ShouldBe(timeTo);
@@ -25,16 +26,16 @@ public sealed class CalendarEventCreateTests
     public static IEnumerable<object[]> GetCreatePositivePathDate()
         => new List<object[]>
         {
-            new object[] {Guid.NewGuid(), "title", new TimeOnly(15, 00), new TimeOnly(16, 00), null!},
-            new object[] {Guid.NewGuid(), "title", new TimeOnly(15, 00), new TimeOnly(16, 00), "test_action"},
-            new object[] {Guid.NewGuid(), "title", new TimeOnly(15, 00), null!, "test_action"},
+            new object[] {EventId.New(), "title", new TimeOnly(15, 00), new TimeOnly(16, 00), null!},
+            new object[] {EventId.New(), "title", new TimeOnly(15, 00), new TimeOnly(16, 00), "test_action"},
+            new object[] {EventId.New(), "title", new TimeOnly(15, 00), null!, "test_action"},
         };
 
     [Fact]
     public void Create_GivenEmptyTitle_ShouldThrowEmptyEventTitleException()
     {
         //act
-        var exception = Record.Exception(() => CalendarEvent.Create(Guid.NewGuid(), string.Empty,
+        var exception = Record.Exception(() => CalendarEvent.Create(EventId.New(), string.Empty,
             new TimeOnly(14, 00), null, null));
         
         //assert
@@ -45,7 +46,7 @@ public sealed class CalendarEventCreateTests
     public void Create_GivenTimeToAfterTimeFrom_ShouldThrowInvalidMeetingTimeSpanException()
     {
         //act
-        var exception = Record.Exception(() => CalendarEvent.Create(Guid.NewGuid(), "test_title",
+        var exception = Record.Exception(() => CalendarEvent.Create(EventId.New(), "test_title",
             new TimeOnly(14, 00, 00), new TimeOnly(13, 00, 00), null));
         
         //assert
