@@ -113,7 +113,7 @@ internal static class UsersMappingExtensions
             PricePerMonth = entity.Price.PerMonth,
             PricePerYear = entity.Price.PerYear,
             Title = entity.Title,
-            IsPaid = !entity.IsFreeSubscription(),
+            IsPaid = !entity.IsFree(),
             Features = entity.Features.Select(x => x.Value).ToList()
         };
 

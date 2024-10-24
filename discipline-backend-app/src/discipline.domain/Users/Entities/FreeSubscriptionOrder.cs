@@ -23,7 +23,7 @@ public sealed class  FreeSubscriptionOrder : SubscriptionOrder
             throw new NullSubscriptionException();
         }
 
-        if (!subscription.IsFreeSubscription())
+        if (!subscription.IsFree())
         {
             throw new InvalidSubscriptionTypeException();
         }

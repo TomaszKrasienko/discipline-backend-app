@@ -35,7 +35,7 @@ public sealed class PaidSubscriptionOrder : SubscriptionOrder
             throw new NullSubscriptionException();
         }
 
-        if (subscription.IsFreeSubscription())
+        if (subscription.IsFree())
         {
             throw new InvalidSubscriptionTypeException();
         }

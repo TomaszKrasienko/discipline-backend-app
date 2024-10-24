@@ -21,7 +21,7 @@ public sealed class SubscriptionOrderService : ISubscriptionOrderService
             throw new NullSubscriptionException();
         }
         
-        if (subscription.IsFreeSubscription())
+        if (subscription.IsFree())
         {
             user.CreateFreeSubscriptionOrder(id, subscription, now);
         }

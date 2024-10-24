@@ -268,7 +268,7 @@ public sealed class UserMappingExtensionsTests
          document.Title.ShouldBe(subscription.Title.Value);
          document.PricePerMonth.ShouldBe(subscription.Price.PerMonth);
          document.PricePerYear.ShouldBe(subscription.Price.PerYear);
-         document.IsPaid.ShouldBe(!subscription.IsFreeSubscription());
+         document.IsPaid.ShouldBe(!subscription.IsFree());
          document.Features.Any(x => x == subscription.Features.First().Value).ShouldBeTrue();
      }
 

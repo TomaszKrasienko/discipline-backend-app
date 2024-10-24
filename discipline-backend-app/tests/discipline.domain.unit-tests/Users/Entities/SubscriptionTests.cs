@@ -16,7 +16,7 @@ public sealed class SubscriptionTests
             ["test"]);
         
         //act
-        var result = subscription.IsFreeSubscription();
+        var result = subscription.IsFree();
         
         //assert
         result.ShouldBeTrue();
@@ -33,7 +33,7 @@ public sealed class SubscriptionTests
             ["test"]);
         
         //act
-        var result = subscription.IsFreeSubscription();
+        var result = subscription.IsFree();
         
         //assert
         result.ShouldBeFalse();

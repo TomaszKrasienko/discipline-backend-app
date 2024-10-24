@@ -4,7 +4,7 @@ using discipline.domain.Users.Exceptions;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Domain.Users.Entities.Create;
+namespace discipline.application.unit_tests.Domain.Users.Entities;
 
 public sealed class SubscriptionCreateTests
 {

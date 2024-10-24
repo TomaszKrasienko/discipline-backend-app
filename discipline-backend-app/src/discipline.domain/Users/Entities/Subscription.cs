@@ -46,8 +46,8 @@ public sealed class Subscription : Entity<SubscriptionId>
         _features = convertedFeatures.ToHashSet();
     }
 
-    public bool IsFreeSubscription()
-        => Price?.PerMonth == 0 && Price?.PerYear == 0;
+    public bool IsFree()
+        => Price is { PerMonth: 0, PerYear: 0 };
 
     
 }
