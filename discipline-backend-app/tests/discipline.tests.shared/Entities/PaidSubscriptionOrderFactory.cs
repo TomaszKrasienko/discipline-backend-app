@@ -1,5 +1,6 @@
 using Bogus;
 using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
 

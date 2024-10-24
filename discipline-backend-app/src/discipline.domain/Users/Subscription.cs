@@ -4,9 +4,9 @@ using discipline.domain.Users.BusinessRules.Features;
 using discipline.domain.Users.ValueObjects;
 using discipline.domain.Users.ValueObjects.Subscriptions;
 
-namespace discipline.domain.Users.Entities;
+namespace discipline.domain.Users;
 
-public sealed class Subscription : Entity<SubscriptionId>
+public sealed class Subscription : AggregateRoot<SubscriptionId>
 {
     private HashSet<Feature>? _features;
     public Title Title { get; private set; }
