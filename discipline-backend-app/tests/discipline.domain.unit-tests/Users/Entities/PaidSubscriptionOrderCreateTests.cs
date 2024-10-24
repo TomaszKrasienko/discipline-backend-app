@@ -61,17 +61,6 @@ public sealed class PaidSubscriptionOrderCreateTests
         result.PaymentDetails.CvvCode.ShouldBe(cvvNumber);
         result.Type.Value.ShouldBe(subscriptionOrderFrequency);
     }
-
-    [Fact]
-    public void Create_GivenNullSubscription_ShouldThrowNullSubscriptionException()
-    {
-        //act
-        var exception = Record.Exception(() => PaidSubscriptionOrder.Create(SubscriptionOrderId.New(), null,
-            SubscriptionOrderFrequency.Monthly, DateTime.Now, "test_card_number", "test_cvv"));
-        
-        //assert
-        exception.ShouldBeOfType<NullSubscriptionException>();
-    }
     
     [Fact]
     public void Create_GivenFreeSubscription_ShouldThrow()

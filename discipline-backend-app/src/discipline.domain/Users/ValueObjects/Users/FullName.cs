@@ -1,6 +1,5 @@
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.BusinessRules.FullNames;
-using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.ValueObjects.Users;
 

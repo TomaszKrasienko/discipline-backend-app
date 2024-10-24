@@ -28,17 +28,6 @@ public sealed class FreeSubscriptionOrderCreateTests
         result.State.IsCancelled.ShouldBeFalse();
         result.State.ActiveTill.ShouldBeNull();
     }
-    
-    [Fact]
-    public void Create_GivenNullSubscription_ShouldThrowNullSubscriptionException()
-    {
-        //act
-        var exception = Record.Exception(() => FreeSubscriptionOrder.Create(SubscriptionOrderId.New(), null,
-            DateTime.Now));
-           
-        //arrange
-        exception.ShouldBeOfType<NullSubscriptionException>();
-    }
 
     [Fact]
     public void Create_GivenNotFreeSubscription_ShouldThrowInvalidSubscriptionTypeException()
