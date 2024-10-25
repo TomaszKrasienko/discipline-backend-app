@@ -4,6 +4,7 @@ using discipline.application.Features.Users;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users;
 using discipline.domain.Users.Entities;
+using discipline.domain.Users.Events;
 using discipline.domain.Users.Repositories;
 using NSubstitute;
 using Shouldly;
@@ -62,24 +63,25 @@ public sealed class SignUpCommandHandlerTests
                    && arg.FullName.FirstName == command.FirstName
                    && arg.FullName.LastName == command.LastName));
         
-        await _eventPublisher
+        await _eventProcessor
             .Received(1)
-            .PublishAsync(Arg.Is<UserSignedUp>(
-                arg => arg.UserId == command.Id.Value));
+            .PublishAsync(Arg.Is<UserCreated>(arg 
+                => arg.UserId == command.Id
+                && arg.Email.Value == command.Email));
     }
     
     #region arrange
     private readonly IUserRepository _userRepository;
     private readonly IPasswordManager _passwordManager;
-    private readonly IEventPublisher _eventPublisher;
+    private readonly IEventProcessor _eventProcessor;
     private readonly ICommandHandler<SignUpCommand> _handler;
 
     public SignUpCommandHandlerTests()
     {
         _userRepository = Substitute.For<IUserRepository>();
         _passwordManager = Substitute.For<IPasswordManager>();
-        _eventPublisher = Substitute.For<IEventPublisher>();
-        _handler = new SignUpCommandHandler(_userRepository, _passwordManager, _eventPublisher);
+        _eventProcessor = Substitute.For<IEventProcessor>();
+        _handler = new SignUpCommandHandler(_userRepository, _passwordManager, _eventProcessor);
     }
     #endregion
 }

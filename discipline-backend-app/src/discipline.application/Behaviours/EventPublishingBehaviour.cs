@@ -1,6 +1,4 @@
-using System.Diagnostics;
 using discipline.application.Events;
-using discipline.application.Features.Users;
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.Events;
 using Microsoft.Extensions.Configuration;

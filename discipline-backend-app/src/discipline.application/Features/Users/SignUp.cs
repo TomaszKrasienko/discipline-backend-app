@@ -3,7 +3,6 @@ using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users;
-using discipline.domain.Users.Entities;
 using discipline.domain.Users.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
