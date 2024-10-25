@@ -55,13 +55,16 @@ public sealed class User : AggregateRoot<UserId>
         return user;
     }
 
-    internal void CreatePaidSubscriptionOrder(SubscriptionOrderId id, Subscription subscription,
+    internal void CreatePaidSubscriptionOrder(SubscriptionOrderId subscriptionOrderId, Subscription subscription,
         SubscriptionOrderFrequency subscriptionOrderFrequency, DateTime now,
         string cardNumber, string cardCvvNumber)
     {
-        SubscriptionOrder = PaidSubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency,
+        SubscriptionOrder = PaidSubscriptionOrder.Create(subscriptionOrderId, subscription, subscriptionOrderFrequency,
             now, cardNumber, cardCvvNumber);
         Status = Status.PaidSubscriptionPicked;
+        var @event = new PaidSubscriptionPicked(Id.Value, subscription.Id.Value, 
+            ((PaidSubscriptionOrder)SubscriptionOrder).Next);
+        AddDomainEvent(@event);
     }
 
     internal void CreateFreeSubscriptionOrder(SubscriptionOrderId id, Subscription subscription,
@@ -69,9 +72,10 @@ public sealed class User : AggregateRoot<UserId>
     {     
         SubscriptionOrder = FreeSubscriptionOrder.Create(id, subscription, now);
         Status = Status.FreeSubscriptionPicked;
+        var @event = new FreeSubscriptionPicked(Id.Value, subscription.Id.Value);
+        AddDomainEvent(@event);
     }
-
-    //Todo: Tests
+    
     public bool IsUserActive()
         => Status == Status.FreeSubscriptionPicked || Status  == Status.PaidSubscriptionPicked;
 }
