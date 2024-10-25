@@ -1,4 +1,8 @@
+using System.Diagnostics;
+using discipline.application.Events;
 using discipline.application.Features.Users;
+using discipline.domain.SharedKernel;
+using discipline.domain.Users.Events;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -24,7 +28,8 @@ internal static class EventPublishingBehaviour
                 var connection = sp.GetRequiredService<ConnectionMultiplexer>();
                 return connection.GetSubscriber();
             })
-            .AddScoped<IEventPublisher, RedisEventPublisher>();
+            .AddScoped<IEventPublisher, RedisEventPublisher>()
+            .AddScoped<IEventProcessor, EventProcessor>();
         return services;
     }
 
@@ -37,10 +42,42 @@ public sealed record RedisOptions
     public string ConnectionString { get; init; }
 }
 
-//Marker
+/// <summary>
+/// Marker
+/// </summary>
 public interface IEvent;
 
-public interface IEventPublisher
+public interface IEventProcessor
+{
+    Task PublishAsync(params DomainEvent[] events);
+}
+
+//TODO: Tests
+internal sealed class EventProcessor(
+    IEventPublisher eventPublisher) : IEventProcessor
+{
+    public async Task PublishAsync(params DomainEvent[] domainEvents)
+    {
+        var events = domainEvents.Select(x => x.MapAsEvent());
+        foreach (var @event in events)
+        {
+            await eventPublisher.PublishAsync(@event);
+        }
+    }
+}
+
+//TODO: Tests
+internal static class EventMapper
+{
+    internal static IEvent MapAsEvent(this DomainEvent @event)
+        => @event switch
+        {
+            UserCreated domainEvent => new UserSignedUp(domainEvent.UserId.Value, domainEvent.Email),
+            _ => throw new ArgumentOutOfRangeException(nameof(@event), @event, null)
+        };
+}
+
+internal interface IEventPublisher
 {
     Task PublishAsync<T>(T @event) where T : class, IEvent;
 }

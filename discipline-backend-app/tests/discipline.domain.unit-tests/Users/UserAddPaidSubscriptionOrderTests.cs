@@ -1,6 +1,7 @@
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
+using discipline.domain.Users.Events;
 using discipline.domain.Users.Exceptions;
 using discipline.tests.shared.Entities;
 using Shouldly;
@@ -27,6 +28,7 @@ public sealed class UserAddPaidSubscriptionOrderTests
         user.SubscriptionOrder.Id.ShouldBe(subscriptionOrderId);
         user.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrder>();
         user.Status.Value.ShouldBe("PaidSubscriptionPicked");
+        user.DomainEvents.Any(x => x is PaidSubscriptionPicked).ShouldBeTrue();
     }
     
     [Fact]

@@ -25,7 +25,7 @@ public sealed class SubscriptionOrderServiceTests
             null, DateTime.Now, null, null);
         
         //assert
-        user.SubscriptionOrder.Id.ShouldBe(id);
+        user.SubscriptionOrder!.Id.ShouldBe(id);
         user.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrder>();
     }
 
@@ -42,7 +42,7 @@ public sealed class SubscriptionOrderServiceTests
             SubscriptionOrderFrequency.Monthly, DateTime.Now, new string('1',15), "123");
         
         //assert
-        user.SubscriptionOrder.Id.ShouldBe(id);
+        user.SubscriptionOrder!.Id.ShouldBe(id);
         user.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrder>();
     }
     

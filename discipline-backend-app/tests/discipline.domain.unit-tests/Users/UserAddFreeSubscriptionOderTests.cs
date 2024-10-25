@@ -1,5 +1,6 @@
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
+using discipline.domain.Users.Events;
 using discipline.domain.Users.Exceptions;
 using discipline.tests.shared.Entities;
 using Shouldly;
@@ -25,6 +26,7 @@ public sealed class UserAddFreeSubscriptionOderTests
         user.SubscriptionOrder.Id.ShouldBe(subscriptionOrderId);
         user.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrder>();
         user.Status.Value.ShouldBe("FreeSubscriptionPicked");
+        user.DomainEvents.Any(x => x is FreeSubscriptionPicked).ShouldBeTrue();
     }
 
     [Fact]
