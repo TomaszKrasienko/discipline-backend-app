@@ -1,6 +1,5 @@
 using discipline.application.DTOs;
 using Microsoft.AspNetCore.Http;
-using MongoDB.Driver;
 
 namespace discipline.application.Behaviours;
 

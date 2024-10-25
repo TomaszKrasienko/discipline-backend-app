@@ -59,10 +59,5 @@ public static class Extensions
         return app;
     }
 
-    internal static T GetOptions<T>(this IConfiguration configuration, string sectionName) where T : class, new()
-    {
-        T t = new T();
-        configuration.Bind(sectionName, t);
-        return t;
-    }
+
 }

@@ -11,7 +11,6 @@ internal static class Extensions
             .AddCommandHandlingBehaviour()
             .AddHandlingException()
             .AddValidationBehaviour()
-            .AddCreatingTransaction()
             .AddClockBehaviour()
             .AddLoggingBehaviour()
             .AddPasswordSecureBehaviour()
