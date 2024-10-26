@@ -20,8 +20,7 @@ internal static class Extensions
             .AddIdentityFromContextBehaviour()
             .AddUserStateCheckingBehaviour()
             .AddCryptographyBehaviour(configuration)
-            .AddRefreshTokenBehaviour()
-            .AddEventPublishingBehaviour(configuration);
+            .AddRefreshTokenBehaviour();
 
     internal static WebApplication UseBehaviours(this WebApplication app)
         => app

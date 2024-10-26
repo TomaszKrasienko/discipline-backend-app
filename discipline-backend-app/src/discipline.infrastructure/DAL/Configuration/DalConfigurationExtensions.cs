@@ -2,19 +2,17 @@ using discipline.domain.ActivityRules.Repositories;
 using discipline.domain.DailyProductivities.Repositories;
 using discipline.domain.Users.Repositories;
 using discipline.domain.UsersCalendars.Repositories;
-using discipline.infrastructure.Configuration;
+using discipline.infrastructure.DAL;
 using discipline.infrastructure.DAL.Configuration.Options;
 using discipline.infrastructure.DAL.Connection.Configuration;
 using discipline.infrastructure.DAL.Repositories;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace discipline.infrastructure.DAL.Configuration;
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection;
 
-internal static class Extensions
+internal static class DalConfigurationExtensions
 {
-    private const string SectionName = "Mongo";
-
     internal static IServiceCollection AddDal(this IServiceCollection services, IConfiguration configuration)
         => services
             .AddServices()
@@ -23,7 +21,7 @@ internal static class Extensions
             .AddInitializer();
 
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
-        => services.Configure<MongoOptions>(configuration.GetSection(SectionName));
+        => services.Configure<MongoOptions>(configuration.GetSection(nameof(MongoOptions)));
 
     private static IServiceCollection AddServices(this IServiceCollection services)
         => services
