@@ -5,9 +5,9 @@ using Microsoft.Extensions.Options;
 
 namespace discipline.infrastructure.Configuration;
 
-internal static class Extensions
+public static class Extensions
 {
-    internal static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         => services
             .AddDal(configuration);
     

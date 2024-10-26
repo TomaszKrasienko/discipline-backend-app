@@ -28,7 +28,7 @@ public sealed class RefreshTokenCommandHandlerTests
             .GetUserIdAsync(command.RefreshToken)
             .Returns(user.Id);
 
-        _userRepository
+        _readUserRepository
             .GetByIdAsync(user.Id)
             .Returns(user);
 
@@ -72,7 +72,8 @@ public sealed class RefreshTokenCommandHandlerTests
     
     #region arrange
     private readonly IRefreshTokenFacade _refreshTokenFacade;
-    private readonly IWriteUserRepository _userRepository;
+    private readonly IReadUserRepository _readUserRepository;
+    private readonly IWriteUserRepository _writeUserRepository;
     private readonly IAuthenticator _authenticator;
     private readonly ITokenStorage _tokenStorage;
     private readonly ICommandHandler<RefreshTokenCommand> _handler;
@@ -80,12 +81,14 @@ public sealed class RefreshTokenCommandHandlerTests
     public RefreshTokenCommandHandlerTests()
     {
         _refreshTokenFacade = Substitute.For<IRefreshTokenFacade>();
-        _userRepository = Substitute.For<IWriteUserRepository>();
+        _readUserRepository = Substitute.For<IReadUserRepository>();
+        _writeUserRepository = Substitute.For<IWriteUserRepository>();
         _authenticator = Substitute.For<IAuthenticator>();
         _tokenStorage = Substitute.For<ITokenStorage>();
         _handler = new RefreshTokenCommandHandler(
             _refreshTokenFacade,
-            _userRepository,
+            _readUserRepository,
+            _writeUserRepository,
             _authenticator,
             _tokenStorage);
     }

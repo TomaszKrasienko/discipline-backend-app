@@ -25,44 +25,23 @@ internal sealed class MongoUserRepository(
             .Find(x => x.Id == id.Value.ToString())
             .SingleOrDefaultAsync(cancellationToken))?.AsEntity();
 
-    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
-        => (await disciplineMongoCollection.GetCollection<UserDocument>()
-            .Find(x => x.Email == email).FirstOrDefaultAsync(cancellationToken))?.AsEntity();
-
-    public Task<bool> AnyAsync(Expression<Func<User, bool>> expression, CancellationToken cancellationToken = default)
+    public async Task<User?> GetAsync(Expression<Func<User, bool>> expression, CancellationToken cancellationToken = default)
     {
-        var documentExpression = MapExpression(expression);
-        
-        disciplineMongoCollection.GetCollection<UserDocument>()
-            .Find(documentExpression.ToFilterDefinition())
-            .AnyAsync(cancellationToken);
+        // var documentExpression = MapExpression(expression);
+        //
+        // return (await disciplineMongoCollection.GetCollection<UserDocument>()
+        //     .Find(documentExpression.ToFilterDefinition())
+        //     .SingleOrDefaultAsync(cancellationToken)).AsEntity();
+        throw new NotImplementedException();
     }
 
-    private Expression<Func<UserDocument, bool>> MapExpression(Expression<Func<User, bool>> expression)
-    {
-        var expressionValues = ExtractFieldAndValue(expression);
-        switch (expressionValues.Name)
-        {
-            case nameof(User.Email) :
-                return x => x.Email == (string)expressionValues.Value!;
-        }
-    }
-    
-    public static (string Name, object? Value) ExtractFieldAndValue<T>(Expression<Func<T, bool>> expression)
-    {
-        if (expression.Body is BinaryExpression binaryExpression)
-        {
-            return binaryExpression.Left is MemberExpression memberExpression &&
-                   binaryExpression.Right is ConstantExpression constantExpression
-                ? (memberExpression.Member.Name, constantExpression.Value)
-                : throw new NotSupportedException("Only simple equality expressions are supported.");
-        }
+    public Task<bool> DoesEmailExist(string email, CancellationToken cancellationToken = default)
+        => AnyAsync(x => x.Email == email, cancellationToken);
 
-        throw new NotSupportedException("Only simple equality expressions are supported.");
-    }
-
-    public Task<bool> DoesEmailExistAsync(string email, CancellationToken cancellationToken = default)
-        => disciplineMongoCollection.GetCollection<UserDocument>()
-            .Find(x => x.Email == email)
+    public Task<bool> AnyAsync(Expression<Func<UserDocument, bool>> expression, CancellationToken cancellationToken = default)
+        => disciplineMongoCollection
+            .GetCollection<UserDocument>()
+            .Find(expression.ToFilterDefinition())
             .AnyAsync(cancellationToken);
 }
+

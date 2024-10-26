@@ -1,3 +1,4 @@
+using System.Drawing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,4 +32,11 @@ internal static class Extensions
     internal static WebApplicationBuilder UseBehaviours(this WebApplicationBuilder builder)
         => builder
             .UseLoggingBehaviour();
+
+    internal static T GetOptions<T>(this IConfiguration configuration, string section) where T : class, new()
+    {
+        var t = new T();
+        configuration.Bind(section, t);
+        return t;
+    }
 }

@@ -7,5 +7,5 @@ public interface IReadUserRepository
 {
     Task<User?> GetByIdAsync(UserId id, CancellationToken cancellationToken = default);
     Task<User?> GetAsync(Expression<Func<User, bool>> expression, CancellationToken cancellationToken = default);
-    Task<bool> AnyAsync(Expression<Func<User, bool>> expression, CancellationToken cancellationToken = default);
+    Task<bool> DoesEmailExist(string email, CancellationToken cancellationToken = default);
 }

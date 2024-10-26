@@ -43,13 +43,13 @@ internal class PagedList<T> : List<T>
         AddRange(items);
     }
 
-    internal static async Task<PagedList<T>> ToPagedList(IFindFluent<T,T> source, int pageNumber, int pageSize)
-    {
-        var count = await source.CountDocumentsAsync();
-        var items = await source
-            .Skip((pageNumber - 1) * pageSize)
-            .Limit(pageSize)
-            .ToListAsync();
-        return new PagedList<T>(items, count, pageNumber, pageSize);
-    }
+    // internal static async Task<PagedList<T>> ToPagedList(IFindFluent<T,T> source, int pageNumber, int pageSize)
+    // {
+    //     var count = await source.CountDocumentsAsync();
+    //     var items = await source
+    //         .Skip((pageNumber - 1) * pageSize)
+    //         .Limit(pageSize)
+    //         .ToListAsync();
+    //     return new PagedList<T>(items, count, pageNumber, pageSize);
+    // }
 }

@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using discipline.application.Behaviours.Configuration;
 using discipline.application.Configuration;
 using discipline.application.DTOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
