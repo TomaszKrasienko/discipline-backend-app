@@ -1,6 +1,6 @@
 namespace discipline.infrastructure.DAL.Documents.UsersCalendar;
 
-public class CalendarEventDocument : EventDocument, IDocument
+internal sealed class CalendarEventDocument : EventDocument, IDocument
 {
     public TimeOnly TimeFrom { get; set; }
     public TimeOnly? TimeTo { get; set; }

@@ -1,6 +1,7 @@
 using discipline.application.DTOs;
 using discipline.domain.ActivityRules.Entities;
 using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.infrastructure.DAL.Documents.ActivityRules;
 
 namespace discipline.infrastructure.DAL.Documents.Mappers;
 

@@ -16,5 +16,11 @@
     <ItemGroup>
       <ProjectReference Include="..\discipline.application\discipline.application.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.tests.shared"/>
+        <InternalsVisibleTo Include="discipline.api.integration-tests"/>
+        <InternalsVisibleTo Include="discipline.infrastructure.unit-tests"/>
+    </ItemGroup>
 
 </Project>

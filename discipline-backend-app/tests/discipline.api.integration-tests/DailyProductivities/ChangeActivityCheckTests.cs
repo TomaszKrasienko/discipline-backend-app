@@ -1,10 +1,7 @@
 using System.Net;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Infrastructure.DAL.Documents;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
-using discipline.application.Infrastructure.DAL.Documents.Users;
-using discipline.application.Infrastructure.DAL.Repositories;
-using discipline.domain.Users.Entities;
+using discipline.infrastructure.DAL.Documents.DailyProductivities;
+using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
 using Shouldly;

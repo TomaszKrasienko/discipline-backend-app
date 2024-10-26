@@ -2,7 +2,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace discipline.infrastructure.DAL.Documents.Users;
 
-public class PaidSubscriptionOrderDocument : SubscriptionOrderDocument
+internal sealed class PaidSubscriptionOrderDocument : SubscriptionOrderDocument
 {
     [BsonElement("next")]
     public DateOnly Next { get; set; }

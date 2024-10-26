@@ -1,5 +1,5 @@
 using Bogus;
-using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.infrastructure.DAL.Documents.Users;
 
 namespace discipline.tests.shared.Documents;
 

@@ -2,12 +2,11 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Features.UsersCalendars;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
-using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
 using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.infrastructure.DAL.Documents.Mappers;
+using discipline.infrastructure.DAL.Documents.UsersCalendar;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
-using NSubstitute.ExceptionExtensions;
 using Shouldly;
 using Xunit;
 

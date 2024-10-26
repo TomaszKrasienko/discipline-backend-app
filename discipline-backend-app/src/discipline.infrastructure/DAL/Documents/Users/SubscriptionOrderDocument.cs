@@ -4,7 +4,7 @@ namespace discipline.infrastructure.DAL.Documents.Users;
 
 [BsonDiscriminator]
 [BsonKnownTypes(typeof(FreeSubscriptionOrderDocument), typeof(PaidSubscriptionOrderDocument))]
-public class SubscriptionOrderDocument : IDocument
+internal abstract class SubscriptionOrderDocument : IDocument
 {
     [BsonId]
     [BsonElement("id")]

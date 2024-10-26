@@ -11,6 +11,7 @@
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.application.unit-tests"/>
         <InternalsVisibleTo Include="discipline.domain.unit-tests"/>
+        <InternalsVisibleTo Include="discipline.infrastructure.unit-tests"/>
         <InternalsVisibleTo Include="discipline.api.integration-tests"/>
     </ItemGroup>
     <ItemGroup>
@@ -18,5 +19,6 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\src\discipline.application\discipline.application.csproj" />
+      <ProjectReference Include="..\..\src\discipline.infrastructure\discipline.infrastructure.csproj" />
     </ItemGroup>
 </Project>

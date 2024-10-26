@@ -1,6 +1,5 @@
 using Bogus;
-using discipline.application.Infrastructure.DAL.Documents;
-using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.infrastructure.DAL.Documents.DailyProductivities;
 
 namespace discipline.tests.shared.Documents;
 

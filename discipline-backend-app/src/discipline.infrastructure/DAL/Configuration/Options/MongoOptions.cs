@@ -2,7 +2,7 @@ namespace discipline.infrastructure.DAL.Configuration.Options;
 
 internal sealed record MongoOptions
 {
-    public required string ConnectionString { get; init; }
-    public required string Database { get; init; }
+    public string ConnectionString { get; init; } = string.Empty;
+    public string Database { get; init; } = string.Empty;
     public bool Initialize { get; init; }
 }

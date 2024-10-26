@@ -1,7 +1,7 @@
 using System.Net;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Infrastructure.DAL.Documents;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
+using discipline.infrastructure.DAL.Documents.ActivityRules;
+using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
 using Shouldly;

@@ -1,13 +1,11 @@
 using System.Net.Http.Headers;
-using Amazon.Runtime;
 using discipline.application.Behaviours;
 using discipline.application.DTOs;
-using discipline.application.Infrastructure.DAL.Connection;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
-using discipline.application.Infrastructure.DAL.Documents.Users;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users;
-using discipline.domain.Users.Entities;
+using discipline.infrastructure.DAL.Connection;
+using discipline.infrastructure.DAL.Documents.Mappers;
+using discipline.infrastructure.DAL.Documents.Users;
 using discipline.tests.shared.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -88,7 +86,16 @@ public abstract class BaseTestsController : IDisposable
        var token = authenticator.CreateToken(userId.ToString(), status);
        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
    }
-   
+
    public void Dispose()
-       => TestAppDb.Dispose();
+   {
+       Dispose(true);
+       GC.SuppressFinalize(this);
+   }
+   
+   protected virtual void Dispose(bool disposed)
+   { 
+       TestAppDb?.Dispose();
+       HttpClient?.Dispose();
+   }
 }

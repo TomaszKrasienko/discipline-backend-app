@@ -3,6 +3,7 @@ using discipline.domain.ActivityRules.Repositories;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.infrastructure.DAL.Connection;
 using discipline.infrastructure.DAL.Documents;
+using discipline.infrastructure.DAL.Documents.ActivityRules;
 using discipline.infrastructure.DAL.Documents.Mappers;
 using MongoDB.Driver;
 

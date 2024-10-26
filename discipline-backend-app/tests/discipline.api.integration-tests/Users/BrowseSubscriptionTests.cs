@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
-using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.infrastructure.DAL.Documents.Users;
 using discipline.tests.shared.Documents;
 using Shouldly;
 using Xunit;

@@ -3,7 +3,7 @@ using MongoDB.Driver;
 
 namespace discipline.infrastructure.DAL.Connection;
 
-public interface IDisciplineMongoCollection
+internal interface IDisciplineMongoCollection
 {
     IMongoCollection<T> GetCollection<T>() where T : IDocument;
 }

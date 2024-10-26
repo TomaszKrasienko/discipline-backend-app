@@ -1,4 +1,3 @@
-using Amazon.Runtime;
 using discipline.application.Behaviours;
 using Microsoft.Extensions.Logging;
 using NSubstitute;

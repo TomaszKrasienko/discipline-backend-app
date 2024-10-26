@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
-using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
+using discipline.infrastructure.DAL.Documents.UsersCalendar;
 using discipline.tests.shared.Documents;
 using Shouldly;
 using Xunit;

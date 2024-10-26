@@ -1,10 +1,10 @@
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
+using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Documents;
 using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Infrastructure.DAL;
+namespace discipline.infrastructure.unit_tests.DAL;
 
 public sealed class DailyProductivityMappingExtensionsTests
 {

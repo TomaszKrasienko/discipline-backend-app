@@ -1,5 +1,5 @@
-using discipline.application.Infrastructure.DAL.Connection;
-using discipline.application.Infrastructure.DAL.Documents;
+using discipline.infrastructure.DAL.Connection;
+using discipline.infrastructure.DAL.Documents;
 
 namespace discipline.api.integration_tests._Helpers;
 

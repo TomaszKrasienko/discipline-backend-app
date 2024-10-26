@@ -4,7 +4,7 @@ namespace discipline.infrastructure.DAL.Documents.UsersCalendar;
 
 [BsonDiscriminator(RootClass = true)]
 [BsonKnownTypes(typeof(MeetingDocument), typeof(ImportantDateDocument), typeof(CalendarEventDocument))]
-public class EventDocument : IDocument
+internal abstract class EventDocument : IDocument
 {    
     [BsonElement("id")]
     [BsonId]

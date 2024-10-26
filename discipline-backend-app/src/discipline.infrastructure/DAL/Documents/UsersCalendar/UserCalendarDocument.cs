@@ -2,7 +2,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace discipline.infrastructure.DAL.Documents.UsersCalendar;
 
-public class UserCalendarDocument : IDocument
+internal sealed class UserCalendarDocument : IDocument
 {
     [BsonElement("id")]
     [BsonId]

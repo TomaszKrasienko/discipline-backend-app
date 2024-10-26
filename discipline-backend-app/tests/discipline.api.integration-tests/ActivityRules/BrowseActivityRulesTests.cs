@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
-using discipline.application.Infrastructure.DAL.Documents;
+using discipline.infrastructure.DAL.Documents.ActivityRules;
 using discipline.tests.shared.Documents;
 using Shouldly;
 using Xunit;
@@ -21,9 +21,9 @@ public sealed class BrowseActivityRulesTests : BaseTestsController
         activityRules.ForEach(x => x.UserId = user.Id.ToString());
         var notUserActivityRules = ActivityRuleDocumentFactory.Get(2);
         await TestAppDb.GetCollection<ActivityRuleDocument>()
-            .InsertManyAsync(activityRules);
+            .InsertManyAsync(activityRules as IEnumerable<ActivityRuleDocument>);
         await TestAppDb.GetCollection<ActivityRuleDocument>()
-            .InsertManyAsync(notUserActivityRules);
+            .InsertManyAsync(notUserActivityRules as IEnumerable<ActivityRuleDocument>);
         var pageNumber = 1;
         var pageSize = 3;
         

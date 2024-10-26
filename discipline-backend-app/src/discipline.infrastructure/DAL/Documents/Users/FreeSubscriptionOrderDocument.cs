@@ -1,6 +1,6 @@
 namespace discipline.infrastructure.DAL.Documents.Users;
 
-public class FreeSubscriptionOrderDocument : SubscriptionOrderDocument
+internal sealed class FreeSubscriptionOrderDocument : SubscriptionOrderDocument
 {
     
 }

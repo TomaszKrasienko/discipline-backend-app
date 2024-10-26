@@ -1,5 +1,5 @@
 using Bogus;
-using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
+using discipline.infrastructure.DAL.Documents.UsersCalendar;
 
 namespace discipline.tests.shared.Documents;
 

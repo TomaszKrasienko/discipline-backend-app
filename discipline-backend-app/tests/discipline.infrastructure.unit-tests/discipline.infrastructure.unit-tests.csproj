@@ -2,15 +2,15 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>discipline.api.integration_tests</RootNamespace>
+        <RootNamespace>discipline.infrastructure.unit_tests</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.6" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
         <PackageReference Include="NSubstitute" Version="5.1.0" />
         <PackageReference Include="Shouldly" Version="4.2.1" />
@@ -26,19 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\discipline.api\discipline.api.csproj" />
-      <ProjectReference Include="..\..\src\discipline.application\discipline.application.csproj" />
       <ProjectReference Include="..\..\src\discipline.infrastructure\discipline.infrastructure.csproj" />
       <ProjectReference Include="..\discipline.tests.shared\discipline.tests.shared.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="_certs\private.pem">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="_certs\public.pem">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
 </Project>

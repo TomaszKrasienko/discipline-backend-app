@@ -2,7 +2,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace discipline.infrastructure.DAL.Documents.DailyProductivities;
 
-public class DailyProductivityDocument : IDocument
+internal sealed class DailyProductivityDocument : IDocument
 {
     [BsonElement("id")]
     [BsonId]

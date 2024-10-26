@@ -2,9 +2,9 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Features.Users;
-using discipline.application.Infrastructure.DAL.Documents.Users;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Enums;
+using discipline.infrastructure.DAL.Documents.Users;
 using discipline.tests.shared.Documents;
 using MongoDB.Driver;
 using Shouldly;
@@ -22,7 +22,7 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
         var user = await AuthorizeWithoutSubscription();
         var subscriptionDocument = SubscriptionDocumentFactory.Get(10, 100);
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
-        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), new SubscriptionId(Ulid.Parse(subscriptionDocument.Id)),
+        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), new SubscriptionId(Ulid.Parse((string)subscriptionDocument.Id)),
             SubscriptionOrderFrequency.Monthly, new string('1', 15), "123");
         
         //act
@@ -44,7 +44,7 @@ public sealed class CreateUserSubscriptionOrderTests : BaseTestsController
         var subscriptionDocument = SubscriptionDocumentFactory.Get();
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
         var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), 
-            new SubscriptionId(Ulid.Parse(subscriptionDocument.Id)),
+            new SubscriptionId(Ulid.Parse((string)subscriptionDocument.Id)),
             null, null, null);
         
         //act

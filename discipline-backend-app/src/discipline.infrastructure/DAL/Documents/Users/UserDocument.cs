@@ -2,7 +2,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace discipline.infrastructure.DAL.Documents.Users;
 
-public sealed class UserDocument : IDocument
+internal sealed class UserDocument : IDocument
 {
     [BsonId]
     [BsonElement("id")]
