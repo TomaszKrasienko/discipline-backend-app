@@ -2,6 +2,7 @@ using discipline.application.Behaviours;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users;
 using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.Repositories;
@@ -27,7 +28,7 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
         var command = new CreateUserSubscriptionOrderCommand(user.Id, SubscriptionOrderId.New(), 
             subscription.Id, null,null, null);
 
-        _userRepository
+        _readUserRepository
             .GetByIdAsync(command.UserId)
             .Returns(user);
 
@@ -47,7 +48,7 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
         user.SubscriptionOrder.Id.ShouldBe(command.Id);
         user.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrder>();
         
-        await _userRepository
+        await _writeUserRepository
             .Received(1)
             .UpdateAsync(user);
     }
@@ -62,7 +63,7 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
             subscription.Id, SubscriptionOrderFrequency.Monthly, new string('1', 14),
             "123");
 
-        _userRepository
+        _readUserRepository
             .GetByIdAsync(command.UserId)
             .Returns(user);
 
@@ -82,7 +83,7 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
         user.SubscriptionOrder.Id.ShouldBe(command.Id);
         user.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrder>();
         
-        await _userRepository
+        await _writeUserRepository
             .Received(1)
             .UpdateAsync(user);
     }
@@ -111,7 +112,7 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
             SubscriptionId.New(), SubscriptionOrderFrequency.Monthly, new string('1', 14),
             "123");
 
-        _userRepository
+        _readUserRepository
             .GetByIdAsync(command.UserId)
             .Returns(user);
         
@@ -123,7 +124,9 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
     }
     
     #region arrange
-    private readonly IUserRepository _userRepository;
+
+    private readonly IReadUserRepository _readUserRepository;
+    private readonly IWriteUserRepository _writeUserRepository;
     private readonly ISubscriptionRepository _subscriptionRepository;
     private readonly ISubscriptionOrderService _subscriptionOrderService;
     private readonly IClock _clock;
@@ -131,11 +134,12 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
     
     public CreateUserSubscriptionOrderCommandHandlerTests()
     {
-        _userRepository = Substitute.For<IUserRepository>();
+        _readUserRepository = Substitute.For<IReadUserRepository>();
+        _writeUserRepository = Substitute.For<IWriteUserRepository>();
         _subscriptionRepository = Substitute.For<ISubscriptionRepository>();
         _subscriptionOrderService = new SubscriptionOrderService();
         _clock = Substitute.For<IClock>();
-        _handler = new CreateUserSubscriptionOrderCommandHandler(_userRepository, _subscriptionRepository,
+        _handler = new CreateUserSubscriptionOrderCommandHandler(_readUserRepository, _writeUserRepository, _subscriptionRepository,
             _subscriptionOrderService, _clock);
     }
     #endregion

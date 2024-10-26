@@ -27,10 +27,11 @@ internal static class Extensions
 
     private static IServiceCollection AddServices(this IServiceCollection services)
         => services
+            .AddScoped<IWriteUserRepository, MongoUserRepository>()
+            .AddScoped<IReadUserRepository, MongoUserRepository>()
             .AddScoped<IActivityRuleRepository, MongoActivityRuleRepository>()
             .AddScoped<IDailyProductivityRepository, MongoDailyProductivityRepository>()
             .AddScoped<IUserCalendarRepository, MongoUserCalendarRepository>()
-            .AddScoped<IUserRepository, MongoUserRepository>()
             .AddScoped<ISubscriptionRepository, MongoSubscriptionRepository>();
 
     private static IServiceCollection AddInitializer(this IServiceCollection services)

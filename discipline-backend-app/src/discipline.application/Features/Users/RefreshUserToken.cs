@@ -48,14 +48,15 @@ public sealed class RefreshTokenCommandValidator : AbstractValidator<RefreshToke
 
 internal sealed class RefreshTokenCommandHandler(
     IRefreshTokenFacade refreshTokenFacade,
-    IUserRepository userRepository,
+    IReadUserRepository readUserRepository,
+    IWriteUserRepository writeUserRepository,
     IAuthenticator authenticator,
     ITokenStorage tokenStorage) : ICommandHandler<RefreshTokenCommand>
 {
     public async Task HandleAsync(RefreshTokenCommand command, CancellationToken cancellationToken = default)
     {
         var userId = await refreshTokenFacade.GetUserIdAsync(command.RefreshToken, cancellationToken);
-        var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+        var user = await readUserRepository.GetByIdAsync(userId, cancellationToken);
         if (user is null)
         {
             throw new UserNotFoundException(userId);

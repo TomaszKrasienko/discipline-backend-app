@@ -56,7 +56,8 @@ public sealed class SignInCommandValidator : AbstractValidator<SignInCommand>
 }
 
 internal sealed class SignInCommandHandler(
-    IUserRepository userRepository,
+    IReadUserRepository readUserRepository,
+    IWriteUserRepository writeUserRepository,
     IPasswordManager passwordManager,
     IAuthenticator authenticator,
     ITokenStorage tokenStorage,
@@ -64,7 +65,7 @@ internal sealed class SignInCommandHandler(
 {
     public async Task HandleAsync(SignInCommand command, CancellationToken cancellationToken = default)
     {
-        var user = await userRepository.GetByEmailAsync(command.Email, cancellationToken);
+        var user = await readUserRepository.GetAsync(x => x.Email == command.Email, cancellationToken);
         if (user is null)
         {
             throw new UserNotFoundException(command.Email);

@@ -11,16 +11,17 @@ internal static class BrowseActivityRules
     internal static WebApplication MapBrowseActivityRules(this WebApplication app)
     {
         app.MapGet($"/{Extensions.ActivityRulesTag}", async ([AsParameters] PaginationDto paginationDto,
-                HttpContext httpContext, IDisciplineMongoCollection disciplineMongoCollection,
+                HttpContext httpContext,
                 IIdentityContext identityContext) =>
             {
-                var source = disciplineMongoCollection
-                    .GetCollection<ActivityRuleDocument>()
-                    .Find(x => x.UserId == identityContext.UserId.ToString());
-                var pagedList = await PagedList<ActivityRuleDocument>
-                    .ToPagedList(source, paginationDto.PageNumber, paginationDto.PageSize);
-                httpContext.AddPaginationToHeader(pagedList);
-                return Results.Ok(pagedList.Select(x => x.AsDto()));
+                // var source = disciplineMongoCollection
+                //     .GetCollection<ActivityRuleDocument>()
+                //     .Find(x => x.UserId == identityContext.UserId.ToString());
+                // var pagedList = await PagedList<ActivityRuleDocument>
+                //     .ToPagedList(source, paginationDto.PageNumber, paginationDto.PageSize);
+                // httpContext.AddPaginationToHeader(pagedList);
+                // return Results.Ok(pagedList.Select(x => x.AsDto()));
+                return Results.NoContent();
             })
             .Produces(StatusCodes.Status200OK, typeof(List<ActivityRuleDto>))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))

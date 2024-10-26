@@ -71,14 +71,14 @@ public sealed class SignUpCommandHandlerTests
     }
     
     #region arrange
-    private readonly IUserRepository _userRepository;
+    private readonly IWriteUserRepository _userRepository;
     private readonly IPasswordManager _passwordManager;
     private readonly IEventProcessor _eventProcessor;
     private readonly ICommandHandler<SignUpCommand> _handler;
 
     public SignUpCommandHandlerTests()
     {
-        _userRepository = Substitute.For<IUserRepository>();
+        _userRepository = Substitute.For<IWriteUserRepository>();
         _passwordManager = Substitute.For<IPasswordManager>();
         _eventProcessor = Substitute.For<IEventProcessor>();
         _handler = new SignUpCommandHandler(_userRepository, _passwordManager, _eventProcessor);

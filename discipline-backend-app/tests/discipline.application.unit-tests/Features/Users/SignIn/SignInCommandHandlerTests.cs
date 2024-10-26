@@ -84,7 +84,7 @@ public sealed class SignInCommandHandlerTests
     }
     
     #region arrange
-    private readonly IUserRepository _userRepository;
+    private readonly IWriteUserRepository _userRepository;
     private readonly IPasswordManager _passwordManager;
     private readonly IAuthenticator _authenticator;
     private readonly ITokenStorage _tokenStorage;
@@ -93,7 +93,7 @@ public sealed class SignInCommandHandlerTests
     
     public SignInCommandHandlerTests()
     {
-        _userRepository = Substitute.For<IUserRepository>();
+        _userRepository = Substitute.For<IWriteUserRepository>();
         _passwordManager = Substitute.For<IPasswordManager>();
         _authenticator = Substitute.For<IAuthenticator>();
         _tokenStorage = Substitute.For<ITokenStorage>();

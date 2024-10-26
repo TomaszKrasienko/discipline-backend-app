@@ -61,14 +61,15 @@ public sealed class CreateUserSubscriptionOrderCommandValidator : AbstractValida
 }
 
 internal sealed class CreateUserSubscriptionOrderCommandHandler(
-    IUserRepository userRepository,
+    IReadUserRepository readUserRepository,
+    IWriteUserRepository writeUserRepository,
     ISubscriptionRepository subscriptionRepository,
     ISubscriptionOrderService subscriptionOrderService,
     IClock clock) : ICommandHandler<CreateUserSubscriptionOrderCommand>
 {
     public async Task HandleAsync(CreateUserSubscriptionOrderCommand command, CancellationToken cancellationToken = default)
     {
-        var user = await userRepository.GetByIdAsync(command.UserId, cancellationToken);
+        var user = await readUserRepository.GetByIdAsync(command.UserId, cancellationToken);
         if (user is null)
         {
             throw new UserNotFoundException(command.UserId);
@@ -82,6 +83,6 @@ internal sealed class CreateUserSubscriptionOrderCommandHandler(
         
         subscriptionOrderService.AddOrderSubscriptionToUser(user, command.Id, subscription,
             command.SubscriptionOrderFrequency, clock.DateNow(), command.CardNumber, command.CardCvvNumber);
-        await userRepository.UpdateAsync(user, cancellationToken);
+        await writeUserRepository.UpdateAsync(user, cancellationToken);
     }
 }

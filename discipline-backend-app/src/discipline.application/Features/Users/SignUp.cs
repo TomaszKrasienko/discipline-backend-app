@@ -85,20 +85,22 @@ public sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
 }
 
 internal sealed class SignUpCommandHandler(
-    IUserRepository userRepository,
+    IReadUserRepository readUserRepository,
+    IWriteUserRepository writeUserRepository,
     IPasswordManager passwordManager,
     IEventProcessor eventProcessor) : ICommandHandler<SignUpCommand>
 {
     public async Task HandleAsync(SignUpCommand command, CancellationToken cancellationToken = default)
     {
-        if (await userRepository.IsEmailExists(command.Email, cancellationToken))
+        var doesEmailExist = await readUserRepository.AnyAsync(x => x.Email == command.Email, cancellationToken);
+        if (!doesEmailExist)
         {
             throw new EmailAlreadyExistsException(command.Email);
         }
 
         var securedPassword = passwordManager.Secure(command.Password);
         var user = User.Create(command.Id, command.Email, securedPassword, command.FirstName, command.LastName);
-        await userRepository.AddAsync(user, cancellationToken);
+        await writeUserRepository.AddAsync(user, cancellationToken);
         await eventProcessor.PublishAsync(user.DomainEvents.ToArray());
     }
 }

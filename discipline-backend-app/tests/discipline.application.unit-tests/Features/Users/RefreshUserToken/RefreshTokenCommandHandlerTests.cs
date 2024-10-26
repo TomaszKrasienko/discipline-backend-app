@@ -72,7 +72,7 @@ public sealed class RefreshTokenCommandHandlerTests
     
     #region arrange
     private readonly IRefreshTokenFacade _refreshTokenFacade;
-    private readonly IUserRepository _userRepository;
+    private readonly IWriteUserRepository _userRepository;
     private readonly IAuthenticator _authenticator;
     private readonly ITokenStorage _tokenStorage;
     private readonly ICommandHandler<RefreshTokenCommand> _handler;
@@ -80,7 +80,7 @@ public sealed class RefreshTokenCommandHandlerTests
     public RefreshTokenCommandHandlerTests()
     {
         _refreshTokenFacade = Substitute.For<IRefreshTokenFacade>();
-        _userRepository = Substitute.For<IUserRepository>();
+        _userRepository = Substitute.For<IWriteUserRepository>();
         _authenticator = Substitute.For<IAuthenticator>();
         _tokenStorage = Substitute.For<ITokenStorage>();
         _handler = new RefreshTokenCommandHandler(

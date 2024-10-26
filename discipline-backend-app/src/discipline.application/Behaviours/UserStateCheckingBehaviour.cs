@@ -47,7 +47,7 @@ internal sealed class UserStateAuthorizationHandler(
         }
 
         using var scope = serviceProvider.CreateScope();
-        var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+        var userRepository = scope.ServiceProvider.GetRequiredService<IWriteUserRepository>();
         var user = await userRepository.GetByIdAsync(new UserId(userId));
         if (!user.IsUserActive())
         {
@@ -76,7 +76,7 @@ internal sealed class UserStateMiddleware(
         }
 
         using var scope = serviceProvider.CreateScope();
-        var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+        var userRepository = scope.ServiceProvider.GetRequiredService<IWriteUserRepository>();
         var user = await userRepository.GetByIdAsync(new UserId(userId));
         if (user is null)
         {
