@@ -6,7 +6,9 @@ using discipline.domain.Users;
 using discipline.infrastructure.DAL.Connection;
 using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.infrastructure.DAL.Documents.Users;
+using discipline.infrastructure.Time;
 using discipline.tests.shared.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -36,7 +38,7 @@ public abstract class BaseTestsController : IDisposable
            throw new InvalidOperationException("Http response message is null");
        }
 
-       if (!httpResponseMessage.Headers.TryGetValues(AddingResourceIdHeaderBehaviour.HeaderName, out var value))
+       if (!httpResponseMessage.Headers.TryGetValues(ResourceHeaderExtension.HeaderName, out var value))
        {
            return null;
        }

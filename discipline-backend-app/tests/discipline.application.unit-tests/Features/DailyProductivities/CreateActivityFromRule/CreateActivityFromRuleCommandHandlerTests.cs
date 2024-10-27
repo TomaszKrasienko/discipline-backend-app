@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Time;
 using discipline.application.Exceptions;
 using discipline.application.Features.DailyProductivities;
 using discipline.domain.ActivityRules.Entities;

@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Events;
 using discipline.application.Events;
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.Events;

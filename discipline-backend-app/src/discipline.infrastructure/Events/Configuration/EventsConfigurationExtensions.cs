@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Events;
 using discipline.infrastructure.Events.Configuration;
 using discipline.infrastructure.Events.Publisher;
 using Microsoft.Extensions.Configuration;

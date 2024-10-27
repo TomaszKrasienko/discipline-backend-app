@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Events;
 using StackExchange.Redis;
 
 namespace discipline.infrastructure.Events.Publisher;

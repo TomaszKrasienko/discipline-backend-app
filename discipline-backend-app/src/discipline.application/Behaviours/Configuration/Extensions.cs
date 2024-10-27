@@ -1,4 +1,5 @@
 using System.Drawing;
+using discipline.application.Behaviours.Time;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

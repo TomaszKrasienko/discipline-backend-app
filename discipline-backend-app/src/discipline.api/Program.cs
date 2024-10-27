@@ -1,6 +1,5 @@
 using discipline.application.Configuration;
 using discipline.domain.Configuration;
-using discipline.infrastructure.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,5 +14,5 @@ var app = builder.Build();
 app.UseRouting();
 app.UseApplication();
 app.UseHttpsRedirection();
-app.Run();
+await app.RunAsync();
 

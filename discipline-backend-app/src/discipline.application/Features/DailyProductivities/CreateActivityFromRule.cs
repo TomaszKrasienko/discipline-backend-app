@@ -1,6 +1,7 @@
 
 
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Time;
 using discipline.application.Configuration;
 using discipline.application.Exceptions;
 using discipline.domain.ActivityRules.Repositories;

@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Time;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;
 using discipline.domain.SharedKernel.TypeIdentifiers;

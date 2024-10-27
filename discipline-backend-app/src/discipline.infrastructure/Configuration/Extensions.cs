@@ -1,4 +1,3 @@
-using discipline.infrastructure.DAL.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
@@ -9,8 +8,10 @@ public static class Extensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         => services
+            .AddAuth(configuration)
             .AddDal(configuration)
-            .AddEvents(configuration);
+            .AddEvents(configuration)
+            .AddTime();
     
     internal static IOptions<T> GetOptions<T>(this IServiceCollection services) where T : class
     {

@@ -14,7 +14,7 @@ public static class AddMeeting
     internal static WebApplication MapAddMeeting(this WebApplication app)
     {
         app.MapPost($"{Extensions.UserCalendarTag}/add-meeting", async (AddMeetingCommand command,
-                HttpContext httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+                HttpContextAccessor httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var eventId = EventId.New();
                 await commandDispatcher.HandleAsync(command with

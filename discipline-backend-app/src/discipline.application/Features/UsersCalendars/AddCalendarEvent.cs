@@ -14,7 +14,7 @@ internal static class AddCalendarEvent
     internal static WebApplication MapAddCalendarEvent(this WebApplication app)
     {
         app.MapPost($"{Extensions.UserCalendarTag}/add-calendar-event", async (AddCalendarEventCommand command,
-            HttpContext httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+            HttpContextAccessor httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
         {
             var eventId = EventId.New();
             await commandDispatcher.HandleAsync(command with

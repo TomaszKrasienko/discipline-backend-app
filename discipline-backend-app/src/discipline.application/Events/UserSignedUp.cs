@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Events;
 
 namespace discipline.application.Events;
 

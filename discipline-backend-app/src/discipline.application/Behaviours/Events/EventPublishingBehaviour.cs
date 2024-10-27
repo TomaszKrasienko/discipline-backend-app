@@ -1,6 +1,6 @@
 using discipline.domain.SharedKernel;
 
-namespace discipline.application.Behaviours;
+namespace discipline.application.Behaviours.Events;
 
 /// <summary>
 /// Marker

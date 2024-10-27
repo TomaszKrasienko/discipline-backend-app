@@ -14,7 +14,7 @@ internal static class AddImportantDate
     internal static WebApplication MapAddImportantDate(this WebApplication app)
     {
         app.MapPost($"{Extensions.UserCalendarTag}/add-important-date", async (AddImportantDateCommand command,
-                    HttpContext httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+                    HttpContextAccessor httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
                 {
                     var eventId = EventId.New();
                     await commandDispatcher.HandleAsync(command with
