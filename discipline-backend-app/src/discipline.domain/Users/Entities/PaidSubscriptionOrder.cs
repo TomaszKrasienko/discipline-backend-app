@@ -23,7 +23,7 @@ public sealed class PaidSubscriptionOrder : SubscriptionOrder
         Type = type;
     }
     
-    internal static PaidSubscriptionOrder Create(SubscriptionOrderId id, Subscription subscription, SubscriptionOrderFrequency subscriptionOrderFrequency, DateTime now,
+    internal static PaidSubscriptionOrder Create(SubscriptionOrderId id, Subscription subscription, SubscriptionOrderFrequency subscriptionOrderFrequency, DateTimeOffset now,
         string cardNumber, string cardCvvNumber)
     {
         CheckRule(new SubscriptionMustBeValidTypeRule(typeof(PaidSubscriptionOrder), subscription));
@@ -35,21 +35,21 @@ public sealed class PaidSubscriptionOrder : SubscriptionOrder
             next, paymentDetails, subscriptionOrderFrequency); 
     }
 
-    private static State GetState(bool isCancelled, DateTime now, SubscriptionOrderFrequency subscriptionOrderFrequency) =>
+    private static State GetState(bool isCancelled, DateTimeOffset now, SubscriptionOrderFrequency subscriptionOrderFrequency) =>
         subscriptionOrderFrequency switch
         {
             SubscriptionOrderFrequency.Monthly => new State(isCancelled,
-                DateOnly.FromDateTime(now).AddMonths(1).AddDays(-1)),
+                DateOnly.FromDateTime(now.Date).AddMonths(1).AddDays(-1)),
             SubscriptionOrderFrequency.Yearly => new State(isCancelled,
-                DateOnly.FromDateTime(now).AddYears(1).AddDays(-1)),
+                DateOnly.FromDateTime(now.Date).AddYears(1).AddDays(-1)),
             _ => throw new InvalidFrequencyException(subscriptionOrderFrequency)
         };
 
-    private static DateOnly GetNext(DateTime now, SubscriptionOrderFrequency subscriptionOrderFrequency) =>
+    private static DateOnly GetNext(DateTimeOffset now, SubscriptionOrderFrequency subscriptionOrderFrequency) =>
         subscriptionOrderFrequency switch
         {
-            SubscriptionOrderFrequency.Monthly => DateOnly.FromDateTime(now).AddMonths(1),
-            SubscriptionOrderFrequency.Yearly => DateOnly.FromDateTime(now).AddYears(1),
+            SubscriptionOrderFrequency.Monthly => DateOnly.FromDateTime(now.DateTime).AddMonths(1),
+            SubscriptionOrderFrequency.Yearly => DateOnly.FromDateTime(now.DateTime).AddYears(1),
             _ => throw new InvalidFrequencyException(subscriptionOrderFrequency)
         };
 }

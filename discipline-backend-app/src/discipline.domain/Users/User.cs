@@ -56,7 +56,7 @@ public sealed class User : AggregateRoot<UserId>
     }
 
     internal void CreatePaidSubscriptionOrder(SubscriptionOrderId subscriptionOrderId, Subscription subscription,
-        SubscriptionOrderFrequency subscriptionOrderFrequency, DateTime now,
+        SubscriptionOrderFrequency subscriptionOrderFrequency, DateTimeOffset now,
         string cardNumber, string cardCvvNumber)
     {
         SubscriptionOrder = PaidSubscriptionOrder.Create(subscriptionOrderId, subscription, subscriptionOrderFrequency,

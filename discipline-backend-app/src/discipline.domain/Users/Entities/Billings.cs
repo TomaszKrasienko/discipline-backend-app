@@ -24,7 +24,7 @@ public sealed class Billing : Entity<BillingId>
         TransferDetails = transferDetails;
     }
 
-    internal static Billing Create(BillingId id, DateTime createdAt, bool isRealized, decimal cost,
+    internal static Billing Create(BillingId id, DateTimeOffset createdAt, bool isRealized, decimal cost,
         string title, string cardNumber)
     {
         var billing = new Billing(id, createdAt);

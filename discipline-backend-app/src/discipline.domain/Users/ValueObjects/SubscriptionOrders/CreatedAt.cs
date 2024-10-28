@@ -16,13 +16,13 @@ public sealed class CreatedAt : ValueObject
         }
     }
 
-    private CreatedAt(DateTime value)
+    private CreatedAt(DateTimeOffset value)
         => Value = value;
 
-    public static implicit operator DateTime(CreatedAt createdAt)
+    public static implicit operator DateTimeOffset(CreatedAt createdAt)
         => createdAt.Value;
 
-    public static implicit operator CreatedAt(DateTime value)
+    public static implicit operator CreatedAt(DateTimeOffset value)
         => new(value);
 
     protected override IEnumerable<object> GetAtomicValues()

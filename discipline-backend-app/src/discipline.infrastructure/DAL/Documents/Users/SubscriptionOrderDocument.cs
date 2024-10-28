@@ -11,7 +11,7 @@ internal abstract class SubscriptionOrderDocument : IDocument
     public string Id { get; set; }
     
     [BsonElement("createdAt")]
-    public DateTime CreatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
     
     [BsonElement("subscriptionId")]
     public Ulid SubscriptionId { get; set; }
