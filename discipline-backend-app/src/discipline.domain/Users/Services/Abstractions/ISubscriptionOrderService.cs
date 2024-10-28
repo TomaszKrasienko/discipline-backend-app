@@ -7,6 +7,6 @@ namespace discipline.domain.Users.Services.Abstractions;
 public interface ISubscriptionOrderService
 {
      void AddOrderSubscriptionToUser(User user, SubscriptionOrderId id, Subscription subscription,
-        SubscriptionOrderFrequency? subscriptionOrderFrequency, DateTime now,
+        SubscriptionOrderFrequency? subscriptionOrderFrequency, DateTimeOffset now,
         string cardNumber, string cardCvvNumber);
 }

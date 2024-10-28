@@ -3,6 +3,8 @@ using discipline.application.Behaviours;
 using discipline.application.DTOs;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users;
+using discipline.infrastructure.Auth;
+using discipline.infrastructure.Auth.Configuration;
 using discipline.infrastructure.DAL.Connection;
 using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.infrastructure.DAL.Documents.Users;

@@ -23,7 +23,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     {
         //arrange
         var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "My rule title", Mode.FirstDayOfMonth());
-        var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+        var now = new DateOnly(DateTime.Now.Year, DateTime.Now.Month, 1);
         var command = new CreateActivityFromRuleCommand(ActivityId.New(), activityRule.Id);
 
         _activityRuleRepository
@@ -55,7 +55,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     {
         //arrange
         var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "My rule title", Mode.FirstDayOfMonth());
-        var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+        var now = DateOnly.FromDateTime(DateTimeOffset.UtcNow.Date);
         var command = new CreateActivityFromRuleCommand(ActivityId.New(), activityRule.Id);
 
         _activityRuleRepository
@@ -73,7 +73,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
         await _dailyProductivityRepository
             .Received(1)
             .AddAsync(Arg.Is<DailyProductivity>(arg
-                => arg.Day.Value == DateOnly.FromDateTime(now)
+                => arg.Day.Value == now
                 && arg.UserId.Value == activityRule.UserId.Value
                 && arg.Activities.Any(x => x.Id.Equals(command.ActivityId))));
     }
@@ -96,7 +96,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     {
         //arrange
         var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "My rule title", Mode.FirstDayOfMonth());
-        var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 4);
+        var now = new DateOnly(DateTime.Now.Year, DateTime.Now.Month, 4);
         var command = new CreateActivityFromRuleCommand(ActivityId.New(), activityRule.Id);
 
         _activityRuleRepository

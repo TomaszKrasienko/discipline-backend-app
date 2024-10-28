@@ -2,13 +2,15 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using discipline.application.Behaviours;
 using discipline.application.Behaviours.Time;
+using discipline.infrastructure.Auth;
+using discipline.infrastructure.Auth.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Behaviours.AuthBehviour;
+namespace discipline.infrastructure.unit_tests.Auth;
 
 public sealed class JwtAuthenticatorTests
 {

@@ -83,7 +83,7 @@ internal sealed class CreateUserSubscriptionOrderCommandHandler(
         }
         
         subscriptionOrderService.AddOrderSubscriptionToUser(user, command.Id, subscription,
-            command.SubscriptionOrderFrequency, clock.DateNow(), command.CardNumber, command.CardCvvNumber);
+            command.SubscriptionOrderFrequency, clock.DateTimeNow(), command.CardNumber, command.CardCvvNumber);
         await writeUserRepository.UpdateAsync(user, cancellationToken);
     }
 }

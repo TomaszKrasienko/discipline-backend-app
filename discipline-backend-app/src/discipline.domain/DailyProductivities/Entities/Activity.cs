@@ -33,7 +33,7 @@ public sealed class Activity : Entity<ActivityId>
         return activity;
     }
 
-    internal static Activity CreateFromRule(ActivityId id, DateTime now, ActivityRule rule)
+    internal static Activity CreateFromRule(ActivityId id, DateTimeOffset now, ActivityRule rule)
     {
         var weekdayCheckService = WeekdayCheckService.GetInstance();
         if (weekdayCheckService.IsDateForMode(now, rule.Mode, rule.SelectedDays?.Select(x => x.Value).ToList()))

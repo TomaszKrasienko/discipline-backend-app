@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Time;
 using discipline.infrastructure.Auth.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -53,8 +54,8 @@ internal sealed class JwtAuthenticator : IAuthenticator
             issuer: _issuer, 
             audience: _audience,
             claims: claims,
-            notBefore: now,
-            expires: expirationTime,
+            notBefore: now.DateTime,
+            expires: expirationTime.DateTime,
             signingCredentials: signingCredentials);
         return _jwtSecurityTokenHandler.WriteToken(jwt);
     }

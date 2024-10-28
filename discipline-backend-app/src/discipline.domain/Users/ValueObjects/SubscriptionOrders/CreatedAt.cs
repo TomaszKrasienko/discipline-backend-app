@@ -5,8 +5,8 @@ namespace discipline.domain.Users.ValueObjects.SubscriptionOrders;
 
 public sealed class CreatedAt : ValueObject
 {
-    private readonly DateTime _value;
-    public DateTime Value
+    private readonly DateTimeOffset _value;
+    public DateTimeOffset Value
     {
         get => _value;
         private init

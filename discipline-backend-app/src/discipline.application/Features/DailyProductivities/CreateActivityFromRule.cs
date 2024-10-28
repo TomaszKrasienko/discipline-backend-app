@@ -122,17 +122,17 @@ internal sealed class CreateActivityFromRuleCommandHandler(
             throw new ActivityRuleNotFoundException(command.ActivityRuleId);
         }
 
-        var day = DateOnly.FromDateTime(clock.DateNow());
+        var day = clock.DateNow();
         var dailyProductivity = await dailyProductivityRepository.GetByDateAsync(day, cancellationToken);
         if (dailyProductivity is null)
         {
             dailyProductivity = DailyProductivity.Create(DailyProductivityId.New(), day, activityRule.UserId);
-            dailyProductivity.AddActivityFromRule(command.ActivityId, clock.DateNow(), activityRule);
+            dailyProductivity.AddActivityFromRule(command.ActivityId, clock.DateTimeNow(), activityRule);
             await dailyProductivityRepository.AddAsync(dailyProductivity, cancellationToken);
             return;
         }
         
-        dailyProductivity.AddActivityFromRule(command.ActivityId, clock.DateNow(), activityRule);
+        dailyProductivity.AddActivityFromRule(command.ActivityId, clock.DateTimeNow(), activityRule);
         await dailyProductivityRepository.UpdateAsync(dailyProductivity, cancellationToken);
     }
 }

@@ -3,7 +3,7 @@ using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.BusinessRules.CreatedAt;
 
-internal sealed class CreatedAtCanNoBeDefaultRule(DateTime value) : IBusinessRule
+internal sealed class CreatedAtCanNoBeDefaultRule(DateTimeOffset value) : IBusinessRule
 {
     public Exception Exception => new DefaultCreatedAtException();
 

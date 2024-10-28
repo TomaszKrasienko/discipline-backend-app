@@ -9,7 +9,7 @@ namespace discipline.domain.Users.Services;
 public sealed class SubscriptionOrderService : ISubscriptionOrderService
 {
     public void AddOrderSubscriptionToUser(User user, SubscriptionOrderId id, Subscription subscription,
-        SubscriptionOrderFrequency? subscriptionOrderFrequency, DateTime now, string cardNumber, string cardCvvNumber)
+        SubscriptionOrderFrequency? subscriptionOrderFrequency, DateTimeOffset now, string cardNumber, string cardCvvNumber)
     {
         if (user is null)
         {

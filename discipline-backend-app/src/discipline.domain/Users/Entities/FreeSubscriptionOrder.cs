@@ -12,7 +12,7 @@ public sealed class  FreeSubscriptionOrder : SubscriptionOrder
     {
     }
 
-    public static FreeSubscriptionOrder Create(SubscriptionOrderId id, Subscription subscription, DateTime now)
+    public static FreeSubscriptionOrder Create(SubscriptionOrderId id, Subscription subscription, DateTimeOffset now)
     {
         CheckRule(new SubscriptionMustBeValidTypeRule(typeof(FreeSubscriptionOrder), subscription));
         var state = new State(false, null);

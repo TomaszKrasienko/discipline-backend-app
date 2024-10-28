@@ -36,7 +36,7 @@ public sealed class DailyProductivity : AggregateRoot<DailyProductivityId>
         _activities.Add(activity);
     }
 
-    public void AddActivityFromRule(ActivityId id, DateTime now, ActivityRule activityRule)
+    public void AddActivityFromRule(ActivityId id, DateTimeOffset now, ActivityRule activityRule)
     {
         ValidateActivity(activityRule.Title);
         var activity = Activity.CreateFromRule(id, now, activityRule);

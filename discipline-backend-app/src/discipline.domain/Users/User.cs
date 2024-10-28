@@ -68,7 +68,7 @@ public sealed class User : AggregateRoot<UserId>
     }
 
     internal void CreateFreeSubscriptionOrder(SubscriptionOrderId id, Subscription subscription,
-        DateTime now)
+        DateTimeOffset now)
     {     
         SubscriptionOrder = FreeSubscriptionOrder.Create(id, subscription, now);
         Status = Status.FreeSubscriptionPicked;

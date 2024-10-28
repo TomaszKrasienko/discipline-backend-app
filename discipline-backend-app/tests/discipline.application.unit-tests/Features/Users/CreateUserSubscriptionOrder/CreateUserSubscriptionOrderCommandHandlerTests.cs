@@ -39,7 +39,7 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
 
         _clock
             .DateNow()
-            .Returns(DateTime.Now);
+            .Returns(DateOnly.FromDateTime(DateTime.UtcNow));
         
         //act
         await Act(command);
@@ -74,7 +74,7 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
 
         _clock
             .DateNow()
-            .Returns(DateTime.Now);
+            .Returns(DateOnly.FromDateTime(DateTime.UtcNow));
         
         //act
         await Act(command);

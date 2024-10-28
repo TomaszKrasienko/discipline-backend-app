@@ -13,10 +13,8 @@ internal static class Extensions
             .AddCommandHandlingBehaviour()
             .AddHandlingException()
             .AddValidationBehaviour()
-            .AddClockBehaviour()
             .AddLoggingBehaviour()
             .AddPasswordSecureBehaviour()
-            .AddAuthBehaviour(configuration)
             .AddTokenStorage()
             .AddIdentityFromContextBehaviour()
             .AddUserStateCheckingBehaviour()
@@ -26,7 +24,6 @@ internal static class Extensions
     internal static WebApplication UseBehaviours(this WebApplication app)
         => app
             .UseHandlingException()
-            .UseAuthBehaviour()
             .UseUserStateCheckingBehaviour();
 
     internal static WebApplicationBuilder UseBehaviours(this WebApplicationBuilder builder)
