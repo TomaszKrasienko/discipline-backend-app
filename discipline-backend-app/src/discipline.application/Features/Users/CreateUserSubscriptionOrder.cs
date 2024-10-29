@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Behaviours.Time;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;
@@ -17,7 +19,7 @@ public static class CreateUserSubscriptionOrder
     internal static WebApplication MapCreateUserSubscriptionOrder(this WebApplication app)
     {
         app.MapPost($"{Extensions.UsersTag}/create-subscription-order", async (CreateUserSubscriptionOrderCommand command,
-            IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+            IIdentityContext identityContext, ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var subscriptionOrderId = SubscriptionOrderId.New();
                 await commandDispatcher.HandleAsync(command with { Id = subscriptionOrderId, UserId = identityContext.UserId },

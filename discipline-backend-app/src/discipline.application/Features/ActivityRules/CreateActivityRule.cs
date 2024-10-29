@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.domain.ActivityRules.Entities;
@@ -17,7 +19,7 @@ public static class CreateActivityRule
     public static WebApplication MapCreateActivityRule(this WebApplication app)
     {
         app.MapPost($"/{Extensions.ActivityRulesTag}/create", async (CreateActivityRuleCommand command, HttpContextAccessor httpContext, 
-                    ICommandDispatcher dispatcher, CancellationToken cancellationToken, IIdentityContext identityContext) => 
+                    ICqrsDispatcher dispatcher, CancellationToken cancellationToken, IIdentityContext identityContext) => 
             {
                 var activityRuleId = ActivityRuleId.New();
                 var userId = identityContext.UserId;

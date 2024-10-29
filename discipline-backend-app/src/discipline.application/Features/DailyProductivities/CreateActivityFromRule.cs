@@ -1,6 +1,8 @@
 
 
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Behaviours.Time;
 using discipline.application.Configuration;
 using discipline.application.Exceptions;
@@ -47,7 +49,7 @@ internal static class CreateActivityFromRule
     internal static WebApplication MapCreateActivityFromRule(this WebApplication app)
     {
         app.MapPost($"/{Extensions.DailyProductivityTag}/today/add-activity-from-rule", async (CreateActivityFromRuleCommand command,
-            CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
+            CancellationToken cancellationToken, ICqrsDispatcher commandDispatcher) =>
         {
             var activityId = ActivityId.New();
             await commandDispatcher.HandleAsync(command with { ActivityId = activityId }, cancellationToken);
@@ -84,7 +86,7 @@ internal sealed class CronActivityFromRuleService(IServiceProvider serviceProvid
     {
         using var scope = serviceProvider.CreateScope();
         var activityRuleRepository = scope.ServiceProvider.GetRequiredService<IActivityRuleRepository>();
-        var commandDispatcher = scope.ServiceProvider.GetRequiredService<ICommandDispatcher>();
+        var commandDispatcher = scope.ServiceProvider.GetRequiredService<ICqrsDispatcher>();
 
         var activities = await activityRuleRepository.BrowseAsync();
         foreach (var activityRule in activities)

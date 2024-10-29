@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.domain.ActivityRules.Repositories;
@@ -14,7 +16,7 @@ internal static class DeleteActivityRule
     internal static WebApplication MapDeleteActivityRule(this WebApplication app)
     {
         app.MapDelete($"/{Extensions.ActivityRulesTag}/{{activityRuleId}}/delete", async (Ulid activityRuleId,
-                CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
+                CancellationToken cancellationToken, ICqrsDispatcher commandDispatcher) =>
             {
                 await commandDispatcher.HandleAsync(new DeleteActivityRuleCommand(new ActivityRuleId(activityRuleId)), cancellationToken);
                 return Results.Ok();

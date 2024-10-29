@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Features.UsersCalendars.Configuration;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
@@ -14,7 +16,7 @@ public static class AddMeeting
     internal static WebApplication MapAddMeeting(this WebApplication app)
     {
         app.MapPost($"{Extensions.UserCalendarTag}/add-meeting", async (AddMeetingCommand command,
-                HttpContextAccessor httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+                HttpContextAccessor httpContext, IIdentityContext identityContext, ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var eventId = EventId.New();
                 await commandDispatcher.HandleAsync(command with

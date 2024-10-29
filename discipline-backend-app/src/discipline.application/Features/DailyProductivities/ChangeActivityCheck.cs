@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Features.DailyProductivities.Configuration;
 using discipline.domain.DailyProductivities.Exceptions;
 using discipline.domain.DailyProductivities.Repositories;
@@ -14,7 +16,7 @@ internal static class ChangeActivityCheck
     internal static WebApplication MapChangeActivityCheck(this WebApplication app)
     {
         app.MapPatch($"/{Extensions.DailyProductivityTag}/activity/{{activityId}}/change-check", async (Ulid activityId,
-            CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
+            CancellationToken cancellationToken, ICqrsDispatcher commandDispatcher) =>
             {
                 await commandDispatcher.HandleAsync(new ChangeActivityCheckCommand( new ActivityId(activityId)), cancellationToken);
                 return Results.Ok();

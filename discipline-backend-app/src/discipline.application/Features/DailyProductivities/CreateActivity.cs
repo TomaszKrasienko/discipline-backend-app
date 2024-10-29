@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Features.DailyProductivities.Configuration;
 using discipline.domain.DailyProductivities.Entities;
 using discipline.domain.DailyProductivities.Repositories;
@@ -14,7 +16,7 @@ internal static class CreateActivity
     internal static WebApplication MapCreateActivity(this WebApplication app)
     {
         app.MapPost($"/{Extensions.DailyProductivityTag}/{{day:datetime}}/add-activity", async (DateTime day, CreateActivityCommand command,
-            CancellationToken cancellationToken, ICommandDispatcher commandDispatcher, IIdentityContext identityContext) =>
+            CancellationToken cancellationToken, ICqrsDispatcher commandDispatcher, IIdentityContext identityContext) =>
             {
                 var activityId = ActivityId.New();
                 await commandDispatcher.HandleAsync(command with

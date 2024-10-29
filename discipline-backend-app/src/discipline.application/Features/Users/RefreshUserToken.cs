@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.DTOs;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;
@@ -14,7 +16,7 @@ internal static class RefreshUserToken
     internal static WebApplication MapRefreshToken(this WebApplication app)
     {
         app.MapPost($"{Extensions.UsersTag}/refresh-token", async (RefreshTokenCommand command,
-            ICommandDispatcher commandDispatcher, ITokenStorage tokenStorage, CancellationToken cancellationToken) =>
+            ICqrsDispatcher commandDispatcher, ITokenStorage tokenStorage, CancellationToken cancellationToken) =>
             {
                 await commandDispatcher.HandleAsync(command, cancellationToken);
                 var jwt = tokenStorage.Get();

@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Features.UsersCalendars.Configuration;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Services.Abstractions;
@@ -13,7 +15,7 @@ internal static class ChangeEventDate
     internal static WebApplication MapChangeEventDate(this WebApplication app)
     {
         app.MapPatch($"{Extensions.UserCalendarTag}/event/{{eventId}}/change-event-date", async (
-                Ulid eventId, ChangeEventDateCommand command, ICommandDispatcher commandDispatcher,
+                Ulid eventId, ChangeEventDateCommand command, ICqrsDispatcher commandDispatcher,
                 IIdentityContext identityContext, CancellationToken cancellationToken) =>
             {
                 await commandDispatcher.HandleAsync(command with

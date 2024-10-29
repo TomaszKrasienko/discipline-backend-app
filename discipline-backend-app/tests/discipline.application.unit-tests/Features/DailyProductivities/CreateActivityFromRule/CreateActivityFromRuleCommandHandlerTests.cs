@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Behaviours.Time;
 using discipline.application.Exceptions;
 using discipline.application.Features.DailyProductivities;
@@ -34,7 +36,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .DateNow()
             .Returns(now);
 
-        var dailyProductivity = DailyProductivity.Create(DailyProductivityId.New(), DateOnly.FromDateTime(now), activityRule.UserId);
+        var dailyProductivity = DailyProductivity.Create(DailyProductivityId.New(), now, activityRule.UserId);
         _dailyProductivityRepository
             .GetByDateAsync(dailyProductivity.Day)
             .Returns(dailyProductivity);
@@ -107,7 +109,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .DateNow()
             .Returns(now);
 
-        var dailyProductivity = DailyProductivity.Create(DailyProductivityId.New(), DateOnly.FromDateTime(now), activityRule.UserId);
+        var dailyProductivity = DailyProductivity.Create(DailyProductivityId.New(), now, activityRule.UserId);
         _dailyProductivityRepository
             .GetByDateAsync(dailyProductivity.Day)
             .Returns(dailyProductivity);
@@ -122,7 +124,6 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .Received(1)
             .UpdateAsync(dailyProductivity);
     }
-    
 
     #region arrange
     private readonly IClock _clock;

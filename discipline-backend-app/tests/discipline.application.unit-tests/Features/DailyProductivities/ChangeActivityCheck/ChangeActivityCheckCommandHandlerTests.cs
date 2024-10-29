@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Features.DailyProductivities;
 using discipline.domain.DailyProductivities.Exceptions;
 using discipline.domain.DailyProductivities.Repositories;

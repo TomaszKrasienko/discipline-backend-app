@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Exceptions;
 using discipline.application.Features.UsersCalendars.Configuration;
 using discipline.domain.SharedKernel.TypeIdentifiers;
@@ -14,7 +16,7 @@ internal static class EditImportantDate
     internal static WebApplication MapEditImportantDate(this WebApplication app)
     {
         app.MapPut($"{Extensions.UserCalendarTag}/edit-important-date/{{eventId}}", async (EditImportantDateCommand command,
-                Ulid eventId, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+                Ulid eventId, IIdentityContext identityContext, ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 await commandDispatcher.HandleAsync(command with
                 {

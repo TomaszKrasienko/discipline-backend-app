@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Behaviours.Events;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;
@@ -16,7 +18,7 @@ internal static class SignUp
     internal static WebApplication MapSignUp(this WebApplication app)
     {
         app.MapPost($"{Extensions.UsersTag}/sign-up", async (SignUpCommand command,
-            ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+            ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var userId = UserId.New();
                 await commandDispatcher.HandleAsync(command with {Id = userId}, cancellationToken);

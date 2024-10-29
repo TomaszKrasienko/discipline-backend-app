@@ -1,3 +1,5 @@
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using ValidationException = discipline.application.Exceptions.ValidationException;

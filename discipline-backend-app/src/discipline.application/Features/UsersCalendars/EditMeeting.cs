@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Exceptions;
 using discipline.application.Features.UsersCalendars.Configuration;
 using discipline.domain.SharedKernel.TypeIdentifiers;
@@ -14,7 +16,7 @@ internal static class EditMeeting
     internal static WebApplication MapEditMeeting(this WebApplication app)
     {
         app.MapPut($"{Extensions.UserCalendarTag}/edit-meeting/{{eventId}}", async (EditMeetingCommand command,
-            Ulid eventId, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+            Ulid eventId, IIdentityContext identityContext, ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 await commandDispatcher.HandleAsync(command with
                 {

@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.domain.ActivityRules.Repositories;
@@ -14,7 +16,7 @@ public static class EditActivityRule
     public static WebApplication MapEditActivityRule(this WebApplication app)
     {
         app.MapPut($"/{Extensions.ActivityRulesTag}/{{activityRuleId}}/edit", async (Ulid activityRuleId, EditActivityRuleCommand command, HttpContext httpContext, 
-                    ICommandDispatcher dispatcher, CancellationToken cancellationToken) 
+                    ICqrsDispatcher dispatcher, CancellationToken cancellationToken) 
                 => {
                         await dispatcher.HandleAsync(command with { Id = new ActivityRuleId(activityRuleId) }, cancellationToken);
                         return Results.Ok();

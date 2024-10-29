@@ -1,4 +1,6 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Features.DailyProductivities.Configuration;
 using discipline.domain.DailyProductivities.Exceptions;
 using discipline.domain.DailyProductivities.Repositories;
@@ -14,7 +16,7 @@ internal static class DeleteActivity
     internal static WebApplication MapDeleteActivity(this WebApplication app)
     {
         app.MapDelete($"/{Extensions.DailyProductivityTag}/activity/{{activityId}}", async (Ulid activityId,
-            CancellationToken cancellationToken, ICommandDispatcher commandDispatcher) =>
+            CancellationToken cancellationToken, ICqrsDispatcher commandDispatcher) =>
             {
                 await commandDispatcher.HandleAsync(new DeleteActivityCommand(new ActivityId(activityId)), cancellationToken);
                 return Results.Ok();
