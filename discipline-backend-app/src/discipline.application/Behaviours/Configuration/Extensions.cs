@@ -12,7 +12,7 @@ internal static class Extensions
 {
     internal static IServiceCollection AddBehaviours(this IServiceCollection services, IConfiguration configuration)
         => services
-            .AddCommandHandlingBehaviour()
+            .AddCqrs()
             .AddHandlingException()
             .AddValidationBehaviour()
             .AddLoggingBehaviour()
@@ -31,11 +31,4 @@ internal static class Extensions
     internal static WebApplicationBuilder UseBehaviours(this WebApplicationBuilder builder)
         => builder
             .UseLoggingBehaviour();
-
-    internal static T GetOptions<T>(this IConfiguration configuration, string section) where T : class, new()
-    {
-        var t = new T();
-        configuration.Bind(section, t);
-        return t;
-    }
 }

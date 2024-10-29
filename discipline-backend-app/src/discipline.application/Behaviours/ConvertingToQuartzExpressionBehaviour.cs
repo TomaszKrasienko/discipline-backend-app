@@ -1,5 +1,6 @@
 namespace discipline.application.Behaviours;
 
+//TODO Przeniesienie to infra
 internal static class ConvertingToQuartzExpressionBehaviour
 {
     private const string EmptySign = "*";
