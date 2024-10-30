@@ -8,6 +8,7 @@ using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace discipline.application.Features.UsersCalendars;
 
@@ -30,7 +31,7 @@ internal static class AddImportantDate
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
             .Produces(StatusCodes.Status403Forbidden, typeof(void))
-            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
             .WithName(nameof(AddImportantDate))
             .WithTags(Extensions.UserCalendarTag)
             .WithOpenApi(operation => new (operation)

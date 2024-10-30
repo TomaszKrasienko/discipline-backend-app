@@ -4,11 +4,12 @@ using Microsoft.Extensions.Options;
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class Extensions
+public static class ServicesExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         => services
             .AddAuth(configuration)
+            .AddExceptionsHandling()
             .AddDal(configuration)
             .AddEvents(configuration)
             .AddTime();

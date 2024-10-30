@@ -1,4 +1,5 @@
 using System.Text;
+using discipline.application.Behaviours.Cryptography;
 using discipline.application.Exceptions;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using Microsoft.AspNetCore.Routing.Matching;

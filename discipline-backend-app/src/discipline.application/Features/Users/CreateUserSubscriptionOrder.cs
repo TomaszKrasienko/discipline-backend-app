@@ -11,6 +11,7 @@ using discipline.domain.Users.Services.Abstractions;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace discipline.application.Features.Users;
 
@@ -27,9 +28,9 @@ public static class CreateUserSubscriptionOrder
                 return Results.Ok();
             })
             .Produces(StatusCodes.Status200OK, typeof(void))
-            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
             .WithName(nameof(CreateUserSubscriptionOrder))
             .WithTags(Extensions.UsersTag)
             .WithOpenApi(operation => new (operation)

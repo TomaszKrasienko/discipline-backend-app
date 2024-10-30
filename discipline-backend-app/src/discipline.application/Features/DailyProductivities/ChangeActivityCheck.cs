@@ -8,6 +8,7 @@ using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace discipline.application.Features.DailyProductivities;
 
@@ -22,10 +23,10 @@ internal static class ChangeActivityCheck
                 return Results.Ok();
             })
             .Produces(StatusCodes.Status200OK, typeof(void))
-            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))        
+            .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))        
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))        
             .Produces(StatusCodes.Status403Forbidden, typeof(void))
-            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
             .WithName(nameof(ChangeActivityCheck))
             .WithTags(Extensions.DailyProductivityTag)
             .WithOpenApi(operation => new(operation)

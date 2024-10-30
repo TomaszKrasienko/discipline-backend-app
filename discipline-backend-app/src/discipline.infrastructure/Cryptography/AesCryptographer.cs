@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Cryptography;
 using Microsoft.Extensions.Logging;
 
 namespace discipline.infrastructure.Cryptography;

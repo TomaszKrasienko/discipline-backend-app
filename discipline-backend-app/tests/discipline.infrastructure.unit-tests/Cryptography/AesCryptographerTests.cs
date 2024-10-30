@@ -1,10 +1,11 @@
-using discipline.application.Behaviours;
+using discipline.application.Behaviours.Cryptography;
+using discipline.infrastructure.Cryptography;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Behaviours.CryptographyBehaviour;
+namespace discipline.infrastructure.unit_tests.Cryptography;
 
 public sealed class AesCryptographerTests
 {

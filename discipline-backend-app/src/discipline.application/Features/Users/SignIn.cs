@@ -8,6 +8,7 @@ using discipline.domain.Users.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace discipline.application.Features.Users;
 
@@ -23,8 +24,8 @@ internal static class SignIn
                 return Results.Ok(jwt);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
-            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
-            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
             .WithName(nameof(SignIn))
             .WithTags(Extensions.UsersTag)
             .WithOpenApi(operation => new (operation)
