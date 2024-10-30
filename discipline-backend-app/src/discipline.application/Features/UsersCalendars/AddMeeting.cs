@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
 using discipline.application.Behaviours.CQRS;
 using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Behaviours.IdentityContext;
@@ -40,7 +41,7 @@ public static class AddMeeting
                 Description = "Adds meeting to existing user calendar for day or creates user calendar for day"
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }

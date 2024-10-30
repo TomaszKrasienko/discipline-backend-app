@@ -1,4 +1,4 @@
-namespace discipline.application.Behaviours;
+namespace discipline.application.Behaviours.Auth;
 
 public interface IAuthenticator
 {

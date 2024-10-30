@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
 using discipline.application.Behaviours.CQRS;
 using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Behaviours.IdentityContext;
@@ -38,7 +39,7 @@ internal static class EditImportantDate
                 Description = "Edits important date"
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }

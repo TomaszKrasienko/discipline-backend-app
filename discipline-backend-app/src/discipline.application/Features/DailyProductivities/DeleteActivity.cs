@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
 using discipline.application.Behaviours.CQRS;
 using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Features.DailyProductivities.Configuration;
@@ -33,7 +34,7 @@ internal static class DeleteActivity
                 Description = "Removes activity"
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }

@@ -1,12 +1,11 @@
 using System.Security.Claims;
-using discipline.application.Behaviours;
-using discipline.application.Behaviours.IdentityContext;
 using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.infrastructure.IdentityContext;
 using Microsoft.AspNetCore.Http;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Behaviours.IdentityFromContextBehaviour;
+namespace discipline.infrastructure.unit_tests.IdentityContext;
 
 public sealed class IdentityContextFactoryTests
 {
@@ -40,7 +39,7 @@ public sealed class IdentityContextFactoryTests
         
         //assert
         result.ShouldNotBeNull();
-        result.ShouldBeOfType<IdentityContext>();
+        result.ShouldBeOfType<infrastructure.IdentityContext.IdentityContext>();
         result.IsAuthenticated.ShouldBeTrue();
     }
 }

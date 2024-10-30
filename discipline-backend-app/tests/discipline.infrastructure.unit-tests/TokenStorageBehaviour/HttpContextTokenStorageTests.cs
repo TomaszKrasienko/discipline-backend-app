@@ -1,11 +1,12 @@
 using discipline.application.Behaviours;
 using discipline.application.DTOs;
+using discipline.infrastructure.Token;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Behaviours.TokenStorageBehaviour;
+namespace discipline.infrastructure.unit_tests.TokenStorageBehaviour;
 
 public sealed class HttpContextTokenStorageTests
 {

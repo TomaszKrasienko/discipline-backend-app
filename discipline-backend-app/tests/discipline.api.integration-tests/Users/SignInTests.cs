@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Passwords;
 using discipline.application.DTOs;
 using discipline.application.Features.Users;
 using discipline.infrastructure.DAL.Connection;

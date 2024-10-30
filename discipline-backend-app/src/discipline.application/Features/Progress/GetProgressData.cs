@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
 using discipline.application.Behaviours.IdentityContext;
 using discipline.application.DTOs;
 using discipline.application.Features.Progress.Configuration;
@@ -44,7 +45,7 @@ internal static class GetProgressData
             Description = "Gets data progress as day, percent of done activities per day"
         })
          .RequireAuthorization()
-         .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
+         .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }

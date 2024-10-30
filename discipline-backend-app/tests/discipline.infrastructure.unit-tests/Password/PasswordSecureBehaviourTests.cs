@@ -1,12 +1,12 @@
 using System.Text;
-using discipline.application.Behaviours;
+using discipline.application.Behaviours.Passwords;
 using discipline.domain.Users;
-using discipline.domain.Users.Entities;
+using discipline.infrastructure.Passwords;
 using Microsoft.AspNetCore.Identity;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Behaviours;
+namespace discipline.infrastructure.unit_tests.Password;
 
 public sealed class PasswordSecureBehaviourTests
 {

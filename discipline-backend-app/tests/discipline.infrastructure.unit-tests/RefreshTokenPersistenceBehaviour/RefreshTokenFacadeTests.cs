@@ -1,14 +1,14 @@
-using discipline.application.Behaviours;
 using discipline.application.Behaviours.Cryptography;
+using discipline.application.Behaviours.RefreshToken;
 using discipline.application.Exceptions;
 using discipline.domain.SharedKernel.TypeIdentifiers;
-using Microsoft.AspNetCore.Http.Features;
+using discipline.infrastructure.RefreshToken;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Behaviours.RefreshTokenPersistenceBehaviour;
+namespace discipline.infrastructure.unit_tests.RefreshTokenPersistenceBehaviour;
 
 public sealed class RefreshTokenFacadeTests
 {

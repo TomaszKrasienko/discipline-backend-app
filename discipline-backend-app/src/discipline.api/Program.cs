@@ -8,8 +8,6 @@ builder.Services
     .AddDomain()
     .AddApplication(builder.Configuration)
     .AddInfrastructure(builder.Configuration);
-builder
-    .UseApplication();
 var app = builder.Build();
 app.UseRouting();
 app.UseApplication();

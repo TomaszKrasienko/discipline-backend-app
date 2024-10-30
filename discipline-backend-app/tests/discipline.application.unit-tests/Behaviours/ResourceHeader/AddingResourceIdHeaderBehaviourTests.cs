@@ -1,10 +1,9 @@
-using discipline.application.Behaviours;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Behaviours;
+namespace discipline.application.unit_tests.Behaviours.ResourceHeader;
 
 public sealed class AddingResourceIdHeaderBehaviourTests
 {

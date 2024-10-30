@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
 using discipline.application.Behaviours.CQRS;
 using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Behaviours.IdentityContext;
@@ -41,7 +42,7 @@ internal static class CreateActivity
                 Description = "Adds activity rule"
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }

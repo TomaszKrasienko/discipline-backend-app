@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
 using discipline.application.Behaviours.IdentityContext;
 using discipline.application.DTOs;
 using discipline.application.Features.ActivityRules.Configuration;
@@ -35,7 +36,7 @@ internal static class BrowseActivityRules
                     $"Browses activity rules by pagination data. Adds pagination meta data in header with name {PagingBehaviour.HeaderName}"
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }

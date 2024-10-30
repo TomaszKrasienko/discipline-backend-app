@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
 using discipline.application.DTOs;
 using discipline.application.Features.ActivityRuleModes.Configuration;
 using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
@@ -27,7 +28,7 @@ internal static class GetActivityRuleModes
             {
                 Description = "Gets activity rule modes"
             })
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }

@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
 using discipline.application.DTOs;
 using discipline.application.Features.ActivityRules.Configuration;
 using Microsoft.AspNetCore.Builder;
@@ -29,7 +30,7 @@ internal static class GetActivityRuleById
                 Description = "Gets activity rule by \"ID\""
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }

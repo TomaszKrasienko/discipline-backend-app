@@ -1,18 +1,23 @@
 using System.Security.Cryptography;
+using discipline.application.Behaviours.Auth;
+using discipline.infrastructure.Auth;
 using discipline.infrastructure.Auth.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
 
-internal static class AuthConfigurationExtensions
+internal static class AuthServicesConfigurationExtensions
 {
+    
     internal static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddOptions(configuration);
         services.AddTokenValidation();
+        services.AddUserStateChecking();
         return services;
     }
     
@@ -49,6 +54,20 @@ internal static class AuthConfigurationExtensions
                 options.TokenValidationParameters = validationParameters;
             });
         
+        return services;
+    }
+    
+    internal static IServiceCollection AddUserStateChecking(this IServiceCollection services)
+    {
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy(UserStatePolicy.Name, policy =>
+            {
+                policy.Requirements.Add(new UserStateRequirement());
+            });
+        });
+        services
+            .AddSingleton<IAuthorizationHandler, UserStateAuthorizationHandler>();
         return services;
     }
 }

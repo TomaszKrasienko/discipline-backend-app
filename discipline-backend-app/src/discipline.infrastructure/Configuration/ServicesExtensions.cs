@@ -1,3 +1,5 @@
+using discipline.infrastructure.Token.Configuration;
+using discipline.infrastructure.Validation.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
@@ -13,6 +15,10 @@ public static class ServicesExtensions
             .AddDal(configuration)
             .AddEvents(configuration)
             .AddIdentityContext()
+            .AddLogging()
+            .AddPasswordManager()
+            .AddTokenStorage()
+            .AddValidation()
             .AddTime();
     
     internal static IOptions<T> GetOptions<T>(this IServiceCollection services) where T : class

@@ -1,12 +1,11 @@
 using System.Security.Claims;
-using discipline.application.Behaviours;
-using discipline.application.Behaviours.IdentityContext;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using Microsoft.AspNetCore.Http;
+using NSubstitute;
 using Shouldly;
 using Xunit;
 
-namespace discipline.application.unit_tests.Behaviours.IdentityFromContextBehaviour;
+namespace discipline.infrastructure.unit_tests.IdentityContext;
 
 public class IdentityContextTests
 {
@@ -28,9 +27,12 @@ public class IdentityContextTests
         {
             User = claimsPrincipal
         };
+
+        var httpContextAccessor = Substitute.For<IHttpContextAccessor>();
+        httpContextAccessor.HttpContext.Returns(httpContext);
         
         //act
-        var result = new IdentityContext(httpContext);
+        var result = new infrastructure.IdentityContext.IdentityContext(httpContextAccessor);
         
         //assert
         result.IsAuthenticated.ShouldBeTrue();
@@ -48,9 +50,11 @@ public class IdentityContextTests
         {
             User = claimsPrincipal
         };
+        var httpContextAccessor = Substitute.For<IHttpContextAccessor>();
+        httpContextAccessor.HttpContext.Returns(httpContext);
         
         //act
-        var result = new IdentityContext(httpContext);
+        var result = new infrastructure.IdentityContext.IdentityContext(httpContextAccessor);
         
         //assert
         result.IsAuthenticated.ShouldBeFalse();
@@ -70,9 +74,11 @@ public class IdentityContextTests
         {
             User = claimsPrincipal
         };
+        var httpContextAccessor = Substitute.For<IHttpContextAccessor>();
+        httpContextAccessor.HttpContext.Returns(httpContext);
         
         //act
-        var exception = Record.Exception(() => new IdentityContext(httpContext));
+        var exception = Record.Exception(() => new infrastructure.IdentityContext.IdentityContext(httpContextAccessor));
         
         //assert
         exception.ShouldBeOfType<ArgumentException>();

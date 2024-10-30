@@ -2,6 +2,7 @@ using discipline.application.Behaviours;
 using discipline.application.Behaviours.CQRS;
 using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Behaviours.Events;
+using discipline.application.Behaviours.Passwords;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users;
 using discipline.domain.SharedKernel.TypeIdentifiers;

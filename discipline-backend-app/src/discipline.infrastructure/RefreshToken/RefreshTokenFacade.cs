@@ -1,25 +1,11 @@
 using System.Text;
+using discipline.application.Behaviours;
 using discipline.application.Behaviours.Cryptography;
+using discipline.application.Behaviours.RefreshToken;
 using discipline.application.Exceptions;
 using discipline.domain.SharedKernel.TypeIdentifiers;
-using Microsoft.AspNetCore.Routing.Matching;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace discipline.application.Behaviours;
-
-internal static class RefreshTokenBehaviour
-{
-    internal static IServiceCollection AddRefreshTokenBehaviour(this IServiceCollection services)
-        => services
-            .AddSingleton<IRefreshTokenFacade, RefreshTokenFacade>()
-            .AddSingleton<IRefreshTokenService, RefreshTokenService>();
-}
-
-internal interface IRefreshTokenFacade
-{
-    Task<string> GenerateAsync(UserId userId, CancellationToken cancellationToken = default);
-    Task<UserId> GetUserIdAsync(string refreshToken, CancellationToken cancellationToken = default);
-}
+namespace discipline.infrastructure.RefreshToken;
 
 internal sealed class RefreshTokenFacade : IRefreshTokenFacade
 {
@@ -72,42 +58,5 @@ internal sealed class RefreshTokenFacade : IRefreshTokenFacade
         }
 
         return userId;
-    }
-}
-
-internal interface IRefreshTokenService
-{
-    Task SaveOrReplaceAsync(string refreshToken, UserId userId, CancellationToken cancellationToken = default);
-    Task<UserId> GetAsync(string refreshToken, CancellationToken cancellationToken = default);
-}
-
-internal sealed class RefreshTokenService : IRefreshTokenService
-{
-    private readonly Dictionary<UserId, string> _dictionary = new Dictionary<UserId, string>();
-    
-    public Task SaveOrReplaceAsync(string refreshToken, UserId userId, CancellationToken cancellationToken = default)
-    {
-        if (_dictionary.Any(x => x.Key == userId))
-        {
-            _dictionary.Remove(userId);
-        }
-        _dictionary.Add(userId, refreshToken);
-        return Task.CompletedTask;
-    }
-
-    public Task<UserId> GetAsync(string refreshToken, CancellationToken cancellationToken = default)
-    {
-        if (_dictionary.All(x => x.Value != refreshToken))
-        {
-            return null;
-        }
-
-        var userId = _dictionary.First(x => x.Value == refreshToken).Key;
-        if (userId.IsEmpty())
-        {
-            throw new EmptyUserIdException();
-        }
-        
-        return Task.FromResult(userId);
     }
 }

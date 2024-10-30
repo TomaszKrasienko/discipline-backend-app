@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
 using discipline.application.Behaviours.CQRS;
 using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Exceptions;
@@ -32,7 +33,7 @@ internal static class DeleteActivityRule
                 Description = "Deletes activity rule"
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }

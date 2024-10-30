@@ -1,6 +1,9 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
 using discipline.application.Behaviours.CQRS;
 using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.Passwords;
+using discipline.application.Behaviours.RefreshToken;
 using discipline.application.DTOs;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;

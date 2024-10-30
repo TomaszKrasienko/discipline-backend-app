@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
 using discipline.application.Behaviours.IdentityContext;
 using discipline.application.DTOs;
 using discipline.application.Features.UsersCalendars.Configuration;
@@ -33,7 +34,7 @@ internal static class BrowseUserCalendar
                 Description = "Gets user calendar by \"Day\""
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }
