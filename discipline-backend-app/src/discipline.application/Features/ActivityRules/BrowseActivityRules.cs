@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.IdentityContext;
 using discipline.application.DTOs;
 using discipline.application.Features.ActivityRules.Configuration;
 using Microsoft.AspNetCore.Builder;

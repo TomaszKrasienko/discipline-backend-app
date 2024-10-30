@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Behaviours.CQRS;
 using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.IdentityContext;
 using discipline.application.Exceptions;
 using discipline.application.Features.UsersCalendars.Configuration;
 using discipline.domain.SharedKernel.TypeIdentifiers;

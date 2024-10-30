@@ -12,6 +12,7 @@ public static class ServicesExtensions
             .AddExceptionsHandling()
             .AddDal(configuration)
             .AddEvents(configuration)
+            .AddIdentityContext()
             .AddTime();
     
     internal static IOptions<T> GetOptions<T>(this IServiceCollection services) where T : class

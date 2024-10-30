@@ -1,6 +1,7 @@
 using System.Drawing;
 using discipline.application.Behaviours.CQRS;
 using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.IdentityContext;
 using discipline.application.Behaviours.Time;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +18,6 @@ internal static class Extensions
             .AddLoggingBehaviour()
             .AddPasswordSecureBehaviour()
             .AddTokenStorage()
-            .AddIdentityFromContextBehaviour()
             .AddUserStateCheckingBehaviour()
             .AddRefreshTokenBehaviour();
 

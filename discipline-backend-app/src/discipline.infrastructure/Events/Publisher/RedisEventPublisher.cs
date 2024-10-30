@@ -1,5 +1,6 @@
 using discipline.application.Behaviours;
 using discipline.application.Behaviours.Events;
+using discipline.infrastructure.Serialization;
 using StackExchange.Redis;
 
 namespace discipline.infrastructure.Events.Publisher;

@@ -1,6 +1,7 @@
 using discipline.application.Behaviours;
 using discipline.application.Behaviours.CQRS;
 using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.IdentityContext;
 using discipline.application.Features.DailyProductivities.Configuration;
 using discipline.domain.DailyProductivities.Entities;
 using discipline.domain.DailyProductivities.Repositories;

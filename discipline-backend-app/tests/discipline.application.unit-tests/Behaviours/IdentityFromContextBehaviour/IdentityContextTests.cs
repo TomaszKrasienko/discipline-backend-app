@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.IdentityContext;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using Microsoft.AspNetCore.Http;
 using Shouldly;
