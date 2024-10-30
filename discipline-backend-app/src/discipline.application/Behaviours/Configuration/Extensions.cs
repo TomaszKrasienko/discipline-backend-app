@@ -13,7 +13,6 @@ internal static class Extensions
     internal static IServiceCollection AddBehaviours(this IServiceCollection services, IConfiguration configuration)
         => services
             .AddCqrs()
-            .AddHandlingException()
             .AddValidationBehaviour()
             .AddLoggingBehaviour()
             .AddPasswordSecureBehaviour()
@@ -24,7 +23,6 @@ internal static class Extensions
 
     internal static WebApplication UseBehaviours(this WebApplication app)
         => app
-            .UseHandlingException()
             .UseUserStateCheckingBehaviour();
 
     internal static WebApplicationBuilder UseBehaviours(this WebApplicationBuilder builder)

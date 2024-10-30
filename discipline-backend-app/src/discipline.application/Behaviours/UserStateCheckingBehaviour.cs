@@ -1,3 +1,4 @@
+using System.Net;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Repositories;
 using discipline.domain.Users.ValueObjects;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace discipline.application.Behaviours;
@@ -90,7 +92,12 @@ internal sealed class UserStateMiddleware(
             && context.Request.Path != "/users/subscriptions")
         {
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
-            var errorDto = new ErrorDto("create_user_state", "User have to have picked subscription");
+            var problemDetails = new ProblemDetails()
+            {
+                Title = "User have to have picked subscription",
+                Detail = "",
+                Status = StatusCodes.Status403Forbidden
+            };
             return;
         }
         await next(context);
