@@ -1,4 +1,5 @@
 using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.Aggregate;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Exceptions;
 using discipline.domain.UsersCalendars.ValueObjects.UserCalendar;

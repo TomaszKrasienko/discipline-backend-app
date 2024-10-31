@@ -1,4 +1,4 @@
-namespace discipline.domain.SharedKernel;
+namespace discipline.domain.SharedKernel.Aggregate;
 
 public interface IAggregateRoot
 {

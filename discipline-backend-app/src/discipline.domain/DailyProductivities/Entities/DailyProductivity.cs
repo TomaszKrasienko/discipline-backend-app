@@ -2,6 +2,7 @@ using discipline.domain.ActivityRules.Entities;
 using discipline.domain.DailyProductivities.Exceptions;
 using discipline.domain.DailyProductivities.ValueObjects.DailyProductivity;
 using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.Aggregate;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 
 namespace discipline.domain.DailyProductivities.Entities;

@@ -1,3 +1,5 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
+
 namespace discipline.domain.SharedKernel;
 
 public abstract class Entity<TIdentifier>(TIdentifier id) : IEntity 

@@ -1,4 +1,6 @@
-namespace discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.TypeIdentifiers;
+
+namespace discipline.domain.SharedKernel.Aggregate;
 
 public abstract class AggregateRoot<TIdentifier>(TIdentifier id) : Entity<TIdentifier>(id), IAggregateRoot 
     where TIdentifier : class, ITypeId<TIdentifier>

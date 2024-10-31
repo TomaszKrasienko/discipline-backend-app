@@ -29,7 +29,4 @@
     <ItemGroup>
       <ProjectReference Include="..\discipline.domain\discipline.domain.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Infrastructure\" />
-    </ItemGroup>
 </Project>

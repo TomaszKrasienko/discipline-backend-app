@@ -1,4 +1,4 @@
-namespace discipline.domain.SharedKernel;
+namespace discipline.domain.SharedKernel.TypeIdentifiers;
 
 //Marker
 public interface ITypeId<TType> where TType : class

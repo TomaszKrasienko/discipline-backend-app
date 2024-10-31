@@ -1,4 +1,4 @@
-using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.Aggregate;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.BusinessRules.SubscriptionOrders;
 using discipline.domain.Users.Entities;
