@@ -50,7 +50,7 @@ public sealed class User : AggregateRoot<UserId>
 
     public static User Create(UserId id, string email, string password, string firstName, string lastName)
     {
-        var user = new User(id, email, password,  new FullName(firstName, lastName), 
+        var user = new User(id, email, password,  FullName.Create(firstName, lastName), 
             Status.Created);
         return user;
     }

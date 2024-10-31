@@ -30,7 +30,10 @@ public sealed class FullName : ValueObject
         }
     }
 
-    public FullName(string firstName, string lastName)
+    public static FullName Create(string firstName, string lastName)
+        => new (firstName, lastName);
+    
+    private FullName(string firstName, string lastName)
     {
         FirstName = firstName;
         LastName = lastName;
