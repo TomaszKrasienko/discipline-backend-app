@@ -14,6 +14,16 @@ public sealed class PaidSubscriptionOrder : SubscriptionOrder
     public PaymentDetails PaymentDetails { get; private set; }
     public Type Type { get; private set; }
     
+    /// <summary>
+    /// Constructor for mapping to mongo documents
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="subscriptionId"></param>
+    /// <param name="createdAt"></param>
+    /// <param name="state"></param>
+    /// <param name="next"></param>
+    /// <param name="paymentDetails"></param>
+    /// <param name="type"></param>
     public PaidSubscriptionOrder(SubscriptionOrderId id, SubscriptionId subscriptionId, CreatedAt createdAt, State state,
         Next next, PaymentDetails paymentDetails, Type type) : base(id, createdAt, subscriptionId,
         state)

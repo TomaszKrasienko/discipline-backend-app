@@ -40,6 +40,12 @@ public sealed class User : AggregateRoot<UserId>
     /// <summary>
     /// Constructor for mapping to mongo documents
     /// </summary>
+    /// <param name="id"></param>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <param name="fullName"></param>
+    /// <param name="status"></param>
+    /// <param name="subscriptionOrder"></param>
     public User(UserId id, Email email, Password password, FullName fullName,
         Status status, SubscriptionOrder? subscriptionOrder) : this(id, email, password, fullName,
         status)

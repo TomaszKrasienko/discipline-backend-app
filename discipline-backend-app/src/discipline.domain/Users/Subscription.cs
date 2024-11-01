@@ -21,6 +21,10 @@ public sealed class Subscription : AggregateRoot<SubscriptionId>
     /// <summary>
     /// Constructor for mapping to mongo documents
     /// </summary>
+    /// <param name="id"></param>
+    /// <param name="title"></param>
+    /// <param name="price"></param>
+    /// <param name="features"></param>
     public Subscription(SubscriptionId id, Title title, Price price, 
         List<Feature> features) : base(id)
     {
