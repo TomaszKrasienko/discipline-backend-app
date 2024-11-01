@@ -4,7 +4,6 @@ using discipline.domain.Users.BusinessRules.SubscriptionOrders;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.Events;
-using discipline.domain.Users.ValueObjects;
 using discipline.domain.Users.ValueObjects.Users;
 
 namespace discipline.domain.Users;

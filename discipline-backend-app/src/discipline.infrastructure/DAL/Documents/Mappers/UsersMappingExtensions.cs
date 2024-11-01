@@ -103,8 +103,8 @@ internal static class UsersMappingExtensions
         => document.GetType() == typeof(PaidSubscriptionOrderDocument);
     
     internal static Subscription AsEntity(this SubscriptionDocument document)
-        => new (new(Ulid.Parse(document.Id)), document.Title, new Price(document.PricePerMonth, 
-            document.PricePerYear), document.Features.Select(x => new Feature(x)).ToList());
+        => new (new(Ulid.Parse(document.Id)), document.Title, Price.Create(document.PricePerMonth, 
+            document.PricePerYear), document.Features.Select(Feature.Create).ToList());
 
     internal static SubscriptionDocument AsDocument(this Subscription entity)
         => new()

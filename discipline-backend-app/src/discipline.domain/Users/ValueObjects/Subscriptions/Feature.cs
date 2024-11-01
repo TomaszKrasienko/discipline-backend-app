@@ -1,8 +1,7 @@
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.BusinessRules.Features;
-using discipline.domain.Users.Exceptions;
 
-namespace discipline.domain.Users.ValueObjects;
+namespace discipline.domain.Users.ValueObjects.Subscriptions;
 
 public sealed class Feature : ValueObject
 {
@@ -17,7 +16,10 @@ public sealed class Feature : ValueObject
         }
     }
 
-    public Feature(string value)
+    public static Feature Create(string value)
+        => new(value);
+
+    private Feature(string value)
         => Value = value;
     
     public static implicit operator string(Feature feature)

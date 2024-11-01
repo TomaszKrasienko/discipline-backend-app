@@ -29,7 +29,10 @@ public sealed class Price : ValueObject
         }
     }
 
-    public Price(decimal perMonth, decimal perYear)
+    public static Price Create(decimal perMonth, decimal perYear)
+        => new Price(perMonth, perYear);
+
+    private Price(decimal perMonth, decimal perYear)
     {
         PerMonth = perMonth;
         PerYear = perYear;

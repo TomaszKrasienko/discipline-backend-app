@@ -1,8 +1,6 @@
-using discipline.domain.SharedKernel;
 using discipline.domain.SharedKernel.Aggregate;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.BusinessRules.Features;
-using discipline.domain.Users.ValueObjects;
 using discipline.domain.Users.ValueObjects.Subscriptions;
 
 namespace discipline.domain.Users;
@@ -34,7 +32,7 @@ public sealed class Subscription : AggregateRoot<SubscriptionId>
     public static Subscription Create(SubscriptionId id, string title, decimal pricePerMonth, decimal pricePerYear,
         List<string> features)
     {
-        var price = new Price(pricePerMonth, pricePerYear);
+        var price = Price.Create(pricePerMonth, pricePerYear);
         var subscription = new Subscription(id, title, price);
         subscription.ChangeFeatures(features);
         return subscription;

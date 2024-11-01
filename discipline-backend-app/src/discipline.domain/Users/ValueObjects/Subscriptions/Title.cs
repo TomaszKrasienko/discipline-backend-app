@@ -17,14 +17,13 @@ public sealed class Title : ValueObject
         }
     }
 
-    private Title(string value)
-        => Value = value;
+    public static Title Create(string value) => new (value);
+    
+    private Title(string value) => Value = value;
 
-    public static implicit operator string(Title title)
-        => title.Value;
+    public static implicit operator string(Title title) => title.Value;
 
-    public static implicit operator Title(string value)
-        => new(value);
+    public static implicit operator Title(string value) => Create(value);
 
     protected override IEnumerable<object> GetAtomicValues()
     {

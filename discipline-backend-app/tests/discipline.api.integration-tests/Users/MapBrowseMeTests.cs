@@ -4,6 +4,7 @@ using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.ValueObjects;
+using discipline.domain.Users.ValueObjects.Users;
 using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.infrastructure.DAL.Documents.Users;
 using discipline.tests.shared.Entities;

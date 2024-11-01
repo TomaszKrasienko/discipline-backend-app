@@ -1,7 +1,7 @@
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.BusinessRules.Statuses;
 
-namespace discipline.domain.Users.ValueObjects;
+namespace discipline.domain.Users.ValueObjects.Users;
 
 public sealed class Status : ValueObject
 {
@@ -26,16 +26,13 @@ public sealed class Status : ValueObject
         }
     }
 
-    public Status(string value)
-    {
-        Value = value;
-    }
+    public static Status Create(string value) => new(value);
+    
+    private Status(string value) => Value = value;
 
-    public static implicit operator string(Status status)
-        => status.Value;
+    public static implicit operator string(Status status) => status.Value;
 
-    public static implicit operator Status(string value)
-        => new (value);
+    public static implicit operator Status(string value) => Create(value);
 
     protected override IEnumerable<object> GetAtomicValues()
     {

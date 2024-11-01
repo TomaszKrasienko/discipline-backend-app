@@ -2,7 +2,7 @@ namespace discipline.domain.SharedKernel;
 
 public abstract class ValueObject : IEquatable<ValueObject>
 {
-    public static bool operator ==(ValueObject a, ValueObject b)
+    public static bool operator ==(ValueObject? a, ValueObject? b)
     {
         if (a is null && b is null)
         {
@@ -28,10 +28,10 @@ public abstract class ValueObject : IEquatable<ValueObject>
     public static bool operator !=(ValueObject a, ValueObject b) =>
         !(a == b);
 
-    public virtual bool Equals(ValueObject other) =>
+    public virtual bool Equals(ValueObject? other) =>
         other is not null && ValuesAreEqual(other);
 
-    public override bool Equals(object obj) =>
+    public override bool Equals(object? obj) =>
         obj is ValueObject valueObject && ValuesAreEqual(valueObject);
 
     public override int GetHashCode() =>
