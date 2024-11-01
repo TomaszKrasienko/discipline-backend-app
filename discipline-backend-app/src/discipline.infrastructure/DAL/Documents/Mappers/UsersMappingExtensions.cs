@@ -3,6 +3,7 @@ using discipline.domain.Users;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.ValueObjects;
+using discipline.domain.Users.ValueObjects.SubscriptionOrders;
 using discipline.domain.Users.ValueObjects.Subscriptions;
 using discipline.domain.Users.ValueObjects.Users;
 using discipline.infrastructure.DAL.Documents.Users;
@@ -67,7 +68,7 @@ internal static class UsersMappingExtensions
         => new (new(Ulid.Parse(document.Id)), new(document.SubscriptionId), document.CreatedAt,
             new State(document.StateIsCancelled, document.StateActiveTill),
             new Next(document.Next),
-            new PaymentDetails(document.PaymentDetailsCardNumber, document.PaymentDetailsCvvCode),
+            PaymentDetails.Create(document.PaymentDetailsCardNumber, document.PaymentDetailsCvvCode),
             (SubscriptionOrderFrequency)document.Type);
 
     private static FreeSubscriptionOrder AsEntity(this FreeSubscriptionOrderDocument document)

@@ -40,7 +40,7 @@ public sealed class PaidSubscriptionOrder : SubscriptionOrder
 
         var state = GetState(false, now, subscriptionOrderFrequency);
         var next = GetNext(now, subscriptionOrderFrequency);
-        var paymentDetails = new PaymentDetails(cardNumber, cardCvvNumber);
+        var paymentDetails = PaymentDetails.Create(cardNumber, cardCvvNumber);
         return new PaidSubscriptionOrder(id, subscription.Id, now, state,
             next, paymentDetails, subscriptionOrderFrequency); 
     }

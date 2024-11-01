@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.Exceptions;
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users;
 using discipline.domain.Users.Entities;
@@ -18,7 +19,7 @@ public sealed class PaidSubscriptionOrderCreateTests
             ["test"]);
         var id = SubscriptionOrderId.New();
         var subscriptionOrderFrequency = SubscriptionOrderFrequency.Yearly;
-        var now = new DateTime(2024, 7, 22, 12, 30, 00);
+        var now = new DateTime(2024, 7, 22, 12, 30, 00, DateTimeKind.Utc);
         var cardNumber = new string('1', 14);
         var cvvNumber = "123";
 
@@ -44,13 +45,13 @@ public sealed class PaidSubscriptionOrderCreateTests
             ["test"]);
         var id = SubscriptionOrderId.New();
         var subscriptionOrderFrequency = SubscriptionOrderFrequency.Monthly;
-        var now = new DateTime(2024, 7, 22, 12, 30, 00);
+        var now = new DateTime(2024, 7, 22, 12, 30, 00, DateTimeKind.Utc);
         var cardNumber = new string('1', 14);
         var cvvNumber = "123";
 
         //act
         var result = PaidSubscriptionOrder.Create(id, subscription, subscriptionOrderFrequency, now, cardNumber, cvvNumber);
-
+ 
         //arrange
         result.Id.ShouldBe(id);
         result.CreatedAt.Value.ShouldBe(now);
@@ -63,7 +64,7 @@ public sealed class PaidSubscriptionOrderCreateTests
     }
     
     [Fact]
-    public void Create_GivenFreeSubscription_ShouldThrow()
+    public void Create_GivenFreeSubscription_ShouldThrowDomainExceptionWithCode()
     {
         //arrange
         var subscription = Subscription.Create(SubscriptionId.New(), "test_subscription_title", 0, 0,
@@ -74,7 +75,8 @@ public sealed class PaidSubscriptionOrderCreateTests
             SubscriptionOrderFrequency.Monthly, DateTime.Now, "test_card_number", "test_cvv"));
         
         //assert
-        exception.ShouldBeOfType<InvalidSubscriptionTypeException>();
+        exception.ShouldBeOfType<DomainException>();
+        ((DomainException)exception).Code.ShouldBe("User.PaidSubscriptionOrder.InvalidType");
     }
 
     [Fact]

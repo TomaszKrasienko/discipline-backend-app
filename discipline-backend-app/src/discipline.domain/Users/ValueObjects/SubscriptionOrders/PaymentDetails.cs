@@ -1,8 +1,7 @@
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.BusinessRules.PymentDetails;
-using discipline.domain.Users.Exceptions;
 
-namespace discipline.domain.Users.ValueObjects;
+namespace discipline.domain.Users.ValueObjects.SubscriptionOrders;
 
 public sealed class PaymentDetails : ValueObject
 {
@@ -29,7 +28,10 @@ public sealed class PaymentDetails : ValueObject
         }
     }
 
-    public PaymentDetails(string cardNumber, string cvvCode)
+    public static PaymentDetails Create(string cardNumber, string cvvCode)
+        => new (cardNumber, cvvCode);
+
+    private PaymentDetails(string cardNumber, string cvvCode)
     {
         CardNumber = cardNumber;
         CvvCode = cvvCode;
