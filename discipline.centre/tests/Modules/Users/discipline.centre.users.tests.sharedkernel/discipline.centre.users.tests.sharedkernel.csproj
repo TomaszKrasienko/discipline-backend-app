@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Bogus"/>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\src\Modules\Users\discipline.centre.users.domain\discipline.centre.users.domain.csproj" />
+    </ItemGroup>
+
+</Project>
