@@ -34,13 +34,13 @@ public sealed class PaidSubscriptionOrder : SubscriptionOrder
     }
     
     internal static PaidSubscriptionOrder Create(SubscriptionOrderId id, Subscription subscription, SubscriptionOrderFrequency subscriptionOrderFrequency, DateTimeOffset now,
-        string cardNumber, string cardCvvNumber)
+        string paymentToken)
     {
         CheckRule(new SubscriptionMustBeValidTypeRule(typeof(PaidSubscriptionOrder), subscription));
 
         var state = GetState(false, now, subscriptionOrderFrequency);
         var next = GetNext(now, subscriptionOrderFrequency);
-        var paymentDetails = PaymentDetails.Create(cardNumber, cardCvvNumber);
+        var paymentDetails = PaymentDetails.Create(paymentToken);
         return new PaidSubscriptionOrder(id, subscription.Id, now, state,
             next, paymentDetails, subscriptionOrderFrequency); 
     }

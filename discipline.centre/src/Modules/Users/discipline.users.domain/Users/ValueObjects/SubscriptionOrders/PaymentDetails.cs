@@ -5,41 +5,26 @@ namespace discipline.users.domain.Users.ValueObjects.SubscriptionOrders;
 
 public sealed class PaymentDetails : ValueObject
 {
-    private readonly string _cardNumber = null!;
-    private readonly string _cvvCode = null!;
-    
-    public string CardNumber
+    private readonly string _token = null!;
+
+    public string Token
     {
-        get => _cardNumber;
+        get => _token;
         private init
         {
-            CheckRule(new CardNumberMustBeFrom12To20LengthRule(value));
-            _cardNumber = value;
-        }
-    }
-    
-    public string CvvCode
-    {
-        get => _cvvCode;
-        private init
-        {
-            CheckRule(new CvvLengthMustBe3Rule(value));
-            _cvvCode = value;
+            CheckRule(new PaymentTokenCanNotBeEmptyRule(value));
+            _token = value;
         }
     }
 
-    public static PaymentDetails Create(string cardNumber, string cvvCode)
-        => new (cardNumber, cvvCode);
+    public static PaymentDetails Create(string token)
+        => new (token);
 
-    private PaymentDetails(string cardNumber, string cvvCode)
-    {
-        CardNumber = cardNumber;
-        CvvCode = cvvCode;
-    }
+    private PaymentDetails(string token)
+        => Token = token;
 
     protected override IEnumerable<object> GetAtomicValues()
     {
-        yield return CardNumber;
-        yield return CvvCode;
+        yield return Token;
     }
 }

@@ -4,16 +4,14 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>discipline.users.domain</RootNamespace>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <RootNamespace>discipline.users.tests.sharedkernel</RootNamespace>
     </PropertyGroup>
-
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />
+        <PackageReference Include="Bogus"/>
     </ItemGroup>
-    
     <ItemGroup>
-        <InternalsVisibleTo Include="discipline.users.domain.unit_tests"/>
+      <ProjectReference Include="..\..\..\..\src\Modules\Users\discipline.users.domain\discipline.users.domain.csproj" />
     </ItemGroup>
 
 </Project>

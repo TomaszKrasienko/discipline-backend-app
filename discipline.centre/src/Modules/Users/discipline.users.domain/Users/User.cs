@@ -62,10 +62,10 @@ public sealed class User : AggregateRoot<UserId>
 
     internal void CreatePaidSubscriptionOrder(SubscriptionOrderId subscriptionOrderId, Subscription subscription,
         SubscriptionOrderFrequency subscriptionOrderFrequency, DateTimeOffset now,
-        string cardNumber, string cardCvvNumber)
+        string paymentToken)
     {
         SubscriptionOrder = PaidSubscriptionOrder.Create(subscriptionOrderId, subscription, subscriptionOrderFrequency,
-            now, cardNumber, cardCvvNumber);
+            now, paymentToken);
         Status = Status.PaidSubscriptionPicked;
         var @event = new PaidSubscriptionPicked(Id.Value, subscription.Id.Value, 
             ((PaidSubscriptionOrder)SubscriptionOrder).Next);
