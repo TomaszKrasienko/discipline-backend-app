@@ -4,10 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D54FB3C4-A433-4D71-8EE2-73F1EC856143}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Packages.props = src\Directory.Packages.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{40698DDB-0A27-4727-A845-E35999288295}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F27CEEB6-F209-4256-BF65-7961254366F3}"
+	ProjectSection(SolutionItems) = preProject
+		tests\Directory.Packages.props = tests\Directory.Packages.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{3236FA37-1EBA-4FC8-9034-1F549EA7C26A}"
 EndProject
@@ -18,6 +24,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{9F5F398F-AEF0-4D53-85BC-D71091703D93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.shared.abstractions", "src\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj", "{13E1CF7F-D73B-4667-B084-3E7423009156}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{E5810C99-A4A0-4358-A1DA-EEF9BD2254FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.users.domain.unit_tests", "tests\Modules\Users\discipline.users.domain.unit_tests\discipline.users.domain.unit_tests.csproj", "{AA163074-5CD3-48DC-BE0D-FA416374999C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +44,8 @@ Global
 		{E8D4460A-0BBA-4AC1-B492-F5FF10286113} = {39202405-EC06-4926-A1BD-19CC04E02FC1}
 		{9F5F398F-AEF0-4D53-85BC-D71091703D93} = {D54FB3C4-A433-4D71-8EE2-73F1EC856143}
 		{13E1CF7F-D73B-4667-B084-3E7423009156} = {9F5F398F-AEF0-4D53-85BC-D71091703D93}
+		{E5810C99-A4A0-4358-A1DA-EEF9BD2254FB} = {3236FA37-1EBA-4FC8-9034-1F549EA7C26A}
+		{AA163074-5CD3-48DC-BE0D-FA416374999C} = {E5810C99-A4A0-4358-A1DA-EEF9BD2254FB}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E8D4460A-0BBA-4AC1-B492-F5FF10286113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +56,9 @@ Global
 		{13E1CF7F-D73B-4667-B084-3E7423009156}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13E1CF7F-D73B-4667-B084-3E7423009156}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13E1CF7F-D73B-4667-B084-3E7423009156}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA163074-5CD3-48DC-BE0D-FA416374999C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA163074-5CD3-48DC-BE0D-FA416374999C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA163074-5CD3-48DC-BE0D-FA416374999C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA163074-5CD3-48DC-BE0D-FA416374999C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
