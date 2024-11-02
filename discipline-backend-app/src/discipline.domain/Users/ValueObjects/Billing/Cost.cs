@@ -3,6 +3,7 @@ using discipline.domain.Users.Exceptions;
 
 namespace discipline.domain.Users.ValueObjects;
 
+//TODO: to change
 public sealed class Cost : ValueObject
 {
     public decimal Value { get; }
