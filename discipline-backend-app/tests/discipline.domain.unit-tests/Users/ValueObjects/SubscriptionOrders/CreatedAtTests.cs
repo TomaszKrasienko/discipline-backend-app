@@ -1,4 +1,5 @@
 using discipline.domain.SharedKernel.Exceptions;
+using discipline.domain.Users.ValueObjects.SharedKernel;
 using discipline.domain.Users.ValueObjects.SubscriptionOrders;
 using Shouldly;
 using Xunit;

@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using discipline.domain.SharedKernel.Exceptions;
 using discipline.domain.Users.ValueObjects.SubscriptionOrders;
 using Shouldly;

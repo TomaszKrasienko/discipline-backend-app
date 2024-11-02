@@ -3,8 +3,10 @@ using discipline.domain.Users.BusinessRules.SubscriptionOrders;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.Exceptions;
 using discipline.domain.Users.ValueObjects;
+using discipline.domain.Users.ValueObjects.SharedKernel;
 using discipline.domain.Users.ValueObjects.SubscriptionOrders;
-using Type = discipline.domain.Users.ValueObjects.Type;
+using discipline.domain.Users.ValueObjects.Subscriptions;
+using Type = discipline.domain.Users.ValueObjects.SubscriptionOrders.Type;
 
 namespace discipline.domain.Users.Entities;
 

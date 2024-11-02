@@ -1,7 +1,8 @@
 using discipline.domain.SharedKernel;
 
-namespace discipline.domain.Users.ValueObjects;
+namespace discipline.domain.Users.ValueObjects.Billing;
 
+//TODO: to change
 public sealed class IsRealized(bool value) : ValueObject
 {
     public bool Value { get; } = value;

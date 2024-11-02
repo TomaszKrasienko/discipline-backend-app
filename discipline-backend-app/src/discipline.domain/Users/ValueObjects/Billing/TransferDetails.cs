@@ -1,7 +1,7 @@
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.Exceptions;
 
-namespace discipline.domain.Users.ValueObjects;
+namespace discipline.domain.Users.ValueObjects.Billing;
 
 public sealed class TransferDetails : ValueObject
 {

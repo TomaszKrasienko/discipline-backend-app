@@ -1,7 +1,7 @@
 using discipline.domain.SharedKernel;
 using discipline.domain.Users.BusinessRules.CreatedAt;
 
-namespace discipline.domain.Users.ValueObjects.SubscriptionOrders;
+namespace discipline.domain.Users.ValueObjects.SharedKernel;
 
 public sealed class CreatedAt : ValueObject
 {

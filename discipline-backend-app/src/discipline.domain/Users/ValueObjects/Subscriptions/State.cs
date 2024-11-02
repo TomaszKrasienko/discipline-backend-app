@@ -1,6 +1,6 @@
 using discipline.domain.SharedKernel;
 
-namespace discipline.domain.Users.ValueObjects;
+namespace discipline.domain.Users.ValueObjects.Subscriptions;
 
 public sealed class State(bool isCancelled, DateOnly? activeTill) : ValueObject
 {

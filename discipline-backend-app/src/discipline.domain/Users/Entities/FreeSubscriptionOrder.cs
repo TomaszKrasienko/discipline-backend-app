@@ -1,7 +1,9 @@
 using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.BusinessRules.SubscriptionOrders;
 using discipline.domain.Users.ValueObjects;
+using discipline.domain.Users.ValueObjects.SharedKernel;
 using discipline.domain.Users.ValueObjects.SubscriptionOrders;
+using discipline.domain.Users.ValueObjects.Subscriptions;
 
 namespace discipline.domain.Users.Entities;
 
