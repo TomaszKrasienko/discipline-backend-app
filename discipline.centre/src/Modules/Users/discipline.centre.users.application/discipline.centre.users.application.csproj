@@ -21,4 +21,8 @@
         <PackageReference Include="FluentValidation.AspNetCore" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Subscriptions\Commands\" />
+    </ItemGroup>
+
 </Project>

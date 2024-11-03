@@ -8,6 +8,13 @@ public sealed record UserId(Ulid Value) : ITypeId<UserId>
     public override string ToString()
         => Value.ToString();
 
-    public bool IsEmpty()
-        => Value.Equals(Ulid.Empty);
+    public static UserId Parse(string stringTypedId)
+    {
+        if (!Ulid.TryParse(stringTypedId, out var parsedId))
+        {
+            throw new ArgumentException($"Can not parse stronglyTypedId of type: {nameof(UserId)}");
+        }
+
+        return new UserId(parsedId);
+    }
 }

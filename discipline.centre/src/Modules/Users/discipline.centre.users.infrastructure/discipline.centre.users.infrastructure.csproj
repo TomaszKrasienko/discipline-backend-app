@@ -9,11 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj" />
       <ProjectReference Include="..\discipline.centre.users.application\discipline.centre.users.application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="DAL\" />
+      <Folder Include="DAL\Users\" />
     </ItemGroup>
 
 </Project>

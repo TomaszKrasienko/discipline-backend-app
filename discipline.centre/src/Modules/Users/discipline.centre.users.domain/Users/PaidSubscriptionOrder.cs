@@ -4,10 +4,8 @@ using discipline.centre.users.domain.Subscriptions.ValueObjects;
 using discipline.centre.users.domain.Users.Enums;
 using discipline.centre.users.domain.Users.Rules.SubscriptionOrders;
 using discipline.centre.users.domain.Users.ValueObjects.SubscriptionOrders;
-using Type = discipline.centre.users.domain.Users.ValueObjects.SubscriptionOrders.Type;
 
 namespace discipline.centre.users.domain.Users;
-
 using Type = ValueObjects.SubscriptionOrders.Type;
 
 public sealed class PaidSubscriptionOrder : SubscriptionOrder
