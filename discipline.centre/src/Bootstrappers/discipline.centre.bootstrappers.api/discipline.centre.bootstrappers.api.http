@@ -1,0 +1,6 @@
+@discipline.centre.bootstrappers.api_HostAddress = http://localhost:5039
+
+GET {{discipline.centre.bootstrappers.api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
