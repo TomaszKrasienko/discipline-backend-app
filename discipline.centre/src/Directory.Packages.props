@@ -8,5 +8,7 @@
         <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0"/>
         <PackageVersion Include="Scrutor" Version="5.0.1"/>
         <PackageVersion Include="MongoDB.Driver" Version="3.0.0"/>
+        <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0"/>
+        <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.9.0"/>
     </ItemGroup>
 </Project>
