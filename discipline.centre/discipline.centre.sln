@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.bootstrap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.infrastructure", "src\Modules\Users\discipline.centre.users.infrastructure\discipline.centre.users.infrastructure.csproj", "{25D20643-BEE8-42E5-9A3C-061DB36CA437}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.infrastructure.unit_tests", "tests\Modules\Users\discipline.centre.users.infrastructure.unit_tests\discipline.centre.users.infrastructure.unit_tests.csproj", "{873ABC59-3130-42F9-ABA9-29BEF7F3EF7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,7 @@ Global
 		{BCAEBFB4-5906-44EF-BB45-FF260CE28884} = {D54FB3C4-A433-4D71-8EE2-73F1EC856143}
 		{D97F5609-A18A-4508-99B3-4141AB7A400F} = {BCAEBFB4-5906-44EF-BB45-FF260CE28884}
 		{25D20643-BEE8-42E5-9A3C-061DB36CA437} = {39202405-EC06-4926-A1BD-19CC04E02FC1}
+		{873ABC59-3130-42F9-ABA9-29BEF7F3EF7F} = {E5810C99-A4A0-4358-A1DA-EEF9BD2254FB}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E8D4460A-0BBA-4AC1-B492-F5FF10286113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -105,5 +108,9 @@ Global
 		{25D20643-BEE8-42E5-9A3C-061DB36CA437}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25D20643-BEE8-42E5-9A3C-061DB36CA437}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25D20643-BEE8-42E5-9A3C-061DB36CA437}.Release|Any CPU.Build.0 = Release|Any CPU
+		{873ABC59-3130-42F9-ABA9-29BEF7F3EF7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{873ABC59-3130-42F9-ABA9-29BEF7F3EF7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{873ABC59-3130-42F9-ABA9-29BEF7F3EF7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{873ABC59-3130-42F9-ABA9-29BEF7F3EF7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

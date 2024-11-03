@@ -8,14 +8,14 @@ namespace discipline.centre.users.domain.Subscriptions;
 
 internal static class SubscriptionDocumentsMappingExtensions
 {
-    internal static Subscription AsEntity(this SubscriptionDocument document)
+    internal static Subscription MapAsEntity(this SubscriptionDocument document)
         => new (
             SubscriptionId.Parse(document.Id),
             document.Title,
             Price.Create(document.PricePerMonth, document.PricePerYear),
             document.Features.Select(Feature.Create).ToList());
     
-    internal static SubscriptionDto AsDto(this SubscriptionDocument document)
+    internal static SubscriptionDto MapAsDto(this SubscriptionDocument document)
         => new()
         {
             Id = Ulid.Parse(document.Id),

@@ -45,7 +45,7 @@ internal static class UserDocumentsMappingExtensions
             new(document.SubscriptionId),
             new State(document.StateIsCancelled, document.StateActiveTill));
     
-    internal static UserDto AsDto(this UserDocument document)
+    internal static UserDto MapAsDto(this UserDocument document)
         => new UserDto()
         {
             Id = Ulid.Parse(document.Id),
@@ -53,10 +53,10 @@ internal static class UserDocumentsMappingExtensions
             FirstName = document.FirstName,
             LastName = document.LastName,
             Status = document.Status,
-            SubscriptionOrder = document.SubscriptionOrder?.AsDto()
+            SubscriptionOrder = document.SubscriptionOrder?.MapAsDto()
         };
     
-    private static SubscriptionOrderDto AsDto(this SubscriptionOrderDocument document)
+    private static SubscriptionOrderDto MapAsDto(this SubscriptionOrderDocument document)
         => new()
         {
             Id = Ulid.Parse(document.Id),
