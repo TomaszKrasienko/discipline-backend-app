@@ -14,4 +14,10 @@
         <PackageReference Include="Swashbuckle.AspNetCore"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Modules\Users\discipline.centre.users.api\discipline.centre.users.api.csproj" />
+      <ProjectReference Include="..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />
+      <ProjectReference Include="..\..\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>

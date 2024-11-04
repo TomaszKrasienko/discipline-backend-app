@@ -1,13 +1,13 @@
 using discipline.centre.shared.infrastructure.DAL.Collections;
 using discipline.centre.shared.infrastructure.DAL.Collections.Abstractions;
+using discipline.centre.shared.infrastructure.DAL.Configuration;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace discipline.centre.shared.infrastructure.DAL.Configuration;
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection;
 
-internal static class DalServicesConfigExtensions
+public static class DalServicesConfigExtensions
 {
     internal static IServiceCollection AddDal(this IServiceCollection services, IConfiguration configuration)
         => services
@@ -30,7 +30,7 @@ internal static class DalServicesConfigExtensions
         => services
             .AddSingleton<IMongoCollectionNameConvention, MongoCollectionNameConvention>();
 
-    public static IServiceCollection AddMongoDatabase(this IServiceCollection services, string name)
+    public static IServiceCollection AddMongoContext(this IServiceCollection services, string name)
         => services.AddTransient<IMongoCollectionContext>(sp =>
         {
             var client = sp.GetRequiredService<IMongoClient>();
