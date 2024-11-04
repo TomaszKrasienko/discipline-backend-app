@@ -12,7 +12,8 @@ public static class SharedServicesInfrastructureConfigExtensions
         IConfiguration configuration)
         => services
             .AddCqrs(assemblies)
-            .AddDal(configuration);
+            .AddDal(configuration)
+            .AddEvents(configuration);
 
     internal static IServiceCollection ValidateAndBind<TOptions, TOptionsValidator>(this IServiceCollection services,
         IConfiguration configuration) where TOptions : class where TOptionsValidator : IValidateOptions<TOptions>

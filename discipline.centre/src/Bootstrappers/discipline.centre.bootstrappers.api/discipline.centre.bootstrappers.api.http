@@ -1,6 +1,19 @@
-@discipline.centre.bootstrappers.api_HostAddress = http://localhost:5039
-
-GET {{discipline.centre.bootstrappers.api_HostAddress}}/weatherforecast/
-Accept: application/json
+@host_address = http://localhost:5039
 
 ###
+GET {{host_address}}/
+
+###
+@email = tom.krasienko@gmail.com
+@password = TomaszK123!
+
+###
+POST {{host_address}}/users/sign-up
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "firstName": "Tom",
+  "lastName": "Krasienko"
+}
