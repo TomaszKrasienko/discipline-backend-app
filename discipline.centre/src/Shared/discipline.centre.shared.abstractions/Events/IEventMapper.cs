@@ -2,7 +2,7 @@ using discipline.centre.shared.abstractions.SharedKernel;
 
 namespace discipline.centre.shared.abstractions.Events;
 
-public interface IEventProcessor
+public interface IEventMapper
 {
-    Task PublishAsync(params DomainEvent[] domainEvents);
+    IEvent MapAsEvent(DomainEvent domainEvent);
 }

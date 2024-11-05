@@ -3,11 +3,17 @@ using discipline.centre.shared.abstractions.SharedKernel;
 
 namespace discipline.centre.shared.infrastructure.Events;
 
-internal sealed class EventProcessor : IEventProcessor
+internal sealed class EventProcessor(
+    IEventMapper mapper) : IEventProcessor
 {
-    public Task PublishAsync(params DomainEvent[] events)
+    public Task PublishAsync(params DomainEvent[] domainEvents)
     {
-        Console.WriteLine("test");
+        List<IEvent> events = new List<IEvent>();
+        foreach (var @event in domainEvents)
+        {
+            events.Add(mapper.MapAsEvent(@event));
+        }
+            
         return Task.CompletedTask;
     }
 }
