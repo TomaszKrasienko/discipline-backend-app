@@ -1,4 +1,3 @@
-using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.Events;
 using discipline.centre.shared.abstractions.Exceptions;
@@ -22,9 +21,7 @@ public sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
         RuleFor(x => x.Email)
             .NotNull()
             .NotEmpty()
-            .WithMessage("User \"Email\" can not be empty");
-            
-        RuleFor(x => x.Email)
+            .WithMessage("User \"Email\" can not be empty")
             .EmailAddress()
             .WithMessage("User \"Email\" is invalid");
 
@@ -51,9 +48,7 @@ public sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
         RuleFor(x => x.LastName)
             .NotNull()
             .NotEmpty()
-            .WithMessage("User \"Last name\" can not be empty");
-        
-        RuleFor(x => x.LastName)
+            .WithMessage("User \"Last name\" can not be empty")
             .MinimumLength(2)
             .MaximumLength(100)
             .WithMessage("User \"Last name\" is invalid");

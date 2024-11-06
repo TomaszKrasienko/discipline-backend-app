@@ -9,5 +9,6 @@ public static class UsersServicesInfrastructureConfigExtensions
         => services
             .AddPasswordsSecure()
             .AddDal(assemblyName)
-            .AddEvents();
+            .AddEvents()
+            .AddUsersAuth();
 }

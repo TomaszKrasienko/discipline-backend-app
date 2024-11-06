@@ -21,7 +21,7 @@ public sealed class SignUpTests() : BaseTestsController("users-module")
             "test_first_name", "test_last_name");
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("/users/sign-up", command);
+        var response = await HttpClient.PostAsJsonAsync("users-module/users/sign-up", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);

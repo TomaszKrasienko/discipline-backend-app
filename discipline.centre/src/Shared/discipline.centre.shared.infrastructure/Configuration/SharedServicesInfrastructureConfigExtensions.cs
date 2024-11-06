@@ -1,5 +1,4 @@
 using System.Reflection;
-using discipline.centre.shared.infrastructure.DAL.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
@@ -13,7 +12,9 @@ public static class SharedServicesInfrastructureConfigExtensions
         => services
             .AddCqrs(assemblies)
             .AddDal(configuration)
-            .AddEvents(configuration);
+            .AddEvents(configuration)
+            .AddClock()
+            .AddAuth(configuration);
 
     internal static IServiceCollection ValidateAndBind<TOptions, TOptionsValidator>(this IServiceCollection services,
         IConfiguration configuration) where TOptions : class where TOptionsValidator : IValidateOptions<TOptions>
