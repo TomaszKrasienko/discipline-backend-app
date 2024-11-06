@@ -34,7 +34,7 @@ public static class DalServicesConfigExtensions
         => services.AddTransient<IMongoCollectionContext>(sp =>
         {
             var client = sp.GetRequiredService<IMongoClient>();
-            var database = client.GetDatabase(name);
+            var database = client.GetDatabase($"{name}");
             var mongoCollectionNameConvention = sp.GetRequiredService<IMongoCollectionNameConvention>();
             return new MongoCollectionContext(
                 database,

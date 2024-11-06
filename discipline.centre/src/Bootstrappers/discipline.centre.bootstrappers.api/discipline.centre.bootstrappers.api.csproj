@@ -20,4 +20,7 @@
       <ProjectReference Include="..\..\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.e2e_tests.shared"/>
+    </ItemGroup>
 </Project>

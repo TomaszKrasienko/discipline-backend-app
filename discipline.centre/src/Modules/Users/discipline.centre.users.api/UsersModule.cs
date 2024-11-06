@@ -8,10 +8,11 @@ namespace discipline.centre.users.api;
 
 internal sealed class UsersModule : IModule
 {
+    private const string ModuleName = "users-module";
     public string Name => "Users";
 
     public void Register(IServiceCollection services)
-        => services.AddInfrastructure(Name);
+        => services.AddInfrastructure(ModuleName);
 
     public void Use(WebApplication app)
     {
