@@ -1,11 +1,11 @@
 using System.Linq.Expressions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.DAL.Collections.Abstractions;
+using discipline.centre.users.application.Users.Services;
 using discipline.centre.users.domain.Users;
 using discipline.centre.users.domain.Users.Repositories;
 using discipline.centre.users.infrastructure.DAL.Documents;
 using discipline.centre.users.infrastructure.DAL.Users.Documents;
-using discipline.centre.users.infrastructure.Passwords;
 using MongoDB.Driver;
 
 namespace discipline.centre.users.infrastructure.DAL.Users.Repositories;
@@ -31,10 +31,16 @@ internal sealed class MongoUserRepository(
     }
 
     public async Task<User?> GetByIdAsync(UserId id, CancellationToken cancellationToken = default)
-        => (await disciplineMongoCollection.GetCollection<UserDocument>()
-            .Find(x => x.Id == id.Value.ToString())
-            .SingleOrDefaultAsync(cancellationToken))?.MapAsEntity();
+        => (await GetAsync(x => x.Id == id.Value.ToString(), cancellationToken))?.MapAsEntity();
 
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+        => (await GetAsync(x => x.Email == email, cancellationToken))?.MapAsEntity();
+
+    private async Task<UserDocument?> GetAsync(Expression<Func<UserDocument, bool>> expression, CancellationToken cancellationToken = default)
+        => await disciplineMongoCollection.GetCollection<UserDocument>()
+            .Find(expression.ToFilterDefinition())
+            .SingleOrDefaultAsync(cancellationToken);
+    
     public Task<bool> DoesEmailExist(string email, CancellationToken cancellationToken = default)
         => AnyAsync(x => x.Email == email, cancellationToken);
 

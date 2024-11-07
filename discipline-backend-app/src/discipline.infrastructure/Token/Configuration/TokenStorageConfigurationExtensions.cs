@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Token;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace discipline.infrastructure.Token.Configuration;

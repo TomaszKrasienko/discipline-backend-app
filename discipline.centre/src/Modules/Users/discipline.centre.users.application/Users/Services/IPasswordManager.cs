@@ -1,4 +1,4 @@
-namespace discipline.centre.users.infrastructure.Passwords;
+namespace discipline.centre.users.application.Users.Services;
 
 public interface IPasswordManager
 {

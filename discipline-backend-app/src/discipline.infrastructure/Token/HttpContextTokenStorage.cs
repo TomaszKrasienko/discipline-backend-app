@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Token;
 using discipline.application.DTOs;
 using Microsoft.AspNetCore.Http;
 

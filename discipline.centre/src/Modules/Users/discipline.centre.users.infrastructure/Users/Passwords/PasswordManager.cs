@@ -1,7 +1,8 @@
+using discipline.centre.users.application.Users.Services;
 using discipline.centre.users.domain.Users;
 using Microsoft.AspNetCore.Identity;
 
-namespace discipline.centre.users.infrastructure.Passwords;
+namespace discipline.centre.users.infrastructure.Users.Passwords;
 
 internal sealed class PasswordManager(
     IPasswordHasher<User> passwordHasher) : IPasswordManager
