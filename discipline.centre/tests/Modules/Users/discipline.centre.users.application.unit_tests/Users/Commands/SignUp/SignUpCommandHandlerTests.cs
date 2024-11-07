@@ -2,6 +2,7 @@ using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.Events;
 using discipline.centre.shared.abstractions.Exceptions;
+using discipline.centre.shared.abstractions.SharedKernel;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.users.application.Users.Commands;
 using discipline.centre.users.domain.Users;
@@ -49,7 +50,7 @@ public sealed class SignUpCommandHandlerTests
     }
     
     [Fact]
-    public async Task HandleAsync_GivenExistingEmail_ShouldThrow()
+    public async Task HandleAsync_GivenExistingEmail_ShouldThrowAlreadyRegisteredException()
     {
         //arrange
         var command = new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
@@ -66,9 +67,158 @@ public sealed class SignUpCommandHandlerTests
         exception.ShouldBeOfType<AlreadyRegisteredException>();
         ((AlreadyRegisteredException)exception).Code.ShouldBe("SignUpCommand.Email");
     }
-
-
     
+    [Fact]
+    public async Task HandleAsync_GivenExistingEmail_ShouldNotAddByRepository()
+    {
+        //arrange
+        var command = new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
+            "first_name", "last_name");
+
+        _readUserRepository
+            .DoesEmailExist(command.Email, default)
+            .Returns(true);
+        
+        //act
+        await Record.ExceptionAsync(async () => await Act(command));
+        
+        //assert
+        await _writeUserRepository
+            .Received(0)
+            .AddAsync(Arg.Any<User>(), default);
+    }
+    
+    [Fact]
+    public async Task HandleAsync_GivenExistingEmail_ShouldNotProcessedAnyEvents()
+    {
+        //arrange
+        var command = new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
+            "first_name", "last_name");
+
+        _readUserRepository
+            .DoesEmailExist(command.Email, default)
+            .Returns(true);
+        
+        //act
+        await Record.ExceptionAsync(async () => await Act(command));
+
+        //assert
+        await _eventProcessor
+            .Received(0)
+            .PublishAsync(Arg.Any<DomainEvent>());
+    }
+
+    [Theory]
+    [MemberData(nameof(GetInvalidSignUpCommand))]
+    public async Task HandleAsync_GivenInvalidArguments_ShouldNotAddByRepository(SignUpCommand command)
+    {
+        //arrange
+        _readUserRepository
+            .DoesEmailExist(command.Email, default)
+            .Returns(false);
+        
+        //act
+        await Record.ExceptionAsync(async () => await Act(command));
+        
+        //assert
+        await _writeUserRepository
+            .Received(0)
+            .AddAsync(Arg.Any<User>(), default);
+    }
+    
+    [Theory]
+    [MemberData(nameof(GetInvalidSignUpCommand))]
+    public async Task HandleAsync_GivenInvalidArguments_ShouldNotProcessAnyEvents(SignUpCommand command)
+    {
+        //arrange
+        _readUserRepository
+            .DoesEmailExist(command.Email, default)
+            .Returns(false);
+        
+        //act
+        await Record.ExceptionAsync(async () => await Act(command));
+
+        //assert
+        await _eventProcessor
+            .Received(0)
+            .PublishAsync(Arg.Any<DomainEvent>());
+    }
+
+    public static IEnumerable<object[]> GetInvalidSignUpCommand()
+    {
+        yield return
+        [
+            new SignUpCommand(UserId.New(), string.Empty, "Test123!",
+                "test_first_name", "test_last_name")
+        ];
+
+        yield return
+        [
+            new SignUpCommand(UserId.New(), "test_invalid_email", "Test123!",
+                "test_first_name", "test_last_name")
+        ];
+
+        yield return
+        [
+            new SignUpCommand(UserId.New(), "test@test.pl", "TEST123!",
+                "test_first_name", "test_last_name")
+        ];
+
+        yield return
+        [
+            new SignUpCommand(UserId.New(), "test@test.pl", "test123!",
+                "test_first_name", "test_last_name")
+        ];
+
+        yield return
+        [
+            new SignUpCommand(UserId.New(), "test@test.pl", "Test!",
+                "test_first_name", "test_last_name")
+        ];
+
+        yield return
+        [
+            new SignUpCommand(UserId.New(), "test@test.pl", "Test123",
+                "test_first_name", "test_last_name")
+        ];
+
+        yield return
+        [
+            new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
+                string.Empty, "test_last_name")
+        ];
+
+        yield return
+        [
+            new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
+                new string('t', 1), "test_last_name")
+        ];
+
+        yield return
+        [
+            new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
+                new string('t', 101), "test_last_name")
+        ];
+
+        yield return
+        [
+            new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
+                "test_first_name", string.Empty)
+        ];
+
+        yield return
+        [
+            new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
+                "test_first_name", new string('t', 1))
+        ];
+
+        yield return
+        [
+            new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
+                "test_first_name", new string('t', 101))
+        ];
+    }
+
     #region arrange
 
     private readonly IReadUserRepository _readUserRepository;

@@ -63,22 +63,22 @@ public sealed class SignUpCommandValidatorTests
             "test_first_name", "test_last_name"), nameof(SignUpCommand.Password)];
         
         yield return [new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
-            string.Empty, "test_last_name"), nameof(SignUpCommand.Password)];
+            string.Empty, "test_last_name"), nameof(SignUpCommand.FirstName)];
         
         yield return [new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
-            new string('t', 1), "test_last_name"), nameof(SignUpCommand.Password)];
+            new string('t', 1), "test_last_name"), nameof(SignUpCommand.FirstName)];
         
         yield return [new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
-            new string('t', 101), "test_last_name"), nameof(SignUpCommand.Password)];
+            new string('t', 101), "test_last_name"), nameof(SignUpCommand.FirstName)];
         
         yield return [new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
-            "test_first_name", string.Empty), nameof(SignUpCommand.Password)];
+            "test_first_name", string.Empty), nameof(SignUpCommand.LastName)];
         
         yield return [new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
-            "test_first_name", new string('t',1)), nameof(SignUpCommand.Password)];
+            "test_first_name", new string('t',1)), nameof(SignUpCommand.LastName)];
         
         yield return [new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
-            "test_first_name", new string('t',101)), nameof(SignUpCommand.Password)];
+            "test_first_name", new string('t',101)), nameof(SignUpCommand.LastName)];
     }
 
     #region arrange
