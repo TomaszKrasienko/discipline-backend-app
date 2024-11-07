@@ -5,5 +5,5 @@ namespace discipline.centre.users.application.Users.Services;
 public interface ITokenStorage
 {
     void Set(TokensDto jwtDto);
-    TokensDto Get();
+    TokensDto? Get();
 }

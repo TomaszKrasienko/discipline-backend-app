@@ -10,5 +10,6 @@ public static class UsersServicesInfrastructureConfigExtensions
             .AddPasswordsSecure()
             .AddDal(assemblyName)
             .AddEvents()
-            .AddUsersAuth();
+            .AddUsersAuth()
+            .AddTokenStorage();
 }
