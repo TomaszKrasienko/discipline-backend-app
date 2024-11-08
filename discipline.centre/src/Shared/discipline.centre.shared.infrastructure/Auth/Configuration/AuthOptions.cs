@@ -7,5 +7,6 @@ public sealed record AuthOptions
     public string Password { get; set; } = string.Empty;
     public string Issuer { get; set; } = string.Empty;
     public string Audience { get; set; } = string.Empty;
-    public TimeSpan Expiry { get; set; }
+    public TimeSpan TokenExpiry { get; set; }
+    public TimeSpan RefreshTokenExpiry { get; set; }
 }

@@ -31,7 +31,7 @@ internal sealed class AuthOptionsValidator : IValidateOptions<AuthOptions>
             return ValidateOptionsResult.Fail("Auth options audience can not be empty");
         }
 
-        if (options.Expiry == default)
+        if (options.TokenExpiry == default)
         {
             return ValidateOptionsResult.Fail("Auth options expiry can not be default");
         }

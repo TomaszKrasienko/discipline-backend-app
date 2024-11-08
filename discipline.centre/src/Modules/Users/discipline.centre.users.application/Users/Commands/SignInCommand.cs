@@ -34,7 +34,7 @@ internal sealed class SignInCommandHandler(
     IPasswordManager passwordManager,
     IAuthenticator authenticator,
     ITokenStorage tokenStorage,
-    IRefreshTokenFacade refreshTokenFacade) : ICommandHandler<SignInCommand>
+    IRefreshTokenStorageFacade refreshTokenFacade) : ICommandHandler<SignInCommand>
 {
     public async Task HandleAsync(SignInCommand command, CancellationToken cancellationToken = default)
     {

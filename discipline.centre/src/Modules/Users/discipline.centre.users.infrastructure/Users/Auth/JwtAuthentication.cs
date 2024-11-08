@@ -15,7 +15,7 @@ internal sealed class JwtAuthenticator(
 {
     private readonly string _privateCertPath = options.Value.PrivateCertPath;
     private readonly string _password = options.Value.Password;
-    private readonly TimeSpan _expiry = options.Value.Expiry;
+    private readonly TimeSpan _expiry = options.Value.TokenExpiry;
     private readonly string _issuer = options.Value.Issuer;
     private readonly string _audience = options.Value.Audience;
     private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
