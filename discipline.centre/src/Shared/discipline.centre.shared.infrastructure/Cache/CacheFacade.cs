@@ -1,15 +1,20 @@
 using discipline.centre.shared.abstractions.Cache;
-using discipline.centre.shared.infrastructure.Cache.Configuration;
+using discipline.centre.shared.abstractions.Clock;
+using discipline.centre.shared.abstractions.Serialization;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
 
 namespace discipline.centre.shared.infrastructure.Cache;
 
-internal sealed class CacheFacade(IDistributedCache distributedCache,
-    IOptions<CacheOptions> options) : ICacheFacade
+internal sealed class CacheFacade(
+    IDistributedCache distributedCache,
+    ISerializer serializer,
+    IClock clock) : ICacheFacade
 {
-    public async Task Add<T>(string key, T value) where T : class
+    public async Task Add<T>(string key, T value, TimeSpan expiration) where T : class
     {
-        ///await distributedCache.SetAsync(key, )
+        await distributedCache.SetAsync(key, serializer.ToByteJson(value), new DistributedCacheEntryOptions()
+        {
+            AbsoluteExpiration = clock.DateTimeNow().Add(expiration) 
+        });
     }
 }
