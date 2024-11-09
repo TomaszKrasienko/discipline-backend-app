@@ -13,10 +13,11 @@ internal sealed class RefreshTokenStorageFacade(
     IOptions<AuthOptions> options) : IRefreshTokenStorageFacade
 {
     private readonly TimeSpan _expiry = options.Value.RefreshTokenExpiry;
+    private readonly int _refreshTokenLength = options.Value.RefreshTokenLength;
     
     public async Task<string> GenerateAsync(UserId userId, CancellationToken cancellationToken = default)
     {
-        var refreshToken = GenerateRandom(20);
+        var refreshToken = GenerateRandom(_refreshTokenLength);
         var dto = new RefreshTokenDto(refreshToken);
         await cacheFacade.AddAsync(userId.Value.ToString(), dto, _expiry);
         return refreshToken;

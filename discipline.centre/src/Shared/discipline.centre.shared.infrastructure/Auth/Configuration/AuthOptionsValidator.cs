@@ -35,6 +35,16 @@ internal sealed class AuthOptionsValidator : IValidateOptions<AuthOptions>
         {
             return ValidateOptionsResult.Fail("Auth options expiry can not be default");
         }
+        
+        if (options.RefreshTokenLength < 5)
+        {
+            return ValidateOptionsResult.Fail("Auth options refresh token length can not be default");
+        }
+        
+        if (options.RefreshTokenExpiry == default)
+        {
+            return ValidateOptionsResult.Fail("Auth options refresh token expiry can not be default");
+        }
 
         return ValidateOptionsResult.Success;
     }
