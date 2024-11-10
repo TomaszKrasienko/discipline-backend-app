@@ -1,6 +1,7 @@
 using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.users.application.Users.Commands;
+using discipline.centre.users.application.Users.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,23 @@ internal static class UsersEndpoints
             .WithOpenApi(operation => new (operation)
             {
                 Description = "Signs-up user"
+            });
+        
+        app.MapPost($"{UsersModule.ModuleName}/{UserTag}/sign-in", async (SignInCommand command,
+                ICqrsDispatcher commandDispatcher, ITokenStorage tokenStorage, CancellationToken cancellationToken) =>
+            {
+                await commandDispatcher.HandleAsync(command, cancellationToken);
+                var jwt = tokenStorage.Get(); 
+                return Results.Ok(jwt);
+            })
+            .Produces(StatusCodes.Status200OK, typeof(void))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
+            .WithName("SignIn")
+            .WithTags(UserTag)
+            .WithOpenApi(operation => new (operation)
+            {
+                Description = "Signs-in user"
             });
         return app;
     }

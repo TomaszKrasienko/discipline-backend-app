@@ -18,7 +18,6 @@
 
     <ItemGroup>
         <PackageReference Include="FluentValidation" />
-        <PackageReference Include="FluentValidation.AspNetCore" />
     </ItemGroup>
 
     <ItemGroup>

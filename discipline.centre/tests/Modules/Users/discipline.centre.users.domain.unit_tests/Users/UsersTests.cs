@@ -80,7 +80,7 @@ public sealed class UsersTests
     public void AddFreeSubscriptionOder_GivenUserWithoutSubscriptionOrder_ShouldSetPaidSubscriptionOrder()
     {
         //arrange
-        var user = UserFactory.Get();
+        var user = UserFakeDataFactory.Get();
         var subscription = SubscriptionFactory.Get();
         var subscriptionOrderId = SubscriptionOrderId.New();
         
@@ -99,7 +99,7 @@ public sealed class UsersTests
     public void AddFreeSubscriptionOder_GivenUserWithFreeSubscription_ShouldThrowSubscriptionOrderForUserAlreadyExistsException()
     {
         //arrange
-        var user = UserFactory.Get();
+        var user = UserFakeDataFactory.Get();
         var subscription = SubscriptionFactory.Get();
         user.CreateFreeSubscriptionOrder(SubscriptionOrderId.New(), subscription, DateTime.Now);
         
@@ -116,7 +116,7 @@ public sealed class UsersTests
     public void AddPaidSubscriptionOrder_GivenUserWithoutSubscriptionOrder_ShouldSetPaidSubscriptionOrder()
     {
         //arrange
-        var user = UserFactory.Get();
+        var user = UserFakeDataFactory.Get();
         var subscription = SubscriptionFactory.Get(10, 100);
         var subscriptionOrderId = SubscriptionOrderId.New();
         
@@ -136,7 +136,7 @@ public sealed class UsersTests
     public void AddPaidSubscriptionOrder_GivenUserWithPaidSubscriptionOrder_ShouldThrowSubscriptionOrderForUserAlreadyExistsException()
     {
         //arrange
-        var user = UserFactory.Get();
+        var user = UserFakeDataFactory.Get();
         var subscription = SubscriptionFactory.Get(10, 100);
         user.CreatePaidSubscriptionOrder(SubscriptionOrderId.New(), subscription,
             SubscriptionOrderFrequency.Monthly, DateTime.Now, "test_payment_token");

@@ -10,11 +10,12 @@ internal sealed class CacheFacade(
     ISerializer serializer,
     IClock clock) : ICacheFacade
 {
-    public async Task AddAsync<T>(string key, T value, TimeSpan expiration) where T : class
+    public async Task AddAsync<T>(string key, T value, TimeSpan expiration, CancellationToken cancellationToken = default) 
+        where T : class
     {
         await distributedCache.SetAsync(key, serializer.ToByteJson(value), new DistributedCacheEntryOptions()
         {
             AbsoluteExpiration = clock.DateTimeNow().Add(expiration) 
-        });
+        }, cancellationToken);
     }
 }

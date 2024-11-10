@@ -8,14 +8,14 @@ using Microsoft.Extensions.Options;
 
 namespace discipline.centre.users.infrastructure.Users.RefreshToken;
 
-internal sealed class RefreshTokenStorageFacade(
+internal sealed class RefreshTokenFacade(
     ICacheFacade cacheFacade,
-    IOptions<AuthOptions> options) : IRefreshTokenStorageFacade
+    IOptions<AuthOptions> options) : IRefreshTokenFacade
 {
     private readonly TimeSpan _expiry = options.Value.RefreshTokenExpiry;
     private readonly int _refreshTokenLength = options.Value.RefreshTokenLength;
     
-    public async Task<string> GenerateAsync(UserId userId, CancellationToken cancellationToken = default)
+    public async Task<string> GenerateAndSaveAsync(UserId userId, CancellationToken cancellationToken = default)
     {
         var refreshToken = GenerateRandom(_refreshTokenLength);
         var dto = new RefreshTokenDto(refreshToken);

@@ -10,7 +10,10 @@ builder.Services.AddInfrastructure(assemblies, builder.Configuration);
 builder.Services.AddModulesConfiguration(modules);
 
 var app = builder.Build();
+
 app.UseHttpsRedirection();
+app.UseInfrastructure();
 app.MapHealthChecks("/");
 app.UseModulesConfiguration(modules);
+
 await app.RunAsync();

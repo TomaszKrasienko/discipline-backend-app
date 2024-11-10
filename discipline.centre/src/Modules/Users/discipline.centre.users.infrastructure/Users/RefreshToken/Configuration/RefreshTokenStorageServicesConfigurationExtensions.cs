@@ -6,5 +6,5 @@ namespace discipline.centre.users.infrastructure.Users.RefreshToken.Configuratio
 internal static class RefreshTokenStorageServicesConfigurationExtensions
 {
     internal static IServiceCollection AddRefreshTokenStorage(this IServiceCollection services)
-        => services.AddSingleton<IRefreshTokenStorageFacade, RefreshTokenStorageFacade>();
+        => services.AddSingleton<IRefreshTokenFacade, RefreshTokenFacade>();
 }

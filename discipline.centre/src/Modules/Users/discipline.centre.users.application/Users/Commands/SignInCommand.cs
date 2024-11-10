@@ -11,7 +11,7 @@ namespace discipline.centre.users.application.Users.Commands;
 
 public sealed record SignInCommand(string Email, string Password) : ICommand;
 
-internal sealed class SignInCommandValidator : AbstractValidator<SignInCommand>
+public sealed class SignInCommandValidator : AbstractValidator<SignInCommand>
 {
     public SignInCommandValidator()
     {
@@ -34,7 +34,7 @@ internal sealed class SignInCommandHandler(
     IPasswordManager passwordManager,
     IAuthenticator authenticator,
     ITokenStorage tokenStorage,
-    IRefreshTokenStorageFacade refreshTokenFacade) : ICommandHandler<SignInCommand>
+    IRefreshTokenFacade refreshTokenFacade) : ICommandHandler<SignInCommand>
 {
     public async Task HandleAsync(SignInCommand command, CancellationToken cancellationToken = default)
     {
@@ -51,7 +51,7 @@ internal sealed class SignInCommandHandler(
         }
 
         var token = authenticator.CreateToken(user.Id.ToString(), user.Email, user.Status);
-        var refreshToken = await refreshTokenFacade.GenerateAsync(user.Id, cancellationToken);
+        var refreshToken = await refreshTokenFacade.GenerateAndSaveAsync(user.Id, cancellationToken);
         tokenStorage.Set(new TokensDto(token, refreshToken));
     }
 }

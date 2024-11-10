@@ -53,6 +53,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{74A65E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.e2e_tests.shared", "tests\Shared\discipline.centre.e2e_tests.shared\discipline.centre.e2e_tests.shared.csproj", "{648CF7EA-4E19-4CF9-AAA6-C71F8BFBF319}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ActivityRules", "ActivityRules", "{62F191FA-2492-4BB5-A613-53F2DCDCF3B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.domain", "src\Modules\ActivityRules\discipline.centre.activityrules.domain\discipline.centre.activityrules.domain.csproj", "{C4250CFF-5E5B-456A-94C7-3B05F3861DE1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ActivityRules", "ActivityRules", "{94897377-2950-45C5-9172-1E4282D7E406}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.domain.unit_tests", "tests\Modules\ActivityRules\discipline.centre.activityrules.domain.unit_tests\discipline.centre.activityrules.domain.unit_tests.csproj", "{3DC7A48D-B2C4-4A0E-816D-2BAF13860D00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +90,10 @@ Global
 		{A114B134-7AC9-4336-A729-85F8983971F0} = {E5810C99-A4A0-4358-A1DA-EEF9BD2254FB}
 		{74A65E38-E753-4294-AA8A-BD999C102C9E} = {F27CEEB6-F209-4256-BF65-7961254366F3}
 		{648CF7EA-4E19-4CF9-AAA6-C71F8BFBF319} = {74A65E38-E753-4294-AA8A-BD999C102C9E}
+		{62F191FA-2492-4BB5-A613-53F2DCDCF3B6} = {40698DDB-0A27-4727-A845-E35999288295}
+		{C4250CFF-5E5B-456A-94C7-3B05F3861DE1} = {62F191FA-2492-4BB5-A613-53F2DCDCF3B6}
+		{94897377-2950-45C5-9172-1E4282D7E406} = {3236FA37-1EBA-4FC8-9034-1F549EA7C26A}
+		{3DC7A48D-B2C4-4A0E-816D-2BAF13860D00} = {94897377-2950-45C5-9172-1E4282D7E406}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E8D4460A-0BBA-4AC1-B492-F5FF10286113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -136,5 +148,13 @@ Global
 		{648CF7EA-4E19-4CF9-AAA6-C71F8BFBF319}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{648CF7EA-4E19-4CF9-AAA6-C71F8BFBF319}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{648CF7EA-4E19-4CF9-AAA6-C71F8BFBF319}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4250CFF-5E5B-456A-94C7-3B05F3861DE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4250CFF-5E5B-456A-94C7-3B05F3861DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4250CFF-5E5B-456A-94C7-3B05F3861DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4250CFF-5E5B-456A-94C7-3B05F3861DE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DC7A48D-B2C4-4A0E-816D-2BAF13860D00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DC7A48D-B2C4-4A0E-816D-2BAF13860D00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DC7A48D-B2C4-4A0E-816D-2BAF13860D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DC7A48D-B2C4-4A0E-816D-2BAF13860D00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

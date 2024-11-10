@@ -4,7 +4,7 @@ using discipline.centre.users.domain.Users;
 
 namespace discipline.centre.users.tests.sharedkernel.Domain;
 
-public static class UserFactory
+public static class UserFakeDataFactory
 {
     public static User Get()
         => Get(1).Single();

@@ -23,4 +23,13 @@
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.centre.e2e_tests.shared"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <None Update="certs\private.pem">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="certs\public.pem">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 </Project>

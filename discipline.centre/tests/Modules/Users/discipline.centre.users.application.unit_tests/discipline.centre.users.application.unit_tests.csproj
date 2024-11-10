@@ -27,6 +27,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\src\Modules\Users\discipline.centre.users.application\discipline.centre.users.application.csproj" />
+      <ProjectReference Include="..\discipline.centre.users.tests.sharedkernel\discipline.centre.users.tests.sharedkernel.csproj" />
     </ItemGroup>
 
 </Project>

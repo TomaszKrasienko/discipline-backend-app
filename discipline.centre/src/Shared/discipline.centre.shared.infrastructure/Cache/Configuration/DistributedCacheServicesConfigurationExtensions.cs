@@ -1,3 +1,5 @@
+using discipline.centre.shared.abstractions.Cache;
+using discipline.centre.shared.infrastructure.Cache;
 using discipline.centre.shared.infrastructure.Cache.Configuration;
 using Microsoft.Extensions.Configuration;
 
@@ -9,6 +11,7 @@ internal static class DistributedCacheServicesConfigurationExtensions
     internal static IServiceCollection AddDistributedCache(this IServiceCollection services, IConfiguration configuration)
         => services
             .ValidateAndBind<RedisCacheOptions, RedisCacheOptionsValidator>(configuration)
+            .AddSingleton<ICacheFacade, CacheFacade>()
             .AddStackExchangeRedisCache(redisOptions =>
             {
                 var redisCacheOptions = services.GetOptions<RedisCacheOptions>();

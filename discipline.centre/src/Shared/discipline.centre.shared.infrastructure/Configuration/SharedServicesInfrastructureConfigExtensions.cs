@@ -17,7 +17,9 @@ public static class SharedServicesInfrastructureConfigExtensions
             .AddClock()
             .AddAuth(configuration)
             .AddSerializer()
-            .AddDistributedCache(configuration);
+            .AddDistributedCache(configuration)
+            .AddExceptionsHandling()
+            .AddValidation(assemblies);
 
     internal static IServiceCollection ValidateAndBind<TOptions, TOptionsValidator>(this IServiceCollection services,
         IConfiguration configuration) where TOptions : class where TOptionsValidator : IValidateOptions<TOptions>
