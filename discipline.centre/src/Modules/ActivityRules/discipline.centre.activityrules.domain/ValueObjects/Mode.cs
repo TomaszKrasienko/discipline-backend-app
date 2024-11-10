@@ -7,7 +7,7 @@ namespace discipline.centre.activityrules.domain.ValueObjects;
 public sealed class Mode : ValueObject
 {
     private string _value = null!;
-    private static readonly ImmutableDictionary<string, string> AvailableModes = new Dictionary<string, string>()
+    public static readonly ImmutableDictionary<string, string> AvailableModes = new Dictionary<string, string>()
     {
         ["EveryDay"] = "Every day",
         ["FirstDayOfWeek"] = "First day of week",

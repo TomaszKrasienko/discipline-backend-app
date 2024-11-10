@@ -4,9 +4,9 @@ using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 
 namespace discipline.centre.activityrules.domain.Rules;
 
-internal sealed class CustomModeMustHaveSelectedDayRule(Mode mode, List<SelectedDay>? selectedDays) : IBusinessRule
+internal sealed class ModeMustHaveFilledSelectedDays(Mode mode, List<int>? selectedDays) : IBusinessRule
 {
-    public Exception Exception => new DomainException("Activityrule.Mode.RequireSelectedDays",
+    public Exception Exception => new DomainException("ActivityRule.Mode.RequireSelectedDays",
         $"Mode: {mode} require filled selected days");
 
     public bool IsBroken()

@@ -1,6 +1,8 @@
+using discipline.centre.activityrules.domain.Rules;
 using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.shared.abstractions.SharedKernel.Aggregate;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
+using Microsoft.Extensions.Options;
 
 namespace discipline.centre.activityrules.domain;
 
@@ -32,20 +34,36 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
 
     public static ActivityRule Create(ActivityRuleId id, UserId userId, string title, string mode, List<int>? selectedDays = null)
     {
-        List<SelectedDay> days = null!;
-        if (selectedDays is not null)
-        {
-            days = selectedDays.Select(SelectedDay.Create).ToList();
-        }
+        Validate(mode, selectedDays);
+        var days = ConvertSelectedDays(selectedDays);
 
         return new ActivityRule(id, userId, title, mode, days);
     }
 
     public void Edit(string title, string mode, List<int>? selectedDays = null)
     {
-        ChangeTitle(title);
-        ChangeMode(mode);
-        // ChangeSelectedDays(mode, selectedDays);
+        Validate(mode, selectedDays);
+        var days = ConvertSelectedDays(selectedDays);
+        Title = title;
+        Mode = mode;
+        _selectedDays = days;
+    }
+
+    private static List<SelectedDay>? ConvertSelectedDays(List<int>? selectedDays)
+    {
+        List<SelectedDay> days = null!;
+        if (selectedDays is not null)
+        {
+            days = selectedDays.Select(SelectedDay.Create).ToList();
+        }
+
+        return days;
+    }
+    
+    private static void Validate(string mode, List<int>? selectedDays)
+    {
+        CheckRule(new ModeCannotHaveFilledSelectedDays(mode, selectedDays));
+        CheckRule(new ModeMustHaveFilledSelectedDays(mode, selectedDays));   
     }
 
     private void ChangeTitle(string value)
@@ -53,30 +71,6 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
 
     private void ChangeMode(string value)
         => Mode = value;
-
-    // private void ChangeSelectedDays(string mode, List<int>? selectedDays)
-    // {
-    //     if (mode == Mode.CustomMode() && !IsSelectedDaysNullOrEmpty(selectedDays))
-    //     {
-    //         _selectedDays = new();
-    //         foreach (var selectedDay in selectedDays)
-    //         {
-    //             _selectedDays.Add(selectedDay);
-    //         }
-    //     }
-    //
-    //     if(mode == Mode.CustomMode() && IsSelectedDaysNullOrEmpty(selectedDays) || mode != Mode.CustomMode() && !IsSelectedDaysNullOrEmpty(selectedDays))            
-    //     {
-    //         throw new InvalidModeForSelectedDaysException(mode);
-    //     }
-    //
-    //     if (IsSelectedDaysNullOrEmpty(selectedDays))
-    //     {
-    //         _selectedDays = null;
-    //     }
-    //     
-    //
-    // }
 
     private static bool IsSelectedDaysNullOrEmpty(List<int>? selectedDays)
         => selectedDays is null || selectedDays.Count == 0;
