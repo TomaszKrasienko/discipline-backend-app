@@ -1,7 +1,7 @@
 using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
-using discipline.centre.users.tests.sharedkernel.Domain;
+using discipline.centre.activityrules.tests.sharedkernel.Domain;
 using Shouldly;
 using Xunit;
 

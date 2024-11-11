@@ -3,7 +3,7 @@ using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-namespace discipline.centre.users.tests.sharedkernel.Domain;
+namespace discipline.centre.activityrules.tests.sharedkernel.Domain;
 
 public static class ActivityRuleFakeDateFactory
 {

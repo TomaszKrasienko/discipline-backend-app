@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>discipline.centre.activityrules.application</RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="FluentValidation" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />
+    </ItemGroup>
+
+</Project>

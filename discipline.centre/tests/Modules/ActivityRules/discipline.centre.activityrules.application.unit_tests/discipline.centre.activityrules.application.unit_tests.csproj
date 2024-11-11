@@ -4,8 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-        <RootNamespace>discipline.centre.activityrules.domain.unit_tests</RootNamespace>
+
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
@@ -21,12 +20,6 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Shouldly"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\..\src\Modules\ActivityRules\discipline.centre.activityrules.domain\discipline.centre.activityrules.domain.csproj" />
-      <ProjectReference Include="..\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj" />
     </ItemGroup>
 
 </Project>
