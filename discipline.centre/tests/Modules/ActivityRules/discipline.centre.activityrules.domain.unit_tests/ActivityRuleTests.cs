@@ -104,11 +104,6 @@ public sealed class ActivityRuleTests
         ((DomainException)exception).Code.ShouldBe("ActivityRule.Mode.RequireSelectedDays");
     }
 
-    public static IEnumerable<object[]> GetValidModesForSelectedDays()
-    {
-        yield return [Mode.CustomMode];
-    }
-
     [Theory]
     [MemberData(nameof(GetInvalidModesForSelectedDays))]
     public void Create_GivenInvalidModeForSelectedDays_ShouldThrowDomainExceptionWithCode(string mode)
@@ -122,14 +117,7 @@ public sealed class ActivityRuleTests
         ((DomainException)exception).Code.ShouldBe("ActivityRule.Mode.RequireSelectedDays");
     }
 
-    public static IEnumerable<object[]> GetInvalidModesForSelectedDays()
-    {
-        yield return [Mode.EveryDayMode];
-        yield return [Mode.FirstDayOfWeekMode];
-        yield return [Mode.LastDayOfWeekMode];
-        yield return [Mode.FirstDayOfMonth];
-        yield return [Mode.LastDayOfMonthMode];
-    }
+
     
     [Theory]
     [MemberData(nameof(GetValidEditActivityRulesData))]
@@ -160,6 +148,105 @@ public sealed class ActivityRuleTests
         ];
     }
     
+    [Theory]
+    [MemberData(nameof(GetInvalidEditActivityRulesData))]
+    public void Edit_GivenInvalidArgument_ShouldReturnDomainExceptionWithCode(ActivityRuleParams @params, string code)
+    {
+        //arrange
+        var activityRule = ActivityRuleFakeDateFactory.Get();
+        
+        //act
+        var exception = Record.Exception(() => activityRule.Edit( @params.Title, @params.Mode, @params.SelectedDays));
+        
+        //assert
+        exception.ShouldBeOfType<DomainException>();
+        ((DomainException)exception).Code.ShouldBe(code);
+    }
+
+    public static IEnumerable<object[]> GetInvalidEditActivityRulesData()
+    {
+        yield return
+        [
+            new ActivityRuleParams(null, null, string.Empty,
+                Mode.CustomMode, [1, 2, 3]),
+            "ActivityRule.Title.Empty"
+        ];
+        
+        yield return
+        [
+            new ActivityRuleParams(null, null, "test_title",
+                string.Empty, [1, 2, 3]),
+            "ActivityRule.Mode.Empty"
+        ];
+        
+        yield return
+        [
+            new ActivityRuleParams(null, null, "test_title",
+                "test_mode", [1, 2, 3]),
+            "ActivityRule.Mode.Unavailable"
+        ];
+        
+        yield return
+        [
+            new ActivityRuleParams(null, null, string.Empty,
+                Mode.CustomMode, [-1, 2, 3]),
+            "ActivityRule.SelectedDay.OutOfRange"
+        ];
+        
+        yield return
+        [
+            new ActivityRuleParams(null, null, string.Empty,
+                Mode.CustomMode, [1, 7, 3]),
+            "ActivityRule.SelectedDay.OutOfRange"
+        ];
+    }
+    
+    //
+    [Theory]
+    [MemberData(nameof(GetValidModesForSelectedDays))]
+    public void Edit_GivenModeForSelectedDaysAndNullSelectedDays_ShouldThrowDomainExceptionWithCode(string mode)
+    {
+        //arrange
+        var activityRule = ActivityRuleFakeDateFactory.Get();
+        
+        //act
+        var exception = Record.Exception(() => activityRule.Edit("test_title",
+            mode, null));
+        
+        //assert
+        exception.ShouldBeOfType<DomainException>();
+        ((DomainException)exception).Code.ShouldBe("ActivityRule.Mode.RequireSelectedDays");
+    }
+
+    [Theory]
+    [MemberData(nameof(GetInvalidModesForSelectedDays))]
+    public void Edit_GivenInvalidModeForSelectedDays_ShouldThrowDomainExceptionWithCode(string mode)
+    {
+        //arrange
+        var activityRule = ActivityRuleFakeDateFactory.Get();
+        
+        //act
+        var exception = Record.Exception(() => activityRule.Edit("test_title", mode, [1,2,3]));
+        
+        //assert
+        exception.ShouldBeOfType<DomainException>();
+        ((DomainException)exception).Code.ShouldBe("ActivityRule.Mode.RequireSelectedDays");
+    }
+
+    public static IEnumerable<object[]> GetValidModesForSelectedDays()
+    {
+        yield return [Mode.CustomMode];
+    }
+    
+    public static IEnumerable<object[]> GetInvalidModesForSelectedDays()
+    {
+        yield return [Mode.EveryDayMode];
+        yield return [Mode.FirstDayOfWeekMode];
+        yield return [Mode.LastDayOfWeekMode];
+        yield return [Mode.FirstDayOfMonth];
+        yield return [Mode.LastDayOfMonthMode];
+    }
+
     public sealed record ActivityRuleParams(ActivityRuleId? Id, UserId? UserId, string Title, string Mode,
         List<int>? SelectedDays = null);
 
