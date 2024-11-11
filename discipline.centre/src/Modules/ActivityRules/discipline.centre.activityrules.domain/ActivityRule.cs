@@ -2,7 +2,6 @@ using discipline.centre.activityrules.domain.Rules;
 using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.shared.abstractions.SharedKernel.Aggregate;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
-using Microsoft.Extensions.Options;
 
 namespace discipline.centre.activityrules.domain;
 
@@ -65,14 +64,4 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
         CheckRule(new ModeCannotHaveFilledSelectedDays(mode, selectedDays));
         CheckRule(new ModeMustHaveFilledSelectedDays(mode, selectedDays));   
     }
-
-    private void ChangeTitle(string value)
-        => Title = value;
-
-    private void ChangeMode(string value)
-        => Mode = value;
-
-    private static bool IsSelectedDaysNullOrEmpty(List<int>? selectedDays)
-        => selectedDays is null || selectedDays.Count == 0;
-
 }
