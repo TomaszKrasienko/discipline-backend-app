@@ -5,7 +5,7 @@ using FluentValidation;
 namespace discipline.centre.activityrules.application.ActivityRules.Commands;
 
 public sealed record CreateActivityRuleCommand(ActivityRuleId Id, UserId UserId, string Title, string Mode,
-    List<int> SelectedDays) : ICommand;
+    List<int>? SelectedDays) : ICommand;
     
 public sealed class CreateActivityRuleCommandValidator : AbstractValidator<CreateActivityRuleCommand>
 {

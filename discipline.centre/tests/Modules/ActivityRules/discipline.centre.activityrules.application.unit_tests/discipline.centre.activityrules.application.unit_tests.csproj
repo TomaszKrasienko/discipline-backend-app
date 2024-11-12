@@ -22,4 +22,8 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\src\Modules\ActivityRules\discipline.centre.activityrules.application\discipline.centre.activityrules.application.csproj" />
+    </ItemGroup>
+
 </Project>
