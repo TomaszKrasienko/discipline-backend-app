@@ -1,4 +1,7 @@
+using discipline.centre.activityrules.domain;
+using discipline.centre.activityrules.domain.Repositories;
 using discipline.centre.shared.abstractions.CQRS.Commands;
+using discipline.centre.shared.abstractions.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 
@@ -29,5 +32,23 @@ public sealed class CreateActivityRuleCommandValidator : AbstractValidator<Creat
             .NotNull()
             .NotEmpty()
             .WithMessage("Activity rule \"Mode\" can not be null or empty");
+    }
+}
+
+internal sealed class CreateActivityRuleCommandHandler(
+    IActivityRuleRepository activityRuleRepository) : ICommandHandler<CreateActivityRuleCommand>
+{
+    public async Task HandleAsync(CreateActivityRuleCommand command, CancellationToken cancellationToken = default)
+    {
+        var isExists = await activityRuleRepository.ExistsAsync(command.Title, cancellationToken);
+        if (isExists)
+        {
+            throw new AlreadyRegisteredException("CreateActivityRule.Title",
+                $"Activity rule with title: {command.Title} already registered");
+        }
+
+        var activity = ActivityRule.Create(command.Id, command.UserId, command.Title, 
+            command.Mode, command.SelectedDays);
+        await activityRuleRepository.AddAsync(activity, cancellationToken);
     }
 }

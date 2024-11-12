@@ -8,6 +8,7 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />
+      <ProjectReference Include="..\discipline.centre.activityrules.domain\discipline.centre.activityrules.domain.csproj" />
     </ItemGroup>
 
 </Project>
