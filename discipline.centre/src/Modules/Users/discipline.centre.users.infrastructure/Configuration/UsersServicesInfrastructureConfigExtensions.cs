@@ -1,8 +1,8 @@
 using discipline.centre.users.infrastructure.Events.Configuration;
 using discipline.centre.users.infrastructure.Users.RefreshToken.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace discipline.centre.users.infrastructure.Configurations;
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class UsersServicesInfrastructureConfigExtensions
 {

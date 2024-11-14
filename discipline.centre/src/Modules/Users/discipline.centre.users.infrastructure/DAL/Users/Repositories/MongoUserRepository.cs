@@ -22,13 +22,11 @@ internal sealed class MongoUserRepository(
                 cancellationToken);
 
     public async Task UpdateAsync(User user, CancellationToken cancellationToken = default)
-    {
-        await disciplineMongoCollection.GetCollection<UserDocument>()
+        => await disciplineMongoCollection.GetCollection<UserDocument>()
             .FindOneAndReplaceAsync(x 
                 => x.Id == user.Id.ToString(),
                 user.MapAsDocument(user.Password?.Value is null ? user.Password?.HashedValue! : passwordManager.Secure(user.Password.Value)),
                 null, cancellationToken);
-    }
 
     public async Task<User?> GetByIdAsync(UserId id, CancellationToken cancellationToken = default)
         => (await GetAsync(x => x.Id == id.Value.ToString(), cancellationToken))?.MapAsEntity();
