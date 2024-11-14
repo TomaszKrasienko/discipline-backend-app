@@ -8,8 +8,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\src\Modules\ActivityRules\discipline.centre.activityrules.domain\discipline.centre.activityrules.domain.csproj" />
+      <ProjectReference Include="..\..\..\..\src\Modules\ActivityRules\discipline.centre.activityrules.infrastructure\discipline.centre.activityrules.infrastructure.csproj" />
     </ItemGroup>
-
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.activityrules.infrastructure.unit_test"/>
+    </ItemGroup>
+    
     <ItemGroup>
       <PackageReference Include="Bogus" />
     </ItemGroup>

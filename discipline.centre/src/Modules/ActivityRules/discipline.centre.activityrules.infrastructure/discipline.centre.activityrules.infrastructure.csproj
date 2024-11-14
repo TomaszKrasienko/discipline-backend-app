@@ -7,8 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.activityrules.infrastructure.unit_test"/>
+        <InternalsVisibleTo Include="discipline.centre.activityrules.tests.sharedkernel"/>
+    </ItemGroup>
+    
+    <ItemGroup>
       <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj" />
       <ProjectReference Include="..\..\Users\discipline.centre.users.domain\discipline.centre.users.domain.csproj" />
+      <ProjectReference Include="..\discipline.centre.activityrules.application\discipline.centre.activityrules.application.csproj" />
       <ProjectReference Include="..\discipline.centre.activityrules.domain\discipline.centre.activityrules.domain.csproj" />
     </ItemGroup>
 
