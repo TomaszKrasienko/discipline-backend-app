@@ -19,10 +19,24 @@ Content-Type: application/json
 }
 
 ###
+# @name sign_in
 POST {{host_address}}/users-module/users/sign-in
 Content-Type: application/json
 
 {
   "email": "{{email}}",
   "password": "{{password}}"
+}
+
+###
+@token = {{sign_in.response.body.$.token}}
+
+###
+POST {{host_address}}/activity-rules-module/activity-rules
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "Title":"test",
+  "Mode":"Everyday"
 }

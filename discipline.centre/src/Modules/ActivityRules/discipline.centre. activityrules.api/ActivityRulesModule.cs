@@ -1,3 +1,4 @@
+using discipline.centre.activityrules.api.Endpoints;
 using discipline.centre.shared.abstractions.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ internal sealed class ActivityRulesModule : IModule
 
     public void Use(WebApplication app)
     {
-        
+        app
+            .MapActivityRulesEndpoints();
     }
 }

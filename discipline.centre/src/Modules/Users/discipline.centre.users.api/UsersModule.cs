@@ -11,7 +11,8 @@ internal sealed class UsersModule : IModule
     public string Name => "Users";
 
     public void Register(IServiceCollection services)
-        => services.AddInfrastructure(ModuleName);
+        => services
+            .AddInfrastructure(ModuleName);
 
     public void Use(WebApplication app)
     {

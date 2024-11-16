@@ -10,11 +10,18 @@
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="FluentValidation" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" />
         <PackageReference Include="Scrutor"/>
         <PackageReference Include="MongoDb.Driver"/>
         <PackageReference Include="StackExchange.Redis"/>
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis"/>
         <PackageReference Include="FluentValidation.AspNetCore"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" />
     </ItemGroup>
 
     <ItemGroup>
