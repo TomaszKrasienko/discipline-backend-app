@@ -34,6 +34,10 @@ public sealed class SignInTests() : BaseTestsController("users-module")
         response.ShouldNotBeNull();
         response.Token.ShouldNotBeEmpty();
         response.RefreshToken.ShouldNotBeEmpty();
+
+        var refreshTokenDto = _testRedisCache!.GetValueAsync<RefreshTokenDto>(user.Id.ToString());
+        refreshTokenDto.ShouldNotBeNull();
+        refreshTokenDto.Value.ShouldBe(response.RefreshToken);
     }
     
     [Fact]
@@ -64,8 +68,16 @@ public sealed class SignInTests() : BaseTestsController("users-module")
     }
     
     #region arrange
+
+    private TestRedisCache? _testRedisCache;
+    
     protected override void ConfigureServices(IServiceCollection services)
     {
+        _testRedisCache = new TestRedisCache();
+        services.AddStackExchangeRedisCache(redistOptions =>
+        {
+            redistOptions.Configuration = _testRedisCache.ConnectionString;
+        });
         services.AddSingleton<IPasswordManager, TestsPasswordManager>();
         base.ConfigureServices(services);
     }
