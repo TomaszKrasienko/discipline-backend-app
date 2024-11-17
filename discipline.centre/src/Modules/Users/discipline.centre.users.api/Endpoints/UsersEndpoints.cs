@@ -14,7 +14,7 @@ internal static class UsersEndpoints
     
     internal static WebApplication MapUsersEndpoints(this WebApplication app)
     {
-        app.MapPost($"{UsersModule.ModuleName}/{UserTag}/sign-up", async (SignUpCommand command,
+        app.MapPost($"{UsersModule.ModuleName}/{UserTag}", async (SignUpCommand command,
                 ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var userId = UserId.New();
@@ -31,7 +31,7 @@ internal static class UsersEndpoints
                 Description = "Signs-up user"
             });
         
-        app.MapPost($"{UsersModule.ModuleName}/{UserTag}/sign-in", async (SignInCommand command,
+        app.MapPost($"{UsersModule.ModuleName}/{UserTag}/tokens", async (SignInCommand command,
                 ICqrsDispatcher commandDispatcher, ITokenStorage tokenStorage, CancellationToken cancellationToken) =>
             {
                 await commandDispatcher.HandleAsync(command, cancellationToken);

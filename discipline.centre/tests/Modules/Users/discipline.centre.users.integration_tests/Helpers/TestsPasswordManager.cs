@@ -1,6 +1,6 @@
 using discipline.centre.users.application.Users.Services;
 
-namespace discipline.centre.users.e2e_tests.Helpers;
+namespace discipline.centre.users.integration_tests.Helpers;
 
 internal sealed class TestsPasswordManager : IPasswordManager
 {

@@ -9,7 +9,7 @@ using MongoDB.Driver;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.users.e2e_tests;
+namespace discipline.centre.users.integration_tests;
 
 [Collection("users-module-sign-up")]
 public sealed class SignUpTests() : BaseTestsController("users-module")
@@ -22,7 +22,7 @@ public sealed class SignUpTests() : BaseTestsController("users-module")
             "test_first_name", "test_last_name");
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("users-module/users/sign-up", command);
+        var response = await HttpClient.PostAsJsonAsync("users-module/users", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -48,7 +48,7 @@ public sealed class SignUpTests() : BaseTestsController("users-module")
             "test_last_name");
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("users-module/users/sign-up", command);
+        var response = await HttpClient.PostAsJsonAsync("users-module/users", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -62,7 +62,7 @@ public sealed class SignUpTests() : BaseTestsController("users-module")
             "test_last_name");
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("users-module/users/sign-up", command);
+        var response = await HttpClient.PostAsJsonAsync("users-module/users", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

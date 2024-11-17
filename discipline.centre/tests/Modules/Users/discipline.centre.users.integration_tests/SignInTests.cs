@@ -5,14 +5,14 @@ using discipline.centre.users.application.Users.Commands;
 using discipline.centre.users.application.Users.DTOs;
 using discipline.centre.users.application.Users.Services;
 using discipline.centre.users.domain.Users;
-using discipline.centre.users.e2e_tests.Helpers;
 using discipline.centre.users.infrastructure.DAL.Users.Documents;
+using discipline.centre.users.integration_tests.Helpers;
 using discipline.centre.users.tests.sharedkernel.Domain;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.users.e2e_tests;
+namespace discipline.centre.users.integration_tests;
 
 [Collection("users-module-sign-in")]
 public sealed class SignInTests() : BaseTestsController("users-module")
@@ -26,7 +26,7 @@ public sealed class SignInTests() : BaseTestsController("users-module")
         var command = new SignInCommand(user.Email, user.Password.Value!);
         
         //act
-        var result = await HttpClient.PostAsJsonAsync("users-module/users/sign-in", command);
+        var result = await HttpClient.PostAsJsonAsync("users-module/users/tokens", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -43,7 +43,7 @@ public sealed class SignInTests() : BaseTestsController("users-module")
         var command = new SignInCommand("test@test.pl", "Test123!");
         
         //act
-        var result = await HttpClient.PostAsJsonAsync("users-module/users/sign-in", command);
+        var result = await HttpClient.PostAsJsonAsync("users-module/users/tokens", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -57,7 +57,7 @@ public sealed class SignInTests() : BaseTestsController("users-module")
         var command = new SignInCommand(string.Empty, "Test123!");
         
         //act
-        var result = await HttpClient.PostAsJsonAsync("users-module/users/sign-in", command);
+        var result = await HttpClient.PostAsJsonAsync("users-module/users/tokens", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

@@ -48,7 +48,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.inf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.api", "src\Modules\Users\discipline.centre.users.api\discipline.centre.users.api.csproj", "{1081CBF0-B65A-4BC2-B8E0-D42818AC0717}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.e2e_tests", "tests\Modules\Users\discipline.centre.users.e2e_tests\discipline.centre.users.e2e_tests.csproj", "{A114B134-7AC9-4336-A729-85F8983971F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.integration_tests", "tests\Modules\Users\discipline.centre.users.integration_tests\discipline.centre.users.integration_tests.csproj", "{A114B134-7AC9-4336-A729-85F8983971F0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{74A65E38-E753-4294-AA8A-BD999C102C9E}"
 EndProject
