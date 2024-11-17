@@ -11,7 +11,7 @@ using Xunit;
 
 namespace discipline.centre.users.e2e_tests;
 
-[Collection("users-module")]
+[Collection("users-module-sign-up")]
 public sealed class SignUpTests() : BaseTestsController("users-module")
 {
     [Fact]

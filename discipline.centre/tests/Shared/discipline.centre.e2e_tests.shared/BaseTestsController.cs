@@ -1,5 +1,8 @@
 using discipline.centre.shared.infrastructure.DAL.Collections.Abstractions;
+using discipline.centre.shared.infrastructure.DAL.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace discipline.centre.e2e_tests.shared;
 
@@ -18,6 +21,7 @@ public abstract class BaseTestsController : IDisposable
     protected virtual void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<IMongoCollectionNameConvention, TestsMongoCollectionNameConvention>();
+        services.AddSingleton<IMongoClient>(sp => TestAppDb.GetMongoClient());
     }
     
     public void Dispose()

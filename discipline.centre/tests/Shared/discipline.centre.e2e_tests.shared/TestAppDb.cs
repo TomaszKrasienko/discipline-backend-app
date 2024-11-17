@@ -1,12 +1,15 @@
 using discipline.centre.shared.infrastructure.DAL;
 using discipline.centre.shared.infrastructure.DAL.Collections.Abstractions;
 using discipline.centre.shared.infrastructure.DAL.Configuration;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Testcontainers.MongoDb;
 
 namespace discipline.centre.e2e_tests.shared;
 
 public sealed class TestAppDb : IDisposable
 {
+    private MongoDbContainer? _mongoDbContainer;
     private readonly IMongoClient _mongoClient;
     private readonly IMongoDatabase _mongoDatabase;
     private readonly IMongoCollectionNameConvention _mongoCollectionNameConvention;
@@ -15,10 +18,33 @@ public sealed class TestAppDb : IDisposable
     public TestAppDb(string databaseName)
     {
         _databaseName = databaseName;
-        var mongoOptions = new OptionsProvider().Get<MongoDbOptions>();
+        CreateContainer();
+        var mongoOptions = GetOptions().Value;
         _mongoClient = new MongoClient(mongoOptions.ConnectionString);
         _mongoDatabase = _mongoClient.GetDatabase(databaseName);
         _mongoCollectionNameConvention = new TestsMongoCollectionNameConvention();
+    }
+
+    private void CreateContainer()
+    {
+        _mongoDbContainer = new MongoDbBuilder()
+            .Build();
+        _mongoDbContainer.StartAsync().GetAwaiter().GetResult();
+    }
+
+    internal IMongoClient GetMongoClient()
+        => _mongoClient;
+
+    private IOptions<MongoDbOptions> GetOptions()
+    {
+        if (_mongoDbContainer is null)
+        {
+            throw new ArgumentException("Mongo container can not be null");
+        }
+        return Options.Create(new MongoDbOptions()
+        {
+            ConnectionString = _mongoDbContainer.GetConnectionString()
+        });
     }
 
     public IMongoCollection<TDocument> GetCollection<TDocument>() where TDocument : IDocument
@@ -29,5 +55,6 @@ public sealed class TestAppDb : IDisposable
     public void Dispose()
     {
         _mongoClient.DropDatabase(_databaseName);
+        _mongoDbContainer?.StopAsync().GetAwaiter().GetResult();
     }
 }

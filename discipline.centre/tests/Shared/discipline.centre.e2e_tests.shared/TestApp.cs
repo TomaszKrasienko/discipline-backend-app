@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Testcontainers.MongoDb;
 
 namespace discipline.centre.e2e_tests.shared;
 

@@ -14,7 +14,7 @@ using Xunit;
 
 namespace discipline.centre.users.e2e_tests;
 
-[Collection("users-module")]
+[Collection("users-module-sign-in")]
 public sealed class SignInTests() : BaseTestsController("users-module")
 {
     [Fact]
