@@ -17,8 +17,4 @@
         <PackageReference Include="FluentValidation" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Subscriptions\Commands\" />
-    </ItemGroup>
-
 </Project>

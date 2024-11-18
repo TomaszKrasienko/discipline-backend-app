@@ -35,5 +35,4 @@ public sealed class SubscriptionOrderService : ISubscriptionOrderService
                 now, cardNumber, cardCvvNumber);
         }
     }
-    
 }

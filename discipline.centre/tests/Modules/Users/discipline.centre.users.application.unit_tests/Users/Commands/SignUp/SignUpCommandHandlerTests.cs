@@ -26,7 +26,7 @@ public sealed class SignUpCommandHandlerTests
             "test_first_name", "test_last_name");
 
         _readUserRepository
-            .DoesEmailExist(command.Email)
+            .DoesEmailExistAsync(command.Email)
             .Returns(false);
         
         //act
@@ -57,7 +57,7 @@ public sealed class SignUpCommandHandlerTests
             "first_name", "last_name");
 
         _readUserRepository
-            .DoesEmailExist(command.Email, default)
+            .DoesEmailExistAsync(command.Email, default)
             .Returns(true);
         
         //act
@@ -76,7 +76,7 @@ public sealed class SignUpCommandHandlerTests
             "first_name", "last_name");
 
         _readUserRepository
-            .DoesEmailExist(command.Email, default)
+            .DoesEmailExistAsync(command.Email, default)
             .Returns(true);
         
         //act
@@ -96,7 +96,7 @@ public sealed class SignUpCommandHandlerTests
             "first_name", "last_name");
 
         _readUserRepository
-            .DoesEmailExist(command.Email, default)
+            .DoesEmailExistAsync(command.Email, default)
             .Returns(true);
         
         //act
@@ -114,7 +114,7 @@ public sealed class SignUpCommandHandlerTests
     {
         //arrange
         _readUserRepository
-            .DoesEmailExist(command.Email, default)
+            .DoesEmailExistAsync(command.Email, default)
             .Returns(false);
         
         //act
@@ -132,7 +132,7 @@ public sealed class SignUpCommandHandlerTests
     {
         //arrange
         _readUserRepository
-            .DoesEmailExist(command.Email, default)
+            .DoesEmailExistAsync(command.Email, default)
             .Returns(false);
         
         //act

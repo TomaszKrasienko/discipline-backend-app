@@ -15,6 +15,9 @@ public sealed record SubscriptionId(Ulid Value) : ITypeId<SubscriptionId>
         return new SubscriptionId(parsedId);
     }
 
+    public static SubscriptionId Empty()
+        => new (Ulid.Empty);
+
     public override string ToString()
         => Value.ToString();
 }
