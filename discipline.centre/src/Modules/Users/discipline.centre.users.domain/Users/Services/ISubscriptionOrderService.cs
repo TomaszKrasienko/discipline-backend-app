@@ -6,7 +6,7 @@ namespace discipline.centre.users.domain.Users.Services;
 
 public interface ISubscriptionOrderService
 {
-    static abstract void AddOrderSubscriptionToUser(User user, SubscriptionOrderId id, Subscription subscription,
+    void AddOrderSubscriptionToUser(User user, SubscriptionOrderId id, Subscription subscription,
         SubscriptionOrderFrequency? subscriptionOrderFrequency, DateTimeOffset now,
-        string paymentToken);
+        string? paymentToken);
 }

@@ -11,7 +11,7 @@ public sealed class SubscriptionEntitiesMappingExtensionsTests
     public void MapAsDocument_GivenSubscription_ShouldReturnSubscriptionDocument()
     {
         //arrange
-        var subscription = SubscriptionFactory.Get();
+        var subscription = SubscriptionFakeDataFactory.Get();
          
         //act
         var document = subscription.AsDocument();

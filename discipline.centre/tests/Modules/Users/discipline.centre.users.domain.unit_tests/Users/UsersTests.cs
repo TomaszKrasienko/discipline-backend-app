@@ -81,7 +81,7 @@ public sealed class UsersTests
     {
         //arrange
         var user = UserFakeDataFactory.Get();
-        var subscription = SubscriptionFactory.Get();
+        var subscription = SubscriptionFakeDataFactory.Get();
         var subscriptionOrderId = SubscriptionOrderId.New();
         
         //act
@@ -100,7 +100,7 @@ public sealed class UsersTests
     {
         //arrange
         var user = UserFakeDataFactory.Get();
-        var subscription = SubscriptionFactory.Get();
+        var subscription = SubscriptionFakeDataFactory.Get();
         user.CreateFreeSubscriptionOrder(SubscriptionOrderId.New(), subscription, DateTime.Now);
         
         //act
@@ -117,7 +117,7 @@ public sealed class UsersTests
     {
         //arrange
         var user = UserFakeDataFactory.Get();
-        var subscription = SubscriptionFactory.Get(10, 100);
+        var subscription = SubscriptionFakeDataFactory.Get(10, 100);
         var subscriptionOrderId = SubscriptionOrderId.New();
         
         //act
@@ -137,7 +137,7 @@ public sealed class UsersTests
     {
         //arrange
         var user = UserFakeDataFactory.Get();
-        var subscription = SubscriptionFactory.Get(10, 100);
+        var subscription = SubscriptionFakeDataFactory.Get(10, 100);
         user.CreatePaidSubscriptionOrder(SubscriptionOrderId.New(), subscription,
             SubscriptionOrderFrequency.Monthly, DateTime.Now, "test_payment_token");
         

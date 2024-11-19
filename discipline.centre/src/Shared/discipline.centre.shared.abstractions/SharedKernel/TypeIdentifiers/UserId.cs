@@ -8,6 +8,9 @@ public sealed record UserId(Ulid Value) : ITypeId<UserId>
     public override string ToString()
         => Value.ToString();
 
+    public static UserId Empty()
+        => new UserId(Ulid.Empty);
+
     public static UserId Parse(string stringTypedId)
     {
         if (!Ulid.TryParse(stringTypedId, out var parsedId))
