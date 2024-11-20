@@ -11,7 +11,7 @@
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.centre.users.domain.unit_tests"/>
         <InternalsVisibleTo Include="discipline.centre.users.application.unit_tests"/>
-        <InternalsVisibleTo Include="discipline.centre.e2e_tests.shared"/>
+        <InternalsVisibleTo Include="discipline.centre.integration_tests.shared"/>
     </ItemGroup>
 
 </Project>

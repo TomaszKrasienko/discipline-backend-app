@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
-using discipline.centre.e2e_tests.shared;
+using discipline.centre.integration_tests.shared;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.users.application.Users.Commands;
 using discipline.centre.users.infrastructure.DAL.Users.Documents;

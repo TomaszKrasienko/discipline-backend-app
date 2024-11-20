@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
-using discipline.centre.e2e_tests.shared;
+using discipline.centre.integration_tests.shared;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.users.application.Users.Commands;
 using discipline.centre.users.domain.Users.Enums;
@@ -13,6 +13,7 @@ using Xunit;
 
 namespace discipline.centre.users.integration_tests;
 
+[Collection("users-module-create-subscription-order")]
 public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-module")
 {
     [Fact]
@@ -26,7 +27,7 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
             SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"/users/create-subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"users-module/users/subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -47,7 +48,7 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
             SubscriptionId.Parse(subscriptionDocument.Id), null, Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"/users/create-subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"users-module/users/subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -66,7 +67,7 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
             SubscriptionId.New(), SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"/users/create-subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"users-module/users/subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -80,7 +81,7 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
             SubscriptionId.New(), SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"/users/create-subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"users-module/users/subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -95,7 +96,7 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
             new SubscriptionId(Ulid.Empty), SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"/users/create-subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"users-module/users/subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

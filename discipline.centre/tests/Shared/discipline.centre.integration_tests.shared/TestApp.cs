@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.MongoDb;
 
-namespace discipline.centre.e2e_tests.shared;
+namespace discipline.centre.integration_tests.shared;
 
 internal sealed class TestApp : WebApplicationFactory<Program>
 {

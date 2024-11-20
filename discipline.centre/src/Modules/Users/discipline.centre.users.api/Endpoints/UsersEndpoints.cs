@@ -1,5 +1,6 @@
 using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
+using discipline.centre.shared.infrastructure.IdentityContext.Abstractions;
 using discipline.centre.users.application.Users.Commands;
 using discipline.centre.users.application.Users.Services;
 using Microsoft.AspNetCore.Builder;
@@ -47,6 +48,27 @@ internal static class UsersEndpoints
             {
                 Description = "Signs-in user"
             });
+        
+        app.MapPost($"{UsersModule.ModuleName}/{UserTag}/subscription-order", async (CreateUserSubscriptionOrderCommand command,
+                IIdentityContext identityContext, ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+            {
+                var subscriptionOrderId = SubscriptionOrderId.New();
+                await commandDispatcher.HandleAsync(command with { Id = subscriptionOrderId, UserId = identityContext.UserId! },
+                    cancellationToken);
+                return Results.Ok();
+            })
+            .Produces(StatusCodes.Status200OK, typeof(void))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
+            .WithName("CreateUserSubscriptionOrder")
+            .WithTags(UserTag)
+            .WithOpenApi(operation => new (operation)
+            {
+                Description = "Adds subscription order for user"
+            })
+            .RequireAuthorization();
+        
         return app;
     }
 }

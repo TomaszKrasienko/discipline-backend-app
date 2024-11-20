@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using StackExchange.Redis;
 using Testcontainers.Redis;
 
-namespace discipline.centre.e2e_tests.shared;
+namespace discipline.centre.integration_tests.shared;
 
 public sealed class TestRedisCache : IDisposable
 {

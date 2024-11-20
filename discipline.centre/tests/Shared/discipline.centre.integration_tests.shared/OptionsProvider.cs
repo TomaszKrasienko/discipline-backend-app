@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace discipline.centre.e2e_tests.shared;
+namespace discipline.centre.integration_tests.shared;
 
 internal sealed class OptionsProvider
 {

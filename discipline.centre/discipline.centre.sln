@@ -52,7 +52,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.int
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{74A65E38-E753-4294-AA8A-BD999C102C9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.e2e_tests.shared", "tests\Shared\discipline.centre.e2e_tests.shared\discipline.centre.e2e_tests.shared.csproj", "{648CF7EA-4E19-4CF9-AAA6-C71F8BFBF319}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.integration_tests.shared", "tests\Shared\discipline.centre.integration_tests.shared\discipline.centre.integration_tests.shared.csproj", "{648CF7EA-4E19-4CF9-AAA6-C71F8BFBF319}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ActivityRules", "ActivityRules", "{62F191FA-2492-4BB5-A613-53F2DCDCF3B6}"
 EndProject

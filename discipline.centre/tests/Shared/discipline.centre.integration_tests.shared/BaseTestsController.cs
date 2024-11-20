@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace discipline.centre.e2e_tests.shared;
+namespace discipline.centre.integration_tests.shared;
 
 public abstract class BaseTestsController : IDisposable
 {

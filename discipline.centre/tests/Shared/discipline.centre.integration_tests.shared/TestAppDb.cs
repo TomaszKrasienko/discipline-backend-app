@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Testcontainers.MongoDb;
 
-namespace discipline.centre.e2e_tests.shared;
+namespace discipline.centre.integration_tests.shared;
 
 public sealed class TestAppDb : IDisposable
 {

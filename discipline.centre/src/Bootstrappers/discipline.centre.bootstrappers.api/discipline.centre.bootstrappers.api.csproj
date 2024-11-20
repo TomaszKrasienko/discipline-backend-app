@@ -17,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="discipline.centre.e2e_tests.shared"/>
+        <InternalsVisibleTo Include="discipline.centre.integration_tests.shared"/>
     </ItemGroup>
 
     <ItemGroup>

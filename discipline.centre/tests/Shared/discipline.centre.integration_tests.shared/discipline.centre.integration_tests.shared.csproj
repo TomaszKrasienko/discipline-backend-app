@@ -5,7 +5,6 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-        <RootNamespace>discipline.centre.e2e_tests.shared</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
