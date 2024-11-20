@@ -14,7 +14,7 @@ public sealed class SubscriptionEntitiesMappingExtensionsTests
         var subscription = SubscriptionFakeDataFactory.Get();
          
         //act
-        var document = subscription.AsDocument();
+        var document = subscription.MapAsDocument();
          
         //assert
         document.Id.ShouldBe(subscription.Id.ToString());

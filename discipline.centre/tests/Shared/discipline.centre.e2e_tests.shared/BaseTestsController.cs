@@ -1,5 +1,12 @@
+using System.Net.Http.Headers;
+using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
+using discipline.centre.shared.infrastructure.Auth.Configuration;
+using discipline.centre.shared.infrastructure.Clock;
 using discipline.centre.shared.infrastructure.DAL.Collections.Abstractions;
-using discipline.centre.shared.infrastructure.DAL.Configuration;
+using discipline.centre.users.domain.Users;
+using discipline.centre.users.infrastructure.DAL.Users.Documents;
+using discipline.centre.users.infrastructure.Users.Auth;
+using discipline.centre.users.tests.sharedkernel.Domain;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -13,8 +20,8 @@ public abstract class BaseTestsController : IDisposable
 
     protected BaseTestsController(string moduleName)
     {
-        var app = new TestApp(ConfigureServices);
         TestAppDb = new TestAppDb(moduleName);
+        var app = new TestApp(ConfigureServices);
         HttpClient = app.HttpClient;
     }
     
@@ -34,5 +41,32 @@ public abstract class BaseTestsController : IDisposable
     { 
         TestAppDb?.Dispose();
         HttpClient?.Dispose();
+    }
+    
+    protected async Task<User> AuthorizeWithFreeSubscriptionPicked()
+    {
+        var subscription = SubscriptionFakeDataFactory.Get();
+        var user = UserFakeDataFactory.Get();
+        user.CreateFreeSubscriptionOrder(SubscriptionOrderId.New(), subscription, DateTime.Now);
+        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.MapAsDocument(Guid.NewGuid().ToString()));
+        Authorize(user.Id, user.Email, user.Status);
+        return user;
+    }
+
+    protected async Task<User> AuthorizeWithoutSubscription()
+    {
+        var user = UserFakeDataFactory.Get();
+        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.MapAsDocument(Guid.NewGuid().ToString()));
+        Authorize(user.Id, user.Email, user.Status);
+        return user;
+    }
+    
+    protected virtual void Authorize(UserId userId, string email, string status)
+    {
+        var optionsProvider = new OptionsProvider();
+        var authOptions = optionsProvider.Get<AuthOptions>();
+        var authenticator = new JwtAuthenticator(new Clock(), Options.Create<AuthOptions>(authOptions));
+        var token = authenticator.CreateToken(userId.ToString(), email, status);
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
     }
 }

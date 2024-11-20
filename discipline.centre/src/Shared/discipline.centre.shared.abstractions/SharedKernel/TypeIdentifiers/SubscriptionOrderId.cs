@@ -15,6 +15,9 @@ public sealed record SubscriptionOrderId(Ulid Value) : ITypeId<SubscriptionOrder
         return new SubscriptionOrderId(parsedId);
     }
 
+    public static SubscriptionOrderId Empty()
+        => new SubscriptionOrderId(Ulid.Empty);
+
     public override string ToString()
         => Value.ToString();
 }

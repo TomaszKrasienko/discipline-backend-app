@@ -70,8 +70,8 @@ public sealed class CreateUserSubscriptionOrderCommandValidatorTests
     }
     
     #region arrange
-    private IValidator<CreateUserSubscriptionOrderCommand> _validator;
-
+    private readonly IValidator<CreateUserSubscriptionOrderCommand> _validator;
+    
     public CreateUserSubscriptionOrderCommandValidatorTests()
     {
         _validator = new CreateUserSubscriptionOrderCommandValidator();

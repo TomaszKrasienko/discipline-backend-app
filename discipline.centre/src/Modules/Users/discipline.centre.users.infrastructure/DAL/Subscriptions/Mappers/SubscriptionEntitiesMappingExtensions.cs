@@ -5,7 +5,7 @@ namespace discipline.centre.users.infrastructure.DAL.Subscriptions.Documents;
 
 internal static class SubscriptionEntitiesMappingExtensions
 {
-    internal static SubscriptionDocument AsDocument(this Subscription entity)
+    internal static SubscriptionDocument MapAsDocument(this Subscription entity)
         => new()
         {
             Id = entity.Id.ToString(),

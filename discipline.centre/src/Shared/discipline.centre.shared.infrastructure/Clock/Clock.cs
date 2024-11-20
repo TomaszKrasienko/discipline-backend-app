@@ -5,5 +5,8 @@ namespace discipline.centre.shared.infrastructure.Clock;
 internal sealed class Clock : IClock
 {
     public DateTimeOffset DateTimeNow()
-        => DateTimeOffset.Now;
+        => DateTimeOffset.UtcNow;
+
+    public DateOnly DateNow()
+        => DateOnly.FromDateTime(DateTimeNow().DateTime);
 }
