@@ -1,5 +1,6 @@
 using discipline.centre.shared.abstractions.Modules;
 using discipline.centre.users.api.Endpoints;
+using discipline.centre.users.domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,7 +13,8 @@ internal sealed class UsersModule : IModule
 
     public void Register(IServiceCollection services)
         => services
-            .AddInfrastructure(ModuleName);
+            .AddInfrastructure(ModuleName)
+            .AddDomain();
 
     public void Use(WebApplication app)
     {

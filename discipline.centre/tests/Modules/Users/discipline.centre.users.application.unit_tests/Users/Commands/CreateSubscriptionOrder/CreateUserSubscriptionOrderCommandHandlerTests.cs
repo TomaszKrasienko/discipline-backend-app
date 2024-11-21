@@ -17,7 +17,7 @@ namespace discipline.centre.application.unit_tests.Users.Commands.CreateSubscrip
 
 public sealed class CreateUserSubscriptionOrderCommandHandlerTests
 {
-        private Task Act(CreateUserSubscriptionOrderCommand command) => _handler.HandleAsync(command, default);
+    private Task Act(CreateUserSubscriptionOrderCommand command) => _handler.HandleAsync(command, default);
 
     [Fact]
     public async Task HandleAsync_GivenFreeSubscription_ShouldUpdateUserWithFreeSubscriptionOrderByRepository()
@@ -37,8 +37,8 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
             .Returns(subscription);
 
         _clock
-            .DateNow()
-            .Returns(DateOnly.FromDateTime(DateTime.UtcNow));
+            .DateTimeNow()
+            .Returns(DateTime.UtcNow);
         
         //act
         await Act(command);
@@ -71,8 +71,8 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
             .Returns(subscription);
 
         _clock
-            .DateNow()
-            .Returns(DateOnly.FromDateTime(DateTime.UtcNow));
+            .DateTimeNow()
+            .Returns(DateTime.UtcNow);
         
         //act
         await Act(command);
