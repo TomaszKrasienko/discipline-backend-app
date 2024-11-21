@@ -20,7 +20,7 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
     private Task Act(CreateUserSubscriptionOrderCommand command) => _handler.HandleAsync(command, default);
 
     [Fact]
-    public async Task HandleAsync_GivenFreeSubscription_ShouldUpdateUserWithFreeSubscriptionOrderByRepository()
+    public async Task HandleAsync_GivenFreeSubscription_ShouldAddFreeSubscriptionToUser()
     {
         //arrange
         var user = UserFakeDataFactory.Get();
@@ -47,14 +47,40 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
         user.SubscriptionOrder.ShouldNotBeNull();
         user.SubscriptionOrder.Id.ShouldBe(command.Id);
         user.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrder>();
+    }
+    
+    [Fact]
+    public async Task HandleAsync_GivenFreeSubscription_ShouldUpdateUserByRepository()
+    {
+        //arrange
+        var user = UserFakeDataFactory.Get();
+        var subscription = SubscriptionFakeDataFactory.Get();
+        var command = new CreateUserSubscriptionOrderCommand(user.Id, SubscriptionOrderId.New(), 
+            subscription.Id, null,null);
+
+        _readUserRepository
+            .GetByIdAsync(command.UserId)
+            .Returns(user);
+
+        _subscriptionRepository
+            .GetByIdAsync(command.SubscriptionId)
+            .Returns(subscription);
+
+        _clock
+            .DateTimeNow()
+            .Returns(DateTime.UtcNow);
         
+        //act
+        await Act(command);
+        
+        //assert
         await _writeUserRepository
             .Received(1)
             .UpdateAsync(user);
     }
     
     [Fact]
-    public async Task HandleAsync_GivenPaidSubscription_ShouldUpdateUserWithPaidSubscriptionOrderByRepository()
+    public async Task HandleAsync_GivenPaidSubscription_ShouldAddPaidSubscriptionToUser()
     {
         //arrange
         var user = UserFakeDataFactory.Get();
@@ -82,6 +108,36 @@ public sealed class CreateUserSubscriptionOrderCommandHandlerTests
         user.SubscriptionOrder.Id.ShouldBe(command.Id);
         user.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrder>();
         
+        await _writeUserRepository
+            .Received(1)
+            .UpdateAsync(user);
+    }
+    
+    [Fact]
+    public async Task HandleAsync_GivenPaidSubscription_ShouldUpdateUserByRepository()
+    {
+        //arrange
+        var user = UserFakeDataFactory.Get();
+        var subscription = SubscriptionFakeDataFactory.Get(10, 100);
+        var command = new CreateUserSubscriptionOrderCommand(user.Id, SubscriptionOrderId.New(), 
+            subscription.Id, SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
+
+        _readUserRepository
+            .GetByIdAsync(command.UserId)
+            .Returns(user);
+
+        _subscriptionRepository
+            .GetByIdAsync(command.SubscriptionId)
+            .Returns(subscription);
+
+        _clock
+            .DateTimeNow()
+            .Returns(DateTime.UtcNow);
+        
+        //act
+        await Act(command);
+        
+        //assert
         await _writeUserRepository
             .Received(1)
             .UpdateAsync(user);
