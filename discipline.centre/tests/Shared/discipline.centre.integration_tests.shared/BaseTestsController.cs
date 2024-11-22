@@ -3,6 +3,7 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.Auth.Configuration;
 using discipline.centre.shared.infrastructure.Clock;
 using discipline.centre.shared.infrastructure.DAL.Collections.Abstractions;
+using discipline.centre.shared.infrastructure.ResourceHeader;
 using discipline.centre.users.domain.Users;
 using discipline.centre.users.infrastructure.DAL.Users.Documents;
 using discipline.centre.users.infrastructure.Users.Auth;
@@ -68,5 +69,20 @@ public abstract class BaseTestsController : IDisposable
         var authenticator = new JwtAuthenticator(new Clock(), Options.Create<AuthOptions>(authOptions));
         var token = authenticator.CreateToken(userId.ToString(), email, status);
         HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+    }
+    
+    protected virtual string? GetResourceIdFromHeader(HttpResponseMessage httpResponseMessage) 
+    {
+        if (httpResponseMessage is null)
+        {
+            throw new InvalidOperationException("Http response message is null");
+        }
+
+        if (!httpResponseMessage.Headers.TryGetValues(ResourceHeaderExtension.HeaderName, out var value))
+        {
+            return null;
+        }
+
+        return value.Single();
     }
 }
