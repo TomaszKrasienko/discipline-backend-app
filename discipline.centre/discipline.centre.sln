@@ -74,7 +74,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre. activityrules.api", "src\Modules\ActivityRules\discipline.centre. activityrules.api\discipline.centre. activityrules.api.csproj", "{7EFA520D-524E-4D37-84DD-E3E4FD45B323}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.center.activityrules.integration_tests", "tests\Modules\ActivityRules\discipline.center.activityrules.integration_tests\discipline.center.activityrules.integration_tests.csproj", "{3F9FCFB9-313A-45FD-9AD8-3BCAF4CD389B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.integration_tests", "tests\Modules\ActivityRules\discipline.centre.activityrules.integration_tests\discipline.centre.activityrules.integration_tests.csproj", "{3F9FCFB9-313A-45FD-9AD8-3BCAF4CD389B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
