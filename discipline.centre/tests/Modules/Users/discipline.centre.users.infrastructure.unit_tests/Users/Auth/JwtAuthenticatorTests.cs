@@ -35,7 +35,7 @@ public sealed class JwtAuthenticatorTests
         var token = GetTokenFromString(result);
         token.Claims.Single(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value.ShouldBe(userId.ToString());        
         token.Claims.Single(x => x.Type == ClaimTypes.Name).Value.ShouldBe(userId.ToString());
-        token.Claims.Single(x => x.Type == "status").Value.ShouldBe(status);
+        token.Claims.Single(x => x.Type == CustomClaimTypes.Status).Value.ShouldBe(status);
         token.Claims.Single(x => x.Type == ClaimTypes.Email).Value.ShouldBe(email);
     }
 

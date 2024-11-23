@@ -2,6 +2,7 @@ using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.IdentityContext.Abstractions;
 using discipline.centre.users.application.Users.Commands;
+using discipline.centre.users.application.Users.Queries;
 using discipline.centre.users.application.Users.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ namespace discipline.centre.users.api.Endpoints;
 internal static class UsersEndpoints
 {
     private const string UserTag = "users";
+    private const string GetById = "get_by_id";
     
     internal static WebApplication MapUsersEndpoints(this WebApplication app)
     {
@@ -69,6 +71,24 @@ internal static class UsersEndpoints
             })
             .RequireAuthorization();
         
+        app.MapGet($"{UsersModule.ModuleName}/{UserTag}/{{userId:ulid}}", async (Ulid userId,
+            CancellationToken cancellationToken, ICqrsDispatcher dispatcher) =>
+        {
+            var stronglyUserId = new UserId(userId);
+            var result = await dispatcher.SendAsync(new GetUserByIdQuery(stronglyUserId), cancellationToken);
+            return Results.Ok(result);
+        })
+        .Produces(StatusCodes.Status200OK, typeof(void))
+        .Produces(StatusCodes.Status401Unauthorized, typeof(ProblemDetails))
+        .Produces(StatusCodes.Status404NotFound, typeof(ProblemDetails))
+        .WithName(GetById)
+        .WithTags(UserTag)
+        .WithOpenApi(operation => new (operation)
+        {
+            Description = "Gets user by identifier"
+        })
+        .RequireAuthorization();
+            
         return app;
     }
 }

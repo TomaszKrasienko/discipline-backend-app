@@ -47,7 +47,7 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
         Mode = mode;
         _selectedDays = days;
     }
-
+    
     private static List<SelectedDay>? ConvertSelectedDays(List<int>? selectedDays)
     {
         List<SelectedDay> days = null!;

@@ -81,7 +81,4 @@ public sealed class User : AggregateRoot<UserId>
         var @event = new FreeSubscriptionPicked(Id.Value, subscription.Id.Value);
         AddDomainEvent(@event);
     }
-    
-    public bool IsUserActive()
-        => Status == Status.FreeSubscriptionPicked || Status  == Status.PaidSubscriptionPicked;
 }
