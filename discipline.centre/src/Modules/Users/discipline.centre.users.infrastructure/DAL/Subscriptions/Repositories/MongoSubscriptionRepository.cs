@@ -9,7 +9,7 @@ using MongoDB.Driver;
 namespace discipline.centre.users.infrastructure.DAL.Subscriptions.Repositories;
 
 internal sealed class MongoSubscriptionRepository(
-    IMongoCollectionContext context) : IWriteSubscriptionRepository, IReadSubscriptionRepository
+    UsersMongoContext context) : IWriteSubscriptionRepository, IReadSubscriptionRepository
 {
     public Task AddAsync(Subscription subscription, CancellationToken cancellationToken = default)
         => context.GetCollection<SubscriptionDocument>()

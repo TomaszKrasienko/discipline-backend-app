@@ -30,7 +30,7 @@ internal sealed class JwtAuthenticator(
             new Claim(JwtRegisteredClaimNames.UniqueName, userId),
             new Claim(ClaimTypes.Name, userId),
             new Claim(ClaimTypes.Email, email),
-            new Claim("status", status)
+            new Claim(CustomClaimTypes.Status, status)
         };
 
         var now = clock.DateTimeNow();

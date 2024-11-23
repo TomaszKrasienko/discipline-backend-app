@@ -1,4 +1,5 @@
 using discipline.centre.shared.infrastructure.Auth;
+using discipline.centre.users.domain.Users.ValueObjects.Users;
 using Microsoft.AspNetCore.Authorization;
 
 namespace discipline.centre.users.infrastructure.Users.Auth;
@@ -18,7 +19,7 @@ internal sealed class UserStateAuthorizationHandler() : AuthorizationHandler<Use
             return Task.CompletedTask;
         }
 
-        var statusClaim = context.User?.Claims.SingleOrDefault(x => x.Type == "Status");
+        var statusClaim = context.User?.Claims.SingleOrDefault(x => x.Type == CustomClaimTypes.Status);
 
         if (statusClaim is null)
         {
@@ -26,7 +27,7 @@ internal sealed class UserStateAuthorizationHandler() : AuthorizationHandler<Use
             return Task.CompletedTask;
         }
 
-        if (statusClaim.Value is "PaidSubscriptionPicked" or "FreeSubscriptionPicked")
+        if (statusClaim.Value is Status.PaidSubscriptionPicked or Status.FreeSubscriptionPicked)
         {
             context.Succeed(requirement);
             return Task.CompletedTask;

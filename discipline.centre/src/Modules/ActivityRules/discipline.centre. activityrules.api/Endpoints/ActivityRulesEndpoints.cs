@@ -20,7 +20,7 @@ internal static class ActivityRulesEndpoints
         app.MapPost($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}", async (CreateActivityRuleCommand command, IHttpContextAccessor httpContext, 
                 ICqrsDispatcher dispatcher, CancellationToken cancellationToken, IIdentityContext identityContext) => 
             {
-                if (identityContext.IsAuthenticated)
+                if (!identityContext.IsAuthenticated)
                 {
                     return Results.Unauthorized();
                 }

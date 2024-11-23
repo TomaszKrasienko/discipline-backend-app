@@ -11,7 +11,7 @@ using MongoDB.Driver;
 namespace discipline.centre.users.infrastructure.DAL.Users.Repositories;
 
 internal sealed class MongoUserRepository(
-    IMongoCollectionContext context,
+    UsersMongoContext context,
     IPasswordManager passwordManager) : IWriteUserRepository, IReadUserRepository
 {
     public async Task AddAsync(User user, CancellationToken cancellationToken = default)

@@ -30,16 +30,7 @@ public static class DalServicesConfigExtensions
         => services
             .AddSingleton<IMongoCollectionNameConvention, MongoCollectionNameConvention>();
 
-    public static IServiceCollection AddMongoContext(this IServiceCollection services, string name)
-        => services.AddTransient<IMongoCollectionContext>(sp =>
-        {
-            var client = sp.GetRequiredService<IMongoClient>();
-            var database = client.GetDatabase($"{name}");
-            var mongoCollectionNameConvention = sp.GetRequiredService<IMongoCollectionNameConvention>();
-            return new MongoCollectionContext(
-                database,
-                mongoCollectionNameConvention);
-        });
-
-
+    public static IServiceCollection AddMongoContext<T>(this IServiceCollection services)
+        where T : class, IMongoCollectionContext
+        => services.AddScoped<T>();
 }
