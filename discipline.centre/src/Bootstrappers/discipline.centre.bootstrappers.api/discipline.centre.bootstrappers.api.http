@@ -8,6 +8,7 @@ GET {{host_address}}/
 @password = TomaszK123!
 
 ###
+# @name sign_up
 POST {{host_address}}/users-module/users
 Content-Type: application/json
 
@@ -19,6 +20,9 @@ Content-Type: application/json
 }
 
 ###
+@user_id = {{sign_up.response.headers.x-resource-id}}
+
+###
 # @name sign_in
 POST {{host_address}}/users-module/users/tokens
 Content-Type: application/json
@@ -27,6 +31,10 @@ Content-Type: application/json
   "email": "{{email}}",
   "password": "{{password}}"
 }
+
+###
+GET {{host_address}}/users-module/users/{{user_id}}
+Authorization: bearer {{token}}
 
 ###
 @token = {{sign_in.response.body.$.token}}
@@ -41,7 +49,7 @@ Content-Type: application/json
     "value": "01JDC7WJ7XTCR7YEEX81RJMSJE"
   },
   "subscriptionId": {
-    "value": "01JDC7TBRA3CPWQDM4H6NPFE18"
+    "value": "01JDEMJMBP7DMM3GMNWCE62FS2"
   }
 }
 

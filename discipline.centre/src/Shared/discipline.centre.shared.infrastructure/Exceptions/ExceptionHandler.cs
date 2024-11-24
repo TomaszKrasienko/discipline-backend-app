@@ -1,3 +1,4 @@
+using discipline.centre.shared.abstractions.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 using discipline.centre.shared.infrastructure.Validation;

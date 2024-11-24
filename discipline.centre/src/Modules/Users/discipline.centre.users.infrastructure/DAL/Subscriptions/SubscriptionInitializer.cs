@@ -13,10 +13,10 @@ internal sealed class SubscriptionInitializer(
     {
         List<CreateSubscriptionCommand> commands =
         [
-            new CreateSubscriptionCommand(SubscriptionId.New(),
+            new CreateSubscriptionCommand(SubscriptionId.Parse("01JDEMJMBP7DMM3GMNWCE62FS2"),
                 "Free", 0, 0, ["Daily habits", "Activity rules"]),
 
-            new CreateSubscriptionCommand(SubscriptionId.New(),
+            new CreateSubscriptionCommand(SubscriptionId.Parse("01JDEMJMBQP1CB1SKVGNKYEZZN"),
                 "Premium", 10, 100, ["Daily habits", "Activity rules", "Calendar", "Chat"])
         ];
 

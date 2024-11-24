@@ -1,28 +1,32 @@
 using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.IdentityContext.Abstractions;
+using discipline.centre.shared.infrastructure.ResourceHeader;
 using discipline.centre.users.application.Users.Commands;
 using discipline.centre.users.application.Users.Queries;
 using discipline.centre.users.application.Users.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+// ReSharper disable All
 
 namespace discipline.centre.users.api.Endpoints;
 
 internal static class UsersEndpoints
 {
     private const string UserTag = "users";
-    private const string GetById = "get_by_id";
+    private const string GetById = "GetById";
     
     internal static WebApplication MapUsersEndpoints(this WebApplication app)
     {
         app.MapPost($"{UsersModule.ModuleName}/{UserTag}", async (SignUpCommand command,
-                ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+            CancellationToken cancellationToken, ICqrsDispatcher commandDispatcher, IHttpContextAccessor contextAccessor) =>
             {
                 var userId = UserId.New();
                 await commandDispatcher.HandleAsync(command with {Id = userId}, cancellationToken);
-                return Results.Ok();
+                contextAccessor.AddResourceIdHeader(userId.ToString());
+                return Results.CreatedAtRoute(nameof(GetById),  new {userId = userId.ToString()}, null);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
@@ -76,7 +80,7 @@ internal static class UsersEndpoints
         {
             var stronglyUserId = new UserId(userId);
             var result = await dispatcher.SendAsync(new GetUserByIdQuery(stronglyUserId), cancellationToken);
-            return Results.Ok(result);
+            return result is null ? Results.Ok(result) : Results.NotFound();
         })
         .Produces(StatusCodes.Status200OK, typeof(void))
         .Produces(StatusCodes.Status401Unauthorized, typeof(ProblemDetails))

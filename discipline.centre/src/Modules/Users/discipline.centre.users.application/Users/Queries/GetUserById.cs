@@ -4,4 +4,4 @@ using discipline.centre.users.application.Users.DTOs;
 
 namespace discipline.centre.users.application.Users.Queries;
 
-public sealed record GetUserByIdQuery(UserId UserId) : IQuery<UserDto>;
+public sealed record GetUserByIdQuery(UserId UserId) : IQuery<UserDto?>;

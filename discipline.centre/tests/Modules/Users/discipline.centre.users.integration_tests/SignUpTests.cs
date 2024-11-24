@@ -25,13 +25,15 @@ public sealed class SignUpTests() : BaseTestsController("users-module")
         var response = await HttpClient.PostAsJsonAsync("users-module/users", command);
         
         //assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        
+        var resourceId = GetResourceIdFromHeader(response);
+        resourceId.ShouldNotBeNull();
+        
         var isUserExists = await TestAppDb
             .GetCollection<UserDocument>()
-            .Find(x => x.Email == command.Email)
+            .Find(x => x.Id == resourceId)
             .AnyAsync();
-
         isUserExists.ShouldBeTrue();
     }
     
