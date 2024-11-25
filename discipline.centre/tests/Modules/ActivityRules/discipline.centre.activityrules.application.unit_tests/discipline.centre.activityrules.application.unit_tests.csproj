@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\src\Modules\ActivityRules\discipline.centre.activityrules.application\discipline.centre.activityrules.application.csproj" />
+      <ProjectReference Include="..\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj" />
     </ItemGroup>
 
 </Project>

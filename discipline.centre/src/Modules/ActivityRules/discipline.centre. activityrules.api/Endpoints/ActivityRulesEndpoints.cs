@@ -49,7 +49,7 @@ internal static class ActivityRulesEndpoints
             CancellationToken cancellationToken, ICqrsDispatcher dispatcher) =>
         {
             var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
-            var result = await dispatcher.HandleAsync(dto.MapAsCommand(stronglyActivityRuleId), cancellationToken);
+            await dispatcher.HandleAsync(dto.MapAsCommand(stronglyActivityRuleId), cancellationToken);
 
             return Results.NoContent();
         });
