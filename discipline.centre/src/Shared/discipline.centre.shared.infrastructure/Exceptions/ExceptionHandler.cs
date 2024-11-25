@@ -22,6 +22,8 @@ internal sealed class ExceptionHandler(ILogger<IExceptionHandler> logger) : IExc
                 => (StatusCodes.Status422UnprocessableEntity, exc.Code, $"{exc.Message}. {exc.ValidationParams}"),
             DomainException exc 
                 => (StatusCodes.Status400BadRequest, exc.Code, exc.Message),
+            UnauthorizedException exc
+                => (StatusCodes.Status401Unauthorized, exc.Code, exc.Message),
             DisciplineException exc 
                 => (StatusCodes.Status400BadRequest, exc.Code, exc.Message),
             _ => (StatusCodes.Status500InternalServerError, "Exception", "There was an error")

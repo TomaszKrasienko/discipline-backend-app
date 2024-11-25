@@ -1,4 +1,6 @@
 using discipline.centre.activityrules.application.ActivityRules.Commands;
+using discipline.centre.activityrules.application.ActivityRules.DTOs;
+using discipline.centre.activityrules.application.ActivityRules.Queries;
 using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.Auth;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+// ReSharper disable All
 namespace discipline.centre.activityrules.api.Endpoints;
 
 internal static class ActivityRulesEndpoints
@@ -20,14 +23,12 @@ internal static class ActivityRulesEndpoints
         app.MapPost($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}", async (CreateActivityRuleCommand command, IHttpContextAccessor httpContext, 
                 ICqrsDispatcher dispatcher, CancellationToken cancellationToken, IIdentityContext identityContext) => 
             {
-                if (!identityContext.IsAuthenticated)
-                {
-                    return Results.Unauthorized();
-                }
                 var activityRuleId = ActivityRuleId.New();
-                var userId = identityContext.UserId;
+                var userId = identityContext.GetUser();
+                
                 await dispatcher.HandleAsync(command with { Id = activityRuleId, UserId = userId! }, cancellationToken);
                 httpContext.AddResourceIdHeader(activityRuleId.ToString());
+                
                 return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId}, null);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
@@ -44,10 +45,34 @@ internal static class ActivityRulesEndpoints
             .RequireAuthorization()
             .RequireAuthorization(UserStatePolicy.Name);
 
-        app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}", () =>
+        app.MapPut($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}/{{activityRuleId:ulid}}", async (Ulid activityRuleId, UpdateActivityRuleDto dto,
+            CancellationToken cancellationToken, ICqrsDispatcher dispatcher) =>
         {
-            throw new NotImplementedException();
-        }).WithName(GetActivityRuleById);
+            var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
+            var result = await dispatcher.HandleAsync(dto.MapAsCommand(stronglyActivityRuleId), cancellationToken);
+
+            return Results.NoContent();
+        });
+
+        app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}/{{activityRuleId:ulid}}", async (Ulid activityRuleId,
+                CancellationToken cancellationToken, ICqrsDispatcher dispatcher, IIdentityContext identityContext) =>
+            {   
+                var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
+                var result = await dispatcher.SendAsync(new GetActivityRuleByIdQuery(stronglyActivityRuleId,
+                    identityContext.GetUser()), cancellationToken);
+                
+                return Results.Ok(result);
+            })            
+            .Produces(StatusCodes.Status200OK, typeof(void))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status404NotFound, typeof(ProblemDetails))
+            .WithName(GetActivityRuleById)
+            .WithTags(ActivityRulesTag)
+            .WithOpenApi(operation => new (operation)
+            {
+               Description = "Get activity rule by id" 
+            })
+            .RequireAuthorization();
 
         return app;
     }

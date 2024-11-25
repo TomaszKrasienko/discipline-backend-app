@@ -16,7 +16,7 @@ internal static class ActivityRuleDocumentMappingExtensions
             document.Mode,
             document.SelectedDays?.Select(SelectedDay.Create).ToList());
     
-    internal static ActivityRuleDto AsDto(this ActivityRuleDocument document)
+    internal static ActivityRuleDto MapAsDto(this ActivityRuleDocument document)
         => new()
         {
             Id = Ulid.Parse(document.Id),

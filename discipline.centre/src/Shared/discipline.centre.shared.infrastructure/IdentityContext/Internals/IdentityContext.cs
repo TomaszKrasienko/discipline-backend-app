@@ -1,3 +1,4 @@
+using discipline.centre.shared.abstractions.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.IdentityContext.Abstractions;
 using Microsoft.AspNetCore.Http;
@@ -6,9 +7,18 @@ namespace discipline.centre.shared.infrastructure.IdentityContext.Internals;
 
 internal sealed class IdentityContext : IIdentityContext
 {
+    private readonly UserId? _userId;
     public bool IsAuthenticated { get; }
-    public UserId? UserId { get; }
     public string? Status { get; }
+    public UserId GetUser()
+    {            
+        if (_userId is null)
+        {
+            throw new UnauthorizedException();
+        }
+
+        return _userId;
+    }
 
     public IdentityContext(IHttpContextAccessor httpContextAccessor)
     {
@@ -30,7 +40,7 @@ internal sealed class IdentityContext : IIdentityContext
             throw new ArgumentException("Invalid userId format");
         }
 
-        UserId = new UserId(userId);
+        _userId = new UserId(userId);
         Status = user.Claims.SingleOrDefault(x => x.Type == "Status")?.Value;
     }
 }

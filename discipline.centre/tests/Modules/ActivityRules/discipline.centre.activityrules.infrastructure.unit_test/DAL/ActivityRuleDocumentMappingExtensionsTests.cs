@@ -45,13 +45,13 @@ public sealed class ActivityRuleDocumentMappingExtensionsTests
     }
     
     [Fact]
-    public void AsDto_GivenActivityRuleDocumentWithoutSelectedDays_ShouldReturnActivityRuleDtoWithSelectedDaysAsNull()
+    public void MapAsDto_GivenActivityRuleDocumentWithoutSelectedDays_ShouldReturnActivityRuleDtoWithSelectedDaysAsNull()
     {
         //arrange
         var activityRuleDocument = ActivityRuleDocumentFakeDataFactory.Get();
         
         //act
-        var result = activityRuleDocument.AsDto();
+        var result = activityRuleDocument.MapAsDto();
         
         //assert
         result.Id.ShouldBe(Ulid.Parse(activityRuleDocument.Id));
@@ -61,14 +61,14 @@ public sealed class ActivityRuleDocumentMappingExtensionsTests
     }
     
     [Fact]
-    public void AsDto_GivenActivityRuleDocumentWithSelectedDays_ShouldReturnActivityRuleDto()
+    public void MapAsDto_GivenActivityRuleDocumentWithSelectedDays_ShouldReturnActivityRuleDto()
     {
         //arrange
         List<int> selectedDays = [1, 4];
         var activityRuleDocument = ActivityRuleDocumentFakeDataFactory.Get(selectedDays);
         
         //act
-        var result = activityRuleDocument.AsDto();
+        var result = activityRuleDocument.MapAsDto();
         
         //assert
         result.Id.ShouldBe(Ulid.Parse(activityRuleDocument.Id));

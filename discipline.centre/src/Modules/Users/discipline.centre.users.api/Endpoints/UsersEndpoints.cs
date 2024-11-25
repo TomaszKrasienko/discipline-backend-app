@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-// ReSharper disable All
 
+// ReSharper disable All
 namespace discipline.centre.users.api.Endpoints;
 
 internal static class UsersEndpoints
@@ -26,6 +26,7 @@ internal static class UsersEndpoints
                 var userId = UserId.New();
                 await commandDispatcher.HandleAsync(command with {Id = userId}, cancellationToken);
                 contextAccessor.AddResourceIdHeader(userId.ToString());
+                
                 return Results.CreatedAtRoute(nameof(GetById),  new {userId = userId.ToString()}, null);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
@@ -43,6 +44,7 @@ internal static class UsersEndpoints
             {
                 await commandDispatcher.HandleAsync(command, cancellationToken);
                 var jwt = tokenStorage.Get(); 
+                
                 return Results.Ok(jwt);
             })
             .Produces(StatusCodes.Status200OK, typeof(void))
@@ -59,8 +61,9 @@ internal static class UsersEndpoints
                 IIdentityContext identityContext, ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var subscriptionOrderId = SubscriptionOrderId.New();
-                await commandDispatcher.HandleAsync(command with { Id = subscriptionOrderId, UserId = identityContext.UserId! },
+                await commandDispatcher.HandleAsync(command with { Id = subscriptionOrderId, UserId = identityContext.GetUser() },
                     cancellationToken);
+                
                 return Results.Ok();
             })
             .Produces(StatusCodes.Status200OK, typeof(void))
@@ -76,22 +79,23 @@ internal static class UsersEndpoints
             .RequireAuthorization();
         
         app.MapGet($"{UsersModule.ModuleName}/{UserTag}/{{userId:ulid}}", async (Ulid userId,
-            CancellationToken cancellationToken, ICqrsDispatcher dispatcher) =>
-        {
-            var stronglyUserId = new UserId(userId);
-            var result = await dispatcher.SendAsync(new GetUserByIdQuery(stronglyUserId), cancellationToken);
-            return result is null ? Results.Ok(result) : Results.NotFound();
-        })
-        .Produces(StatusCodes.Status200OK, typeof(void))
-        .Produces(StatusCodes.Status401Unauthorized, typeof(ProblemDetails))
-        .Produces(StatusCodes.Status404NotFound, typeof(ProblemDetails))
-        .WithName(GetById)
-        .WithTags(UserTag)
-        .WithOpenApi(operation => new (operation)
-        {
-            Description = "Gets user by identifier"
-        })
-        .RequireAuthorization();
+                CancellationToken cancellationToken, ICqrsDispatcher dispatcher) =>
+            {
+                var stronglyUserId = new UserId(userId);
+                var result = await dispatcher.SendAsync(new GetUserByIdQuery(stronglyUserId), cancellationToken);
+                
+                return result is null ? Results.NotFound() : Results.Ok(result);
+            })
+            .Produces(StatusCodes.Status200OK, typeof(void))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(ProblemDetails))
+            .Produces(StatusCodes.Status404NotFound, typeof(ProblemDetails))
+            .WithName(GetById)
+            .WithTags(UserTag)
+            .WithOpenApi(operation => new (operation)
+            {
+                Description = "Gets user by identifier"
+            })
+            .RequireAuthorization();
             
         return app;
     }
