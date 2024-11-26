@@ -39,9 +39,7 @@ public sealed class ActivityRuleDocumentMappingExtensionsTests
         result.UserId.Value.ShouldBe(Ulid.Parse(activityRuleDocument.UserId));
         result.Title.Value.ShouldBe(activityRuleDocument.Title);
         result.Mode.Value.ShouldBe(activityRuleDocument.Mode);
-        result.SelectedDays!.Select(x => x.Value).ToList().Contains(selectedDays[0]).ShouldBeTrue();
-        result.SelectedDays!.Select(x => x.Value).ToList().Contains(selectedDays[1]).ShouldBeTrue();
-        result.SelectedDays!.Select(x => x.Value).ToList().Contains(selectedDays[2]).ShouldBeTrue();
+        result.SelectedDays!.Values.Select(x => (int)x).SequenceEqual(selectedDays).ShouldBeTrue();
     }
     
     [Fact]
