@@ -250,26 +250,14 @@ public sealed class ActivityRuleTests
     public sealed record ActivityRuleParams(ActivityRuleId? Id, UserId? UserId, string Title, string Mode,
         List<int>? SelectedDays = null);
 
-    private static bool CompareSelectedDays(List<int>? provided, IReadOnlyList<SelectedDay>? src)
+    private static bool CompareSelectedDays(List<int>? provided, SelectedDays? src)
     {
         if(provided is null && src is null)
         {
             return true;
         }
 
-        if ((provided is null && src is not null) || (provided is not null && src is null))
-        {
-            return false;
-        }
-
-        foreach (var srcDay in src!)
-        {
-            if (!provided!.Contains(srcDay.Value))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return provided?.Count == src?.Values.Count 
+               && provided!.OrderBy(x => x).SequenceEqual(src!.Values.OrderBy(x => x).Select(x => (int)x));
     }
 }    

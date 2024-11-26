@@ -7,12 +7,10 @@ namespace discipline.centre.activityrules.domain;
 
 public sealed class ActivityRule : AggregateRoot<ActivityRuleId> 
 {
-    private List<SelectedDay>? _selectedDays;
     public UserId UserId { get; }
     public Title Title { get; private set; }
     public Mode Mode { get; private set; }
-    
-    public IReadOnlyList<SelectedDay>? SelectedDays => _selectedDays;
+    public SelectedDays? SelectedDays { get; private set; }
 
     /// <summary>
     /// Constructor for mapping to mongo documents
@@ -23,40 +21,28 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
     /// <param name="mode"></param>
     /// <param name="selectedDays"></param>
     public ActivityRule(ActivityRuleId id, UserId userId, Title title,
-        Mode mode, List<SelectedDay>? selectedDays) : base(id)
+        Mode mode, SelectedDays? selectedDays) : base(id)
     {        
         UserId = userId;
         Title = title;
         Mode = mode;
-        _selectedDays = selectedDays;
+        SelectedDays = selectedDays;
     }
 
     public static ActivityRule Create(ActivityRuleId id, UserId userId, string title, string mode, List<int>? selectedDays = null)
     {
         Validate(mode, selectedDays);
-        var days = ConvertSelectedDays(selectedDays);
-
+        var days = selectedDays is not null ? SelectedDays.Create(selectedDays) : null;
+        
         return new ActivityRule(id, userId, title, mode, days);
     }
 
     public void Edit(string title, string mode, List<int>? selectedDays = null)
     {
         Validate(mode, selectedDays);
-        var days = ConvertSelectedDays(selectedDays);
         Title = title;
         Mode = mode;
-        _selectedDays = days;
-    }
-    
-    private static List<SelectedDay>? ConvertSelectedDays(List<int>? selectedDays)
-    {
-        List<SelectedDay> days = null!;
-        if (selectedDays is not null)
-        {
-            days = selectedDays.Select(SelectedDay.Create).ToList();
-        }
-
-        return days;
+        SelectedDays = selectedDays is not null ? SelectedDays.Create(selectedDays) : null;
     }
     
     private static void Validate(string mode, List<int>? selectedDays)

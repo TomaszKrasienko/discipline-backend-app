@@ -3,30 +3,25 @@ using discipline.centre.shared.abstractions.SharedKernel;
 
 namespace discipline.centre.activityrules.domain.ValueObjects;
 
-public sealed class SelectedDay : ValueObject
+public sealed class SelectedDays : ValueObject
 {
-    private readonly int _value;
+    private readonly List<DayOfWeek> _values;
+    public IReadOnlyCollection<DayOfWeek> Values => _values;
+    
+    private SelectedDays(List<DayOfWeek> values) => _values = values;
 
-    public int Value
+    public static SelectedDays Create(List<int> values)
     {
-        get => _value;
-        private init
+        foreach (var value in values)
         {
             CheckRule(new SelectedDayCanNotBeOutOfRangeRule(value));
-            _value = value;
         }
-    }
 
-    private SelectedDay(int value) => Value = value;
-    
-    public static SelectedDay Create(int value) => new SelectedDay(value);
-
-    public static implicit operator int(SelectedDay day) => day.Value;
-
-    public static implicit operator SelectedDay(int value) => Create(value);
+        return new SelectedDays(values.Select(x => (DayOfWeek)x).ToList());
+    } 
 
     protected override IEnumerable<object> GetAtomicValues()
     {
-        yield return Value;
+        yield return Values;
     }
 }

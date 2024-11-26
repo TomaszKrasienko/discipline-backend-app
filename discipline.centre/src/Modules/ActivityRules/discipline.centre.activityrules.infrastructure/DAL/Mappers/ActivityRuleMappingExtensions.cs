@@ -12,6 +12,6 @@ internal static class ActivityRuleMappingExtensions
             UserId = entity.UserId.ToString(),
             Title = entity.Title,
             Mode = entity.Mode,
-            SelectedDays = entity.SelectedDays?.Select(x => x.Value).ToList()
+            SelectedDays = entity.SelectedDays?.Values.Select(x => (int)x)
         };
 }

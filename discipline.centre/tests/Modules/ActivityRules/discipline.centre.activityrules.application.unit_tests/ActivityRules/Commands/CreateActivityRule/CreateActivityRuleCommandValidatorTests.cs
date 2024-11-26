@@ -4,7 +4,7 @@ using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
 
-namespace discipline.centre.activityrules.application.unit_tests.ActivityRules.CreateActivityRule;
+namespace discipline.centre.activityrules.application.unit_tests.ActivityRules.Commands.CreateActivityRule;
 
 public sealed class CreateActivityRuleCommandValidatorTests
 {
