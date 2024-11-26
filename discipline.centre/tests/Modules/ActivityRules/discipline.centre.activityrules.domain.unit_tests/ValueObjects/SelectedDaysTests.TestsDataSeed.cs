@@ -21,7 +21,7 @@ public partial class SelectedDaysTests
         
         yield return
         [
-            new List<int>{0}
+            new List<int>{7}
         ];
     }
 }

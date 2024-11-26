@@ -29,4 +29,10 @@
       <ProjectReference Include="..\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="ActivityRules\Commands\UpdateActivityRule\UpdateActivityRuleCommandValidatorTests.TestsDataSeed.cs">
+        <DependentUpon>UpdateActivityRuleCommandValidatorTests.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>
