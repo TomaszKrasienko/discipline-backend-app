@@ -1,8 +1,11 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules;
 using discipline.domain.ActivityRules.Repositories;
 using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.tests.shared.Entities;
 using NSubstitute;
 using Shouldly;
@@ -43,7 +46,7 @@ public sealed class EditActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingActivityRule_ShouldThrowActivityRuleNotFoundException()
     {
         //arrange
-        var command = new EditActivityRuleCommand(Guid.NewGuid(), "Title", Mode.EveryDayMode(),
+        var command = new EditActivityRuleCommand(ActivityRuleId.New(), "Title", Mode.EveryDayMode(),
             null);
         
         //act

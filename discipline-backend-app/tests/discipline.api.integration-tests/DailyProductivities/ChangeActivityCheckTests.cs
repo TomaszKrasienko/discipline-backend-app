@@ -1,10 +1,7 @@
 using System.Net;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Infrastructure.DAL.Documents;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
-using discipline.application.Infrastructure.DAL.Documents.Users;
-using discipline.application.Infrastructure.DAL.Repositories;
-using discipline.domain.Users.Entities;
+using discipline.infrastructure.DAL.Documents.DailyProductivities;
+using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
 using Shouldly;
@@ -38,7 +35,7 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
             .FirstOrDefaultAsync();
         dailyProductivityDocument.Activities
             .Any(x 
-                => x.Id.Equals(activity.Id)
+                => x.Id == activity.Id.ToString()
                 && x.IsChecked == !isChecked).ShouldBeTrue();
     }
     
@@ -88,7 +85,7 @@ public sealed class ChangeActivityCheckTests : BaseTestsController
         await AuthorizeWithFreeSubscriptionPicked();
         
         //act
-        var response = await HttpClient.PatchAsync($"daily-productivity/activity/{Guid.Empty}/change-check", null);
+        var response = await HttpClient.PatchAsync($"daily-productivity/activity/{Ulid.Empty}/change-check", null);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

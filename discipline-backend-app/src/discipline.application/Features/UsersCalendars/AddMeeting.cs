@@ -1,10 +1,16 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.IdentityContext;
 using discipline.application.Features.UsersCalendars.Configuration;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace discipline.application.Features.UsersCalendars;
 
@@ -13,21 +19,21 @@ public static class AddMeeting
     internal static WebApplication MapAddMeeting(this WebApplication app)
     {
         app.MapPost($"{Extensions.UserCalendarTag}/add-meeting", async (AddMeetingCommand command,
-                HttpContext httpContext, IIdentityContext identityContext, ICommandDispatcher commandDispatcher, CancellationToken cancellationToken) =>
+                HttpContextAccessor httpContext, IIdentityContext identityContext, ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
-                var eventId = Guid.NewGuid();
+                var eventId = EventId.New();
                 await commandDispatcher.HandleAsync(command with
                 {
                     Id = eventId,
                     UserId = identityContext.UserId
                 }, cancellationToken);
-                httpContext.AddResourceIdHeader(eventId);
+                httpContext.AddResourceIdHeader(eventId.ToString());
                 return Results.CreatedAtRoute(nameof(GetEventById), new {eventId = eventId}, null);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))            
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
             .Produces(StatusCodes.Status403Forbidden, typeof(void))
-            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
             .WithName(nameof(AddMeeting))
             .WithTags(Extensions.UserCalendarTag)
             .WithOpenApi(operation => new (operation)
@@ -35,12 +41,12 @@ public static class AddMeeting
                 Description = "Adds meeting to existing user calendar for day or creates user calendar for day"
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }
 
-public sealed record AddMeetingCommand(DateOnly Day, Guid UserId, Guid Id, string Title, TimeOnly TimeFrom,
+public sealed record AddMeetingCommand(DateOnly Day, UserId UserId, EventId Id, string Title, TimeOnly TimeFrom,
     TimeOnly? TimeTo, string Platform, string Uri, string Place) : ICommand;
 
 public sealed class AddMeetingCommandValidator : AbstractValidator<AddMeetingCommand>
@@ -48,11 +54,11 @@ public sealed class AddMeetingCommandValidator : AbstractValidator<AddMeetingCom
     public AddMeetingCommandValidator()
     {
         RuleFor(x => x.Id)
-            .NotEmpty()
+            .Must(id => id != new EventId(Ulid.Empty))
             .WithMessage("Important date \"ID\" can not be empty");
         
         RuleFor(x => x.UserId)
-            .NotEmpty()
+            .Must(userId => userId != new UserId(Ulid.Empty))
             .WithMessage("Important date \"UserId\" can not be empty");
 
         RuleFor(x => x.Title)
@@ -79,7 +85,7 @@ internal sealed class AddMeetingCommandHandler(
         var userCalendar = await userCalendarRepository.GetForUserByDateAsync(command.UserId, command.Day, cancellationToken);
         if (userCalendar is null)
         {
-            userCalendar = UserCalendar.Create(command.Day, command.UserId);
+            userCalendar = UserCalendar.Create(UserCalendarId.New(), command.Day, command.UserId);
             userCalendar.AddEvent(command.Id, command.Title, command.TimeFrom, command.TimeTo,
                 command.Platform, command.Uri, command.Place);
             await userCalendarRepository.AddAsync(userCalendar, cancellationToken);

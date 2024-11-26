@@ -1,4 +1,5 @@
 using discipline.domain.ActivityRules.Exceptions;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Exceptions;
 using Shouldly;
@@ -12,14 +13,14 @@ public class ImportantDateCreateTests
     public void Create_GivenValidArguments_ShouldReturnEntityWithFilledFields()
     {
         //arrange
-        var id = Guid.NewGuid();
+        var id = EventId.New();
         var title = "Test title";
         
         //act
         var entity = ImportantDate.Create(id, title);
         
         //assert
-        entity.Id.Value.ShouldBe(id);
+        entity.Id.ShouldBe(id);
         entity.Title.Value.ShouldBe(title);
     }
     
@@ -27,7 +28,7 @@ public class ImportantDateCreateTests
     public void Create_GivenEmptyTitle_ShouldThrowEmptyEventTitleException()
     {
         //act
-        var exception = Record.Exception(() => ImportantDate.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => ImportantDate.Create(EventId.New(),
             string.Empty));
         
         //arrange
@@ -43,7 +44,7 @@ public class ImportantDateCreateTests
         string title = new string(text, multiplier);
         
         //act
-        var exception = Record.Exception(() => ImportantDate.Create(Guid.NewGuid(),
+        var exception = Record.Exception(() => ImportantDate.Create(EventId.New(),
             title));
         
         //arrange

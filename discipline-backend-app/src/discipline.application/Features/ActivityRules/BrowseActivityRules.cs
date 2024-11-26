@@ -1,12 +1,10 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
+using discipline.application.Behaviours.IdentityContext;
 using discipline.application.DTOs;
 using discipline.application.Features.ActivityRules.Configuration;
-using discipline.application.Infrastructure.DAL.Connection;
-using discipline.application.Infrastructure.DAL.Documents;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using MongoDB.Driver;
 
 namespace discipline.application.Features.ActivityRules;
 
@@ -15,16 +13,17 @@ internal static class BrowseActivityRules
     internal static WebApplication MapBrowseActivityRules(this WebApplication app)
     {
         app.MapGet($"/{Extensions.ActivityRulesTag}", async ([AsParameters] PaginationDto paginationDto,
-                HttpContext httpContext, IDisciplineMongoCollection disciplineMongoCollection,
+                HttpContext httpContext,
                 IIdentityContext identityContext) =>
             {
-                var source = disciplineMongoCollection
-                    .GetCollection<ActivityRuleDocument>()
-                    .Find(x => x.UserId == identityContext.UserId);
-                var pagedList = await PagedList<ActivityRuleDocument>
-                    .ToPagedList(source, paginationDto.PageNumber, paginationDto.PageSize);
-                httpContext.AddPaginationToHeader(pagedList);
-                return Results.Ok(pagedList.Select(x => x.AsDto()));
+                // var source = disciplineMongoCollection
+                //     .GetCollection<ActivityRuleDocument>()
+                //     .Find(x => x.UserId == identityContext.UserId.ToString());
+                // var pagedList = await PagedList<ActivityRuleDocument>
+                //     .ToPagedList(source, paginationDto.PageNumber, paginationDto.PageSize);
+                // httpContext.AddPaginationToHeader(pagedList);
+                // return Results.Ok(pagedList.Select(x => x.AsDto()));
+                return Results.NoContent();
             })
             .Produces(StatusCodes.Status200OK, typeof(List<ActivityRuleDto>))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
@@ -37,7 +36,7 @@ internal static class BrowseActivityRules
                     $"Browses activity rules by pagination data. Adds pagination meta data in header with name {PagingBehaviour.HeaderName}"
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }

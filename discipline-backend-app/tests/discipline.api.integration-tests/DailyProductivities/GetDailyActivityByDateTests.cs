@@ -2,9 +2,8 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
-using discipline.application.Infrastructure.DAL.Documents;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
-using discipline.application.Infrastructure.DAL.Repositories;
+using discipline.infrastructure.DAL.Documents.DailyProductivities;
+using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
@@ -30,9 +29,9 @@ public class GetDailyActivityByDateTests : BaseTestsController
         //assert
         result.Day.ShouldBe(DateOnly.FromDateTime(DateTime.Now));
         result.Activities.Any(x
-            => x.Id.Equals(activity.Id)
-            && x.Title == activity.Title
-            && x.IsChecked == activity.IsChecked).ShouldBeTrue();
+            => x.Id == activity.Id.Value
+               && x.Title == activity.Title 
+               && x.IsChecked == activity.IsChecked).ShouldBeTrue();
     }
 
     [Fact]

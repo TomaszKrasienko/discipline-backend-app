@@ -1,4 +1,5 @@
 using discipline.application.Features.Users;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Enums;
 using FluentValidation;
 using FluentValidation.TestHelper;
@@ -15,8 +16,8 @@ public sealed class CreateUserSubscriptionOrderCommandValidatorTests
     public void Validate_GivenValidArguments_ShouldNotHaveAnyValidationErrors()
     {
         //arrange
-        var command = new CreateUserSubscriptionOrderCommand(Guid.NewGuid(), Guid.NewGuid(),
-            Guid.NewGuid(), SubscriptionOrderFrequency.Monthly, new string('1', 14),
+        var command = new CreateUserSubscriptionOrderCommand(UserId.New(), SubscriptionOrderId.New(), 
+            SubscriptionId.New(), SubscriptionOrderFrequency.Monthly, new string('1', 14),
             "123");
         
         //act
@@ -30,8 +31,8 @@ public sealed class CreateUserSubscriptionOrderCommandValidatorTests
     public void Validate_GivenEmptyUserId_ShouldHaveValidationErrorForUserId()
     {
         //arrange
-        var command = new CreateUserSubscriptionOrderCommand(Guid.Empty, Guid.NewGuid(),
-            Guid.NewGuid(), null, new string('1', 14), "132");
+        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), SubscriptionOrderId.New(), 
+            SubscriptionId.New(), null, new string('1', 14), "132");
         
         //act
         var result = _validator.TestValidate(command);
@@ -44,8 +45,8 @@ public sealed class CreateUserSubscriptionOrderCommandValidatorTests
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new CreateUserSubscriptionOrderCommand(Guid.NewGuid(), Guid.Empty,
-            Guid.NewGuid(), null, new string('1', 14), "132");
+        var command = new CreateUserSubscriptionOrderCommand(UserId.New(), new SubscriptionOrderId(Ulid.Empty),
+            SubscriptionId.New(), null, new string('1', 14), "132");
         
         //act
         var result = _validator.TestValidate(command);
@@ -58,8 +59,8 @@ public sealed class CreateUserSubscriptionOrderCommandValidatorTests
     public void Validate_GivenEmptySubscriptionId_ShouldHaveValidationErrorForSubscriptionId()
     {
         //arrange
-        var command = new CreateUserSubscriptionOrderCommand(Guid.NewGuid(), Guid.NewGuid(),
-            Guid.Empty, null, new string('1', 14), "132");
+        var command = new CreateUserSubscriptionOrderCommand(UserId.New(), SubscriptionOrderId.New(), 
+            new SubscriptionId(Ulid.Empty), null, new string('1', 14), "132");
         
         //act
         var result = _validator.TestValidate(command);

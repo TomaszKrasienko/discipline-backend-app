@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.Exceptions;
@@ -7,8 +8,8 @@ namespace discipline.domain.Users.Services;
 
 public sealed class SubscriptionOrderService : ISubscriptionOrderService
 {
-    public void AddOrderSubscriptionToUser(User user, Guid id, Subscription subscription,
-        SubscriptionOrderFrequency? subscriptionOrderFrequency, DateTime now, string cardNumber, string cardCvvNumber)
+    public void AddOrderSubscriptionToUser(User user, SubscriptionOrderId id, Subscription subscription,
+        SubscriptionOrderFrequency? subscriptionOrderFrequency, DateTimeOffset now, string cardNumber, string cardCvvNumber)
     {
         if (user is null)
         {
@@ -20,7 +21,7 @@ public sealed class SubscriptionOrderService : ISubscriptionOrderService
             throw new NullSubscriptionException();
         }
         
-        if (subscription.IsFreeSubscription())
+        if (subscription.IsFree())
         {
             user.CreateFreeSubscriptionOrder(id, subscription, now);
         }
@@ -34,5 +35,4 @@ public sealed class SubscriptionOrderService : ISubscriptionOrderService
                 now, cardNumber, cardCvvNumber);
         }
     }
-    
 }

@@ -1,7 +1,10 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules;
 using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.tests.shared.Entities;
 using NSubstitute;
 using Shouldly;
@@ -36,7 +39,7 @@ public sealed class DeleteActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingActivityRule_ShouldThrowActivityRuleNotFoundException()
     {
         //arrange
-        var command = new DeleteActivityRuleCommand(Guid.NewGuid());
+        var command = new DeleteActivityRuleCommand(ActivityRuleId.New());
         
         //act
         var exception = await Record.ExceptionAsync(async () => await Act(command));

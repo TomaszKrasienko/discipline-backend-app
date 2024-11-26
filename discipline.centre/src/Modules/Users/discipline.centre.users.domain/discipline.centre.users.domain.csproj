@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>discipline.centre.users.domain</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.users.domain.unit_tests"/>
+        <InternalsVisibleTo Include="discipline.centre.users.application.unit_tests"/>
+        <InternalsVisibleTo Include="discipline.centre.integration_tests.shared"/>
+    </ItemGroup>
+
+</Project>

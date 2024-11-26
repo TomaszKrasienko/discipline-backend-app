@@ -1,4 +1,5 @@
 using discipline.application.Features.ActivityRules;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
@@ -11,7 +12,7 @@ public class EditActivityRuleCommandValidatorTests
     public void Validate_GivenEmptyId_ShouldHaveValidationErrorForId()
     {
         //arrange
-        var command = new EditActivityRuleCommand(Guid.Empty, "Title", "Mode", null);
+        var command = new EditActivityRuleCommand(new ActivityRuleId(Ulid.Empty), "Title", "Mode", null);
         
         //act
         var result = _validator.TestValidate(command);
@@ -28,7 +29,7 @@ public class EditActivityRuleCommandValidatorTests
     public void Validate_GivenInvalid_ShouldHaveValidationErrorForTitle(string title)
     {
         //arrange
-        var command = new EditActivityRuleCommand(Guid.NewGuid(), title, "Mode", null);
+        var command = new EditActivityRuleCommand(ActivityRuleId.New(), title, "Mode", null);
         
         //act
         var result = _validator.TestValidate(command);
@@ -43,7 +44,7 @@ public class EditActivityRuleCommandValidatorTests
     public void Validate_GivenInvalidMode_ShouldHaveValidationErrorForMode(string mode)
     {
         //arrange
-        var command = new EditActivityRuleCommand(Guid.NewGuid(), "Title", mode, null);
+        var command = new EditActivityRuleCommand(ActivityRuleId.New(), "Title", mode, null);
         
         //act
         var result = _validator.TestValidate(command);

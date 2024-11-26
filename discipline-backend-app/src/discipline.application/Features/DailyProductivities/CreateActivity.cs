@@ -1,10 +1,16 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.IdentityContext;
 using discipline.application.Features.DailyProductivities.Configuration;
 using discipline.domain.DailyProductivities.Entities;
 using discipline.domain.DailyProductivities.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace discipline.application.Features.DailyProductivities;
 
@@ -13,9 +19,9 @@ internal static class CreateActivity
     internal static WebApplication MapCreateActivity(this WebApplication app)
     {
         app.MapPost($"/{Extensions.DailyProductivityTag}/{{day:datetime}}/add-activity", async (DateTime day, CreateActivityCommand command,
-            CancellationToken cancellationToken, ICommandDispatcher commandDispatcher, IIdentityContext identityContext) =>
+            CancellationToken cancellationToken, ICqrsDispatcher commandDispatcher, IIdentityContext identityContext) =>
             {
-                var activityId = Guid.NewGuid();
+                var activityId = ActivityId.New();
                 await commandDispatcher.HandleAsync(command with
                 {
                     Id = activityId,
@@ -25,10 +31,10 @@ internal static class CreateActivity
                 return Results.Ok();
             })            
             .Produces(StatusCodes.Status200OK, typeof(void))
-            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
             .Produces(StatusCodes.Status403Forbidden, typeof(void))
-            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
             .WithName(nameof(CreateActivity))
             .WithTags(Extensions.DailyProductivityTag)
             .WithOpenApi(operation => new (operation)
@@ -36,23 +42,23 @@ internal static class CreateActivity
                 Description = "Adds activity rule"
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }
 
-public sealed record CreateActivityCommand(Guid Id, Guid UserId, string Title, DateOnly Day) : ICommand;
+public sealed record CreateActivityCommand(ActivityId Id, UserId UserId, string Title, DateOnly Day) : ICommand;
 
 public sealed class CreateActivityCommandValidator : AbstractValidator<CreateActivityCommand>
 {
     public CreateActivityCommandValidator()
     {
         RuleFor(x => x.Id)
-            .NotEmpty()
+            .Must(id => id != new ActivityId(Ulid.Empty))
             .WithMessage("Activity \"ID\" can not be empty");
 
         RuleFor(x => x.UserId)
-            .NotEmpty()
+            .Must(userId => userId != new UserId(Ulid.Empty))
             .WithMessage("Activity \"UserId\" can not be empty");
 
         RuleFor(x => x.Title)
@@ -79,7 +85,7 @@ internal sealed class CreateActivityCommandHandler(
         var dailyProductivity = await dailyProductivityRepository.GetByDateAsync(command.Day, cancellationToken);
         if (dailyProductivity is null)
         {
-            dailyProductivity = DailyProductivity.Create(command.Day, command.UserId);
+            dailyProductivity = DailyProductivity.Create(DailyProductivityId.New(), command.Day, command.UserId);
             dailyProductivity.AddActivity(command.Id, command.Title);
             await dailyProductivityRepository.AddAsync(dailyProductivity, cancellationToken);
             return;

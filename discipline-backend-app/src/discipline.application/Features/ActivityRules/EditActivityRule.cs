@@ -1,10 +1,15 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace discipline.application.Features.ActivityRules;
 
@@ -12,17 +17,17 @@ public static class EditActivityRule
 {
     public static WebApplication MapEditActivityRule(this WebApplication app)
     {
-        app.MapPut($"/{Extensions.ActivityRulesTag}/{{activityRuleId:guid}}/edit", async (Guid activityRuleId, EditActivityRuleCommand command, HttpContext httpContext, 
-                    ICommandDispatcher dispatcher, CancellationToken cancellationToken) 
+        app.MapPut($"/{Extensions.ActivityRulesTag}/{{activityRuleId}}/edit", async (Ulid activityRuleId, EditActivityRuleCommand command, HttpContext httpContext, 
+                    ICqrsDispatcher dispatcher, CancellationToken cancellationToken) 
                 => {
-                        await dispatcher.HandleAsync(command with { Id = activityRuleId }, cancellationToken);
+                        await dispatcher.HandleAsync(command with { Id = new ActivityRuleId(activityRuleId) }, cancellationToken);
                         return Results.Ok();
                 })
             .Produces(StatusCodes.Status200OK, typeof(void))
-            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
             .Produces(StatusCodes.Status403Forbidden, typeof(void))
-            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
             .WithName(nameof(EditActivityRule))
             .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new (operation)
@@ -30,12 +35,12 @@ public static class EditActivityRule
                 Description = "Updates activity rule"
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);;
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }
 
-public sealed record EditActivityRuleCommand(Guid Id, string Title, string Mode, 
+public sealed record EditActivityRuleCommand(ActivityRuleId Id, string Title, string Mode, 
     List<int> SelectedDays) : ICommand;
 
 public sealed class EditActivityRuleCommandValidator : AbstractValidator<EditActivityRuleCommand>
@@ -43,7 +48,7 @@ public sealed class EditActivityRuleCommandValidator : AbstractValidator<EditAct
     public EditActivityRuleCommandValidator()
     {
         RuleFor(x => x.Id)
-            .NotEmpty()
+            .Must(id => id != new ActivityRuleId(Ulid.Empty))
             .WithMessage("Activity rule \"ID\" can not be empty");
         RuleFor(x => x.Title)
             .NotNull()

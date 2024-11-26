@@ -1,4 +1,5 @@
 using Bogus;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 
 namespace discipline.tests.shared.Entities;
@@ -13,5 +14,5 @@ internal static class UserCalendarFactory
     
     private static Faker<UserCalendar> GetFaker()
         => new Faker<UserCalendar>().CustomInstantiator(x =>
-            UserCalendar.Create(DateOnly.FromDateTime(DateTime.Now), Guid.NewGuid()));
+            UserCalendar.Create(UserCalendarId.New(), DateOnly.FromDateTime(DateTime.Now), UserId.New()));
 }

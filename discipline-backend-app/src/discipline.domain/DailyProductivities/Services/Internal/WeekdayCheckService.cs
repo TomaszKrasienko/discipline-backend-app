@@ -8,7 +8,7 @@ internal sealed class WeekdayCheckService : IWeekdayCheckService
     public static IWeekdayCheckService GetInstance()
         => new WeekdayCheckService();
 
-    public bool IsDateForMode(DateTime now, string mode, List<int> selectedDays = null)
+    public bool IsDateForMode(DateTimeOffset now, string mode, List<int> selectedDays = null)
     {
         if (mode == Mode.EveryDayMode())
             return true;

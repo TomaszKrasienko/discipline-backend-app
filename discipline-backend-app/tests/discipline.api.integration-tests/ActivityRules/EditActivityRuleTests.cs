@@ -2,9 +2,10 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Features.ActivityRules;
-using discipline.application.Infrastructure.DAL.Documents;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
 using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
+using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.infrastructure.DAL.Documents.ActivityRules;
+using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
 using Shouldly;
@@ -22,7 +23,7 @@ public class EditActivityRuleTests : BaseTestsController
         await AuthorizeWithFreeSubscriptionPicked();
         var activityRule = ActivityRuleFactory.Get();
         await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.AsDocument());
-        var command = new EditActivityRuleCommand(Guid.Empty, "NewTitle", Mode.EveryDayMode(), null);
+        var command = new EditActivityRuleCommand(new ActivityRuleId(Ulid.Empty), "NewTitle", Mode.EveryDayMode(), null);
         
         //act
         var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{activityRule.Id.Value}/edit",
@@ -32,7 +33,7 @@ public class EditActivityRuleTests : BaseTestsController
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var result = (await TestAppDb
             .GetCollection<ActivityRuleDocument>()
-            .Find(x => x.Id.Equals(activityRule.Id))
+            .Find(x => x.Id == activityRule.Id.ToString())
             .FirstOrDefaultAsync()).AsEntity();
 
         result.ShouldNotBeNull();
@@ -45,7 +46,7 @@ public class EditActivityRuleTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithFreeSubscriptionPicked();
-        var command = new EditActivityRuleCommand(Guid.Empty, "NewTitle", Mode.EveryDayMode(), null);
+        var command = new EditActivityRuleCommand(new ActivityRuleId(Ulid.Empty), "NewTitle", Mode.EveryDayMode(), null);
         
         //act
         var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{Guid.NewGuid()}/edit",
@@ -59,7 +60,7 @@ public class EditActivityRuleTests : BaseTestsController
     public async Task Edit_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
     {
         //arrange
-        var command = new EditActivityRuleCommand(Guid.Empty, string.Empty, Mode.EveryDayMode(), null);
+        var command = new EditActivityRuleCommand(new ActivityRuleId(Ulid.Empty), string.Empty, Mode.EveryDayMode(), null);
         
         //act
         var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{Guid.NewGuid()}/edit",
@@ -74,7 +75,7 @@ public class EditActivityRuleTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithoutSubscription();
-        var command = new EditActivityRuleCommand(Guid.Empty, string.Empty, Mode.EveryDayMode(), null);
+        var command = new EditActivityRuleCommand(new ActivityRuleId(Ulid.Empty), string.Empty, Mode.EveryDayMode(), null);
         
         //act
         var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{Guid.NewGuid()}/edit",
@@ -89,10 +90,10 @@ public class EditActivityRuleTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithFreeSubscriptionPicked();
-        var command = new EditActivityRuleCommand(Guid.Empty, string.Empty, Mode.EveryDayMode(), null);
+        var command = new EditActivityRuleCommand(new ActivityRuleId(Ulid.Empty), string.Empty, Mode.EveryDayMode(), null);
         
         //act
-        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{Guid.NewGuid()}/edit",
+        var response = await HttpClient.PutAsJsonAsync<EditActivityRuleCommand>($"/activity-rules/{Ulid.NewUlid()}/edit",
             command);
         
         //assert

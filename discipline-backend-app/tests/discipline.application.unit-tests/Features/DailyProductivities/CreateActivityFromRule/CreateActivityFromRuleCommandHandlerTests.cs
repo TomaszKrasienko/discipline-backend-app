@@ -1,4 +1,7 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.Time;
 using discipline.application.Exceptions;
 using discipline.application.Features.DailyProductivities;
 using discipline.domain.ActivityRules.Entities;
@@ -6,6 +9,7 @@ using discipline.domain.ActivityRules.Repositories;
 using discipline.domain.ActivityRules.ValueObjects.ActivityRule;
 using discipline.domain.DailyProductivities.Entities;
 using discipline.domain.DailyProductivities.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using NSubstitute;
 using Shouldly;
 using Xunit;
@@ -20,9 +24,9 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     public async Task HandleAsync_GivenDateForRuleAndExistingDailyProductivity_ShouldAddActivityAndUpdateDailyProductivityByRepository()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
-        var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-        var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),activityRule.Id);
+        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "My rule title", Mode.FirstDayOfMonth());
+        var now = new DateOnly(DateTime.Now.Year, DateTime.Now.Month, 1);
+        var command = new CreateActivityFromRuleCommand(ActivityId.New(), activityRule.Id);
 
         _activityRuleRepository
             .GetByIdAsync(command.ActivityRuleId)
@@ -32,7 +36,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .DateNow()
             .Returns(now);
 
-        var dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now), activityRule.UserId);
+        var dailyProductivity = DailyProductivity.Create(DailyProductivityId.New(), now, activityRule.UserId);
         _dailyProductivityRepository
             .GetByDateAsync(dailyProductivity.Day)
             .Returns(dailyProductivity);
@@ -52,9 +56,9 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     public async Task HandleAsync_GivenDateForRuleAndNotExistingDailyProductivity_ShouldAddActivityAndAndDailyProductivityByRepository()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
-        var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-        var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),activityRule.Id);
+        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "My rule title", Mode.FirstDayOfMonth());
+        var now = DateOnly.FromDateTime(DateTimeOffset.UtcNow.Date);
+        var command = new CreateActivityFromRuleCommand(ActivityId.New(), activityRule.Id);
 
         _activityRuleRepository
             .GetByIdAsync(command.ActivityRuleId)
@@ -71,7 +75,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
         await _dailyProductivityRepository
             .Received(1)
             .AddAsync(Arg.Is<DailyProductivity>(arg
-                => arg.Day.Value == DateOnly.FromDateTime(now)
+                => arg.Day.Value == now
                 && arg.UserId.Value == activityRule.UserId.Value
                 && arg.Activities.Any(x => x.Id.Equals(command.ActivityId))));
     }
@@ -80,7 +84,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingRule_ShouldThrowActivityRuleNotFoundException()
     {
         //arrange
-        var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),Guid.NewGuid());
+        var command = new CreateActivityFromRuleCommand(ActivityId.New(), ActivityRuleId.New());
         
         //act
         var exception = await Record.ExceptionAsync(async () => await Act(command));
@@ -93,9 +97,9 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
     public async Task HandleAsync_GivenDateNotForRule_ShouldNotAddActivityAndUpdateDailyProductivityByRepository()
     {
         //arrange
-        var activityRule = ActivityRule.Create(Guid.NewGuid(), Guid.NewGuid(), "My rule title", Mode.FirstDayOfMonth());
-        var now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 4);
-        var command = new CreateActivityFromRuleCommand(Guid.NewGuid(),activityRule.Id);
+        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "My rule title", Mode.FirstDayOfMonth());
+        var now = new DateOnly(DateTime.Now.Year, DateTime.Now.Month, 4);
+        var command = new CreateActivityFromRuleCommand(ActivityId.New(), activityRule.Id);
 
         _activityRuleRepository
             .GetByIdAsync(command.ActivityRuleId)
@@ -105,7 +109,7 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .DateNow()
             .Returns(now);
 
-        var dailyProductivity = DailyProductivity.Create(DateOnly.FromDateTime(now), activityRule.UserId);
+        var dailyProductivity = DailyProductivity.Create(DailyProductivityId.New(), now, activityRule.UserId);
         _dailyProductivityRepository
             .GetByDateAsync(dailyProductivity.Day)
             .Returns(dailyProductivity);
@@ -120,7 +124,6 @@ public sealed class CreateActivityFromRuleCommandHandlerTests
             .Received(1)
             .UpdateAsync(dailyProductivity);
     }
-    
 
     #region arrange
     private readonly IClock _clock;

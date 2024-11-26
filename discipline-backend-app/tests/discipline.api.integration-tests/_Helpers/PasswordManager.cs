@@ -1,4 +1,5 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Passwords;
 
 namespace discipline.api.integration_tests._Helpers;
 

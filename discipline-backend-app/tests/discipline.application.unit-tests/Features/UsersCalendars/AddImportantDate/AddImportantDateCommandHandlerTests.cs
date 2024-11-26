@@ -1,5 +1,8 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Features.UsersCalendars;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Repositories;
 using discipline.tests.shared.Entities;
@@ -16,8 +19,8 @@ public sealed class AddImportantDateCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingUserCalendarForDate_ShouldAddNewUserCalendarWithImportantDate()
     {
         //arrange
-        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(),
-            Guid.NewGuid(), "test_title");
+        var command = new AddImportantDateCommand(new DateOnly(2024, 1, 1), UserId.New(), 
+            EventId.New(), "test_title");
         
         //act
         await Act(command);
@@ -27,7 +30,7 @@ public sealed class AddImportantDateCommandHandlerTests
             .Received(1)
             .AddAsync(Arg.Is<UserCalendar>(arg
                 => arg.Day.Value == command.Day
-                && arg.UserId.Value == command.UserId
+                && arg.UserId == command.UserId
                    && arg.Events.Any(x
                        => x.Id.Equals(command.Id)
                           && x.Title.Value == command.Title)));
@@ -41,7 +44,7 @@ public sealed class AddImportantDateCommandHandlerTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var command = new AddImportantDateCommand(userCalendar.Day, userCalendar.UserId, Guid.NewGuid(),
+        var command = new AddImportantDateCommand(userCalendar.Day, userCalendar.UserId, EventId.New(), 
             "test_title");
 
         _userCalendarRepository
@@ -56,7 +59,7 @@ public sealed class AddImportantDateCommandHandlerTests
             .Received(1)
             .UpdateAsync(Arg.Is<UserCalendar>(arg
                 => arg.Day.Value == command.Day
-                && arg.UserId.Value == command.UserId
+                && arg.UserId == command.UserId
                    && arg.Events.Any(x
                        => x.Id.Equals(command.Id)
                           && x.Title.Value == command.Title)));

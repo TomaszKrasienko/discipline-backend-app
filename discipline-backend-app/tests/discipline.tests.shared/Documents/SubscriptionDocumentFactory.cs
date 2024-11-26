@@ -1,5 +1,5 @@
 using Bogus;
-using discipline.application.Infrastructure.DAL.Documents.Users;
+using discipline.infrastructure.DAL.Documents.Users;
 
 namespace discipline.tests.shared.Documents;
 
@@ -13,7 +13,7 @@ public static class SubscriptionDocumentFactory
     
     private static Faker<SubscriptionDocument> GetFaker(decimal perMonth = 0, decimal perYear = 0)
         => new Faker<SubscriptionDocument>()
-            .RuleFor(f => f.Id, Guid.NewGuid())
+            .RuleFor(f => f.Id, Ulid.NewUlid().ToString())
             .RuleFor(f => f.Title, v => v.Lorem.Word())
             .RuleFor(f => f.PricePerMonth, perMonth)
             .RuleFor(f => f.PricePerYear, perYear)

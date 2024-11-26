@@ -2,10 +2,9 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.Features.DailyProductivities;
-using discipline.application.Infrastructure.DAL.Documents;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
-using discipline.application.Infrastructure.DAL.Documents.Users;
-using discipline.domain.Users.Entities;
+using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.infrastructure.DAL.Documents.DailyProductivities;
+using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
 using Shouldly;
@@ -22,7 +21,7 @@ public sealed class CreateActivityTests : BaseTestsController
         //arrange
         var user = await AuthorizeWithFreeSubscriptionPicked();
         var day = DateTime.Now;
-        var command = new CreateActivityCommand(Guid.Empty, user.Id, "Test title", default);
+        var command = new CreateActivityCommand(new ActivityId(Ulid.Empty), user.Id, "Test title", default);
         
         //act
         var response = await HttpClient.PostAsJsonAsync($"/daily-productivity/{day:yyyy-MM-dd}/add-activity", command);
@@ -32,7 +31,7 @@ public sealed class CreateActivityTests : BaseTestsController
 
         var dailyProductivityDocument = await TestAppDb
             .GetCollection<DailyProductivityDocument>()
-            .Find(x => x.Day == DateOnly.FromDateTime(DateTime.Now.Date) && x.UserId == user.Id)
+            .Find(x => x.Day == DateOnly.FromDateTime(DateTime.Now.Date) && x.UserId == user.Id.ToString())
             .FirstOrDefaultAsync();
 
         dailyProductivityDocument.ShouldNotBeNull();
@@ -48,7 +47,7 @@ public sealed class CreateActivityTests : BaseTestsController
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
         await TestAppDb.GetCollection<DailyProductivityDocument>()
             .InsertOneAsync(dailyProductivity.AsDocument());
-        var command = new CreateActivityCommand(Guid.Empty, user.Id, "Test title", dailyProductivity.Day);
+        var command = new CreateActivityCommand(new ActivityId(Ulid.Empty), user.Id, "Test title", dailyProductivity.Day);
         
         //act
         var response = await HttpClient.PostAsJsonAsync($"/daily-productivity/{dailyProductivity.Day.Value:yyyy-MM-dd}/add-activity", command);
@@ -74,7 +73,7 @@ public sealed class CreateActivityTests : BaseTestsController
         var activity = ActivityFactory.GetInDailyProductivity(dailyProductivity);
         await TestAppDb.GetCollection<DailyProductivityDocument>()
             .InsertOneAsync(dailyProductivity.AsDocument());
-        var command = new CreateActivityCommand(Guid.Empty, user.Id, activity.Title, dailyProductivity.Day);
+        var command = new CreateActivityCommand(new ActivityId(Ulid.Empty), user.Id, activity.Title, dailyProductivity.Day);
         
         //act
         var response = await HttpClient.PostAsJsonAsync($"/daily-productivity/{dailyProductivity.Day.Value:yyyy-MM-dd}/add-activity", command);
@@ -87,7 +86,7 @@ public sealed class CreateActivityTests : BaseTestsController
     public async Task Create_Unauthorized_ShouldReturn401UnauthorizedSStatusCode()
     {
         //arrange
-        var command = new CreateActivityCommand(Guid.Empty, Guid.Empty, "test_title", new DateOnly(2024,1,1));
+        var command = new CreateActivityCommand(new ActivityId(Ulid.Empty), new UserId(Ulid.Empty), "test_title", new DateOnly(2024,1,1));
         
         //act
         var response = await HttpClient.PostAsJsonAsync($"/daily-productivity/{command.Day:yyyy-MM-dd}/add-activity", command);
@@ -101,7 +100,7 @@ public sealed class CreateActivityTests : BaseTestsController
     {
         //arrange
         await AuthorizeWithoutSubscription();
-        var command = new CreateActivityCommand(Guid.Empty, Guid.Empty, "test_title", new DateOnly(2024,1,1));
+        var command = new CreateActivityCommand(new ActivityId(Ulid.Empty), new UserId(Ulid.Empty), "test_title", new DateOnly(2024,1,1));
         
         //act
         var response = await HttpClient.PostAsJsonAsync($"/daily-productivity/{command.Day:yyyy-MM-dd}/add-activity", command);
@@ -116,7 +115,7 @@ public sealed class CreateActivityTests : BaseTestsController
         //arrange
         var user = await AuthorizeWithFreeSubscriptionPicked();
         var day = DateTime.Now;
-        var command = new CreateActivityCommand(Guid.Empty, user.Id, string.Empty, default);
+        var command = new CreateActivityCommand(new ActivityId(Ulid.Empty), user.Id, string.Empty, default);
         
         //act
         var response = await HttpClient.PostAsJsonAsync($"/daily-productivity/{day:yyyy-MM-dd}/add-activity", command);

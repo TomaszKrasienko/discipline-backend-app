@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.activityrules.infrastructure.unit_test"/>
+        <InternalsVisibleTo Include="discipline.centre.activityrules.tests.sharedkernel"/>
+        <InternalsVisibleTo Include="discipline.centre.activityrules.integration_tests"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj" />
+      <ProjectReference Include="..\..\Users\discipline.centre.users.domain\discipline.centre.users.domain.csproj" />
+      <ProjectReference Include="..\discipline.centre.activityrules.application\discipline.centre.activityrules.application.csproj" />
+      <ProjectReference Include="..\discipline.centre.activityrules.domain\discipline.centre.activityrules.domain.csproj" />
+    </ItemGroup>
+
+</Project>

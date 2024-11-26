@@ -2,40 +2,42 @@ using discipline.domain.ActivityRules.Entities;
 using discipline.domain.DailyProductivities.Exceptions;
 using discipline.domain.DailyProductivities.ValueObjects.DailyProductivity;
 using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.Aggregate;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 
 namespace discipline.domain.DailyProductivities.Entities;
 
-public sealed class DailyProductivity : AggregateRoot
+public sealed class DailyProductivity : AggregateRoot<DailyProductivityId>
 {
     private readonly List<Activity> _activities = new();
     public Day Day { get; private set; }
-    public EntityId UserId { get; private set; }
+    public UserId UserId { get; private set; }
     public IReadOnlyList<Activity> Activities => _activities;
 
-    private DailyProductivity(Day day, EntityId userId) : base()
+    private DailyProductivity(DailyProductivityId id, Day day, UserId userId) : base(id)
     {
         Day = day;
         UserId = userId;
     }
 
     //For mongo
-    public DailyProductivity(Day day, EntityId userId, List<Activity> activities) 
-        : this(day, userId)
+    public DailyProductivity(DailyProductivityId id, Day day, UserId userId, List<Activity> activities) 
+        : this(id, day, userId)
     {
         _activities = activities;
     }
 
-    public static DailyProductivity Create(DateOnly day, Guid userId)
-        => new DailyProductivity(day, userId);
+    public static DailyProductivity Create(DailyProductivityId id, DateOnly day, UserId userId)
+        => new DailyProductivity(id, day, userId);
     
-    public void AddActivity(Guid id, string title)
+    public void AddActivity(ActivityId id, string title)
     {
         ValidateActivity(title);
         var activity = Activity.Create(id, title);
         _activities.Add(activity);
     }
 
-    public void AddActivityFromRule(Guid id, DateTime now, ActivityRule activityRule)
+    public void AddActivityFromRule(ActivityId id, DateTimeOffset now, ActivityRule activityRule)
     {
         ValidateActivity(activityRule.Title);
         var activity = Activity.CreateFromRule(id, now, activityRule);
@@ -53,9 +55,9 @@ public sealed class DailyProductivity : AggregateRoot
         }
     }
 
-    public void DeleteActivity(Guid activityId)
+    public void DeleteActivity(ActivityId activityId)
     {
-        var activity = _activities.FirstOrDefault(x => x.Id.Equals(activityId));
+        var activity = _activities.FirstOrDefault(x => x.Id == activityId);
         if (activity is null)
         {
             throw new ActivityNotFoundException(activityId);
@@ -64,9 +66,9 @@ public sealed class DailyProductivity : AggregateRoot
         _activities.Remove(activity);
     }
 
-    public void ChangeActivityCheck(Guid activityId)
+    public void ChangeActivityCheck(ActivityId activityId)
     {
-        var activity = _activities.FirstOrDefault(x => x.Id.Equals(activityId));
+        var activity = _activities.FirstOrDefault(x => x.Id == activityId);
         if (activity is null)
         {
             throw new ActivityNotFoundException(activityId);

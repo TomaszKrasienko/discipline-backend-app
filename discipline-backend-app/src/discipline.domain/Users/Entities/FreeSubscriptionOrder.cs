@@ -1,36 +1,25 @@
-using discipline.domain.SharedKernel;
-using discipline.domain.Users.Exceptions;
+using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users.BusinessRules.SubscriptionOrders;
 using discipline.domain.Users.ValueObjects;
+using discipline.domain.Users.ValueObjects.SharedKernel;
+using discipline.domain.Users.ValueObjects.SubscriptionOrders;
+using discipline.domain.Users.ValueObjects.Subscriptions;
 
 namespace discipline.domain.Users.Entities;
 
-public sealed class FreeSubscriptionOrder : SubscriptionOrder
+public sealed class  FreeSubscriptionOrder : SubscriptionOrder
 {
-    private FreeSubscriptionOrder(EntityId id, CreatedAt createdAt) : base(id, createdAt)
-    {
-    }
-    
-    //for mongo
-    public FreeSubscriptionOrder(EntityId id, CreatedAt createdAt,
-        EntityId subscriptionId, State state) : base(id, createdAt, subscriptionId, state)
+    public FreeSubscriptionOrder(SubscriptionOrderId id, CreatedAt createdAt,
+        SubscriptionId subscriptionId, State state) : base(id, createdAt, subscriptionId, state)
     {
     }
 
-    public static FreeSubscriptionOrder Create(Guid id, Subscription subscription, DateTime now)
+    public static FreeSubscriptionOrder Create(SubscriptionOrderId id, Subscription subscription, DateTimeOffset now)
     {
-        if (subscription is null)
-        {
-            throw new NullSubscriptionException();
-        }
-
-        if (!subscription.IsFreeSubscription())
-        {
-            throw new InvalidSubscriptionTypeException();
-        }
-        
-        var freeSubscriptionOrder = new FreeSubscriptionOrder(id, now);
-        freeSubscriptionOrder.ChangeSubscriptionId(subscription.Id);
-        freeSubscriptionOrder.SetState(new State(false, null));
+        CheckRule(new SubscriptionMustBeValidTypeRule(typeof(FreeSubscriptionOrder), subscription));
+        var state = new State(false, null);
+        var freeSubscriptionOrder = new FreeSubscriptionOrder(id, now, subscription.Id,
+            state);
         return freeSubscriptionOrder;
     }
 }

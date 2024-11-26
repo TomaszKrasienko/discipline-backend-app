@@ -1,4 +1,10 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.Passwords;
+using discipline.application.Behaviours.RefreshToken;
+using discipline.application.Behaviours.Token;
 using discipline.application.DTOs;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;
@@ -6,6 +12,7 @@ using discipline.domain.Users.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace discipline.application.Features.Users;
 
@@ -14,15 +21,15 @@ internal static class SignIn
     internal static WebApplication MapSignIn(this WebApplication app)
     {
         app.MapPost($"{Extensions.UsersTag}/sign-in", async (SignInCommand command,
-                ICommandDispatcher commandDispatcher, ITokenStorage tokenStorage, CancellationToken cancellationToken) =>
+                ICqrsDispatcher commandDispatcher, ITokenStorage tokenStorage, CancellationToken cancellationToken) =>
             {
                 await commandDispatcher.HandleAsync(command, cancellationToken);
                 var jwt = tokenStorage.Get(); 
                 return Results.Ok(jwt);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
-            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
-            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
             .WithName(nameof(SignIn))
             .WithTags(Extensions.UsersTag)
             .WithOpenApi(operation => new (operation)
@@ -56,7 +63,8 @@ public sealed class SignInCommandValidator : AbstractValidator<SignInCommand>
 }
 
 internal sealed class SignInCommandHandler(
-    IUserRepository userRepository,
+    IReadUserRepository readUserRepository,
+    IWriteUserRepository writeUserRepository,
     IPasswordManager passwordManager,
     IAuthenticator authenticator,
     ITokenStorage tokenStorage,
@@ -64,7 +72,7 @@ internal sealed class SignInCommandHandler(
 {
     public async Task HandleAsync(SignInCommand command, CancellationToken cancellationToken = default)
     {
-        var user = await userRepository.GetByEmailAsync(command.Email, cancellationToken);
+        var user = await readUserRepository.GetAsync(x => x.Email == command.Email, cancellationToken);
         if (user is null)
         {
             throw new UserNotFoundException(command.Email);

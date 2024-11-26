@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
-using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
+using discipline.infrastructure.DAL.Documents.UsersCalendar;
 using discipline.tests.shared.Documents;
 using Shouldly;
 using Xunit;
@@ -21,7 +21,7 @@ public sealed class BrowseUserCalendarTests : BaseTestsController
         var calendarEventDocument = CalendarEventDocumentFactory.Get(true);
         var meetingDocument = MeetingDocumentFactory.Get(true, true);
         var userCalendarDocument = UserCalendarDocumentFactory.Get([importantDateDocument, calendarEventDocument, meetingDocument]);
-        userCalendarDocument.UserId = user.Id;
+        userCalendarDocument.UserId = user.Id.ToString();
         
         await TestAppDb
             .GetCollection<UserCalendarDocument>()
@@ -33,18 +33,18 @@ public sealed class BrowseUserCalendarTests : BaseTestsController
         //assert
         result.Day.ShouldBe(userCalendarDocument.Day);
         result.ImportantDates.Any(x
-            => x.Id == importantDateDocument.Id
+            => x.Id.ToString() == importantDateDocument.Id
                && x.Title == importantDateDocument.Title).ShouldBeTrue();
         
         result.CalendarEvents.Any(x
-            => x.Id == calendarEventDocument.Id
+            => x.Id.ToString() == calendarEventDocument.Id
                && x.Title == calendarEventDocument.Title
                && x.TimeFrom == calendarEventDocument.TimeFrom
                && x.TimeTo == calendarEventDocument.TimeTo
                && x.Action == calendarEventDocument.Action).ShouldBeTrue();
 
         result.Meetings.Any(x
-            => x.Id == meetingDocument.Id
+            => x.Id.ToString() == meetingDocument.Id
                && x.Title == meetingDocument.Title
                && x.TimeFrom == meetingDocument.TimeFrom
                && x.TimeTo == meetingDocument.TimeTo

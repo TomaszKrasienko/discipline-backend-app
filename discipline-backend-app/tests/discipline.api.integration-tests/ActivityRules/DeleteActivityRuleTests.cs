@@ -1,7 +1,7 @@
 using System.Net;
 using discipline.api.integration_tests._Helpers;
-using discipline.application.Infrastructure.DAL.Documents;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
+using discipline.infrastructure.DAL.Documents.ActivityRules;
+using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using MongoDB.Driver;
 using Shouldly;
@@ -28,7 +28,7 @@ public sealed class DeleteActivityRuleTests : BaseTestsController
 
         var isActivityRuleExists = await TestAppDb
             .GetCollection<ActivityRuleDocument>()
-            .Find(x => x.Id.Equals(activityRule.Id))
+            .Find(x => x.Id == activityRule.Id.ToString())
             .AnyAsync();
         isActivityRuleExists.ShouldBeFalse();
     }

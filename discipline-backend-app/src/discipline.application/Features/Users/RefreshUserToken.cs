@@ -1,4 +1,9 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.RefreshToken;
+using discipline.application.Behaviours.Token;
 using discipline.application.DTOs;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users.Configuration;
@@ -6,6 +11,7 @@ using discipline.domain.Users.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace discipline.application.Features.Users;
 
@@ -14,7 +20,7 @@ internal static class RefreshUserToken
     internal static WebApplication MapRefreshToken(this WebApplication app)
     {
         app.MapPost($"{Extensions.UsersTag}/refresh-token", async (RefreshTokenCommand command,
-            ICommandDispatcher commandDispatcher, ITokenStorage tokenStorage, CancellationToken cancellationToken) =>
+            ICqrsDispatcher commandDispatcher, ITokenStorage tokenStorage, CancellationToken cancellationToken) =>
             {
                 await commandDispatcher.HandleAsync(command, cancellationToken);
                 var jwt = tokenStorage.Get();
@@ -22,7 +28,7 @@ internal static class RefreshUserToken
             })
         .Produces(StatusCodes.Status200OK, typeof(void))
         .Produces(StatusCodes.Status401Unauthorized, typeof(void))
-        .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+        .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
         .WithName(nameof(RefreshUserToken))
         .WithTags(Extensions.UsersTag)
         .WithOpenApi(operation => new (operation)
@@ -48,14 +54,15 @@ public sealed class RefreshTokenCommandValidator : AbstractValidator<RefreshToke
 
 internal sealed class RefreshTokenCommandHandler(
     IRefreshTokenFacade refreshTokenFacade,
-    IUserRepository userRepository,
+    IReadUserRepository readUserRepository,
+    IWriteUserRepository writeUserRepository,
     IAuthenticator authenticator,
     ITokenStorage tokenStorage) : ICommandHandler<RefreshTokenCommand>
 {
     public async Task HandleAsync(RefreshTokenCommand command, CancellationToken cancellationToken = default)
     {
         var userId = await refreshTokenFacade.GetUserIdAsync(command.RefreshToken, cancellationToken);
-        var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+        var user = await readUserRepository.GetByIdAsync(userId, cancellationToken);
         if (user is null)
         {
             throw new UserNotFoundException(userId);

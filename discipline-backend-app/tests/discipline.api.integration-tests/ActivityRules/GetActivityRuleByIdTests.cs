@@ -2,8 +2,8 @@ using System.Net;
 using System.Net.Http.Json;
 using discipline.api.integration_tests._Helpers;
 using discipline.application.DTOs;
-using discipline.application.Infrastructure.DAL.Documents;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
+using discipline.infrastructure.DAL.Documents.ActivityRules;
+using discipline.infrastructure.DAL.Documents.Mappers;
 using discipline.tests.shared.Entities;
 using Shouldly;
 using Xunit;
@@ -36,7 +36,7 @@ public sealed class GetActivityRuleByIdTests : BaseTestsController
         await AuthorizeWithFreeSubscriptionPicked();
         
         //act
-        var response = await HttpClient.GetAsync($"/activity-rules/{Guid.NewGuid()}");
+        var response = await HttpClient.GetAsync($"/activity-rules/{Ulid.NewUlid()}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);

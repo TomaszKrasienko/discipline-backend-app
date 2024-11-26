@@ -1,7 +1,13 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.RefreshToken;
+using discipline.application.Behaviours.Token;
 using discipline.application.DTOs;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.Repositories;
 using discipline.tests.shared.Entities;
@@ -27,7 +33,7 @@ public sealed class RefreshTokenCommandHandlerTests
             .GetUserIdAsync(command.RefreshToken)
             .Returns(user.Id);
 
-        _userRepository
+        _readUserRepository
             .GetByIdAsync(user.Id)
             .Returns(user);
 
@@ -60,7 +66,7 @@ public sealed class RefreshTokenCommandHandlerTests
 
         _refreshTokenFacade
             .GetUserIdAsync(command.RefreshToken)
-            .Returns(Guid.NewGuid());
+            .Returns(UserId.New());
         
         //act
         var exception = await Record.ExceptionAsync(async () => await Act(command));
@@ -71,7 +77,8 @@ public sealed class RefreshTokenCommandHandlerTests
     
     #region arrange
     private readonly IRefreshTokenFacade _refreshTokenFacade;
-    private readonly IUserRepository _userRepository;
+    private readonly IReadUserRepository _readUserRepository;
+    private readonly IWriteUserRepository _writeUserRepository;
     private readonly IAuthenticator _authenticator;
     private readonly ITokenStorage _tokenStorage;
     private readonly ICommandHandler<RefreshTokenCommand> _handler;
@@ -79,12 +86,14 @@ public sealed class RefreshTokenCommandHandlerTests
     public RefreshTokenCommandHandlerTests()
     {
         _refreshTokenFacade = Substitute.For<IRefreshTokenFacade>();
-        _userRepository = Substitute.For<IUserRepository>();
+        _readUserRepository = Substitute.For<IReadUserRepository>();
+        _writeUserRepository = Substitute.For<IWriteUserRepository>();
         _authenticator = Substitute.For<IAuthenticator>();
         _tokenStorage = Substitute.For<ITokenStorage>();
         _handler = new RefreshTokenCommandHandler(
             _refreshTokenFacade,
-            _userRepository,
+            _readUserRepository,
+            _writeUserRepository,
             _authenticator,
             _tokenStorage);
     }

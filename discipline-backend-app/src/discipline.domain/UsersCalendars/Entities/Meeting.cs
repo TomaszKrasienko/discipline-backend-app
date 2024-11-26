@@ -1,4 +1,5 @@
 using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.ValueObjects.Event;
 
 namespace discipline.domain.UsersCalendars.Entities;
@@ -9,24 +10,34 @@ public sealed class Meeting : Event
     public Address Address { get; private set; }
 
 
-    private Meeting(EntityId id, Title title) : base(id, title)
+    private Meeting(EventId id) : base(id)
     {
     }
 
     //For mongo
-    public Meeting(EntityId id, Title title, MeetingTimeSpan meetingTimeSpan, Address address) : base(id, title)
+    public Meeting(EventId id, Title title, MeetingTimeSpan meetingTimeSpan, Address address)
+        : base(id, title)
     {
         MeetingTimeSpan = meetingTimeSpan;
         Address = address;
     }
 
-    internal static Meeting Create(Guid id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
+    internal static Meeting Create(EventId id, string title, TimeOnly timeFrom, TimeOnly? timeTo,
         string platform, string uri, string place)
     {
-        var @event = new Meeting(id, title);
+        var @event = new Meeting(id);
+        @event.ChangeTitle(title);
         @event.ChangeMeetingTimeSpan(timeFrom, timeTo);
         @event.ChangeMeetingAddress(platform, uri, place);
         return @event;
+    }
+    
+    internal void Edit(string title, TimeOnly timeFrom, TimeOnly? timeTo,
+        string platform, string uri, string place)
+    {
+        ChangeTitle(title);
+        ChangeMeetingTimeSpan(timeFrom, timeTo);
+        ChangeMeetingAddress(platform, uri, place);
     }
 
     private void ChangeMeetingTimeSpan(TimeOnly timeFrom, TimeOnly? timeTo)

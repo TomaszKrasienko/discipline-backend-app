@@ -1,7 +1,14 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.Passwords;
+using discipline.application.Behaviours.RefreshToken;
+using discipline.application.Behaviours.Token;
 using discipline.application.DTOs;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Repositories;
 using discipline.tests.shared.Entities;
 using NSubstitute;
@@ -20,8 +27,8 @@ public sealed class SignInCommandHandlerTests
         //arrange
         var user = UserFactory.Get();
         var command = new SignInCommand(user.Email, "Test123!");
-        _userRepository
-            .GetByEmailAsync(command.Email)
+        _readUserRepository
+            .GetAsync(x => x.Email == command.Email)
             .Returns(user);
         
         _passwordManager
@@ -68,8 +75,8 @@ public sealed class SignInCommandHandlerTests
         //arrange
         var user = UserFactory.Get();
         var command = new SignInCommand(user.Email, "Test123!");
-        _userRepository
-            .GetByEmailAsync(command.Email)
+        _readUserRepository
+            .GetAsync(x => x.Email == command.Email)
             .Returns(user);
         
         _passwordManager
@@ -84,7 +91,9 @@ public sealed class SignInCommandHandlerTests
     }
     
     #region arrange
-    private readonly IUserRepository _userRepository;
+
+    private readonly IReadUserRepository _readUserRepository;
+    private readonly IWriteUserRepository _writeUserRepository;
     private readonly IPasswordManager _passwordManager;
     private readonly IAuthenticator _authenticator;
     private readonly ITokenStorage _tokenStorage;
@@ -93,13 +102,15 @@ public sealed class SignInCommandHandlerTests
     
     public SignInCommandHandlerTests()
     {
-        _userRepository = Substitute.For<IUserRepository>();
+        _readUserRepository = Substitute.For<IReadUserRepository>();
+        _writeUserRepository = Substitute.For<IWriteUserRepository>();
         _passwordManager = Substitute.For<IPasswordManager>();
         _authenticator = Substitute.For<IAuthenticator>();
         _tokenStorage = Substitute.For<ITokenStorage>();
         _refreshTokenFacade = Substitute.For<IRefreshTokenFacade>();
         _handler = new SignInCommandHandler(
-            _userRepository,
+            _readUserRepository,
+            _writeUserRepository,
             _passwordManager,
             _authenticator,
             _tokenStorage,

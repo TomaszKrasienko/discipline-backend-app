@@ -1,7 +1,14 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.Events;
+using discipline.application.Behaviours.Passwords;
 using discipline.application.Exceptions;
 using discipline.application.Features.Users;
+using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users;
 using discipline.domain.Users.Entities;
+using discipline.domain.Users.Events;
 using discipline.domain.Users.Repositories;
 using NSubstitute;
 using Shouldly;
@@ -17,11 +24,11 @@ public sealed class SignUpCommandHandlerTests
     public async Task HandleAsync_GivenExistingEmail_ShouldThrowEmailAlreadyExistsException()
     {
         //arrange
-        var command = new SignUpCommand(Guid.NewGuid(), "test@test.pl", "Test123!",
+        var command = new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "first_name", "last_name");
 
-        _userRepository
-            .IsEmailExists(command.Email)
+        _readUserRepository
+            .DoesEmailExist(command.Email, default)
             .Returns(true);
         
         //act
@@ -36,11 +43,11 @@ public sealed class SignUpCommandHandlerTests
     {
         //arrange
         var securedPassword = Guid.NewGuid().ToString();
-        var command = new SignUpCommand(Guid.NewGuid(), "test@test.pl", "Test123!",
+        var command = new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "test_first_name", "test_last_name");
 
-        _userRepository
-            .IsEmailExists(command.Email)
+        _readUserRepository
+            .DoesEmailExist(command.Email)
             .Returns(false);
 
         _passwordManager
@@ -51,7 +58,7 @@ public sealed class SignUpCommandHandlerTests
         await Act(command);
         
         //assert
-        await _userRepository
+        await _writeUserRepository
             .Received(1)
             .AddAsync(Arg.Is<User>(arg
                 => arg.Id == command.Id
@@ -59,19 +66,30 @@ public sealed class SignUpCommandHandlerTests
                    && arg.Password == securedPassword
                    && arg.FullName.FirstName == command.FirstName
                    && arg.FullName.LastName == command.LastName));
-
+        
+        await _eventProcessor
+            .Received(1)
+            .PublishAsync(Arg.Is<UserCreated>(arg 
+                => arg.UserId == command.Id
+                && arg.Email.Value == command.Email));
     }
     
     #region arrange
-    private readonly IUserRepository _userRepository;
+
+    private readonly IReadUserRepository _readUserRepository;
+    private readonly IWriteUserRepository _writeUserRepository;
     private readonly IPasswordManager _passwordManager;
+    private readonly IEventProcessor _eventProcessor;
     private readonly ICommandHandler<SignUpCommand> _handler;
 
     public SignUpCommandHandlerTests()
     {
-        _userRepository = Substitute.For<IUserRepository>();
+        _readUserRepository = Substitute.For<IReadUserRepository>();
+        _writeUserRepository = Substitute.For<IWriteUserRepository>();
         _passwordManager = Substitute.For<IPasswordManager>();
-        _handler = new SignUpCommandHandler(_userRepository, _passwordManager);
+        _eventProcessor = Substitute.For<IEventProcessor>();
+        _handler = new SignUpCommandHandler(_readUserRepository,
+            _writeUserRepository, _passwordManager, _eventProcessor);
     }
     #endregion
 }

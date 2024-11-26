@@ -1,5 +1,8 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Features.UsersCalendars;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.Entities;
 using discipline.domain.UsersCalendars.Repositories;
 using discipline.tests.shared.Entities;
@@ -16,7 +19,7 @@ public sealed class AddCalendarEventCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingUserCalendarForDate_ShouldAddUserCalendarWithEventCalendar()
     {
         //arrange
-        var command = new AddCalendarEventCommand(new DateOnly(2024, 1, 1), Guid.NewGuid(), Guid.NewGuid(),
+        var command = new AddCalendarEventCommand(new DateOnly(2024, 1, 1), UserId.New(), EventId.New(), 
             "test_title", new TimeOnly(10, 00), new TimeOnly(11, 00), "test_action");
         
         //act
@@ -26,7 +29,7 @@ public sealed class AddCalendarEventCommandHandlerTests
         await _userCalendarRepository
             .AddAsync(Arg.Is<UserCalendar>(arg
                 => arg.Day.Value == command.Day
-                && arg.UserId.Value == command.UserId
+                && arg.UserId == command.UserId
                    && arg.Events.Any(x
                        => x.Id.Equals(command.Id)
                        && x.Title.Value == command.Title
@@ -42,7 +45,7 @@ public sealed class AddCalendarEventCommandHandlerTests
     {
         //arrange
         var userCalendar = UserCalendarFactory.Get();
-        var command = new AddCalendarEventCommand(userCalendar.Day, userCalendar.UserId,Guid.NewGuid(),
+        var command = new AddCalendarEventCommand(userCalendar.Day, userCalendar.UserId,EventId.New(), 
             "test_title", new TimeOnly(10, 00), new TimeOnly(11, 00), "test_action");
 
         _userCalendarRepository
@@ -57,7 +60,7 @@ public sealed class AddCalendarEventCommandHandlerTests
             .Received(1)
             .UpdateAsync(Arg.Is<UserCalendar>(arg
                 => arg.Day.Value == command.Day
-                && arg.UserId.Value == command.UserId
+                && arg.UserId == command.UserId
                    && arg.Events.Any(x
                        => x.Id.Equals(command.Id)
                        && x.Title.Value == command.Title

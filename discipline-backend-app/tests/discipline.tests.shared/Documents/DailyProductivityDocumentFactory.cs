@@ -1,5 +1,5 @@
 using Bogus;
-using discipline.application.Infrastructure.DAL.Documents;
+using discipline.infrastructure.DAL.Documents.DailyProductivities;
 
 namespace discipline.tests.shared.Documents;
 
@@ -13,7 +13,8 @@ internal static class DailyProductivityDocumentFactory
     
     private static Faker<DailyProductivityDocument> GetFaker(IEnumerable<ActivityDocument> activities = null)
         => new Faker<DailyProductivityDocument>()
+            .RuleFor(f => f.Id, v => Ulid.NewUlid().ToString())
             .RuleFor(f => f.Day, v => DateOnly.FromDateTime(DateTime.Now.Date))
-            .RuleFor(f => f.UserId, v => Guid.NewGuid())
+            .RuleFor(f => f.UserId, v => Ulid.NewUlid().ToString())
             .RuleFor(f => f.Activities, v => activities);
 }

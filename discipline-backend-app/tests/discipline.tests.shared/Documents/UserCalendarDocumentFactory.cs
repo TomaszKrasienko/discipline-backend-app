@@ -1,5 +1,5 @@
 using Bogus;
-using discipline.application.Infrastructure.DAL.Documents.UsersCalendar;
+using discipline.infrastructure.DAL.Documents.UsersCalendar;
 
 namespace discipline.tests.shared.Documents;
 
@@ -13,7 +13,8 @@ internal static class UserCalendarDocumentFactory
     
     private static Faker<UserCalendarDocument> GetFaker(IEnumerable<EventDocument> eventDocuments)
         => new Faker<UserCalendarDocument>()
+            .RuleFor(f => f.Id, v => Ulid.NewUlid().ToString())
             .RuleFor(f => f.Day, v => new DateOnly(2024, 1, 1))
-            .RuleFor(f => f.UserId, v => Guid.NewGuid())
+            .RuleFor(f => f.UserId, v => Ulid.NewUlid().ToString())
             .RuleFor(f => f.Events, v => eventDocuments);
 }

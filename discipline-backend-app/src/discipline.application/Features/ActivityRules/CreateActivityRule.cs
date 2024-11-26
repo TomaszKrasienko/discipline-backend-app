@@ -1,12 +1,19 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.Auth;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
+using discipline.application.Behaviours.IdentityContext;
 using discipline.application.Exceptions;
 using discipline.application.Features.ActivityRules.Configuration;
 using discipline.domain.ActivityRules.Entities;
 using discipline.domain.ActivityRules.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace discipline.application.Features.ActivityRules;
 
@@ -14,20 +21,20 @@ public static class CreateActivityRule
 {
     public static WebApplication MapCreateActivityRule(this WebApplication app)
     {
-        app.MapPost($"/{Extensions.ActivityRulesTag}/create", async (CreateActivityRuleCommand command, HttpContext httpContext, 
-                    ICommandDispatcher dispatcher, CancellationToken cancellationToken, IIdentityContext identityContext) => 
+        app.MapPost($"/{Extensions.ActivityRulesTag}/create", async (CreateActivityRuleCommand command, HttpContextAccessor httpContext, 
+                    ICqrsDispatcher dispatcher, CancellationToken cancellationToken, IIdentityContext identityContext) => 
             {
-                var activityRuleId = Guid.NewGuid();
+                var activityRuleId = ActivityRuleId.New();
                 var userId = identityContext.UserId;
                 await dispatcher.HandleAsync(command with { Id = activityRuleId, UserId = userId }, cancellationToken);
-                httpContext.AddResourceIdHeader(activityRuleId);
+                httpContext.AddResourceIdHeader(activityRuleId.ToString());
                 return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId}, null);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
-            .Produces(StatusCodes.Status400BadRequest, typeof(ErrorDto))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
             .Produces(StatusCodes.Status403Forbidden, typeof(void))
-            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ErrorDto))
+            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
             .WithName(nameof(CreateActivityRule))
             .WithTags(Extensions.ActivityRulesTag)
             .WithOpenApi(operation => new (operation)
@@ -35,12 +42,12 @@ public static class CreateActivityRule
                 Description = "Adds activity rule"
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStateCheckingBehaviour.UserStatePolicyName);
+            .RequireAuthorization(UserStatePolicy.Name);
         return app;
     }
 }
 
-public sealed record CreateActivityRuleCommand(Guid Id, Guid UserId, string Title, string Mode,
+public sealed record CreateActivityRuleCommand(ActivityRuleId Id, UserId UserId, string Title, string Mode,
     List<int> SelectedDays) : ICommand;
 
 public sealed class CreateActivityRuleCommandValidator : AbstractValidator<CreateActivityRuleCommand>
@@ -48,10 +55,10 @@ public sealed class CreateActivityRuleCommandValidator : AbstractValidator<Creat
     public CreateActivityRuleCommandValidator()
     {
         RuleFor(x => x.UserId)
-            .NotEmpty()
+            .Must(id => id != new UserId(Ulid.Empty))
             .WithMessage("Activity rule \"UserId\" can not be empty");
         RuleFor(x => x.Id)
-            .NotEmpty()
+            .Must(id => id != new ActivityRuleId(Ulid.Empty))
             .WithMessage("Activity rule \"ID\" can not be empty");
         RuleFor(x => x.Title)
             .NotNull()

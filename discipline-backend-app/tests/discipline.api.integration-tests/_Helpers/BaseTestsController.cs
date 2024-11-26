@@ -1,12 +1,16 @@
 using System.Net.Http.Headers;
-using Amazon.Runtime;
 using discipline.application.Behaviours;
 using discipline.application.DTOs;
-using discipline.application.Infrastructure.DAL.Connection;
-using discipline.application.Infrastructure.DAL.Documents.Mappers;
-using discipline.application.Infrastructure.DAL.Documents.Users;
-using discipline.domain.Users.Entities;
+using discipline.domain.SharedKernel.TypeIdentifiers;
+using discipline.domain.Users;
+using discipline.infrastructure.Auth;
+using discipline.infrastructure.Auth.Configuration;
+using discipline.infrastructure.DAL.Connection;
+using discipline.infrastructure.DAL.Documents.Mappers;
+using discipline.infrastructure.DAL.Documents.Users;
+using discipline.infrastructure.Time;
 using discipline.tests.shared.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -29,25 +33,19 @@ public abstract class BaseTestsController : IDisposable
        services.AddSingleton<IMongoCollectionNameConvention, TestsMongoCollectionNameConvention>();
    }
    
-   protected virtual Guid? GetResourceIdFromHeader(HttpResponseMessage httpResponseMessage) 
+   protected virtual string GetResourceIdFromHeader(HttpResponseMessage httpResponseMessage) 
    {
        if (httpResponseMessage is null)
        {
            throw new InvalidOperationException("Http response message is null");
        }
 
-       if (!httpResponseMessage.Headers.TryGetValues(AddingResourceIdHeaderBehaviour.HeaderName, out var value))
+       if (!httpResponseMessage.Headers.TryGetValues(ResourceHeaderExtension.HeaderName, out var value))
        {
            return null;
        }
 
-       var stringId = value.Single();
-       if (!Guid.TryParse(stringId, out var id))
-       {
-           throw new InvalidOperationException("Resource id is not GUID type");
-       }
-
-       return id;
+       return value.Single();
    }
 
    protected virtual MetaDataDto GetMetaDataFromHeader(HttpResponseMessage httpResponseMessage)
@@ -70,7 +68,7 @@ public abstract class BaseTestsController : IDisposable
    {
        var subscription = SubscriptionFactory.Get();
        var user = UserFactory.Get();
-       user.CreateFreeSubscriptionOrder(Guid.NewGuid(), subscription, DateTime.Now);
+       user.CreateFreeSubscriptionOrder(SubscriptionOrderId.New(), subscription, DateTime.Now);
        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.AsDocument());
        Authorize(user.Id, user.Status);
        return user;
@@ -84,7 +82,7 @@ public abstract class BaseTestsController : IDisposable
        return user;
    }
 
-   protected virtual void Authorize(Guid userId, string status)
+   protected virtual void Authorize(UserId userId, string status)
    {
        var optionsProvider = new OptionsProvider();
        var authOptions = optionsProvider.Get<AuthOptions>("Auth");
@@ -92,7 +90,16 @@ public abstract class BaseTestsController : IDisposable
        var token = authenticator.CreateToken(userId.ToString(), status);
        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
    }
-   
+
    public void Dispose()
-       => TestAppDb.Dispose();
+   {
+       Dispose(true);
+       GC.SuppressFinalize(this);
+   }
+   
+   protected virtual void Dispose(bool disposed)
+   { 
+       TestAppDb?.Dispose();
+       HttpClient?.Dispose();
+   }
 }

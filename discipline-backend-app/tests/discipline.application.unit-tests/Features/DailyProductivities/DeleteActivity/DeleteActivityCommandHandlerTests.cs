@@ -1,7 +1,10 @@
 using discipline.application.Behaviours;
+using discipline.application.Behaviours.CQRS;
+using discipline.application.Behaviours.CQRS.Commands;
 using discipline.application.Features.DailyProductivities;
 using discipline.domain.DailyProductivities.Exceptions;
 using discipline.domain.DailyProductivities.Repositories;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.tests.shared.Entities;
 using NSubstitute;
 using Shouldly;
@@ -42,7 +45,7 @@ public sealed class DeleteActivityCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingDailyProductivityForActivityId_ShouldThrowActivityNotFoundException()
     {
         //arrange
-        var command = new DeleteActivityCommand(Guid.NewGuid());
+        var command = new DeleteActivityCommand(ActivityId.New());
         
         //act
         var exception = await Record.ExceptionAsync(async () => await Act(command));

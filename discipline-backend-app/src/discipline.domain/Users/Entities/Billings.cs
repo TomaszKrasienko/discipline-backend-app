@@ -1,32 +1,32 @@
 using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.ValueObjects;
+using discipline.domain.Users.ValueObjects.Billing;
+using discipline.domain.Users.ValueObjects.SharedKernel;
+using discipline.domain.Users.ValueObjects.SubscriptionOrders;
 
 namespace discipline.domain.Users.Entities;
 
-public sealed class Billing
+public sealed class Billing : Entity<BillingId>
 {
-    public EntityId Id { get; }
     public CreatedAt CreatedAt { get; }
     public IsRealized IsRealized { get; private set; }
     public Cost Cost { get; private set; }
     public TransferDetails TransferDetails { get; private set; }
 
-    private Billing(EntityId id, CreatedAt createdAt)
-    {        
-        Id = id;
-        CreatedAt = createdAt;
-    }
+    private Billing(BillingId id, CreatedAt createdAt) : base(id)
+        => CreatedAt = createdAt;
     
     //For mongo
-    public Billing(EntityId id, CreatedAt createdAt, IsRealized isRealized, Cost cost, TransferDetails transferDetails)
-        : this(id, createdAt)
+    public Billing(BillingId id, CreatedAt createdAt, IsRealized isRealized, Cost cost, 
+        TransferDetails transferDetails) : this(id, createdAt)
     {
         IsRealized = isRealized;
         Cost = cost;
         TransferDetails = transferDetails;
     }
 
-    internal static Billing Create(Guid id, DateTime createdAt, bool isRealized, decimal cost,
+    internal static Billing Create(BillingId id, DateTimeOffset createdAt, bool isRealized, decimal cost,
         string title, string cardNumber)
     {
         var billing = new Billing(id, createdAt);

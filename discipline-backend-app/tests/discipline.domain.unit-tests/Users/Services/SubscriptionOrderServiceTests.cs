@@ -1,3 +1,4 @@
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.Users.Entities;
 using discipline.domain.Users.Enums;
 using discipline.domain.Users.Exceptions;
@@ -17,14 +18,14 @@ public sealed class SubscriptionOrderServiceTests
         //arrange
         var user = UserFactory.Get();
         var subscription = SubscriptionFactory.Get();
-        var id = Guid.NewGuid();
+        var id = SubscriptionOrderId.New();
         
         //act
         _subscriptionOrderService.AddOrderSubscriptionToUser(user, id, subscription,
             null, DateTime.Now, null, null);
         
         //assert
-        user.SubscriptionOrder.Id.Value.ShouldBe(id);
+        user.SubscriptionOrder!.Id.ShouldBe(id);
         user.SubscriptionOrder.ShouldBeOfType<FreeSubscriptionOrder>();
     }
 
@@ -34,14 +35,14 @@ public sealed class SubscriptionOrderServiceTests
         //arrange
         var user = UserFactory.Get();
         var subscription = SubscriptionFactory.Get(10,100);
-        var id = Guid.NewGuid();
+        var id = SubscriptionOrderId.New();
         
         //act
         _subscriptionOrderService.AddOrderSubscriptionToUser(user, id, subscription,
             SubscriptionOrderFrequency.Monthly, DateTime.Now, new string('1',15), "123");
         
         //assert
-        user.SubscriptionOrder.Id.Value.ShouldBe(id);
+        user.SubscriptionOrder!.Id.ShouldBe(id);
         user.SubscriptionOrder.ShouldBeOfType<PaidSubscriptionOrder>();
     }
     
@@ -52,7 +53,7 @@ public sealed class SubscriptionOrderServiceTests
         var user = UserFactory.Get();
         
         //act
-        var exception = Record.Exception(() => _subscriptionOrderService.AddOrderSubscriptionToUser(user, Guid.NewGuid(), null,
+        var exception = Record.Exception(() => _subscriptionOrderService.AddOrderSubscriptionToUser(user, SubscriptionOrderId.New(), null,
             SubscriptionOrderFrequency.Monthly, DateTime.Now, "123", "123"));
         
         //assert
@@ -66,7 +67,7 @@ public sealed class SubscriptionOrderServiceTests
         var subscription = SubscriptionFactory.Get();
         
         //act
-        var exception = Record.Exception(() => _subscriptionOrderService.AddOrderSubscriptionToUser(null, Guid.NewGuid(), subscription,
+        var exception = Record.Exception(() => _subscriptionOrderService.AddOrderSubscriptionToUser(null, SubscriptionOrderId.New(), subscription,
             SubscriptionOrderFrequency.Monthly, DateTime.Now, "123", "123"));
         
         //assert
@@ -82,7 +83,7 @@ public sealed class SubscriptionOrderServiceTests
         
         //act
         var exception = Record.Exception(() => _subscriptionOrderService.AddOrderSubscriptionToUser(user,
-            Guid.NewGuid(), subscription, null, DateTime.Now, "123", "123"));
+            SubscriptionOrderId.New(), subscription, null, DateTime.Now, "123", "123"));
         
         //assert
         exception.ShouldBeOfType<NullSubscriptionOrderFrequencyException>();

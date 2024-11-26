@@ -1,4 +1,4 @@
-using discipline.domain.SharedKernel;
+using discipline.domain.SharedKernel.TypeIdentifiers;
 using discipline.domain.UsersCalendars.ValueObjects.Event;
 using Action = discipline.domain.UsersCalendars.ValueObjects.Event.Action;
 
@@ -9,24 +9,33 @@ public sealed class CalendarEvent : Event
     public MeetingTimeSpan MeetingTimeSpan { get; set; }
     public Action Action { get; set; }
 
-    private CalendarEvent(EntityId id, Title title) : base(id, title)
+    private CalendarEvent(EventId id) : base(id)
     {
     }
 
     //For mongo
-    public CalendarEvent(EntityId id, Title title, MeetingTimeSpan meetingTimeSpan, Action action) : base(id, title)
+    public CalendarEvent(EventId id, Title title, MeetingTimeSpan meetingTimeSpan, Action action)
+        : base(id, title)
     {
         MeetingTimeSpan = meetingTimeSpan;
         Action = action;
     }
 
-    internal static CalendarEvent Create(Guid id, string title, TimeOnly timeFrom, 
+    internal static CalendarEvent Create(EventId id, string title, TimeOnly timeFrom, 
         TimeOnly? timeTo, string action)
     {
-        var calendarEvent = new CalendarEvent(id, title);
+        var calendarEvent = new CalendarEvent(id);
+        calendarEvent.ChangeTitle(title);
         calendarEvent.ChangeMeetingTimeSpan(timeFrom, timeTo);
         calendarEvent.ChangeAction(action);
         return calendarEvent;
+    }
+
+    internal void Edit(string title, TimeOnly timeFrom, TimeOnly? timeTo, string action)
+    {
+        ChangeTitle(title);
+        ChangeMeetingTimeSpan(timeFrom, timeTo);
+        ChangeAction(action);
     }
     
     private void ChangeMeetingTimeSpan(TimeOnly timeFrom, TimeOnly? timeTo)

@@ -6,12 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services
     .AddDomain()
-    .AddApplication(builder.Configuration);
-builder
-    .UseApplication();
+    .AddApplication(builder.Configuration)
+    .AddInfrastructure(builder.Configuration);
 var app = builder.Build();
 app.UseRouting();
 app.UseApplication();
 app.UseHttpsRedirection();
-app.Run();
+await app.RunAsync();
 

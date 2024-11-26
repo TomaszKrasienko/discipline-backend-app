@@ -1,6 +1,6 @@
 using discipline.application.DTOs;
 using Microsoft.AspNetCore.Http;
-using MongoDB.Driver;
+using Newtonsoft.Json;
 
 namespace discipline.application.Behaviours;
 
@@ -11,7 +11,7 @@ internal static class PagingBehaviour
     internal static void AddPaginationToHeader<T>(this HttpContext context, PagedList<T> pagedList)
     {
         var metaDataDto = pagedList.AsMetaData();
-        context.Response.Headers.TryAdd(HeaderName, metaDataDto.AsJson());
+        context.Response.Headers.TryAdd(HeaderName, JsonConvert.SerializeObject(metaDataDto));
     }
 
     private static MetaDataDto AsMetaData<T>(this PagedList<T> pagedList)
@@ -44,13 +44,13 @@ internal class PagedList<T> : List<T>
         AddRange(items);
     }
 
-    internal static async Task<PagedList<T>> ToPagedList(IFindFluent<T,T> source, int pageNumber, int pageSize)
-    {
-        var count = await source.CountDocumentsAsync();
-        var items = await source
-            .Skip((pageNumber - 1) * pageSize)
-            .Limit(pageSize)
-            .ToListAsync();
-        return new PagedList<T>(items, count, pageNumber, pageSize);
-    }
+    // internal static async Task<PagedList<T>> ToPagedList(IFindFluent<T,T> source, int pageNumber, int pageSize)
+    // {
+    //     var count = await source.CountDocumentsAsync();
+    //     var items = await source
+    //         .Skip((pageNumber - 1) * pageSize)
+    //         .Limit(pageSize)
+    //         .ToListAsync();
+    //     return new PagedList<T>(items, count, pageNumber, pageSize);
+    // }
 }
