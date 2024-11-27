@@ -39,6 +39,9 @@
       <Compile Update="ActivityRules\Commands\CreateActivityRule\CreateActivityRuleCommandHandlerTests.TestsDataSeed.cs">
         <DependentUpon>CreateActivityRuleCommandHandlerTests.cs</DependentUpon>
       </Compile>
+      <Compile Update="ActivityRules\Commands\UpdateActivityRule\UpdateActivityRuleCommandHandlerTests.TestsDataSeed.cs">
+        <DependentUpon>UpdateActivityRuleCommandHandlerTests.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
