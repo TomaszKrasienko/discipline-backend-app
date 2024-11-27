@@ -29,7 +29,7 @@ internal static class ActivityRulesEndpoints
                 await dispatcher.HandleAsync(command with { Id = activityRuleId, UserId = userId! }, cancellationToken);
                 httpContext.AddResourceIdHeader(activityRuleId.ToString());
                 
-                return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId}, null);
+                return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId.ToString()}, null);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))

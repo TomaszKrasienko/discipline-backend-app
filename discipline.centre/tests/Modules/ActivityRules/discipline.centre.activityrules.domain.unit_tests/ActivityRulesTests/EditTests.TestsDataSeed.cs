@@ -43,14 +43,14 @@ public partial class EditTests
         
         yield return
         [
-            new ActivityRuleParams(null, null, string.Empty,
+            new ActivityRuleParams(null, null, "test_title",
                 Mode.CustomMode, [-1, 2, 3]),
             "ActivityRule.SelectedDay.OutOfRange"
         ];
         
         yield return
         [
-            new ActivityRuleParams(null, null, string.Empty,
+            new ActivityRuleParams(null, null, "test_title",
                 Mode.CustomMode, [1, 7, 3]),
             "ActivityRule.SelectedDay.OutOfRange"
         ];
