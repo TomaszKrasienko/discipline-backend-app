@@ -33,7 +33,8 @@ public sealed class UpdateActivityRuleCommandValidator : AbstractValidator<Updat
 }
 
 internal sealed class UpdateActivityRuleCommandHandler(
-    IReadActivityRuleRepository readActivityRuleRepository) : ICommandHandler<UpdateActivityRuleCommand>
+    IReadActivityRuleRepository readActivityRuleRepository,
+    IWriteActivityRuleRepository writeActivityRuleRepository) : ICommandHandler<UpdateActivityRuleCommand>
 {
     public async Task HandleAsync(UpdateActivityRuleCommand command, CancellationToken cancellationToken = default)
     {
@@ -44,18 +45,11 @@ internal sealed class UpdateActivityRuleCommandHandler(
             throw new NotFoundException("UpdateActivityRule.ActivityRule", nameof(activityRule), command.Id.ToString());
         }
 
-        if (HasChanges(command, activityRule))
+        var tmp = activityRule.HasChanges(command.Title, command.Mode, command.SelectedDays);
+        if (tmp)
         {
             activityRule.Edit(command.Title, command.Mode, command.SelectedDays);
-            
+            await writeActivityRuleRepository.UpdateAsync(activityRule, cancellationToken);
         }
     }
-
-    private static bool HasChanges(UpdateActivityRuleCommand command, ActivityRule activityRule)
-        => activityRule.Title != command.Title
-           || activityRule.Mode != command.Mode
-           || (activityRule.SelectedDays is not null
-               ? activityRule.SelectedDays!.Values.OrderBy(x => x).Select(x => (int)x)
-                   .SequenceEqual(command.SelectedDays!.OrderBy(x => x))
-               : command.SelectedDays is not null);
 }

@@ -7,6 +7,19 @@ namespace discipline.centre.activityrules.application.unit_tests.ActivityRules.C
 
 public partial class UpdateActivityRuleCommandHandlerTests
 {
+    public static IEnumerable<object[]> GetValidUpdateActivityRuleCommand()
+    {
+        yield return
+        [
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), "test_title", Mode.EveryDayMode, null)
+        ];
+        
+        yield return
+        [
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), "test_title", Mode.CustomMode, [1, 2, 3])
+        ];
+    }
+    
     public static IEnumerable<object[]> GetNotChangedUpdateActivityRuleData()
     {
         var activityRule1 = ActivityRuleFakeDateFactory.Get();
@@ -15,7 +28,7 @@ public partial class UpdateActivityRuleCommandHandlerTests
 
         var selectedDays = new List<int> { 1, 2, 3 };
         var activityRule2 = ActivityRuleFakeDateFactory.Get(selectedDays);
-        var command2 = new UpdateActivityRuleCommand(activityRule2.Id, activityRule1.Title,
+        var command2 = new UpdateActivityRuleCommand(activityRule2.Id, activityRule2.Title,
             activityRule2.Mode, selectedDays);
         
         yield return
@@ -28,7 +41,7 @@ public partial class UpdateActivityRuleCommandHandlerTests
             activityRule2, command2
         ];
     }
-
+    
     public static IEnumerable<object[]> GetInvalidUpdateActivityRuleCommand()
     {
         yield return

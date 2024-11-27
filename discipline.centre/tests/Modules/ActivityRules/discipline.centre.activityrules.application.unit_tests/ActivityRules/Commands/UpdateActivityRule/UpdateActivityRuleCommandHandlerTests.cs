@@ -17,6 +17,29 @@ namespace discipline.centre.activityrules.application.unit_tests.ActivityRules.C
 public partial class UpdateActivityRuleCommandHandlerTests
 {
     private Task Act(UpdateActivityRuleCommand command) => _handler.HandleAsync(command, default);
+
+    [Theory]
+    [MemberData(nameof(GetValidUpdateActivityRuleCommand))]
+    public async Task HandleAsync_GivenValidData_ShouldUpdateByRepository(UpdateActivityRuleCommand command)
+    {
+        //arrange
+        var activityRule = ActivityRuleFakeDateFactory.Get();
+
+        _readActivityRuleRepository
+            .GetByIdAsync(activityRule.Id)
+            .Returns(activityRule);
+        
+        //act
+        await Record.ExceptionAsync(async () => await Act(command with { Id = activityRule.Id }));
+        
+        //assert
+        await _writeActivityRuleRepository
+            .Received(1)
+            .UpdateAsync(Arg.Is<ActivityRule>(arg 
+                => arg.Title == command.Title
+                && arg.Mode == command.Mode
+                && command.SelectedDays == null || arg.SelectedDays!.Values!.Select(x => (int)x).SequenceEqual(command.SelectedDays!)));
+    }
     
     [Fact]
     public async Task HandleAsync_GivenNotExistingActivityRule_ShouldThrowNotFoundException()
@@ -102,7 +125,7 @@ public partial class UpdateActivityRuleCommandHandlerTests
     {
         _readActivityRuleRepository = Substitute.For<IReadActivityRuleRepository>();
         _writeActivityRuleRepository = Substitute.For<IWriteActivityRuleRepository>();
-        _handler = new UpdateActivityRuleCommandHandler(_readActivityRuleRepository);
+        _handler = new UpdateActivityRuleCommandHandler(_readActivityRuleRepository, _writeActivityRuleRepository);
     }
     #endregion
 }

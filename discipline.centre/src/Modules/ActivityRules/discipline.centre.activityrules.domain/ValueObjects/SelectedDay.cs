@@ -18,7 +18,10 @@ public sealed class SelectedDays : ValueObject
         }
 
         return new SelectedDays(values.Select(x => (DayOfWeek)x).ToList());
-    } 
+    }
+
+    internal bool HasChanges(List<int>? days)
+        => days is null || !_values.Select(x => (int)x).SequenceEqual(days);
 
     protected override IEnumerable<object> GetAtomicValues()
     {

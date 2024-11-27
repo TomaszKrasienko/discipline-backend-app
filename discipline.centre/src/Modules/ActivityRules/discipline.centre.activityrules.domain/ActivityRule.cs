@@ -44,7 +44,12 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
         Mode = mode;
         SelectedDays = selectedDays is not null ? SelectedDays.Create(selectedDays) : null;
     }
-    
+
+    public bool HasChanges(string title, string mode, List<int>? selectedDays = null)
+        => (Title.Value != title)
+       || (Mode.Value != mode)
+       || (SelectedDays?.HasChanges(selectedDays) ?? selectedDays is not null);
+
     private static void Validate(string mode, List<int>? selectedDays)
     {
         CheckRule(new ModeCannotHaveFilledSelectedDays(mode, selectedDays));
