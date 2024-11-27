@@ -5,6 +5,7 @@ using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.activityrules.tests.sharedkernel.Domain;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.Exceptions;
+using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
@@ -47,6 +48,44 @@ public partial class UpdateActivityRuleCommandHandlerTests
         
         //act
         await Act(command);
+        
+        //assert
+        await _writeActivityRuleRepository
+            .Received(0)
+            .UpdateAsync(Arg.Any<ActivityRule>());
+    }
+
+    [Theory]
+    [MemberData(nameof(GetInvalidUpdateActivityRuleCommand))]
+    public async Task Handle_GivenInvalidArguments_ShouldThrowDomainException(UpdateActivityRuleCommand command)
+    {
+        //arrange
+        var activityRule = ActivityRuleFakeDateFactory.Get();
+
+        _readActivityRuleRepository
+            .GetByIdAsync(activityRule.Id)
+            .Returns(activityRule);
+        
+        //act
+        var exception = await Record.ExceptionAsync(async () => await Act(command with { Id = activityRule.Id }));
+        
+        //assert
+        exception.ShouldBeOfType<DomainException>();
+    }
+    
+    [Theory]
+    [MemberData(nameof(GetInvalidUpdateActivityRuleCommand))]
+    public async Task Handle_GivenInvalidArguments_ShouldNotUpdateByRepository(UpdateActivityRuleCommand command)
+    {
+        //arrange
+        var activityRule = ActivityRuleFakeDateFactory.Get();
+
+        _readActivityRuleRepository
+            .GetByIdAsync(activityRule.Id)
+            .Returns(activityRule);
+        
+        //act
+        await Record.ExceptionAsync(async () => await Act(command with { Id = activityRule.Id }));
         
         //assert
         await _writeActivityRuleRepository

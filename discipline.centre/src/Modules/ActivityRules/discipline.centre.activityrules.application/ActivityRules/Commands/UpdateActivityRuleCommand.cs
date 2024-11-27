@@ -46,6 +46,8 @@ internal sealed class UpdateActivityRuleCommandHandler(
 
         if (HasChanges(command, activityRule))
         {
+            activityRule.Edit(command.Title, command.Mode, command.SelectedDays);
+            
         }
     }
 

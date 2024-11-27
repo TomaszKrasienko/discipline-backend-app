@@ -13,6 +13,7 @@ public sealed class Title : ValueObject
         private init
         {
             CheckRule(new TitleCanNotBeEmptyRule(value));
+            CheckRule(new TitleMustBeFrom2To100LengthRule(value));
             _value = value;
         }
     }
