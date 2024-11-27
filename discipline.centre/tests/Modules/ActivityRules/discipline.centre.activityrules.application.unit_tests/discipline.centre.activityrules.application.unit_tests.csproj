@@ -33,6 +33,12 @@
       <Compile Update="ActivityRules\Commands\UpdateActivityRule\UpdateActivityRuleCommandValidatorTests.TestsDataSeed.cs">
         <DependentUpon>UpdateActivityRuleCommandValidatorTests.cs</DependentUpon>
       </Compile>
+      <Compile Update="ActivityRules\Commands\CreateActivityRule\CreateActivityRuleCommandValidatorTests.TestsDataSeed.cs">
+        <DependentUpon>CreateActivityRuleCommandValidatorTests.cs</DependentUpon>
+      </Compile>
+      <Compile Update="ActivityRules\Commands\CreateActivityRule\CreateActivityRuleCommandHandlerTests.TestsDataSeed.cs">
+        <DependentUpon>CreateActivityRuleCommandHandlerTests.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

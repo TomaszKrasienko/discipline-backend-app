@@ -9,9 +9,9 @@ using NSubstitute;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.activityrules.application.unit_tests.ActivityRules.CreateActivityRule;
+namespace discipline.centre.activityrules.application.unit_tests.ActivityRules.Commands.CreateActivityRule;
 
-public sealed class CreateActivityRuleCommandHandlerTests
+public partial class CreateActivityRuleCommandHandlerTests
 {
     private Task Act(CreateActivityRuleCommand command) => _handler.HandleAsync(command, default);
     
@@ -60,7 +60,7 @@ public sealed class CreateActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenAlreadyRegisteredRuleTitle_ShouldNotAddAnyActivityRuleByRepository()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
+       var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
             "Rule title", Mode.EveryDayMode, null);
         _readActivityRuleRepository
             .ExistsAsync(command.Title, default)
@@ -91,39 +91,6 @@ public sealed class CreateActivityRuleCommandHandlerTests
         await _writeActivityRuleRepository
             .Received(0)
             .AddAsync(Arg.Any<ActivityRule>(), default);
-    }
-
-    public static IEnumerable<object[]> GetInvalidCreateActivityRuleCommand()
-    {
-        yield return
-        [
-            new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                string.Empty, Mode.EveryDayMode, null)
-        ];
-        
-        yield return
-        [
-            new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                "Rule title", string.Empty, null)
-        ];
-        
-        yield return
-        [
-            new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                "Rule title", "test_mode", null)
-        ];
-        
-        yield return
-        [
-            new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                "Rule title", Mode.CustomMode, null)
-        ];
-        
-        yield return
-        [
-            new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                "Rule title", Mode.EveryDayMode, [1,2])
-        ];
     }
     
     #region arrange
