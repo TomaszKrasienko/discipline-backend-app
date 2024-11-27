@@ -9,12 +9,12 @@ public partial class EditTests
     {
         yield return
         [
-            new ActivityRuleParams(null, null, "test_title", Mode.EveryDayMode, null)
+            new EditActivityRuleParams("test_title", Mode.EveryDayMode, null)
         ];
 
         yield return
         [
-            new ActivityRuleParams(null, null, "test_title", Mode.CustomMode, [1,2,3])
+            new EditActivityRuleParams("test_title", Mode.CustomMode, [1,2,3])
         ];
     }
     
@@ -22,36 +22,31 @@ public partial class EditTests
     {
         yield return
         [
-            new ActivityRuleParams(null, null, string.Empty,
-                Mode.CustomMode, [1, 2, 3]),
+            new EditActivityRuleParams(string.Empty, Mode.CustomMode, [1, 2, 3]),
             "ActivityRule.Title.Empty"
         ];
         
         yield return
         [
-            new ActivityRuleParams(null, null, "test_title",
-                string.Empty, [1, 2, 3]),
+            new EditActivityRuleParams("test_title", string.Empty, [1, 2, 3]),
             "ActivityRule.Mode.Empty"
         ];
         
         yield return
         [
-            new ActivityRuleParams(null, null, "test_title",
-                "test_mode", [1, 2, 3]),
+            new EditActivityRuleParams("test_title", "test_mode", [1, 2, 3]),
             "ActivityRule.Mode.Unavailable"
         ];
         
         yield return
         [
-            new ActivityRuleParams(null, null, "test_title",
-                Mode.CustomMode, [-1, 2, 3]),
+            new EditActivityRuleParams("test_title", Mode.CustomMode, [-1, 2, 3]),
             "ActivityRule.SelectedDay.OutOfRange"
         ];
         
         yield return
         [
-            new ActivityRuleParams(null, null, "test_title",
-                Mode.CustomMode, [1, 7, 3]),
+            new EditActivityRuleParams("test_title", Mode.CustomMode, [1, 7, 3]),
             "ActivityRule.SelectedDay.OutOfRange"
         ];
     }
@@ -70,6 +65,66 @@ public partial class EditTests
         yield return [Mode.LastDayOfMonthMode];
     }
     
-    public sealed record ActivityRuleParams(ActivityRuleId? Id, UserId? UserId, string Title, string Mode,
+        public static IEnumerable<object[]> GetEditUnchangedParameters()
+    {
+        yield return
+        [
+            ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test", Mode.EveryDayMode, null),
+            new EditActivityRuleParams("test", Mode.EveryDayMode, null)
+        ];
+        
+        yield return
+        [
+            ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test", Mode.CustomMode, [1,2,3]),
+            new EditActivityRuleParams("test", Mode.CustomMode, [1,2,3])
+        ];
+    }
+
+    public static IEnumerable<object[]> GetEditChangedParameters()
+    {
+        yield return
+        [
+            ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test", Mode.EveryDayMode, null),
+            new EditActivityRuleParams("test1", Mode.EveryDayMode, null)
+        ];
+        
+        yield return
+        [
+            ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test1", Mode.EveryDayMode, null),
+            new EditActivityRuleParams("test", Mode.EveryDayMode, null)
+        ];
+        
+        yield return
+        [
+            ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test", Mode.FirstDayOfMonth, null),
+            new EditActivityRuleParams("test", Mode.EveryDayMode, null)
+        ];
+        
+        yield return
+        [
+            ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test", Mode.EveryDayMode, null),
+            new EditActivityRuleParams("test", Mode.FirstDayOfMonth, null)
+        ];
+        
+        yield return
+        [
+            ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test", Mode.CustomMode, [1,2]),
+            new EditActivityRuleParams("test", Mode.EveryDayMode, null)
+        ];
+        
+        yield return
+        [
+            ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test", Mode.CustomMode, [1,2]),
+            new EditActivityRuleParams("test", Mode.CustomMode, [2,3])
+        ];
+        
+        yield return
+        [
+            ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test", Mode.EveryDayMode, null),
+            new EditActivityRuleParams("test", Mode.CustomMode, [1,2])
+        ];
+    }
+    
+    public sealed record EditActivityRuleParams(string Title, string Mode,
         List<int>? SelectedDays = null);
 }

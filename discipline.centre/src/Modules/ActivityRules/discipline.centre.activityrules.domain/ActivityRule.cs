@@ -1,6 +1,7 @@
 using discipline.centre.activityrules.domain.Rules;
 using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.shared.abstractions.SharedKernel.Aggregate;
+using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.activityrules.domain;
@@ -39,6 +40,12 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
 
     public void Edit(string title, string mode, List<int>? selectedDays = null)
     {
+        var tmp = HasChanges(title, mode, selectedDays); 
+        if (!tmp)
+        {
+            throw new DomainException("ActivityRule.NoChanges",
+                "Activity rule has no changes");
+        }
         Validate(mode, selectedDays);
         Title = title;
         Mode = mode;

@@ -10,7 +10,7 @@ public partial class EditTests
 {
     [Theory]
     [MemberData(nameof(GetValidEditActivityRulesData))]
-    public void Edit_GivenValidaArguments_ShouldChangeActivityRule(ActivityRuleParams @params)
+    public void Edit_GivenValidaArguments_ShouldChangeActivityRule(EditActivityRuleParams @params)
     {
         //arrange
         var activityRule = ActivityRuleFakeDateFactory.Get();
@@ -23,10 +23,33 @@ public partial class EditTests
         activityRule.Mode.Value.ShouldBe(@params.Mode);
         CompareSelectedDays(@params.SelectedDays, activityRule.SelectedDays).ShouldBeTrue();
     }
+
+    [Theory]
+    [MemberData(nameof(GetEditChangedParameters))]
+    public void Edit_HasAtLeastOneChangedParameter_ShouldNotThrowException(ActivityRule activityRule, EditActivityRuleParams parameters)
+    {
+        //act
+        var exception = Record.Exception(() => activityRule.Edit(parameters.Title, parameters.Mode, parameters.SelectedDays));
+        
+        //assert
+        exception.ShouldBeNull();
+    }
+    
+    [Theory]
+    [MemberData(nameof(GetEditUnchangedParameters))]
+    public void Edit_HasUnchangedParameters_ShouldThrowDomainExceptionWithCode(ActivityRule activityRule, EditActivityRuleParams parameters)
+    {
+        //act
+        var exception = Record.Exception(() => activityRule.Edit(parameters.Title, parameters.Mode, parameters.SelectedDays));
+        
+        //assert
+        exception.ShouldBeOfType<DomainException>();
+        ((DomainException)exception).Code.ShouldBe("ActivityRule.NoChanges");
+    }
     
     [Theory]
     [MemberData(nameof(GetInvalidEditActivityRulesData))]
-    public void Edit_GivenInvalidArgument_ShouldReturnDomainExceptionWithCode(ActivityRuleParams @params, string code)
+    public void Edit_GivenInvalidArgument_ShouldReturnDomainExceptionWithCode(EditActivityRuleParams @params, string code)
     {
         //arrange
         var activityRule = ActivityRuleFakeDateFactory.Get();
