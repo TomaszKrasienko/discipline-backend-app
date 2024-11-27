@@ -52,7 +52,20 @@ internal static class ActivityRulesEndpoints
             await dispatcher.HandleAsync(dto.MapAsCommand(stronglyActivityRuleId), cancellationToken);
 
             return Results.NoContent();
-        });
+        })
+        .Produces(StatusCodes.Status201Created, typeof(void))
+        .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
+        .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+        .Produces(StatusCodes.Status403Forbidden, typeof(void))
+        .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
+        .WithName("UpdateActivityRule")
+        .WithTags(ActivityRulesTag)
+        .WithOpenApi(operation => new (operation)
+        {
+            Description = "Adds activity rule"
+        })
+        .RequireAuthorization()
+        .RequireAuthorization(UserStatePolicy.Name);
 
         app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}/{{activityRuleId:ulid}}", async (Ulid activityRuleId,
                 CancellationToken cancellationToken, ICqrsDispatcher dispatcher, IIdentityContext identityContext) =>
