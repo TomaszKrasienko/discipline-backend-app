@@ -25,7 +25,7 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
         var command = new CreateActivityRuleDto( "Test title", Mode.EveryDayMode, null);
          
         //act
-        var response = await HttpClient.PostAsJsonAsync<CreateActivityRuleCommand>("/activity-rules-module/activity-rules", command);
+        var response = await HttpClient.PostAsJsonAsync("/activity-rules-module/activity-rules", command);
          
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
@@ -49,10 +49,10 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
         await AuthorizeWithFreeSubscriptionPicked();
         var activityRule = ActivityRuleFakeDateFactory.Get();
         await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.MapAsDocument());
-        var command = new CreateActivityRuleCommand(new ActivityRuleId(Ulid.Empty), new UserId(Ulid.Empty),activityRule.Title, Mode.EveryDayMode, null);
+        var command = new CreateActivityRuleDto(activityRule.Title, Mode.EveryDayMode, null);
          
         //act
-        var response = await HttpClient.PostAsJsonAsync<CreateActivityRuleCommand>("/activity-rules-module/activity-rules", command);
+        var response = await HttpClient.PostAsJsonAsync("/activity-rules-module/activity-rules", command);
          
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -63,11 +63,10 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
     {
         //arrange
         await AuthorizeWithFreeSubscriptionPicked();
-        var command = new CreateActivityRuleCommand(new ActivityRuleId(Ulid.Empty), new UserId(Ulid.Empty),
-            string.Empty, Mode.EveryDayMode, null);
+        var command = new CreateActivityRuleDto(string.Empty, Mode.EveryDayMode, null);
          
         //act
-        var response = await HttpClient.PostAsJsonAsync<CreateActivityRuleCommand>("/activity-rules-module/activity-rules", command);
+        var response = await HttpClient.PostAsJsonAsync("/activity-rules-module/activity-rules", command);
          
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
@@ -77,8 +76,7 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
     public async Task Create_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(new ActivityRuleId(Ulid.Empty), new UserId(Ulid.Empty),
-            "test_title", Mode.EveryDayMode, null);
+        var command = new CreateActivityRuleDto("test_title", Mode.EveryDayMode, null);
         
         //act
         var response = await HttpClient.PostAsJsonAsync("/activity-rules-module/activity-rules", command);
@@ -92,8 +90,7 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
     {
         //arrange
         await AuthorizeWithoutSubscription();
-        var command = new CreateActivityRuleCommand(new ActivityRuleId(Ulid.Empty), new UserId(Ulid.Empty), 
-            "test_title", Mode.EveryDayMode, null);
+        var command = new CreateActivityRuleDto("test_title", Mode.EveryDayMode, null);
         
         //act
         var response = await HttpClient.PostAsJsonAsync("/activity-rules-module/activity-rules", command);
