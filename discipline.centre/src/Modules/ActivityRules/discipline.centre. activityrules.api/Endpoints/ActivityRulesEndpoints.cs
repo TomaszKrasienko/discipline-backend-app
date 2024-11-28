@@ -1,4 +1,3 @@
-using discipline.centre.activityrules.application.ActivityRules.Commands;
 using discipline.centre.activityrules.application.ActivityRules.DTOs;
 using discipline.centre.activityrules.application.ActivityRules.Queries;
 using discipline.centre.shared.abstractions.CQRS;
@@ -20,13 +19,13 @@ internal static class ActivityRulesEndpoints
     
     internal static WebApplication MapActivityRulesEndpoints(this WebApplication app)
     {
-        app.MapPost($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}", async (CreateActivityRuleCommand command, IHttpContextAccessor httpContext, 
+        app.MapPost($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}", async (CreateActivityRuleDto command, IHttpContextAccessor httpContext, 
                 ICqrsDispatcher dispatcher, CancellationToken cancellationToken, IIdentityContext identityContext) => 
             {
                 var activityRuleId = ActivityRuleId.New();
                 var userId = identityContext.GetUser();
                 
-                await dispatcher.HandleAsync(command with { Id = activityRuleId, UserId = userId! }, cancellationToken);
+                await dispatcher.HandleAsync(command.MapAsCommand(activityRuleId, userId), cancellationToken);
                 httpContext.AddResourceIdHeader(activityRuleId.ToString());
                 
                 return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId.ToString()}, null);

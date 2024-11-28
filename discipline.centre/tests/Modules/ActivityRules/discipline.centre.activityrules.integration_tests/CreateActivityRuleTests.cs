@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.centre.activityrules.application.ActivityRules.Commands;
+using discipline.centre.activityrules.application.ActivityRules.DTOs;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.activityrules.infrastructure.DAL.Documents;
@@ -21,7 +22,7 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
     {
         //arrange
         var user = await AuthorizeWithFreeSubscriptionPicked();
-        var command = new CreateActivityRuleCommand(new ActivityRuleId(Ulid.Empty), new UserId(Ulid.Empty), "Test title", Mode.EveryDayMode, null);
+        var command = new CreateActivityRuleDto( "Test title", Mode.EveryDayMode, null);
          
         //act
         var response = await HttpClient.PostAsJsonAsync<CreateActivityRuleCommand>("/activity-rules-module/activity-rules", command);
