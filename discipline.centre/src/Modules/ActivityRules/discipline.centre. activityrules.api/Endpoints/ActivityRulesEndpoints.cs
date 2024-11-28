@@ -74,7 +74,7 @@ internal static class ActivityRulesEndpoints
                 var result = await dispatcher.SendAsync(new GetActivityRuleByIdQuery(stronglyActivityRuleId,
                     identityContext.GetUser()), cancellationToken);
                 
-                return Results.Ok(result);
+                return result is null ? Results.NotFound() : Results.Ok(result);
             })            
             .Produces(StatusCodes.Status200OK, typeof(void))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
@@ -85,7 +85,8 @@ internal static class ActivityRulesEndpoints
             {
                Description = "Get activity rule by id" 
             })
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .RequireAuthorization(UserStatePolicy.Name);;
 
         return app;
     }

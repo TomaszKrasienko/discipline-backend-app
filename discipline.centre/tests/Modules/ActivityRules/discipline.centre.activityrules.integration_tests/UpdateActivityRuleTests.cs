@@ -18,7 +18,7 @@ namespace discipline.centre.activityrules.integration_tests;
 public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-rules-module")
 {
     [Fact]
-    public async Task UpdateActivityRule_GivenExistingActivityRuleWithValidArguments_ShouldReturn204NoContentStatusCodeAndUpdateActivityRule()
+    public async Task Update_GivenExistingActivityRuleWithValidArguments_ShouldReturn204NoContentStatusCodeAndUpdateActivityRule()
     {
         //arrange
         var activityRule = ActivityRuleFakeDateFactory.Get();
@@ -45,7 +45,7 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
     }
     
     [Fact]
-    public async Task UpdateActivityRule_GivenExistingActivityRuleWithInvalidArguments_ShouldReturn400BadRequestStatusCode()
+    public async Task Update_GivenExistingActivityRuleWithInvalidArguments_ShouldReturn400BadRequestStatusCode()
     {
         //arrange
         var activityRule = ActivityRuleFakeDateFactory.Get();
@@ -63,7 +63,21 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
     }
     
     [Fact]
-    public async Task UpdateActivityRule_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
+    public async Task Update_GivenInvalidCommand_ShouldReturn422UnprocessableEntityStatusCode()
+    {
+        //arrange
+        var command = new UpdateActivityRuleDto(string.Empty, Mode.EveryDayMode, null);
+        await AuthorizeWithFreeSubscriptionPicked();
+        
+        //act
+        var response = await HttpClient.PutAsJsonAsync($"activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}", command);
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
+    }
+    
+    [Fact]
+    public async Task Update_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
     {
         //arrange
         var command = new UpdateActivityRuleDto("test_title", Mode.EveryDayMode, null);
@@ -73,5 +87,19 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task Update_AuthorizedByUserWithoutSubscription_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange
+        var command = new UpdateActivityRuleDto("test_title", Mode.EveryDayMode, null);
+        await AuthorizeWithoutSubscription();
+        
+        //act
+        var response = await HttpClient.PutAsJsonAsync($"activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}", command);
+        
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

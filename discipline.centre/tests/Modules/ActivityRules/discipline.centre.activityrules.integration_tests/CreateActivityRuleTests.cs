@@ -17,7 +17,7 @@ namespace discipline.centre.activityrules.integration_tests;
 public sealed class CreateActivityRuleTests() : BaseTestsController("activity-rules-module")
 {
     [Fact]
-    public async Task CreateUserSubscriptionOrder_GivenExistingUserAndPaidSubscription_ShouldReturn201CreatedStatusCodeAndAddToDb()
+    public async Task Create_GivenValidParameters_ShouldReturn201CreatedStatusCodeAndAddToDb()
     {
         //arrange
         var user = await AuthorizeWithFreeSubscriptionPicked();
