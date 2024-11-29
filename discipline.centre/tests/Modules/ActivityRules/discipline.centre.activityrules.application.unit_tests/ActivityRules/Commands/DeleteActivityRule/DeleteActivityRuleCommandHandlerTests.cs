@@ -1,6 +1,7 @@
 using discipline.centre.activityrules.application.ActivityRules.Commands;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.Repositories;
+using discipline.centre.activityrules.tests.sharedkernel.Domain;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using NSubstitute;
@@ -12,6 +13,27 @@ namespace discipline.centre.activityrules.application.unit_tests.ActivityRules.C
 public sealed class DeleteActivityRuleCommandHandlerTests
 {
     private Task Act(DeleteActivityRuleCommand command) => _handler.HandleAsync(command, default);
+
+    [Fact]
+    public async Task HandleAsync_GivenExistingActivityRule_ShouldDeleteActivityRuleByRepository()
+    {
+        //arrange
+        var activityRule = ActivityRuleFakeDateFactory.Get();
+
+        _readWriteActivityRuleRepository
+            .GetByIdAsync(activityRule.Id, activityRule.UserId)
+            .Returns(activityRule);
+
+        var command = new DeleteActivityRuleCommand(activityRule.Id, activityRule.UserId);
+        
+        //act
+        await Act(command);
+        
+        //aseert
+        await _readWriteActivityRuleRepository
+            .Received(1)
+            .DeleteAsync(activityRule);
+    }
     
     [Fact]
     public async Task HandleAsync_GivenNotExistingActivityRule_ShouldNotAttemptsToDeleteByRepository()

@@ -18,5 +18,7 @@ internal sealed class DeleteActivityRuleCommandHandler(
         {
             return;
         }
+
+        await readWriteActivityRuleRepository.DeleteAsync(activityRule, cancellationToken);
     }
 }
