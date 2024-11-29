@@ -1,13 +1,11 @@
 using System.Net;
 using System.Net.Http.Json;
-using discipline.centre.activityrules.application.ActivityRules.Commands;
 using discipline.centre.activityrules.application.ActivityRules.DTOs;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.activityrules.infrastructure.DAL.Documents;
 using discipline.centre.activityrules.tests.sharedkernel.Domain;
 using discipline.centre.integration_tests.shared;
-using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using MongoDB.Driver;
 using Shouldly;
 using Xunit;
@@ -46,9 +44,12 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
     public async Task Create_GivenAlreadyExistingTitle_ShouldReturn400BadRequestStatusCode()
     {
         //arrange
-        await AuthorizeWithFreeSubscriptionPicked();
+        var user = await AuthorizeWithFreeSubscriptionPicked();
         var activityRule = ActivityRuleFakeDateFactory.Get();
-        await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRule.MapAsDocument());
+        var activityRuleDocument = activityRule.MapAsDocument();
+        activityRuleDocument.UserId = user.Id.ToString();
+            
+        await TestAppDb.GetCollection<ActivityRuleDocument>().InsertOneAsync(activityRuleDocument);
         var command = new CreateActivityRuleDto(activityRule.Title, Mode.EveryDayMode, null);
          
         //act

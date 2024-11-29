@@ -7,7 +7,7 @@ using FluentValidation;
 
 namespace discipline.centre.activityrules.application.ActivityRules.Commands;
 
-public sealed record UpdateActivityRuleCommand(ActivityRuleId Id, string Title, string Mode, 
+public sealed record UpdateActivityRuleCommand(ActivityRuleId Id, UserId UserId, string Title, string Mode, 
     List<int>? SelectedDays) : ICommand;
 
 public sealed class UpdateActivityRuleCommandValidator : AbstractValidator<UpdateActivityRuleCommand>
@@ -33,12 +33,11 @@ public sealed class UpdateActivityRuleCommandValidator : AbstractValidator<Updat
 }
 
 internal sealed class UpdateActivityRuleCommandHandler(
-    IReadActivityRuleRepository readActivityRuleRepository,
-    IWriteActivityRuleRepository writeActivityRuleRepository) : ICommandHandler<UpdateActivityRuleCommand>
+    IReadWriteActivityRuleRepository readWriteActivityRuleRepository) : ICommandHandler<UpdateActivityRuleCommand>
 {
     public async Task HandleAsync(UpdateActivityRuleCommand command, CancellationToken cancellationToken = default)
     {
-        var activityRule = await readActivityRuleRepository.GetByIdAsync(command.Id, cancellationToken);
+        var activityRule = await readWriteActivityRuleRepository.GetByIdAsync(command.Id, command.UserId, cancellationToken);
 
         if (activityRule is null)
         {
@@ -49,7 +48,7 @@ internal sealed class UpdateActivityRuleCommandHandler(
         if (tmp)
         {
             activityRule.Edit(command.Title, command.Mode, command.SelectedDays);
-            await writeActivityRuleRepository.UpdateAsync(activityRule, cancellationToken);
+            await readWriteActivityRuleRepository.UpdateAsync(activityRule, cancellationToken);
         }
     }
 }

@@ -14,12 +14,14 @@ public sealed class UpdateActivityRuleDtoMapperExtensionsTests
         //arrange
         var dto = UpdateActivityRuleDtoFakeDataFactory.Get();
         var id = ActivityRuleId.New();
+        var userId = UserId.New();
         
         //act
-        var result = dto.MapAsCommand(id);
+        var result = dto.MapAsCommand(id, userId);
         
         //assert
         result.Id.ShouldBe(id);
+        result.UserId.ShouldBe(userId);
         result.Title.ShouldBe(dto.Title);
         result.Mode.ShouldBe(dto.Mode);
         result.SelectedDays.ShouldBeEquivalentTo(dto.SelectedDays);

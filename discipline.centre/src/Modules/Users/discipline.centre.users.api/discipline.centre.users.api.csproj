@@ -17,6 +17,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+      <PackageReference Include="System.Text.Json" />
     </ItemGroup>
 
 </Project>

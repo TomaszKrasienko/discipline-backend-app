@@ -36,12 +36,11 @@ public sealed class CreateActivityRuleCommandValidator : AbstractValidator<Creat
 }
 
 internal sealed class CreateActivityRuleCommandHandler(
-    IReadActivityRuleRepository readActivityRuleRepository,
-    IWriteActivityRuleRepository writeActivityRuleRepository) : ICommandHandler<CreateActivityRuleCommand>
+    IReadWriteActivityRuleRepository readWriteActivityRuleRepository) : ICommandHandler<CreateActivityRuleCommand>
 {
     public async Task HandleAsync(CreateActivityRuleCommand command, CancellationToken cancellationToken = default)
     {
-        var isExists = await readActivityRuleRepository.ExistsAsync(command.Title, cancellationToken);
+        var isExists = await readWriteActivityRuleRepository.ExistsAsync(command.Title, command.UserId, cancellationToken);
         if (isExists)
         {
             throw new AlreadyRegisteredException("CreateActivityRule.Title",
@@ -50,6 +49,6 @@ internal sealed class CreateActivityRuleCommandHandler(
 
         var activity = ActivityRule.Create(command.Id, command.UserId, command.Title, 
             command.Mode, command.SelectedDays);
-        await writeActivityRuleRepository.AddAsync(activity, cancellationToken);
+        await readWriteActivityRuleRepository.AddAsync(activity, cancellationToken);
     }
 }

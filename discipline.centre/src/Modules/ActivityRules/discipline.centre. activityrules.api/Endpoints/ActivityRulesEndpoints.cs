@@ -45,10 +45,11 @@ internal static class ActivityRulesEndpoints
             .RequireAuthorization(UserStatePolicy.Name);
 
         app.MapPut($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}/{{activityRuleId:ulid}}", async (Ulid activityRuleId, UpdateActivityRuleDto dto,
-            CancellationToken cancellationToken, ICqrsDispatcher dispatcher) =>
+            CancellationToken cancellationToken, ICqrsDispatcher dispatcher, IIdentityContext identityContext) =>
         {
             var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
-            await dispatcher.HandleAsync(dto.MapAsCommand(stronglyActivityRuleId), cancellationToken);
+            var userId = identityContext.GetUser();
+            await dispatcher.HandleAsync(dto.MapAsCommand(stronglyActivityRuleId, userId), cancellationToken);
 
             return Results.NoContent();
         })

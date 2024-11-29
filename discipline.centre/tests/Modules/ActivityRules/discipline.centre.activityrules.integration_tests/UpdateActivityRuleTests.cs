@@ -22,11 +22,14 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
     {
         //arrange
         var activityRule = ActivityRuleFakeDateFactory.Get();
-        await TestAppDb.GetCollection<ActivityRuleDocument>()
-            .InsertOneAsync(activityRule.MapAsDocument());
+        var user = await AuthorizeWithFreeSubscriptionPicked();
+        var activityRuleDocument = activityRule.MapAsDocument();
+        activityRuleDocument.UserId = user.Id.ToString();
 
-        await AuthorizeWithFreeSubscriptionPicked();
-        var command = new UpdateActivityRuleCommand(activityRule.Id, "new_test_title",
+        await TestAppDb.GetCollection<ActivityRuleDocument>()
+            .InsertOneAsync(activityRuleDocument);
+        
+        var command = new UpdateActivityRuleCommand(activityRule.Id, activityRule.UserId,"new_test_title",
             Mode.CustomMode, [1]);
 
         //act

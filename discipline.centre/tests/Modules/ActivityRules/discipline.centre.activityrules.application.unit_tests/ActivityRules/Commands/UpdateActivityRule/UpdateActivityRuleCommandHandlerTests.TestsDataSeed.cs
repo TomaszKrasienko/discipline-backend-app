@@ -11,24 +11,24 @@ public partial class UpdateActivityRuleCommandHandlerTests
     {
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), "test_title", Mode.EveryDayMode, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", Mode.EveryDayMode, null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), "test_title", Mode.CustomMode, [1, 2, 3])
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", Mode.CustomMode, [1, 2, 3])
         ];
     }
     
     public static IEnumerable<object[]> GetNotChangedUpdateActivityRuleData()
     {
         var activityRule1 = ActivityRuleFakeDateFactory.Get();
-        var command1 = new UpdateActivityRuleCommand(activityRule1.Id, activityRule1.Title,
+        var command1 = new UpdateActivityRuleCommand(activityRule1.Id, activityRule1.UserId, activityRule1.Title,
             activityRule1.Mode, null);
 
         var selectedDays = new List<int> { 1, 2, 3 };
         var activityRule2 = ActivityRuleFakeDateFactory.Get(selectedDays);
-        var command2 = new UpdateActivityRuleCommand(activityRule2.Id, activityRule2.Title,
+        var command2 = new UpdateActivityRuleCommand(activityRule2.Id, activityRule2.UserId, activityRule2.Title,
             activityRule2.Mode, selectedDays);
         
         yield return
@@ -46,32 +46,32 @@ public partial class UpdateActivityRuleCommandHandlerTests
     {
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), string.Empty, Mode.EveryDayMode, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),string.Empty, Mode.EveryDayMode, null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), new string('t', 1), Mode.EveryDayMode, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),new string('t', 1), Mode.EveryDayMode, null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), new string('t', 101), Mode.EveryDayMode, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),new string('t', 101), Mode.EveryDayMode, null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), "test_title", string.Empty, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", string.Empty, null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), "test_title", "test", null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), "test_title", "test", null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), "test_title", Mode.CustomMode, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", Mode.CustomMode, null)
         ];
     }
 }

@@ -25,15 +25,15 @@ public partial class UpdateActivityRuleCommandHandlerTests
         //arrange
         var activityRule = ActivityRuleFakeDateFactory.Get();
 
-        _readActivityRuleRepository
-            .GetByIdAsync(activityRule.Id)
+        _readWriteActivityRuleRepository
+            .GetByIdAsync(activityRule.Id, activityRule.UserId)
             .Returns(activityRule);
         
         //act
-        await Record.ExceptionAsync(async () => await Act(command with { Id = activityRule.Id }));
+        await Record.ExceptionAsync(async () => await Act(command with { Id = activityRule.Id, UserId = activityRule.UserId}));
         
         //assert
-        await _writeActivityRuleRepository
+        await _readWriteActivityRuleRepository
             .Received(1)
             .UpdateAsync(Arg.Is<ActivityRule>(arg 
                 => arg.Title == command.Title
@@ -45,11 +45,11 @@ public partial class UpdateActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingActivityRule_ShouldThrowNotFoundException()
     {
         //arrange
-        var command = new UpdateActivityRuleCommand(ActivityRuleId.New(), "test_title",
+        var command = new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), "test_title",
             Mode.EveryDayMode, null);
 
-        _readActivityRuleRepository
-            .GetByIdAsync(command.Id)
+        _readWriteActivityRuleRepository
+            .GetByIdAsync(command.Id, command.UserId)
             .ReturnsNull();
         
         //act
@@ -65,15 +65,15 @@ public partial class UpdateActivityRuleCommandHandlerTests
         UpdateActivityRuleCommand command)
     {
         //assert
-        _readActivityRuleRepository
-            .GetByIdAsync(command.Id)
+        _readWriteActivityRuleRepository
+            .GetByIdAsync(command.Id, command.UserId)
             .Returns(activityRule);
         
         //act
         await Act(command);
         
         //assert
-        await _writeActivityRuleRepository
+        await _readWriteActivityRuleRepository
             .Received(0)
             .UpdateAsync(Arg.Any<ActivityRule>());
     }
@@ -85,12 +85,12 @@ public partial class UpdateActivityRuleCommandHandlerTests
         //arrange
         var activityRule = ActivityRuleFakeDateFactory.Get();
 
-        _readActivityRuleRepository
-            .GetByIdAsync(activityRule.Id)
+        _readWriteActivityRuleRepository
+            .GetByIdAsync(activityRule.Id, activityRule.UserId)
             .Returns(activityRule);
         
         //act
-        var exception = await Record.ExceptionAsync(async () => await Act(command with { Id = activityRule.Id }));
+        var exception = await Record.ExceptionAsync(async () => await Act(command with { Id = activityRule.Id, UserId = activityRule.UserId}));
         
         //assert
         exception.ShouldBeOfType<DomainException>();
@@ -103,29 +103,27 @@ public partial class UpdateActivityRuleCommandHandlerTests
         //arrange
         var activityRule = ActivityRuleFakeDateFactory.Get();
 
-        _readActivityRuleRepository
-            .GetByIdAsync(activityRule.Id)
+        _readWriteActivityRuleRepository
+            .GetByIdAsync(activityRule.Id, activityRule.UserId)
             .Returns(activityRule);
         
         //act
-        await Record.ExceptionAsync(async () => await Act(command with { Id = activityRule.Id }));
+        await Record.ExceptionAsync(async () => await Act(command with { Id = activityRule.Id, UserId = command.UserId}));
         
         //assert
-        await _writeActivityRuleRepository
+        await _readWriteActivityRuleRepository
             .Received(0)
             .UpdateAsync(Arg.Any<ActivityRule>());
     }
     
-    #region arrange
-    private readonly IReadActivityRuleRepository _readActivityRuleRepository;
-    private readonly IWriteActivityRuleRepository _writeActivityRuleRepository;
+    #region arrange;
+    private readonly IReadWriteActivityRuleRepository _readWriteActivityRuleRepository;
     private readonly ICommandHandler<UpdateActivityRuleCommand> _handler;
 
     public UpdateActivityRuleCommandHandlerTests()
-    {
-        _readActivityRuleRepository = Substitute.For<IReadActivityRuleRepository>();
-        _writeActivityRuleRepository = Substitute.For<IWriteActivityRuleRepository>();
-        _handler = new UpdateActivityRuleCommandHandler(_readActivityRuleRepository, _writeActivityRuleRepository);
+    { 
+        _readWriteActivityRuleRepository = Substitute.For<IReadWriteActivityRuleRepository>();
+        _handler = new UpdateActivityRuleCommandHandler(_readWriteActivityRuleRepository);
     }
     #endregion
 }
