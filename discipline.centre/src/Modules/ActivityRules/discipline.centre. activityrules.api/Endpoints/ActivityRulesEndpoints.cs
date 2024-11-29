@@ -1,3 +1,4 @@
+using discipline.centre.activityrules.application.ActivityRules.Commands;
 using discipline.centre.activityrules.application.ActivityRules.DTOs;
 using discipline.centre.activityrules.application.ActivityRules.Queries;
 using discipline.centre.shared.abstractions.CQRS;
@@ -53,7 +54,7 @@ internal static class ActivityRulesEndpoints
 
             return Results.NoContent();
         })
-        .Produces(StatusCodes.Status201Created, typeof(void))
+        .Produces(StatusCodes.Status204NoContent, typeof(void))
         .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
         .Produces(StatusCodes.Status401Unauthorized, typeof(void))
         .Produces(StatusCodes.Status403Forbidden, typeof(void))
@@ -63,6 +64,27 @@ internal static class ActivityRulesEndpoints
         .WithOpenApi(operation => new (operation)
         {
             Description = "Adds activity rule"
+        })
+        .RequireAuthorization()
+        .RequireAuthorization(UserStatePolicy.Name);
+
+        app.MapDelete($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}/{{activityRuleId:ulid}}", async (
+            Ulid activityRuleId, CancellationToken cancellationToken, ICqrsDispatcher dispatcher, IIdentityContext identityContext) =>
+        {
+            var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
+            var userId = identityContext.GetUser();
+            await dispatcher.HandleAsync(new DeleteActivityRuleCommand(stronglyActivityRuleId, userId), cancellationToken);
+
+            return Results.NoContent();
+        })
+        .Produces(StatusCodes.Status204NoContent, typeof(void))
+        .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+        .Produces(StatusCodes.Status403Forbidden, typeof(void))
+        .WithName("DeleteActivityRule")
+        .WithTags(ActivityRulesTag)
+        .WithOpenApi(operation => new (operation)
+        {
+            Description = "Removes activity rule"
         })
         .RequireAuthorization()
         .RequireAuthorization(UserStatePolicy.Name);

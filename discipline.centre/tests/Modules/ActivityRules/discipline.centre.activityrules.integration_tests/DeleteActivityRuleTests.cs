@@ -25,7 +25,7 @@ public sealed class DeleteActivityRuleTests() : BaseTestsController("activity-ru
             .InsertOneAsync(activityRule.MapAsDocument());
         
         //act
-        var response = await HttpClient.DeleteAsync($"activity-rule-module/activity-rule/{activityRule.Id.ToString()}");
+        var response = await HttpClient.DeleteAsync($"activity-rules-module/activity-rules/{activityRule.Id.ToString()}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -44,7 +44,7 @@ public sealed class DeleteActivityRuleTests() : BaseTestsController("activity-ru
         var activityRuleId = ActivityRuleId.New().ToString();
         
         //act
-        var response = await HttpClient.DeleteAsync($"activity-rule-module/activity-rule/{activityRuleId}");
+        var response = await HttpClient.DeleteAsync($"activity-rules-module/activity-rules/{activityRuleId}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -57,7 +57,7 @@ public sealed class DeleteActivityRuleTests() : BaseTestsController("activity-ru
         var activityRuleId = ActivityRuleId.New().ToString();
         
         //act
-        var response = await HttpClient.DeleteAsync($"activity-rule-module/activity-rule/{activityRuleId}");
+        var response = await HttpClient.DeleteAsync($"activity-rules-module/activity-rules/{activityRuleId}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -71,7 +71,7 @@ public sealed class DeleteActivityRuleTests() : BaseTestsController("activity-ru
         var activityRuleId = ActivityRuleId.New().ToString();
         
         //act
-        var response = await HttpClient.DeleteAsync($"activity-rule-module/activity-rule/{activityRuleId}");
+        var response = await HttpClient.DeleteAsync($"activity-rules-module/activity-rules/{activityRuleId}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
