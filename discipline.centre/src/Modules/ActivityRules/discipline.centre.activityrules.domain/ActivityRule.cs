@@ -16,11 +16,6 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
     /// <summary>
     /// Constructor for mapping to mongo documents
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="userId"></param>
-    /// <param name="title"></param>
-    /// <param name="mode"></param>
-    /// <param name="selectedDays"></param>
     public ActivityRule(ActivityRuleId id, UserId userId, Title title,
         Mode mode, SelectedDays? selectedDays) : base(id)
     {        

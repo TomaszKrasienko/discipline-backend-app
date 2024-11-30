@@ -38,9 +38,9 @@ public abstract class ValueObject : IEquatable<ValueObject>
         GetAtomicValues().Aggregate(
             default(int),
             (hashcode, value) =>
-                HashCode.Combine(hashcode, value.GetHashCode()));
+                HashCode.Combine(hashcode, value?.GetHashCode()));
 
-    protected abstract IEnumerable<object> GetAtomicValues();
+    protected abstract IEnumerable<object?> GetAtomicValues();
 
     private bool ValuesAreEqual(ValueObject valueObject) =>
         GetAtomicValues().SequenceEqual(valueObject.GetAtomicValues());
