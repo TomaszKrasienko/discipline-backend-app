@@ -5,13 +5,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <RootNamespace>dicipline.centre.activityrules.infrastructure.unit_tests</RootNamespace>
+        <RootNamespace>discipline.centre.domain.unit_tests</RootNamespace>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+        <PackageReference Include="Shouldly"/>
         <PackageReference Include="System.Text.Json" />
         <PackageReference Include="xunit"/>
         <PackageReference Include="xunit.runner.visualstudio">
@@ -25,11 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Shouldly"/>
-    </ItemGroup>
-    
-    <ItemGroup>
-      <ProjectReference Include="..\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj" />
+      <ProjectReference Include="..\..\..\..\..\src\Modules\Users\discipline.centre.users.domain\discipline.centre.users.domain.csproj" />
+      <ProjectReference Include="..\..\..\..\Shared\discipline.centre.users.tests.sharedkernel\discipline.centre.users.tests.sharedkernel.csproj" />
     </ItemGroup>
 
 </Project>

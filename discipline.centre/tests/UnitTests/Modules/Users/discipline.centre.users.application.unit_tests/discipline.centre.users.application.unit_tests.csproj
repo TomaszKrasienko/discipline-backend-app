@@ -4,13 +4,15 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-        <RootNamespace>discipline.centre.activityrules.domain.unit_tests</RootNamespace>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <RootNamespace>discipline.centre.application.unit_tests</RootNamespace>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="NSubstitute"/>
+        <PackageReference Include="Shouldly"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
         <PackageReference Include="System.Text.Json" />
         <PackageReference Include="xunit"/>
@@ -22,24 +24,10 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Shouldly"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\..\src\Modules\ActivityRules\discipline.centre.activityrules.domain\discipline.centre.activityrules.domain.csproj" />
-      <ProjectReference Include="..\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj" />
+      <ProjectReference Include="..\..\..\..\..\src\Modules\Users\discipline.centre.users.application\discipline.centre.users.application.csproj" />
+      <ProjectReference Include="..\..\..\..\Shared\discipline.centre.users.tests.sharedkernel\discipline.centre.users.tests.sharedkernel.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="ValueObjects\SelectedDaysTests.TestsDataSeed.cs">
-        <DependentUpon>SelectedDaysTests.cs</DependentUpon>
-      </Compile>
-      <Compile Update="ActivityRulesTests\CreateTests.TestsDataSeed.cs">
-        <DependentUpon>CreateTests.cs</DependentUpon>
-      </Compile>
-      <Compile Update="ActivityRulesTests\EditTests.TestsDataSeed.cs">
-        <DependentUpon>EditTests.cs</DependentUpon>
-      </Compile>
-    </ItemGroup>
-
 </Project>

@@ -11,12 +11,11 @@
         <PackageReference Include="System.Text.Json" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\..\..\src\Modules\Users\discipline.centre.users.domain\discipline.centre.users.domain.csproj" />
-      <ProjectReference Include="..\..\..\..\src\Modules\Users\discipline.centre.users.infrastructure\discipline.centre.users.infrastructure.csproj" />
-    </ItemGroup>
-    <ItemGroup>
         <InternalsVisibleTo Include="discipline.centre.users.infrastructure.unit_tests"/>
         <InternalsVisibleTo Include="discipline.centre.users.integration_tests"/>
     </ItemGroup>
-
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\Modules\Users\discipline.centre.users.application\discipline.centre.users.application.csproj" />
+      <ProjectReference Include="..\..\..\src\Modules\Users\discipline.centre.users.infrastructure\discipline.centre.users.infrastructure.csproj" />
+    </ItemGroup>
 </Project>

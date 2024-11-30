@@ -4,8 +4,8 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <RootNamespace>discipline.centre.users.infrastructure.unit_tests</RootNamespace>
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+        <RootNamespace>discipline.centre.activityrules.domain.unit_tests</RootNamespace>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
@@ -23,20 +23,23 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Shouldly"/>
-        <PackageReference Include="NSubstitute"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\discipline.centre.users.tests.sharedkernel\discipline.centre.users.tests.sharedkernel.csproj" />
+      <Compile Update="ValueObjects\SelectedDaysTests.TestsDataSeed.cs">
+        <DependentUpon>SelectedDaysTests.cs</DependentUpon>
+      </Compile>
+      <Compile Update="ActivityRulesTests\CreateTests.TestsDataSeed.cs">
+        <DependentUpon>CreateTests.cs</DependentUpon>
+      </Compile>
+      <Compile Update="ActivityRulesTests\EditTests.TestsDataSeed.cs">
+        <DependentUpon>EditTests.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Certs\public.pem">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Certs\private.pem">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      <ProjectReference Include="..\..\..\..\..\src\Modules\ActivityRules\discipline.centre.activityrules.domain\discipline.centre.activityrules.domain.csproj" />
+      <ProjectReference Include="..\..\..\..\Shared\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj" />
     </ItemGroup>
 
 </Project>

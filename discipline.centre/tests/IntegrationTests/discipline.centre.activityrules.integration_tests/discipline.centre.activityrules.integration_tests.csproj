@@ -4,17 +4,17 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>discipline.centre.activityrules.integration_tests</RootNamespace>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <RootNamespace>discipline.centre.domain.unit_tests</RootNamespace>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
-        <PackageReference Include="Shouldly"/>
         <PackageReference Include="System.Text.Json" />
         <PackageReference Include="xunit"/>
+        <PackageReference Include="xunit.runner.utility" />
         <PackageReference Include="xunit.runner.visualstudio">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
@@ -23,11 +23,14 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="Shouldly"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\..\src\Modules\Users\discipline.centre.users.domain\discipline.centre.users.domain.csproj" />
-      <ProjectReference Include="..\discipline.centre.users.tests.sharedkernel\discipline.centre.users.tests.sharedkernel.csproj" />
+      <ProjectReference Include="..\..\..\src\Modules\ActivityRules\discipline.centre.activityrules.application\discipline.centre.activityrules.application.csproj" />
+      <ProjectReference Include="..\..\..\src\Modules\ActivityRules\discipline.centre.activityrules.infrastructure\discipline.centre.activityrules.infrastructure.csproj" />
+      <ProjectReference Include="..\..\Shared\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj" />
+      <ProjectReference Include="..\..\Shared\discipline.centre.integration_tests.shared\discipline.centre.integration_tests.shared.csproj" />
     </ItemGroup>
 
 </Project>
