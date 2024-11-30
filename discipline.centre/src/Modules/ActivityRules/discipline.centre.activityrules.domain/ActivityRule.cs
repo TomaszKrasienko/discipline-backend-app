@@ -6,25 +6,34 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.activityrules.domain;
 
-public sealed class ActivityRule : AggregateRoot<ActivityRuleId> 
+public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
 {
+    private readonly List<Stage> _stages;
     public UserId UserId { get; }
     public Title Title { get; private set; }
     public Mode Mode { get; private set; }
     public SelectedDays? SelectedDays { get; private set; }
-
+    public IReadOnlyList<Stage> Stages => _stages;
+    
     /// <summary>
     /// Constructor for mapping to mongo documents
     /// </summary>
     public ActivityRule(ActivityRuleId id, UserId userId, Title title,
+        Mode mode, SelectedDays? selectedDays, List<Stage> stages) : this(id, userId, title, mode, selectedDays)
+    {        
+        _stages = stages;   
+    }
+    
+    private ActivityRule(ActivityRuleId id, UserId userId, Title title,
         Mode mode, SelectedDays? selectedDays) : base(id)
     {        
         UserId = userId;
         Title = title;
         Mode = mode;
         SelectedDays = selectedDays;
+        _stages = [];
     }
-
+    
     public static ActivityRule Create(ActivityRuleId id, UserId userId, string title, string mode, List<int>? selectedDays = null)
     {
         Validate(mode, selectedDays);
