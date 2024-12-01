@@ -11,5 +11,9 @@
     <ItemGroup>
       <PackageReference Include="System.Text.Json" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.activityrules.domain.unit_tests"/>
+    </ItemGroup>
 
 </Project>

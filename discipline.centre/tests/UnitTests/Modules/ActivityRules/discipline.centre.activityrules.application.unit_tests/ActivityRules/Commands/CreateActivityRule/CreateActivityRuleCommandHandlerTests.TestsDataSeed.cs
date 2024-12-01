@@ -1,5 +1,6 @@
 using discipline.centre.activityrules.application.ActivityRules.Commands;
 using discipline.centre.activityrules.domain.ValueObjects;
+using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.activityrules.application.unit_tests.ActivityRules.Commands.CreateActivityRule;
@@ -11,31 +12,31 @@ public partial class CreateActivityRuleCommandHandlerTests
         yield return
         [
             new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                string.Empty, Mode.EveryDayMode, null)
+                string.Empty, null, Mode.EveryDayMode, null)
         ];
         
         yield return
         [
             new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                "Rule title", string.Empty, null)
+                "Rule title", null, string.Empty, null)
         ];
         
         yield return
         [
             new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                "Rule title", "test_mode", null)
+                "Rule title", null, "test_mode", null)
         ];
         
         yield return
         [
             new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                "Rule title", Mode.CustomMode, null)
+                "Rule title", null, Mode.CustomMode, null)
         ];
         
         yield return
         [
             new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                "Rule title", Mode.EveryDayMode, [1,2])
+                "Rule title", null, Mode.EveryDayMode, [1,2])
         ];
     }
 }

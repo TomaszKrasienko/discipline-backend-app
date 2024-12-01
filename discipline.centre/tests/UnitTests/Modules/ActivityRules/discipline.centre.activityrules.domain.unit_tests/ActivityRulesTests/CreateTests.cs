@@ -1,4 +1,5 @@
 using discipline.centre.activityrules.domain.ValueObjects;
+using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using Shouldly;
@@ -25,7 +26,7 @@ public partial class CreateTests
     }
 
     [Theory]
-    [MemberData(nameof(GetInvaliCreateActivityRulesData))]
+    [MemberData(nameof(GetInvalidCreateActivityRulesData))]
     public void Create_GivenInvalidArgument_ShouldReturnDomainExceptionWithCode(ActivityRuleParams @params, string code)
     {
         //act

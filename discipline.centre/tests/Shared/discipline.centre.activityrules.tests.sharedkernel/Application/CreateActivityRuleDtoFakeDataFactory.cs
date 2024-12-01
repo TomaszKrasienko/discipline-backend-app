@@ -1,6 +1,7 @@
 using Bogus;
 using discipline.centre.activityrules.application.ActivityRules.DTOs;
 using discipline.centre.activityrules.domain.ValueObjects;
+using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 
 namespace discipline.centre.activityrules.tests.sharedkernel.Application;
 
@@ -21,6 +22,7 @@ public static class CreateActivityRuleDtoFakeDataFactory
 
         var faker = new Faker<CreateActivityRuleDto>()
             .CustomInstantiator(v => new CreateActivityRuleDto(
+                v.Lorem.Word(),
                 v.Lorem.Word(),
                 mode,
                 mode == Mode.CustomMode ? days : null));

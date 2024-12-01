@@ -1,9 +1,9 @@
-using discipline.centre.activityrules.domain.ValueObjects;
+using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.activityrules.domain.unit_tests.ValueObjects;
+namespace discipline.centre.activityrules.domain.unit_tests.ValueObjects.ActivityRules;
 
 public partial class SelectedDaysTests
 {

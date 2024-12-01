@@ -1,7 +1,8 @@
 using discipline.centre.activityrules.domain.Rules;
+using discipline.centre.activityrules.domain.Rules.Stages;
 using discipline.centre.shared.abstractions.SharedKernel;
 
-namespace discipline.centre.activityrules.domain.ValueObjects;
+namespace discipline.centre.activityrules.domain.ValueObjects.Stages;
 
 public sealed class Title : ValueObject
 {
@@ -13,7 +14,7 @@ public sealed class Title : ValueObject
         private init
         {
             CheckRule(new TitleCanNotBeEmptyRule(value));
-            CheckRule(new TitleMustBeFrom2To100LengthRule(value));
+            CheckRule(new TitleCannotBeLongerThan20(value));
             _value = value;
         }
     }

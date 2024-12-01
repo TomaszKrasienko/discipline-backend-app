@@ -26,14 +26,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="ValueObjects\SelectedDaysTests.TestsDataSeed.cs">
-        <DependentUpon>SelectedDaysTests.cs</DependentUpon>
-      </Compile>
       <Compile Update="ActivityRulesTests\CreateTests.TestsDataSeed.cs">
         <DependentUpon>CreateTests.cs</DependentUpon>
       </Compile>
       <Compile Update="ActivityRulesTests\EditTests.TestsDataSeed.cs">
         <DependentUpon>EditTests.cs</DependentUpon>
+      </Compile>
+      <Compile Update="StageTests\CreateTests.TestsDataSeed.cs">
+        <DependentUpon>CreateTests.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 

@@ -1,4 +1,5 @@
 using discipline.centre.activityrules.domain.ValueObjects;
+using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.activityrules.domain.unit_tests.ActivityRulesTests;

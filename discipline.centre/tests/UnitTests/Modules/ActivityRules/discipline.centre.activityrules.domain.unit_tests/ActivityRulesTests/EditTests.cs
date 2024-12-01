@@ -1,4 +1,5 @@
 using discipline.centre.activityrules.domain.ValueObjects;
+using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.activityrules.tests.sharedkernel.Domain;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 using Shouldly;

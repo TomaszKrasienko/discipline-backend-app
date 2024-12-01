@@ -15,9 +15,15 @@ internal sealed class ActivityRuleDocument : IDocument
     [BsonElement("title")]
     public required string Title { get; init; }
     
+    [BsonElement("note")]
+    public string? Note { get; init; }
+    
     [BsonElement("mode")] 
     public required string Mode { get; init; }
     
     [BsonElement("selectedDays")] 
     public IEnumerable<int>? SelectedDays{ get; init; }
+    
+    [BsonElement("stages")] 
+    public IEnumerable<StageDocument>? Stages { get; init; }
 }

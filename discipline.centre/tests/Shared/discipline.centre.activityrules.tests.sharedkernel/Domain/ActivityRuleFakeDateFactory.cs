@@ -1,6 +1,7 @@
 using Bogus;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.ValueObjects;
+using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.activityrules.tests.sharedkernel.Domain;
@@ -19,6 +20,7 @@ public static class ActivityRuleFakeDateFactory
                 ActivityRuleId.New(), 
                 UserId.New(), 
                 arg.Random.String2(length: 10),
+                arg.Lorem.Word(),
                 selectedDays is null 
                     ? arg.PickRandom<string>(Mode.AvailableModes.Keys.Where(x => x != Mode.CustomMode).ToList()) 
                     : Mode.CustomMode,

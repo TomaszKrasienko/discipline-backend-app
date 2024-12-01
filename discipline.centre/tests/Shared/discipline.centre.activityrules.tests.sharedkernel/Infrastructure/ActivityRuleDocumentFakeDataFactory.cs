@@ -1,5 +1,6 @@
 using Bogus;
 using discipline.centre.activityrules.domain.ValueObjects;
+using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.activityrules.infrastructure.DAL.Documents;
 
 namespace discipline.centre.activityrules.tests.sharedkernel.Infrastructure;

@@ -1,7 +1,7 @@
 using discipline.centre.activityrules.domain.Rules;
 using discipline.centre.shared.abstractions.SharedKernel;
 
-namespace discipline.centre.activityrules.domain.ValueObjects;
+namespace discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 
 public sealed class SelectedDays : ValueObject
 {

@@ -2,6 +2,7 @@ using discipline.centre.activityrules.application.ActivityRules.Commands;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.Repositories;
 using discipline.centre.activityrules.domain.ValueObjects;
+using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.activityrules.tests.sharedkernel.Domain;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.Exceptions;

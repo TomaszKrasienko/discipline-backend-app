@@ -7,26 +7,19 @@ using FluentValidation;
 
 namespace discipline.centre.activityrules.application.ActivityRules.Commands;
 
-public sealed record CreateActivityRuleCommand(ActivityRuleId Id, UserId UserId, string Title, string Mode,
-    List<int>? SelectedDays) : ICommand;
+public sealed record CreateActivityRuleCommand(ActivityRuleId Id, UserId UserId, string Title, string? Note, 
+    string Mode, List<int>? SelectedDays) : ICommand;
     
 public sealed class CreateActivityRuleCommandValidator : AbstractValidator<CreateActivityRuleCommand>
 {
     public CreateActivityRuleCommandValidator()
     {
-        RuleFor(x => x.UserId)
-            .Must(id => id != new UserId(Ulid.Empty))
-            .WithMessage("Activity rule \"UserId\" can not be empty");
-        RuleFor(x => x.Id)
-            .Must(id => id != new ActivityRuleId(Ulid.Empty))
-            .WithMessage("Activity rule \"ID\" can not be empty");
         RuleFor(x => x.Title)
             .NotNull()
             .NotEmpty()
             .WithMessage("Activity rule \"Title\" can not be null or empty");
         RuleFor(x => x.Title)
-            .MinimumLength(3)
-            .MaximumLength(100)
+            .MaximumLength(30)
             .WithMessage("Activity rule \"Title\" has invalid length");
         RuleFor(x => x.Mode)
             .NotNull()
@@ -48,7 +41,7 @@ internal sealed class CreateActivityRuleCommandHandler(
         }
 
         var activity = ActivityRule.Create(command.Id, command.UserId, command.Title, 
-            command.Mode, command.SelectedDays);
+            command.Note, command.Mode, command.SelectedDays);
         await readWriteActivityRuleRepository.AddAsync(activity, cancellationToken);
     }
 }

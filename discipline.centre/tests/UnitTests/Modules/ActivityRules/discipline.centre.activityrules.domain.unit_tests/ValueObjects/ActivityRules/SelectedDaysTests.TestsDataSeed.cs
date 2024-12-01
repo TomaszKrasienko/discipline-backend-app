@@ -1,6 +1,4 @@
-using System.Collections;
-
-namespace discipline.centre.activityrules.domain.unit_tests.ValueObjects;
+namespace discipline.centre.activityrules.domain.unit_tests.ValueObjects.ActivityRules;
 
 public partial class SelectedDaysTests
 {

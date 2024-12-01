@@ -2,6 +2,7 @@ using discipline.centre.activityrules.application.ActivityRules.Commands;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.Repositories;
 using discipline.centre.activityrules.domain.ValueObjects;
+using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
@@ -20,7 +21,7 @@ public partial class CreateActivityRuleCommandHandlerTests
     {
         //arrange
         var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
-            "Rule title", Mode.EveryDayMode, null);
+            "Rule title", "Rule note", Mode.EveryDayMode, null);
         
         _readWriteActivityRuleRepository
             .ExistsAsync(command.Title, command.UserId, default)
@@ -34,7 +35,8 @@ public partial class CreateActivityRuleCommandHandlerTests
             .Received(1)
             .AddAsync(Arg.Is<ActivityRule>(arg
                 => arg.Id == command.Id
-                   && arg.Title.Value == command.Title
+                   && arg.Details.Title == command.Title
+                   && arg.Details.Note == command.Note
                    && arg.Mode.Value == command.Mode));
     }
     
@@ -43,7 +45,7 @@ public partial class CreateActivityRuleCommandHandlerTests
     {
         //arrange
         var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
-            "Rule title", Mode.EveryDayMode, null);
+            "Rule title", "Rule note", Mode.EveryDayMode, null);
         _readWriteActivityRuleRepository
             .ExistsAsync(command.Title, command.UserId, default)
             .Returns(true);
@@ -61,7 +63,7 @@ public partial class CreateActivityRuleCommandHandlerTests
     {
         //arrange
        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
-            "Rule title", Mode.EveryDayMode, null);
+            "Rule title", "Rule note",Mode.EveryDayMode, null);
        _readWriteActivityRuleRepository
             .ExistsAsync(command.Title, command.UserId, default)
             .Returns(true);

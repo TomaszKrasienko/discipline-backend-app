@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using discipline.centre.activityrules.application.ActivityRules.DTOs;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.ValueObjects;
+using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.activityrules.infrastructure.DAL.Documents;
 using discipline.centre.activityrules.tests.sharedkernel.Domain;
 using discipline.centre.integration_tests.shared;

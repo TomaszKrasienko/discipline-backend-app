@@ -7,5 +7,5 @@ namespace discipline.centre.activityrules.application.ActivityRules.DTOs;
 public static class UpdateActivityRuleDtoMapperExtensions
 {
     public static UpdateActivityRuleCommand MapAsCommand(this UpdateActivityRuleDto dto, ActivityRuleId activityRuleId, UserId userId)
-        => new UpdateActivityRuleCommand(activityRuleId, userId, dto.Title, dto.Mode, dto.SelectedDays);
+        => new (activityRuleId, userId, dto.Title, dto.Note, dto.Mode, dto.SelectedDays);
 }
