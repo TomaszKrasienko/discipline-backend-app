@@ -3,6 +3,7 @@ using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.activityrules.tests.sharedkernel.Domain;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
+using Shouldly;
 
 namespace discipline.centre.activityrules.application.unit_tests.ActivityRules.Commands.UpdateActivityRule;
 
@@ -12,24 +13,24 @@ public partial class UpdateActivityRuleCommandHandlerTests
     {
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", Mode.EveryDayMode, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", null, Mode.EveryDayMode, null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", Mode.CustomMode, [1, 2, 3])
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", "test_note", Mode.CustomMode, [1, 2, 3])
         ];
     }
     
     public static IEnumerable<object[]> GetNotChangedUpdateActivityRuleData()
     {
         var activityRule1 = ActivityRuleFakeDateFactory.Get();
-        var command1 = new UpdateActivityRuleCommand(activityRule1.Id, activityRule1.UserId, activityRule1.Title,
-            activityRule1.Mode, null);
+        var command1 = new UpdateActivityRuleCommand(activityRule1.Id, activityRule1.UserId, activityRule1.Details.Title,
+            activityRule1.Details.Note, activityRule1.Mode, null);
 
         var selectedDays = new List<int> { 1, 2, 3 };
         var activityRule2 = ActivityRuleFakeDateFactory.Get(selectedDays);
-        var command2 = new UpdateActivityRuleCommand(activityRule2.Id, activityRule2.UserId, activityRule2.Title,
+        var command2 = new UpdateActivityRuleCommand(activityRule2.Id, activityRule2.UserId, activityRule2.Details.Title,
             activityRule2.Mode, selectedDays);
         
         yield return

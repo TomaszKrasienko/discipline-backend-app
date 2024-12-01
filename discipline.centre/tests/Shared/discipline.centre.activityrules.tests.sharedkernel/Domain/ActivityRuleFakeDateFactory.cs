@@ -8,7 +8,7 @@ namespace discipline.centre.activityrules.tests.sharedkernel.Domain;
 
 public static class ActivityRuleFakeDateFactory
 {
-    public static ActivityRule Get(List<int>? selectedDays = null)
+    public static ActivityRule Get(bool withNote = false, List<int>? selectedDays = null)
         => Get(1, selectedDays).Single();
     
     private static List<ActivityRule> Get(int count, List<int>? selectedDays = null)

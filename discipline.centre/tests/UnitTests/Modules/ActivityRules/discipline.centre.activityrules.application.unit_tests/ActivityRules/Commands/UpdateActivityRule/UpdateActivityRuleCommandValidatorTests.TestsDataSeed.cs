@@ -9,12 +9,12 @@ public partial class UpdateActivityRuleCommandValidatorTests
     {
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), "Title", "Mode",
-                null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), "test_title", null,
+                "test_mode", null)
         ];
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"Title", "Mode", [1,2])
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", "test_note","test_mode", [1,2])
         ];
     }
 
@@ -29,7 +29,7 @@ public partial class UpdateActivityRuleCommandValidatorTests
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title",
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), new string('t', 31),
                 string.Empty, null),
             nameof(UpdateActivityRuleCommand.Mode)
         ];

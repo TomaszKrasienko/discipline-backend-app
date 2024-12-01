@@ -37,7 +37,8 @@ public partial class UpdateActivityRuleCommandHandlerTests
         await _readWriteActivityRuleRepository
             .Received(1)
             .UpdateAsync(Arg.Is<ActivityRule>(arg 
-                => arg.Title == command.Title
+                => arg.Details.Title == command.Title
+                && arg.Details.Note == command.Note
                 && arg.Mode == command.Mode
                 && command.SelectedDays == null || arg.SelectedDays!.Values!.Select(x => (int)x).SequenceEqual(command.SelectedDays!)));
     }
