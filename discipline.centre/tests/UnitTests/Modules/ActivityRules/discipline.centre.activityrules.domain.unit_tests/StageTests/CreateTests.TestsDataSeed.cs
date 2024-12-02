@@ -8,22 +8,22 @@ public partial class CreateTests
     {
         yield return 
         [
-            new StageParams(StageId.New(), string.Empty, 1),
+            new CreateStageParams(StageId.New(), string.Empty, 1),
             "ActivityRule.Stage.Title.Empty"
         ];
         
         yield return 
         [
-            new StageParams(StageId.New(), new string('t', 31), 1),
+            new CreateStageParams(StageId.New(), new string('t', 31), 1),
             "ActivityRule.Stage.Title.TooLong"
         ];
         
         yield return 
         [
-            new StageParams(StageId.New(), "test_title", -1),
+            new CreateStageParams(StageId.New(), "test_title", -1), 
             "ActivityRule.Stage.Index.LessThanOne"
         ];
     }
 }
 
-public sealed record StageParams(StageId StageId, string Title, int Index);
+public sealed record CreateStageParams(StageId StageId, string Title, int Index);

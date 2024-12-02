@@ -48,7 +48,7 @@ public partial class UpdateActivityRuleCommandHandlerTests
     {
         //arrange
         var command = new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), "test_title",
-            Mode.EveryDayMode, null);
+            "test_note", Mode.EveryDayMode, null);
 
         _readWriteActivityRuleRepository
             .GetByIdAsync(command.Id, command.UserId)

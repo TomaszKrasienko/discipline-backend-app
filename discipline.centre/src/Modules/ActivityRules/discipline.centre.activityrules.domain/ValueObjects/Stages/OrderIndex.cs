@@ -10,7 +10,7 @@ public sealed class OrderIndex : ValueObject
     public int Value
     {
         get => _index;
-        set
+        private init
         {
             CheckRule(new IndexCannotBeLessThan1Rule(value));
             _index = value;
@@ -21,7 +21,7 @@ public sealed class OrderIndex : ValueObject
         => Value = value;
 
     public static OrderIndex Create(int value)
-        => new OrderIndex(value);
+        => new (value);
     
     public static implicit operator int (OrderIndex index)
         => index.Value;

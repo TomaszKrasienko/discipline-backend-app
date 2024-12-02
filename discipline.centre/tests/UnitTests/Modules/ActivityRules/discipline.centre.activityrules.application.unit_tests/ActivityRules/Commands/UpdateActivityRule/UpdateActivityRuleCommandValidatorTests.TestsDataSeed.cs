@@ -23,14 +23,14 @@ public partial class UpdateActivityRuleCommandValidatorTests
         yield return
         [
             new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),string.Empty,
-                "test_mode", null),
+                "test_note","test_mode", null),
             nameof(UpdateActivityRuleCommand.Title)
         ];
         
         yield return
         [
             new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), new string('t', 31),
-                string.Empty, null),
+                "test_note", string.Empty, null),
             nameof(UpdateActivityRuleCommand.Mode)
         ];
     }
