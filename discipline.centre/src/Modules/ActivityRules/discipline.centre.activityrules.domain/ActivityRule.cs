@@ -76,16 +76,16 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
        || (Mode.Value != mode)
        || (SelectedDays?.HasChanges(selectedDays) ?? selectedDays is not null);
 
-    public void AddStages(List<StageSpecification> stages)
+    private void AddStages(List<StageSpecification> stages)
+        => stages.ForEach(x => AddStage(x));
+
+    public Stage AddStage(StageSpecification stage)
     {
-        foreach (var stage in stages)
-        {
-            CheckRule(new StagesMustHaveOrderedIndexRule(_stages, stage));
-            CheckRule(new StageTitleMustBeUniqueRule(_stages, stage));
-            var newStage = Stage.Create(StageId.New(), stage.Title, stage.Index);
-            _stages ??= [];
-            _stages.Add(newStage);
-        }
-        
+        CheckRule(new StagesMustHaveOrderedIndexRule(_stages, stage));
+        CheckRule(new StageTitleMustBeUniqueRule(_stages, stage));
+        var newStage = Stage.Create(StageId.New(), stage.Title, stage.Index);
+        _stages ??= [];
+        _stages.Add(newStage);
+        return newStage;
     }
 }
