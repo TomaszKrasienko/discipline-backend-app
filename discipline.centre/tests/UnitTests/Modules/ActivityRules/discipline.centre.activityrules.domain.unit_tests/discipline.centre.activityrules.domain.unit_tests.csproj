@@ -35,6 +35,9 @@
       <Compile Update="StageTests\CreateTests.TestsDataSeed.cs">
         <DependentUpon>CreateTests.cs</DependentUpon>
       </Compile>
+      <Compile Update="ActivityRulesTests\HasChangesTests.TestsDataSeed.cs">
+        <DependentUpon>HasChangesTests.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
