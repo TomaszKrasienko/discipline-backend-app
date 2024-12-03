@@ -12,7 +12,7 @@ public partial class CreateTests
 {
     [Theory]
     [MemberData(nameof(GetValidCreateActivityRulesData))]
-    public void Create_GivenValidaArguments_ShouldReturnActivityRuleWithValues(CreateActivityRuleParams @params)
+    public void GivenValidaArguments_ShouldReturnActivityRuleWithValues(CreateActivityRuleParams @params)
     {
         //act
         var result = ActivityRule.Create(@params.Id!, @params.UserId!, @params.Title,
@@ -30,7 +30,7 @@ public partial class CreateTests
 
     [Theory]
     [MemberData(nameof(GetInvalidCreateActivityRulesData))]
-    public void Create_GivenInvalidArgument_ShouldReturnDomainExceptionWithCode(CreateActivityRuleParams @params, string code)
+    public void GivenInvalidArgument_ShouldReturnDomainExceptionWithCode(CreateActivityRuleParams @params, string code)
     {
         //act
         var exception = Record.Exception(() => ActivityRule.Create(@params.Id!, @params.UserId!, @params.Title,
@@ -43,7 +43,7 @@ public partial class CreateTests
     
     [Theory]
     [MemberData(nameof(GetValidModesForSelectedDays))]
-    public void Create_GivenModeForSelectedDaysAndNullSelectedDays_ShouldThrowDomainExceptionWithCode(string mode)
+    public void GivenModeForSelectedDaysAndNullSelectedDays_ShouldThrowDomainExceptionWithCode(string mode)
     {
         //act
         var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test_title",
@@ -56,7 +56,7 @@ public partial class CreateTests
 
     [Theory]
     [MemberData(nameof(GetInvalidModesForSelectedDays))]
-    public void Create_GivenInvalidModeForSelectedDays_ShouldThrowDomainExceptionWithCode(string mode)
+    public void GivenInvalidModeForSelectedDays_ShouldThrowDomainExceptionWithCode(string mode)
     {
         //act
         var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test_title",
