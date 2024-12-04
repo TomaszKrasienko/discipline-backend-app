@@ -53,32 +53,42 @@ public partial class UpdateActivityRuleCommandHandlerTests
     {
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),string.Empty, Mode.EveryDayMode, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification(string.Empty, null),Mode.EveryDayMode, null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),new string('t', 1), Mode.EveryDayMode, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
+                new ActivityRuleDetailsSpecification(new string('t', 1), null), 
+                Mode.EveryDayMode, null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),new string('t', 101), Mode.EveryDayMode, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
+                new ActivityRuleDetailsSpecification(new string('t', 101), null), 
+                Mode.EveryDayMode, null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", string.Empty, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
+                new ActivityRuleDetailsSpecification("test_title", null),
+                string.Empty, null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), "test_title", "test", null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification("test_title", null), "test", null)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", Mode.CustomMode, null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
+                new ActivityRuleDetailsSpecification("test_title", null),
+                Mode.CustomMode, null)
         ];
     }
 }
