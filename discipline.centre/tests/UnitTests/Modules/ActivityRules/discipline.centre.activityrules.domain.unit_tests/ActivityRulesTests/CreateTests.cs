@@ -12,29 +12,29 @@ public partial class CreateTests
 {
     [Theory]
     [MemberData(nameof(GetValidCreateActivityRulesData))]
-    public void GivenValidaArguments_ShouldReturnActivityRuleWithValues(CreateActivityRuleParams @params)
+    public void GivenValidaArguments_ShouldReturnActivityRuleWithValues(CreateActivityRuleParams parameters)
     {
         //act
-        var result = ActivityRule.Create(@params.Id!, @params.UserId!, @params.Details, 
-            @params.Mode, @params.SelectedDays, @params.Stages);
+        var result = ActivityRule.Create(parameters.Id!, parameters.UserId!, parameters.Details, 
+            parameters.Mode, parameters.SelectedDays, parameters.Stages);
         
         //assert
-        result.Id.ShouldBe(@params.Id);
-        result.UserId.ShouldBe(@params.UserId);
-        result.Details.Title.ShouldBe(@params.Details.Title);
-        result.Details.Note.ShouldBe(@params.Details.Note);
-        result.Mode.Value.ShouldBe(@params.Mode);
-        CompareSelectedDays(@params.SelectedDays, result.SelectedDays).ShouldBeTrue();
-        CompareStages(@params.Stages, result.Stages?.ToList()).ShouldBeTrue();
+        result.Id.ShouldBe(parameters.Id);
+        result.UserId.ShouldBe(parameters.UserId);
+        result.Details.Title.ShouldBe(parameters.Details.Title);
+        result.Details.Note.ShouldBe(parameters.Details.Note);
+        result.Mode.Value.ShouldBe(parameters.Mode);
+        CompareSelectedDays(parameters.SelectedDays, result.SelectedDays).ShouldBeTrue();
+        CompareStages(parameters.Stages, result.Stages?.ToList()).ShouldBeTrue();
     }
 
     [Theory]
     [MemberData(nameof(GetInvalidCreateActivityRulesData))]
-    public void GivenInvalidArgument_ShouldReturnDomainExceptionWithCode(CreateActivityRuleParams @params, string code)
+    public void GivenInvalidArgument_ShouldReturnDomainExceptionWithCode(CreateActivityRuleParams parameters, string code)
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(@params.Id!, @params.UserId!, @params.Details,
-            @params.Mode, @params.SelectedDays, @params.Stages));
+        var exception = Record.Exception(() => ActivityRule.Create(parameters.Id!, parameters.UserId!, parameters.Details,
+            parameters.Mode, parameters.SelectedDays, parameters.Stages));
         
         //assert
         exception.ShouldBeOfType<DomainException>();

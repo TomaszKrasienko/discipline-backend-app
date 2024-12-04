@@ -26,10 +26,10 @@ public partial class CreateTests
 
     [Theory]
     [MemberData(nameof(GetInvalidCreateStageData))]
-    public void Create_GivenInvalidArguments_ShouldThrowDomainExceptionWithCode(CreateStageParams @params, string code)
+    public void Create_GivenInvalidArguments_ShouldThrowDomainExceptionWithCode(CreateStageParams parameters, string code)
     {
         //act
-        var exception = Record.Exception(() => Stage.Create(@params.StageId, @params.Title, @params.Index));
+        var exception = Record.Exception(() => Stage.Create(parameters.StageId, parameters.Title, parameters.Index));
         
         //assert
         exception.ShouldBeOfType<DomainException>();
