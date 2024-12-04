@@ -22,11 +22,11 @@ public partial class CreateActivityRuleCommandHandlerTests
     {
         //arrange
         var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
-            "test_title", "test_note", Mode.CustomMode, [1], 
+            new ActivityRuleDetailsSpecification("test_title", "test_note"), Mode.CustomMode, [1], 
             [new StageSpecification("test_stage_title", 1)]);
         
         _readWriteActivityRuleRepository
-            .ExistsAsync(command.Title, command.UserId, default)
+            .ExistsAsync(command.Details.Title, command.UserId, default)
             .Returns(false);
 
         //act
@@ -37,8 +37,8 @@ public partial class CreateActivityRuleCommandHandlerTests
             .Received(1)
             .AddAsync(Arg.Is<ActivityRule>(arg
                 => arg.Id == command.Id
-                   && arg.Details.Title == command.Title
-                   && arg.Details.Note == command.Note
+                   && arg.Details.Title == command.Details.Title
+                   && arg.Details.Note == command.Details.Note
                    && arg.Mode.Value == command.Mode));
     }
     
@@ -47,9 +47,10 @@ public partial class CreateActivityRuleCommandHandlerTests
     {
         //arrange
         var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
-            "Rule title", "Rule note", Mode.EveryDayMode, null, null);
+            new ActivityRuleDetailsSpecification("Rule title", "Rule note"),
+            Mode.EveryDayMode, null, null);
         _readWriteActivityRuleRepository
-            .ExistsAsync(command.Title, command.UserId, default)
+            .ExistsAsync(command.Details.Title, command.UserId, default)
             .Returns(true);
 
         //act
@@ -64,10 +65,10 @@ public partial class CreateActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenAlreadyRegisteredRuleTitle_ShouldNotAddAnyActivityRuleByRepository()
     {
         //arrange
-       var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
-            "Rule title", "Rule note",Mode.EveryDayMode, null, null);
+       var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), new ActivityRuleDetailsSpecification(
+           "Rule title", "Rule note"), Mode.EveryDayMode, null, null);
        _readWriteActivityRuleRepository
-            .ExistsAsync(command.Title, command.UserId, default)
+            .ExistsAsync(command.Details.Title, command.UserId, default)
             .Returns(true);
 
         //act
@@ -85,7 +86,7 @@ public partial class CreateActivityRuleCommandHandlerTests
     {
         //arrange
         _readWriteActivityRuleRepository
-            .ExistsAsync(command.Title, command.UserId, default)
+            .ExistsAsync(command.Details.Title, command.UserId, default)
             .Returns(false);
         
         //act

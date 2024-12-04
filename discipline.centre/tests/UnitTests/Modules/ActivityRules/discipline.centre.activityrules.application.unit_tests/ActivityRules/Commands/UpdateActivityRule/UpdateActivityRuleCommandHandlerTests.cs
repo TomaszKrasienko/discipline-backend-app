@@ -1,6 +1,7 @@
 using discipline.centre.activityrules.application.ActivityRules.Commands;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.Repositories;
+using discipline.centre.activityrules.domain.Specifications;
 using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.activityrules.tests.sharedkernel.Domain;
@@ -37,8 +38,8 @@ public partial class UpdateActivityRuleCommandHandlerTests
         await _readWriteActivityRuleRepository
             .Received(1)
             .UpdateAsync(Arg.Is<ActivityRule>(arg 
-                => arg.Details.Title == command.Title
-                && arg.Details.Note == command.Note
+                => arg.Details.Title == command.Details.Title
+                && arg.Details.Note == command.Details.Note
                 && arg.Mode == command.Mode
                 && command.SelectedDays == null || arg.SelectedDays!.Values!.Select(x => (int)x).SequenceEqual(command.SelectedDays!)));
     }
@@ -47,8 +48,8 @@ public partial class UpdateActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingActivityRule_ShouldThrowNotFoundException()
     {
         //arrange
-        var command = new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), "test_title",
-            "test_note", Mode.EveryDayMode, null);
+        var command = new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
+            new ActivityRuleDetailsSpecification("test_title", "test_note"), Mode.EveryDayMode, null);
 
         _readWriteActivityRuleRepository
             .GetByIdAsync(command.Id, command.UserId)

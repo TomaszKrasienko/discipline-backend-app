@@ -22,7 +22,7 @@ public sealed class UpdateActivityRuleDtoMapperExtensionsTests
         //assert
         result.Id.ShouldBe(id);
         result.UserId.ShouldBe(userId);
-        result.Title.ShouldBe(dto.Title);
+        result.Details.Title.ShouldBe(dto.Details.Title);
         result.Mode.ShouldBe(dto.Mode);
         result.SelectedDays.ShouldBeEquivalentTo(dto.SelectedDays);
     }
