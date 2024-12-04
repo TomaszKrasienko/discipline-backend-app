@@ -27,7 +27,7 @@ public partial class CreateActivityRuleCommandValidatorTests
             new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
                 new ActivityRuleDetailsSpecification(string.Empty, null),
                 "test_mode", null, null),
-            nameof(CreateActivityRuleCommand.Details.Title)
+            $"{nameof(CreateActivityRuleCommand.Details)}.{nameof(ActivityRuleDetailsSpecification.Title)}"
         ];
         
         yield return

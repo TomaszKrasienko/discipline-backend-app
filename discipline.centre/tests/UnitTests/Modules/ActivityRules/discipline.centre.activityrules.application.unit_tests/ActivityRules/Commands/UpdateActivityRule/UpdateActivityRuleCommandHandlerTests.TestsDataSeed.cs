@@ -60,14 +60,7 @@ public partial class UpdateActivityRuleCommandHandlerTests
         yield return
         [
             new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                new ActivityRuleDetailsSpecification(new string('t', 1), null), 
-                Mode.EveryDayMode, null)
-        ];
-        
-        yield return
-        [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
-                new ActivityRuleDetailsSpecification(new string('t', 101), null), 
+                new ActivityRuleDetailsSpecification(new string('t', 31), null), 
                 Mode.EveryDayMode, null)
         ];
         
