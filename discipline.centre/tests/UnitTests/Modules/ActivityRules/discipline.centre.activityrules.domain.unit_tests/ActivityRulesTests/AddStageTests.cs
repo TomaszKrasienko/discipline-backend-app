@@ -13,8 +13,9 @@ public sealed class AddStageTests
     public void ShouldAddStage_WhenStageIsNotNull()
     {
         //arrange
-        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test_title",
-            null, Mode.EveryDayMode, null, [new StageSpecification("test_stage_title1", 1)]);
+        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), 
+            new ActivityRuleDetailsSpecification("test_title", null),
+            Mode.EveryDayMode, null, [new StageSpecification("test_stage_title1", 1)]);
 
         var title = "test_stage_title2";
         var index = 2;
@@ -32,8 +33,9 @@ public sealed class AddStageTests
     public void ShouldCreateStagesListAndAddStage_WhenStageIsNull()
     {
         //arrange
-        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test_title",
-            null, Mode.EveryDayMode, null, null);
+        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), 
+            new ActivityRuleDetailsSpecification("test_title", null), Mode.EveryDayMode,
+            null, null);
 
         var title = "test_stage_title";
         var index = 1;
@@ -51,8 +53,9 @@ public sealed class AddStageTests
     public void ShouldThrowDomainExceptionWithCodeActivityRuleStagesMustHaveOrderedIndex_WhenStageHasInvalidIndex()
     {
         //arrange
-        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test_title",
-            null, Mode.EveryDayMode, null, [new StageSpecification("test_stage1", 1)]);
+        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), 
+            new ActivityRuleDetailsSpecification("test_title", null),
+            Mode.EveryDayMode, null, [new StageSpecification("test_stage1", 1)]);
         
         //act
         var exception = Record.Exception(() => activityRule.AddStage(new StageSpecification("test_stage3", 3)));
@@ -66,8 +69,9 @@ public sealed class AddStageTests
     public void ShouldThrowDomainExceptionWithCodeActivityRuleStagesStageTitleMustBeUnique_WhenStageHasNotUniqueTitle()
     {
         //arrange
-        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test_title",
-            null, Mode.EveryDayMode, null, [new StageSpecification("test_stage1", 1)]);
+        var activityRule = ActivityRule.Create(ActivityRuleId.New(), UserId.New(), 
+            new ActivityRuleDetailsSpecification("test_title", null),
+            Mode.EveryDayMode, null, [new StageSpecification("test_stage1", 1)]);
         
         //act
         var exception = Record.Exception(() => activityRule.AddStage(new StageSpecification("test_stage1", 2)));

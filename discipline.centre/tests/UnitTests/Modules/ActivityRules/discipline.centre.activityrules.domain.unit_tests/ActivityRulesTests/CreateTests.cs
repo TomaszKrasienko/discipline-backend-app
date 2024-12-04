@@ -15,14 +15,14 @@ public partial class CreateTests
     public void GivenValidaArguments_ShouldReturnActivityRuleWithValues(CreateActivityRuleParams @params)
     {
         //act
-        var result = ActivityRule.Create(@params.Id!, @params.UserId!, @params.Title,
-             @params.Note, @params.Mode, @params.SelectedDays, @params.Stages);
+        var result = ActivityRule.Create(@params.Id!, @params.UserId!, @params.Details, 
+            @params.Mode, @params.SelectedDays, @params.Stages);
         
         //assert
         result.Id.ShouldBe(@params.Id);
         result.UserId.ShouldBe(@params.UserId);
-        result.Details.Title.ShouldBe(@params.Title);
-        result.Details.Note.ShouldBe(@params.Note);
+        result.Details.Title.ShouldBe(@params.Details.Title);
+        result.Details.Note.ShouldBe(@params.Details.Note);
         result.Mode.Value.ShouldBe(@params.Mode);
         CompareSelectedDays(@params.SelectedDays, result.SelectedDays).ShouldBeTrue();
         CompareStages(@params.Stages, result.Stages?.ToList()).ShouldBeTrue();
@@ -33,8 +33,8 @@ public partial class CreateTests
     public void GivenInvalidArgument_ShouldReturnDomainExceptionWithCode(CreateActivityRuleParams @params, string code)
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(@params.Id!, @params.UserId!, @params.Title,
-            @params.Note, @params.Mode, @params.SelectedDays, @params.Stages));
+        var exception = Record.Exception(() => ActivityRule.Create(@params.Id!, @params.UserId!, @params.Details,
+            @params.Mode, @params.SelectedDays, @params.Stages));
         
         //assert
         exception.ShouldBeOfType<DomainException>();
@@ -46,8 +46,8 @@ public partial class CreateTests
     public void GivenModeForSelectedDaysAndNullSelectedDays_ShouldThrowDomainExceptionWithCode(string mode)
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test_title",
-            null, mode, null));
+        var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(), 
+            new ActivityRuleDetailsSpecification("test_title", null), mode, null));
         
         //assert
         exception.ShouldBeOfType<DomainException>();
@@ -59,8 +59,8 @@ public partial class CreateTests
     public void GivenInvalidModeForSelectedDays_ShouldThrowDomainExceptionWithCode(string mode)
     {
         //act
-        var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(), "test_title",
-            null, mode, [1,2,3]));
+        var exception = Record.Exception(() => ActivityRule.Create(ActivityRuleId.New(), UserId.New(), 
+            new ActivityRuleDetailsSpecification("test_title", null), mode, [1,2,3]));
         
         //assert
         exception.ShouldBeOfType<DomainException>();

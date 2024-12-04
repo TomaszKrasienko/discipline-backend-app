@@ -1,4 +1,5 @@
 using discipline.centre.activityrules.application.ActivityRules.Commands;
+using discipline.centre.activityrules.domain.Specifications;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.activityrules.application.unit_tests.ActivityRules.Commands.UpdateActivityRule;
@@ -9,12 +10,13 @@ public partial class UpdateActivityRuleCommandValidatorTests
     {
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), "test_title", null,
-                "test_mode", null)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), new ActivityRuleDetailsSpecification("test_title",
+                null),"test_mode", null)
         ];
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),"test_title", "test_note","test_mode", [1,2])
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),new ActivityRuleDetailsSpecification("test_title",
+                "test_note"),"test_mode", [1,2])
         ];
     }
 
@@ -22,15 +24,15 @@ public partial class UpdateActivityRuleCommandValidatorTests
     {
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),string.Empty,
-                "test_note","test_mode", null),
-            nameof(UpdateActivityRuleCommand.Title)
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(),
+            new ActivityRuleDetailsSpecification(string.Empty, "test_note"),"test_mode", null),
+            nameof(UpdateActivityRuleCommand.Details.Title)
         ];
         
         yield return
         [
-            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), new string('t', 31),
-                "test_note", string.Empty, null),
+            new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), new ActivityRuleDetailsSpecification(
+                    new string('t', 31), "test_note"), string.Empty, null),
             nameof(UpdateActivityRuleCommand.Mode)
         ];
     }

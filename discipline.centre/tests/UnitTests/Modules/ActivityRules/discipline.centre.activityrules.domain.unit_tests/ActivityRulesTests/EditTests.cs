@@ -1,3 +1,4 @@
+using discipline.centre.activityrules.domain.Specifications;
 using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.activityrules.tests.sharedkernel.Domain;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
@@ -16,11 +17,11 @@ public partial class EditTests
         var activityRule = ActivityRuleFakeDateFactory.Get();
         
         //act
-        activityRule.Edit(@params.Title, @params.Note, @params.Mode, @params.SelectedDays);
+        activityRule.Edit(@params.Details, @params.Mode, @params.SelectedDays);
         
         //assert
-        activityRule.Details.Title.ShouldBe(@params.Title);
-        activityRule.Details.Note.ShouldBe(@params.Note);
+        activityRule.Details.Title.ShouldBe(@params.Details.Title);
+        activityRule.Details.Note.ShouldBe(@params.Details.Note);
         activityRule.Mode.Value.ShouldBe(@params.Mode);
         CompareSelectedDays(@params.SelectedDays, activityRule.SelectedDays).ShouldBeTrue();
     }
@@ -30,7 +31,7 @@ public partial class EditTests
     public void Edit_HasAtLeastOneChangedParameter_ShouldNotThrowException(ActivityRule activityRule, EditActivityRuleParams @params)
     {
         //act
-        var exception = Record.Exception(() => activityRule.Edit(@params.Title, @params.Note, @params.Mode, 
+        var exception = Record.Exception(() => activityRule.Edit(@params.Details, @params.Mode, 
             @params.SelectedDays));
         
         //assert
@@ -42,7 +43,7 @@ public partial class EditTests
     public void Edit_HasUnchangedParameters_ShouldThrowDomainExceptionWithCode(ActivityRule activityRule, EditActivityRuleParams @params)
     {
         //act
-        var exception = Record.Exception(() => activityRule.Edit(@params.Title, @params.Note, @params.Mode, @params.SelectedDays));
+        var exception = Record.Exception(() => activityRule.Edit(@params.Details, @params.Mode, @params.SelectedDays));
         
         //assert
         exception.ShouldBeOfType<DomainException>();
@@ -57,7 +58,7 @@ public partial class EditTests
         var activityRule = ActivityRuleFakeDateFactory.Get();
         
         //act
-        var exception = Record.Exception(() => activityRule.Edit( @params.Title, @params.Note, @params.Mode, @params.SelectedDays));
+        var exception = Record.Exception(() => activityRule.Edit( @params.Details, @params.Mode, @params.SelectedDays));
         
         //assert
         exception.ShouldBeOfType<DomainException>();
@@ -72,8 +73,8 @@ public partial class EditTests
         var activityRule = ActivityRuleFakeDateFactory.Get();
         
         //act
-        var exception = Record.Exception(() => activityRule.Edit("test_title", null,
-            mode, null));
+        var exception = Record.Exception(() => activityRule.Edit(new ActivityRuleDetailsSpecification("test_title", 
+            null), mode, null));
         
         //assert
         exception.ShouldBeOfType<DomainException>();
@@ -88,7 +89,8 @@ public partial class EditTests
         var activityRule = ActivityRuleFakeDateFactory.Get();
         
         //act
-        var exception = Record.Exception(() => activityRule.Edit("test_title", null, mode, [1,2,3]));
+        var exception = Record.Exception(() => activityRule.Edit(new ActivityRuleDetailsSpecification("test_title", 
+            null), mode, [1,2,3]));
         
         //assert
         exception.ShouldBeOfType<DomainException>();

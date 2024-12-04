@@ -8,5 +8,6 @@ public static class CreateActivityRuleDtoMapperExtensions
 {
     public static CreateActivityRuleCommand MapAsCommand(this CreateActivityRuleDto dto, ActivityRuleId activityRuleId,
         UserId userId)
-        => new CreateActivityRuleCommand(activityRuleId, userId, dto.Title, dto.Note, dto.Mode, dto.SelectedDays);
+        => new (activityRuleId, userId, dto.Details, dto.Mode, dto.SelectedDays,
+            dto.Stages);
 }

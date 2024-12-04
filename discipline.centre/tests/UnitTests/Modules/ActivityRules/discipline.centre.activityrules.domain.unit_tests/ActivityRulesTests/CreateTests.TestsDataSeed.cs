@@ -10,18 +10,21 @@ public partial class CreateTests
     {
         yield return
         [
-            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), "test_title",null,Mode.EveryDayMode)
+            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification("test_title",null),Mode.EveryDayMode)
         ];
         
         yield return
         [
-            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), "test_title","test_note",
+            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification("test_title","test_note"),
                 Mode.CustomMode, [1,2,3])
         ];
 
         yield return
         [
-            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), "test_title", "test_note",
+            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification("test_title", "test_note"),
                 Mode.EveryDayMode, null, [new StageSpecification("test_stage1", 1),
                     new StageSpecification("test_stage2", 2)])
         ];
@@ -32,39 +35,45 @@ public partial class CreateTests
     {
         yield return
         [
-            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), string.Empty, null,Mode.EveryDayMode),
+            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification(string.Empty, null),Mode.EveryDayMode),
                 "ActivityRule.Details.Title.Empty"
         ];
         
         yield return
         [
-            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), "test_title", null, string.Empty),
+            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification("test_title", null), string.Empty),
             "ActivityRule.Mode.Empty"
         ];
         
         yield return
         [
-            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), "test_title", null, "test_mode"),
+            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification("test_title", null), "test_mode"),
             "ActivityRule.Mode.Unavailable"
         ];
         
         yield return
         [
-            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), "test_title", null, Mode.CustomMode, 
+            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification("test_title", null), Mode.CustomMode, 
                 [-1, 2, 3]),
             "ActivityRule.SelectedDay.OutOfRange"
         ];
         
         yield return
         [
-            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), "test_title", null,Mode.CustomMode, 
+            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification("test_title", null), Mode.CustomMode, 
                 [1, 7, 3]),
             "ActivityRule.SelectedDay.OutOfRange"
         ];
         
         yield return
         [
-            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), "test_title", null,
+            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification("test_title", null),
                 Mode.EveryDayMode, null, [new StageSpecification("test_stage1", 1),
                     new StageSpecification("test_stage2", 3)]),
             "ActivityRule.Stages.MustHaveOrderedIndex"
@@ -72,7 +81,8 @@ public partial class CreateTests
         
         yield return
         [
-            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), "test_title", null,
+            new CreateActivityRuleParams(ActivityRuleId.New(), UserId.New(), 
+                new ActivityRuleDetailsSpecification("test_title", null),
                 Mode.EveryDayMode, null, [new StageSpecification("test_stage1", 1),
                     new StageSpecification("test_stage1", 2)]),
             "ActivityRule.Stages.StageTitleMustBeUnique"
@@ -93,6 +103,7 @@ public partial class CreateTests
         yield return [Mode.LastDayOfMonthMode];
     }
     
-    public sealed record CreateActivityRuleParams(ActivityRuleId Id, UserId UserId, string Title, string? Note, string Mode,
+    public sealed record CreateActivityRuleParams(ActivityRuleId Id, UserId UserId, 
+        ActivityRuleDetailsSpecification Details, string Mode,
         List<int>? SelectedDays = null, List<StageSpecification>? Stages = null);
 }

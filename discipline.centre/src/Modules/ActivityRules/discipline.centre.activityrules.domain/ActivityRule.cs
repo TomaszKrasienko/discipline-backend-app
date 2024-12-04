@@ -37,13 +37,13 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
         SelectedDays = selectedDays;
     }
     
-    public static ActivityRule Create(ActivityRuleId id, UserId userId, string title, string? note, string mode, 
+    public static ActivityRule Create(ActivityRuleId id, UserId userId, ActivityRuleDetailsSpecification details, string mode, 
         List<int>? selectedDays = null, List<StageSpecification>? stages = null)
     {
         Validate(mode, selectedDays);
-        var details = Details.Create(title, note);
+        var activityRuleDetails = Details.Create(details.Title, details.Note);
         var days = selectedDays is not null ? SelectedDays.Create(selectedDays) : null;
-        var activityRule = new ActivityRule(id, userId, details, mode, days);
+        var activityRule = new ActivityRule(id, userId, activityRuleDetails, mode, days);
         if (stages is not null)
         {
             activityRule.AddStages(stages);
@@ -52,15 +52,15 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
         return activityRule;
     }
 
-    public void Edit(string title, string? note, string mode, List<int>? selectedDays = null)
+    public void Edit(ActivityRuleDetailsSpecification details, string mode, List<int>? selectedDays = null)
     {
-        if (!HasChanges(title, note, mode, selectedDays))
+        if (!HasChanges(details, mode, selectedDays))
         {
             throw new DomainException("ActivityRule.NoChanges",
                 "Activity rule has no changes");
         }
         Validate(mode, selectedDays);
-        Details = Details.Create(title, note);
+        Details = Details.Create(details.Title, details.Note);
         Mode = mode;
         SelectedDays = selectedDays is not null ? SelectedDays.Create(selectedDays) : null;
     }
@@ -71,8 +71,8 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
         CheckRule(new ModeMustHaveFilledSelectedDays(mode, selectedDays));   
     }
     
-    public bool HasChanges(string title, string? note, string? mode, List<int>? selectedDays = null)
-        => (Details.HasChanges(title, note))
+    public bool HasChanges(ActivityRuleDetailsSpecification details, string? mode, List<int>? selectedDays = null)
+        => (Details.HasChanges(details.Title, details.Note))
        || (Mode.Value != mode)
        || (SelectedDays?.HasChanges(selectedDays) ?? selectedDays is not null);
 

@@ -1,6 +1,7 @@
 using discipline.centre.activityrules.application.ActivityRules.Commands;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.Repositories;
+using discipline.centre.activityrules.domain.Specifications;
 using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.shared.abstractions.CQRS.Commands;
@@ -21,7 +22,8 @@ public partial class CreateActivityRuleCommandHandlerTests
     {
         //arrange
         var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
-            "Rule title", "Rule note", Mode.EveryDayMode, null);
+            "test_title", "test_note", Mode.CustomMode, [1], 
+            [new StageSpecification("test_stage_title", 1)]);
         
         _readWriteActivityRuleRepository
             .ExistsAsync(command.Title, command.UserId, default)
@@ -45,7 +47,7 @@ public partial class CreateActivityRuleCommandHandlerTests
     {
         //arrange
         var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
-            "Rule title", "Rule note", Mode.EveryDayMode, null);
+            "Rule title", "Rule note", Mode.EveryDayMode, null, null);
         _readWriteActivityRuleRepository
             .ExistsAsync(command.Title, command.UserId, default)
             .Returns(true);
@@ -63,7 +65,7 @@ public partial class CreateActivityRuleCommandHandlerTests
     {
         //arrange
        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
-            "Rule title", "Rule note",Mode.EveryDayMode, null);
+            "Rule title", "Rule note",Mode.EveryDayMode, null, null);
        _readWriteActivityRuleRepository
             .ExistsAsync(command.Title, command.UserId, default)
             .Returns(true);

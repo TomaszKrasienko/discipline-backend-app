@@ -10,7 +10,7 @@ public partial class HasChangesTests
     public void GivenAtLeastOneChangedParameter_ShouldReturnTrue(ActivityRule activityRule, HasChangesParameters parameters)
     {
         //act
-        var result = activityRule.HasChanges(parameters.Title, parameters.Note, parameters.Mode, parameters.SelectedDays);
+        var result = activityRule.HasChanges(parameters.Details, parameters.Mode, parameters.SelectedDays);
         
         //assert
         result.ShouldBeTrue();
@@ -21,7 +21,7 @@ public partial class HasChangesTests
     public void GivenAllUnchangedParameters_ShouldReturnFalse(ActivityRule activityRule, HasChangesParameters parameters)
     {
         //act
-        var result = activityRule.HasChanges(parameters.Title, parameters.Note, parameters.Mode, parameters.SelectedDays);
+        var result = activityRule.HasChanges(parameters.Details, parameters.Mode, parameters.SelectedDays);
         
         //assert
         result.ShouldBeFalse();
