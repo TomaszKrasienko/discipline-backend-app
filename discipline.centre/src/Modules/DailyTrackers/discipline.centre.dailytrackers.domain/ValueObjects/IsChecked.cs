@@ -1,6 +1,6 @@
 using discipline.centre.shared.abstractions.SharedKernel;
 
-namespace discipline.centre.dailytrackers.domain.ValueObjects.Activities;
+namespace discipline.centre.dailytrackers.domain.ValueObjects;
 
 public sealed class IsChecked : ValueObject
 {
