@@ -5,7 +5,7 @@ namespace discipline.centre.dailytrackers.domain.Rules.Stages;
 
 internal sealed class IndexCannotBeLessThan1Rule(int value) : IBusinessRule
 {
-    public Exception Exception => new DomainException("DailyTracker.Activity.Stage.Index.LessThanOne",
+    public Exception Exception => new DomainException("DailyTracker.Stage.Index.LessThanOne",
         "Stage index cannot be less than 1.");
 
     public bool IsBroken()

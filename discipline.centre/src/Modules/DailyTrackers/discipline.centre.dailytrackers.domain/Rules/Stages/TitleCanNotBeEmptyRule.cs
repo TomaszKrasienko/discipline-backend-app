@@ -5,7 +5,7 @@ namespace discipline.centre.dailytrackers.domain.Rules.Stages;
 
 internal sealed class TitleCanNotBeEmptyRule(string value) : IBusinessRule
 {
-    public Exception Exception => new DomainException("ActivityRule.Stage.Title.Empty",
+    public Exception Exception => new DomainException("DailyTracker.Stage.Title.Empty",
         "Activity rule title can not be empty");
 
     public bool IsBroken()

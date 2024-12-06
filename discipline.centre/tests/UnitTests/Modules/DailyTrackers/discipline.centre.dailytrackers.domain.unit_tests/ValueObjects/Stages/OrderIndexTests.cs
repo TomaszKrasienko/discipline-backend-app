@@ -28,6 +28,6 @@ public sealed class OrderIndexTests
         
         //assert
         exception.ShouldBeOfType<DomainException>();
-        ((DomainException)exception).Code.ShouldBe("DailyTracker.Activity.Stage.Index.LessThanOne");
+        ((DomainException)exception).Code.ShouldBe("DailyTracker.Stage.Index.LessThanOne");
     }
 }

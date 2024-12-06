@@ -9,5 +9,9 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.dailytrackers.domain.unit_tests"/>
+    </ItemGroup>
 
 </Project>

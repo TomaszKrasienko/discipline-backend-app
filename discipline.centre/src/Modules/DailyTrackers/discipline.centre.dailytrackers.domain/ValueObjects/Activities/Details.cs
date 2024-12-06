@@ -12,8 +12,8 @@ public sealed class Details : ValueObject
         get => _title;
         private init
         {
-            CheckRule(new TitleCannotBeEmptyRule(value));
-            CheckRule(new TitleCannotBeLongerThan20Rule(value));
+            CheckRule(new DetailsTitleCannotBeEmptyRule(value));
+            CheckRule(new DetailsTitleCannotBeLongerThan30Rule(value));
             _title = value.Trim();
         }
     }

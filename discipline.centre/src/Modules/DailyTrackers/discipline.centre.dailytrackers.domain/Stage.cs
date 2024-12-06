@@ -22,5 +22,5 @@ public sealed class Stage : Entity<StageId>
     }
     
     internal static Stage Create(StageId stageId, string title, int index)
-        => new Stage(stageId, title, index, false);
+        => new (stageId, title, index, false);
 }
