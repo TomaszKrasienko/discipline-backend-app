@@ -27,7 +27,7 @@ public sealed class Activity : Entity<ActivityId>
     }
 
     internal static Activity Create(ActivityId activityId, ActivityDetailsSpecification details,
-        ActivityRuleId? parentActivityRuleId, List<StageSpecification> stages)
+        ActivityRuleId? parentActivityRuleId, List<StageSpecification>? stages)
     {
         var activityDetails = Details.Create(details.Title, details.Note);
         var activity = new Activity(activityId, activityDetails, true, 
