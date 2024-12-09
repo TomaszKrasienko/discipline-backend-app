@@ -1,3 +1,4 @@
+using discipline.centre.dailytrackers.domain.Rules.Stages;
 using discipline.centre.dailytrackers.domain.Specifications;
 using discipline.centre.dailytrackers.domain.ValueObjects;
 using discipline.centre.dailytrackers.domain.ValueObjects.Activities;
@@ -32,6 +33,24 @@ public sealed class Activity : Entity<ActivityId>
         var activityDetails = Details.Create(details.Title, details.Note);
         var activity = new Activity(activityId, activityDetails, true, 
             parentActivityRuleId, null);
+        if (stages is not null)
+        {
+            activity.AddStages(stages);
+        }
+
         return activity;
+    }
+
+    private void AddStages(List<StageSpecification> stages)
+        => stages.ForEach(x => AddStage(x));
+
+    private Stage AddStage(StageSpecification stage)
+    {
+        CheckRule(new StagesMustHaveOrderedIndexRule(_stages, stage));
+        CheckRule(new StageTitleMustBeUniqueRule(_stages, stage));
+        var newStage = Stage.Create(StageId.New(), stage.Title, stage.Index);
+        _stages ??= [];
+        _stages.Add(newStage);
+        return newStage;
     }
 }
