@@ -21,10 +21,11 @@ internal static class ActivityRuleDocumentMappingExtensions
     internal static ActivityRuleDto MapAsDto(this ActivityRuleDocument document)
         => new()
         {
-            Id = Ulid.Parse(document.Id),
+            ActivityRuleIdId = ActivityRuleId.Parse(document.Id),
             Title = document.Title,
             Note = document.Note,
             Mode = document.Mode,
-            SelectedDays = document.SelectedDays?.ToList()
+            SelectedDays = document.SelectedDays?.ToList(),
+            Stages = document.Stages?.Select(x => x.MapAsDto()).ToList()
         };
 }

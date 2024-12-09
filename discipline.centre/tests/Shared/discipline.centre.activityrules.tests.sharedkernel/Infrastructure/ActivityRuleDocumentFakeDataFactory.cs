@@ -17,6 +17,7 @@ internal static class ActivityRuleDocumentFakeDataFactory
         => new Faker<ActivityRuleDocument>()
             .RuleFor(f => f.Id, v => Ulid.NewUlid().ToString())
             .RuleFor(f => f.Title, v => v.Random.String(length: 10, minChar: 'A', maxChar: 'z'))
+            .RuleFor(f => f.Note, v => v.Random.String(length: 10, minChar: 'A', maxChar: 'z'))
             .RuleFor(f => f.Mode,
                 v => selectedDays is null
                     ? v.PickRandom<string>(Mode.AvailableModes.Keys.Where(x => x != Mode.CustomMode).ToList())

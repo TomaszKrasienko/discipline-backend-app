@@ -1,3 +1,4 @@
+using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.DAL;
 using MongoDB.Bson.Serialization.Attributes;
 

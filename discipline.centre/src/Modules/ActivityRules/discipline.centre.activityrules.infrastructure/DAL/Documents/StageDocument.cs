@@ -7,7 +7,7 @@ internal sealed record StageDocument : IDocument
 {
     [BsonElement("id")]
     [BsonId]
-    public required string Id { get; init; }
+    public required string StageId { get; init; }
     
     [BsonElement("title")] 
     public required string Title { get; init; }
