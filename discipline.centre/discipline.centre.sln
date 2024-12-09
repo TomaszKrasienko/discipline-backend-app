@@ -88,6 +88,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{1613
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{1DEDCD3A-C32B-4E99-87F0-B53809A0CB82}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.application", "src\Modules\DailyTrackers\discipline.centre.dailytrackers.application\discipline.centre.dailytrackers.application.csproj", "{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -134,6 +136,7 @@ Global
 		{A114B134-7AC9-4336-A729-85F8983971F0} = {1DEDCD3A-C32B-4E99-87F0-B53809A0CB82}
 		{C621530B-01D3-489E-AA98-76555479E13D} = {74A65E38-E753-4294-AA8A-BD999C102C9E}
 		{62F5A7C0-E6B2-4F8A-A2B9-012BA1F2D56A} = {74A65E38-E753-4294-AA8A-BD999C102C9E}
+		{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73} = {BAF9F813-AECB-482A-92FD-7DF16F2A190F}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E8D4460A-0BBA-4AC1-B492-F5FF10286113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -232,5 +235,9 @@ Global
 		{E9331A47-A8F9-4157-B8D5-70ECE4FFBEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9331A47-A8F9-4157-B8D5-70ECE4FFBEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9331A47-A8F9-4157-B8D5-70ECE4FFBEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
