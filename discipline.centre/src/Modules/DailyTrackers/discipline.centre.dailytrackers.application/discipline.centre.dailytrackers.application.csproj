@@ -8,8 +8,4 @@
       <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="ActivityRules\Clients\DTOs\" />
-    </ItemGroup>
-
 </Project>
