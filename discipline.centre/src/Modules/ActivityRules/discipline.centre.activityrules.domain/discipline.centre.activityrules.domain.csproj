@@ -14,6 +14,7 @@
     
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.centre.activityrules.domain.unit_tests"/>
+        <InternalsVisibleTo Include="discipline.centre.activityrules.tests.sharedkernel"/>
     </ItemGroup>
 
 </Project>

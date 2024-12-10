@@ -23,7 +23,7 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
     public async Task Update_GivenExistingActivityRuleWithValidArguments_ShouldReturn204NoContentStatusCodeAndUpdateActivityRule()
     {
         //arrange
-        var activityRule = ActivityRuleFakeDateFactory.Get();
+        var activityRule = ActivityRuleFakeDataFactory.Get();
         var user = await AuthorizeWithFreeSubscriptionPicked();
         var activityRuleDocument = activityRule.MapAsDocument();
         activityRuleDocument.UserId = user.Id.ToString();
@@ -54,7 +54,7 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
     public async Task Update_GivenExistingActivityRuleWithInvalidArguments_ShouldReturn400BadRequestStatusCode()
     {
         //arrange
-        var activityRule = ActivityRuleFakeDateFactory.Get();
+        var activityRule = ActivityRuleFakeDataFactory.Get();
         await TestAppDb.GetCollection<ActivityRuleDocument>()
             .InsertOneAsync(activityRule.MapAsDocument());
 

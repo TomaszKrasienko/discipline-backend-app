@@ -47,7 +47,7 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
     {
         //arrange
         var user = await AuthorizeWithFreeSubscriptionPicked();
-        var activityRule = ActivityRuleFakeDateFactory.Get();
+        var activityRule = ActivityRuleFakeDataFactory.Get();
         var activityRuleDocument = activityRule.MapAsDocument();
         activityRuleDocument.UserId = user.Id.ToString();
             

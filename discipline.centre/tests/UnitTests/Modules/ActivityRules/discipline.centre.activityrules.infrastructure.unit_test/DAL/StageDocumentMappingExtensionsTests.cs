@@ -4,7 +4,7 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using Shouldly;
 using Xunit;
 
-namespace dicipline.centre.activityrules.infrastructure.unit_tests.DAL;
+namespace discipline.centre.activityrules.infrastructure.unit_tests.DAL;
 
 public sealed class StageDocumentMappingExtensionsTests
 {

@@ -18,7 +18,7 @@ public sealed class DeleteActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenExistingActivityRule_ShouldDeleteActivityRuleByRepository()
     {
         //arrange
-        var activityRule = ActivityRuleFakeDateFactory.Get();
+        var activityRule = ActivityRuleFakeDataFactory.Get();
 
         _readWriteActivityRuleRepository
             .GetByIdAsync(activityRule.Id, activityRule.UserId)

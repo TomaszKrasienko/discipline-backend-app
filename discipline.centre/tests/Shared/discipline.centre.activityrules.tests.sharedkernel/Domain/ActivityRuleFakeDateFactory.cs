@@ -7,7 +7,7 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.activityrules.tests.sharedkernel.Domain;
 
-public static class ActivityRuleFakeDateFactory
+public static class ActivityRuleFakeDataFactory
 {
     public static ActivityRule Get(bool withNote = false, List<int>? selectedDays = null)
         => Get(1, selectedDays).Single();

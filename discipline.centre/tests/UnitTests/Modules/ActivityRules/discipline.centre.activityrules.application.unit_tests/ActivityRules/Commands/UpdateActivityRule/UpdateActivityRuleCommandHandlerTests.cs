@@ -25,7 +25,7 @@ public partial class UpdateActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenValidData_ShouldUpdateByRepository(UpdateActivityRuleCommand command)
     {
         //arrange
-        var activityRule = ActivityRuleFakeDateFactory.Get();
+        var activityRule = ActivityRuleFakeDataFactory.Get();
 
         _readWriteActivityRuleRepository
             .GetByIdAsync(activityRule.Id, activityRule.UserId)
@@ -86,7 +86,7 @@ public partial class UpdateActivityRuleCommandHandlerTests
     public async Task Handle_GivenInvalidArguments_ShouldThrowDomainException(UpdateActivityRuleCommand command)
     {
         //arrange
-        var activityRule = ActivityRuleFakeDateFactory.Get();
+        var activityRule = ActivityRuleFakeDataFactory.Get();
 
         _readWriteActivityRuleRepository
             .GetByIdAsync(activityRule.Id, activityRule.UserId)
@@ -104,7 +104,7 @@ public partial class UpdateActivityRuleCommandHandlerTests
     public async Task Handle_GivenInvalidArguments_ShouldNotUpdateByRepository(UpdateActivityRuleCommand command)
     {
         //arrange
-        var activityRule = ActivityRuleFakeDateFactory.Get();
+        var activityRule = ActivityRuleFakeDataFactory.Get();
 
         _readWriteActivityRuleRepository
             .GetByIdAsync(activityRule.Id, activityRule.UserId)

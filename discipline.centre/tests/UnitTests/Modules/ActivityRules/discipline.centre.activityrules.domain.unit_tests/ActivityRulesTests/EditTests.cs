@@ -14,7 +14,7 @@ public partial class EditTests
     public void Edit_GivenValidaArguments_ShouldChangeActivityRule(EditActivityRuleParams parameters)
     {
         //arrange
-        var activityRule = ActivityRuleFakeDateFactory.Get();
+        var activityRule = ActivityRuleFakeDataFactory.Get();
         
         //act
         activityRule.Edit(parameters.Details, parameters.Mode, parameters.SelectedDays);
@@ -57,7 +57,7 @@ public partial class EditTests
     public void Edit_GivenInvalidArgument_ShouldReturnDomainExceptionWithCode(EditActivityRuleParams parameters, string code)
     {
         //arrange
-        var activityRule = ActivityRuleFakeDateFactory.Get();
+        var activityRule = ActivityRuleFakeDataFactory.Get();
         
         //act
         var exception = Record.Exception(() => activityRule.Edit( parameters.Details, parameters.Mode, parameters.SelectedDays));
@@ -72,7 +72,7 @@ public partial class EditTests
     public void Edit_GivenModeForSelectedDaysAndNullSelectedDays_ShouldThrowDomainExceptionWithCode(string mode)
     {
         //arrange
-        var activityRule = ActivityRuleFakeDateFactory.Get();
+        var activityRule = ActivityRuleFakeDataFactory.Get();
         
         //act
         var exception = Record.Exception(() => activityRule.Edit(new ActivityRuleDetailsSpecification("test_title", 
@@ -88,7 +88,7 @@ public partial class EditTests
     public void Edit_GivenInvalidModeForSelectedDays_ShouldThrowDomainExceptionWithCode(string mode)
     {
         //arrange
-        var activityRule = ActivityRuleFakeDateFactory.Get();
+        var activityRule = ActivityRuleFakeDataFactory.Get();
         
         //act
         var exception = Record.Exception(() => activityRule.Edit(new ActivityRuleDetailsSpecification("test_title", 

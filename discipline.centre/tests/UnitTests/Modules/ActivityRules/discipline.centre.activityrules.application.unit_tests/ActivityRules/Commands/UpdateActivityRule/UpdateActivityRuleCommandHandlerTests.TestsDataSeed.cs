@@ -27,13 +27,13 @@ public partial class UpdateActivityRuleCommandHandlerTests
     
     public static IEnumerable<object[]> GetNotChangedUpdateActivityRuleData()
     {
-        var activityRule1 = ActivityRuleFakeDateFactory.Get();
+        var activityRule1 = ActivityRuleFakeDataFactory.Get();
         var command1 = new UpdateActivityRuleCommand(activityRule1.Id, activityRule1.UserId, 
             new ActivityRuleDetailsSpecification(activityRule1.Details.Title, activityRule1.Details.Note),
             activityRule1.Mode, null);
 
         var selectedDays = new List<int> { 1, 2, 3 };
-        var activityRule2 = ActivityRuleFakeDateFactory.Get(false, selectedDays);
+        var activityRule2 = ActivityRuleFakeDataFactory.Get(false, selectedDays);
         var command2 = new UpdateActivityRuleCommand(activityRule2.Id, activityRule2.UserId, 
             new ActivityRuleDetailsSpecification(activityRule2.Details.Title, activityRule2.Details.Note),
             activityRule2.Mode, selectedDays);
