@@ -3,9 +3,12 @@
     <PropertyGroup>
         <RootNamespace>discipline.centre.dailytrackers.application</RootNamespace>
     </PropertyGroup>
-
     <ItemGroup>
       <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />
+      <ProjectReference Include="..\discipline.centre.dailytrackers.domain\discipline.centre.dailytrackers.domain.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.dailytrackers.application.unit_tests"/>
     </ItemGroup>
 
 </Project>
