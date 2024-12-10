@@ -4,7 +4,7 @@ namespace discipline.centre.dailytrackers.application.ActivityRules.Clients.DTOs
 
 public sealed record ActivityRuleDto
 {
-    public required ActivityRuleId ActivityRuleIdId { get; init; }
+    public required ActivityRuleId ActivityRuleId { get; init; }
     public required string Title { get; init; }
     public string? Note { get; init; }
     public required string Mode { get; init; }

@@ -1,4 +1,5 @@
 using discipline.centre.dailytrackers.application.ActivityRules.Clients;
+using discipline.centre.dailytrackers.application.ActivityRules.Clients.DTOs;
 using discipline.centre.dailytrackers.domain.Repositories;
 using discipline.centre.shared.abstractions.Clock;
 using discipline.centre.shared.abstractions.CQRS.Commands;
@@ -24,6 +25,14 @@ internal sealed class CreateActivityFromActivityRuleCommandHandler(
         {
             throw new AlreadyRegisteredException("CreateActivityFromActivityRuleCommand.Activity",
                 $"Activity from activity rule with ID: {command.ActivityRuleId} for {today} already exists.");
+        }
+        
+        var activityRule = await apiClient.GetActivityRuleByIdAsync(command.ActivityRuleId, command.UserId);
+        
+        if (activityRule is null)
+        {
+            throw new NotFoundException("CreateActivityFromActivityRuleCommand.ActivityRule",
+                nameof(ActivityRuleDto), command.ActivityRuleId.ToString());
         }
         
         
