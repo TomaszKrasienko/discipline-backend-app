@@ -22,6 +22,12 @@ public sealed class Day : ValueObject
     public static Day Create(DateOnly value)
         => new Day(value);
 
+    public static implicit operator DateOnly(Day day)
+        => day.Value;
+    
+    public static implicit operator Day(DateOnly value)
+        => Create(value);
+    
     protected override IEnumerable<object> GetAtomicValues()
     {
         yield return Value;

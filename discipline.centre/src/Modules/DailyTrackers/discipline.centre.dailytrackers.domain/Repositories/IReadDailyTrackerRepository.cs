@@ -4,6 +4,5 @@ namespace discipline.centre.dailytrackers.domain.Repositories;
 
 public interface IReadDailyTrackerRepository
 {
-    Task<bool> DoesActivityWithActivityRuleExistAsync(ActivityRuleId activityRuleId, UserId userId, DateOnly day,
-        CancellationToken cancellationToken); 
+    Task<DailyTracker> GetDailyTrackerByDayAsync(DateOnly day, UserId userId, CancellationToken cancellationToken = default);
 }

@@ -32,6 +32,9 @@
       <Compile Update="StageTests\CreateTests.DataSeed.cs">
         <DependentUpon>CreateTests.cs</DependentUpon>
       </Compile>
+      <Compile Update="DailyTrackerTests\CreateTests.DataSeed.cs">
+        <DependentUpon>CreateTests.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

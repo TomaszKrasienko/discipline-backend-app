@@ -1,6 +1,8 @@
 using discipline.centre.dailytrackers.application.ActivityRules.Clients;
 using discipline.centre.dailytrackers.application.ActivityRules.Clients.DTOs;
+using discipline.centre.dailytrackers.domain;
 using discipline.centre.dailytrackers.domain.Repositories;
+using discipline.centre.dailytrackers.domain.Specifications;
 using discipline.centre.shared.abstractions.Clock;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.Exceptions;
@@ -17,24 +19,39 @@ internal sealed class CreateActivityFromActivityRuleCommandHandler(
 {
     public async Task HandleAsync(CreateActivityFromActivityRuleCommand command, CancellationToken cancellationToken = default)
     {
-        var today = clock.DateNow();
-        var doesExists = await repository.DoesActivityWithActivityRuleExistAsync(command.ActivityRuleId, command.UserId,
-            today, cancellationToken);
-
-        if (doesExists)
-        {
-            throw new AlreadyRegisteredException("CreateActivityFromActivityRuleCommand.Activity",
-                $"Activity from activity rule with ID: {command.ActivityRuleId} for {today} already exists.");
-        }
-        
         var activityRule = await apiClient.GetActivityRuleByIdAsync(command.ActivityRuleId, command.UserId);
         
         if (activityRule is null)
         {
             throw new NotFoundException("CreateActivityFromActivityRuleCommand.ActivityRule",
                 nameof(ActivityRuleDto), command.ActivityRuleId.ToString());
+        }   
+
+        var today = clock.DateNow();
+        var dailyTracker = await repository.GetDailyTrackerByDayAsync(today, command.UserId, cancellationToken);
+
+        List<StageSpecification>? stages = null;
+        if (activityRule.Stages is not null)
+        {
+            stages = [];
+            foreach (var stage in activityRule.Stages.OrderBy(x => x.Index))
+            {
+                stages.Add(new StageSpecification(stage.Title, stage.Index));
+            }
         }
         
+        if (dailyTracker is not null)
+        {
+            dailyTracker.AddActivity(new ActivityDetailsSpecification(activityRule.Title, activityRule.Note),
+                command.ActivityRuleId, stages);
+            await repository.UpdateAsync(dailyTracker, cancellationToken);
+            return;
+        }
         
+        dailyTracker = DailyTracker.Create(DailyTrackerId.New(), today, command.UserId,
+            new ActivityDetailsSpecification(activityRule.Title, activityRule.Note),
+            command.ActivityRuleId, stages);
+        await repository.AddAsync(dailyTracker, cancellationToken);
     }
+    
 }
