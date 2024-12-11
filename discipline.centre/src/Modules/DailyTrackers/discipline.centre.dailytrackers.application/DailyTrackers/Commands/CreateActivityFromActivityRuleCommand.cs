@@ -30,20 +30,11 @@ internal sealed class CreateActivityFromActivityRuleCommandHandler(
         var today = clock.DateNow();
         var dailyTracker = await repository.GetDailyTrackerByDayAsync(today, command.UserId, cancellationToken);
 
-        List<StageSpecification>? stages = null;
-        if (activityRule.Stages is not null)
-        {
-            stages = [];
-            foreach (var stage in activityRule.Stages.OrderBy(x => x.Index))
-            {
-                stages.Add(new StageSpecification(stage.Title, stage.Index));
-            }
-        }
+        var stages = MapStages(activityRule);
         
         if (dailyTracker is not null)
         {
-            dailyTracker.AddActivity(new ActivityDetailsSpecification(activityRule.Title, activityRule.Note),
-                command.ActivityRuleId, stages);
+            AddActivity(dailyTracker, activityRule.Title, activityRule.Note, command.ActivityRuleId, stages);
             await repository.UpdateAsync(dailyTracker, cancellationToken);
             return;
         }
@@ -53,5 +44,23 @@ internal sealed class CreateActivityFromActivityRuleCommandHandler(
             command.ActivityRuleId, stages);
         await repository.AddAsync(dailyTracker, cancellationToken);
     }
+
+    private static List<StageSpecification>? MapStages(ActivityRuleDto activityRule)
+    {
+        List<StageSpecification>? stages = null;
+        if (activityRule.Stages is not null)
+        {
+            stages = [];
+            foreach (var stage in activityRule.Stages.OrderBy(x => x.Index))
+            {
+                stages.Add(new StageSpecification(stage.Title, stage.Index));
+            }
+        }
+        return stages;
+    }
     
+    private static void AddActivity(DailyTracker dailyTracker, string title, string? note,
+        ActivityRuleId? parentActivityRuleId, List<StageSpecification>? stages)
+        =>  dailyTracker.AddActivity(new ActivityDetailsSpecification(title, note), parentActivityRuleId,
+            stages);
 }
