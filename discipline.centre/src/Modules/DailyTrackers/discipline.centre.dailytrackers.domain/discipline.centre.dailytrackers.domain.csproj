@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <RootNamespace>discipline.centre.dailytrackers.domain</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,6 +10,7 @@
     
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.centre.dailytrackers.domain.unit_tests"/>
+        <InternalsVisibleTo Include="discipline.centre.dailytrackers.sharedkernel"/>
     </ItemGroup>
 
 </Project>

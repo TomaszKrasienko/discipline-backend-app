@@ -1,17 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <RootNamespace>discipline.centre.dailytrackers.infrastructure</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj" />
+      <ProjectReference Include="..\discipline.centre.dailytrackers.domain\discipline.centre.dailytrackers.domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="DAL\DailyTrackers\Repositories\" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.dailytrackers.infrastructure.unit_tests"/>
     </ItemGroup>
 
 </Project>
