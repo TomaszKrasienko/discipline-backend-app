@@ -1,8 +1,8 @@
 using discipline.centre.dailytrackers.application.ActivityRules.Clients;
 using discipline.centre.dailytrackers.infrastructure.Clients.ActivityRules;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace discipline.centre.dailytrackers.infrastructure.Clients.Configuration;
+// ReSharper disable once CheckNamespace
+namespace  Microsoft.Extensions.DependencyInjection;
 
 internal static class ApiClientsServiceConfigurationExtensions
 {

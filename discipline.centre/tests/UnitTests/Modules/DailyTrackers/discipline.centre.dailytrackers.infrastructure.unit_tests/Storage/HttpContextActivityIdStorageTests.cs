@@ -3,6 +3,7 @@ using discipline.centre.dailytrackers.infrastructure.Storage;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using Microsoft.AspNetCore.Http;
 using NSubstitute;
+using Shouldly;
 using Xunit;
 
 namespace discipline.centre.dailytrackers.infrastructure.unit_tests.Storage;
@@ -19,7 +20,33 @@ public sealed class HttpContextActivityIdStorageTests
         _storage.Set(activityId);
         
         //assert
-        _httpContextAccessor.HttpContext.Items.TryGetValue(activityId, out var result);
+        _httpContextAccessor.HttpContext!.Items.TryGetValue("activity_id", out var result).ShouldBeTrue();
+        result.ShouldBe(activityId);
+    }
+
+    [Fact]
+    public void Get_GivenActivityIdInHttpContext_ShouldReturnActivityId()
+    {
+        //arrange
+        var activityId = ActivityId.New();
+        _httpContextAccessor.HttpContext!.Items.Add("activity_id", activityId);
+        
+        //act
+        var result = _storage.Get();
+        
+        //assert
+        result.ShouldNotBeNull();
+        result.ShouldBe(activityId);
+    }
+
+    [Fact]
+    public void Get_NotGivenActivityIdInHttpContext_ShouldReturnNull()
+    {
+        //act
+        var result = _storage.Get();
+        
+        //assert
+        result.ShouldBeNull();
     }
 
     private readonly IHttpContextAccessor _httpContextAccessor;

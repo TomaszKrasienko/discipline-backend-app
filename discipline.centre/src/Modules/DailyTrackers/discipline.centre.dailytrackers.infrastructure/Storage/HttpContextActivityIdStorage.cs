@@ -8,14 +8,12 @@ internal sealed class HttpContextActivityIdStorage(
     IHttpContextAccessor httpContextAccessor) : IActivityIdStorage
 {
     private const string Key = "activity_id";
-    
+
     public void Set(ActivityId activityId)
-    {
-        throw new NotImplementedException();
-    }
+        => httpContextAccessor.HttpContext?.Items.Add(Key, activityId);
 
     public ActivityId? Get()
-    {
-        throw new NotImplementedException();
-    }
+        => httpContextAccessor.HttpContext!
+            .Items.TryGetValue(Key, out var result)
+            ? (ActivityId?)result : null;
 }
