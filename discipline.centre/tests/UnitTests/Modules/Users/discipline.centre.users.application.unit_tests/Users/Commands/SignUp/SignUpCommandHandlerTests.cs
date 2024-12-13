@@ -1,4 +1,3 @@
-using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.Events;
 using discipline.centre.shared.abstractions.Exceptions;
@@ -12,7 +11,7 @@ using NSubstitute;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.application.unit_tests.Users.Commands.SignUp;
+namespace discipline.centre.users.application.unit_tests.Users.Commands.SignUp;
 
 public sealed class SignUpCommandHandlerTests
 {

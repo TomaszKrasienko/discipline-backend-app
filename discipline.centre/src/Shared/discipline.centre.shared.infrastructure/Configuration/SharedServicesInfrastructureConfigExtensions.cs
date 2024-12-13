@@ -26,7 +26,8 @@ public static class SharedServicesInfrastructureConfigExtensions
             .AddExceptionsHandling()
             .AddValidation(assemblies)
             .AddIdentityContext()
-            .AddConstraints();
+            .AddConstraints()
+            .AddModule();
 
     private static IServiceCollection AddAppOptions(this IServiceCollection services, IConfiguration configuration)
         => services.ValidateAndBind<AppOptions, AppOptionsValidator>(configuration);

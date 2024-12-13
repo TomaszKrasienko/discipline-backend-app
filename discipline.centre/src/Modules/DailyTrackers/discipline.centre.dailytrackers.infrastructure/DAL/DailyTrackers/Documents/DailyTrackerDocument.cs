@@ -1,8 +1,9 @@
+using discipline.centre.shared.infrastructure.DAL;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Documents;
 
-public sealed record DailyTrackerDocument
+public sealed record DailyTrackerDocument : IDocument
 {
     [BsonId]
     [BsonElement("dailyTrackerId")]

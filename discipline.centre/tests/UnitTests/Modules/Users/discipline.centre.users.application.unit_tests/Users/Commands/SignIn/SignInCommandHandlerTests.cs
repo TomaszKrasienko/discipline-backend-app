@@ -10,7 +10,7 @@ using NSubstitute;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.application.unit_tests.Users.Commands.SignIn;
+namespace discipline.centre.users.application.unit_tests.Users.Commands.SignIn;
 
 public sealed class SignInCommandHandlerTests
 {

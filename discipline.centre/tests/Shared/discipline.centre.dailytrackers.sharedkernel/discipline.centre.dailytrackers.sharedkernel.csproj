@@ -8,7 +8,13 @@
     <ItemGroup>
         <PackageReference Include="Bogus" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.dailytrackers.infrastructure.unit_tests"/>
+    </ItemGroup>
+    
     <ItemGroup>
       <ProjectReference Include="..\..\..\src\Modules\DailyTrackers\discipline.centre.dailytrackers.domain\discipline.centre.dailytrackers.domain.csproj" />
+      <ProjectReference Include="..\..\..\src\Modules\DailyTrackers\discipline.centre.dailytrackers.infrastructure\discipline.centre.dailytrackers.infrastructure.csproj" />
     </ItemGroup>
 </Project>

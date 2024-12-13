@@ -6,7 +6,7 @@ using discipline.centre.users.domain.Subscriptions.Repositories;
 using NSubstitute;
 using Xunit;
 
-namespace discipline.centre.application.unit_tests.Subscriptions.Commands.CreateSubscription;
+namespace discipline.centre.users.application.unit_tests.Subscriptions.Commands.CreateSubscription;
 
 public sealed class CreateSubscriptionCommandHandlerTests
 {

@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 using discipline.centre.shared.abstractions.SharedKernel;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 
-namespace discipline.centre.activityrules.domain.Rules;
+namespace discipline.centre.activityrules.domain.Rules.ActivityRules;
 
 internal sealed class ModeCanNotBeUnavailableRule(string value, ImmutableList<string> availableValues) : IBusinessRule
 {

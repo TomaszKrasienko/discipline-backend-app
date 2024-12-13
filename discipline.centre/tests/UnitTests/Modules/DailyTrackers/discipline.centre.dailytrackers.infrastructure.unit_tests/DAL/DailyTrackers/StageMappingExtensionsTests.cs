@@ -1,5 +1,6 @@
+using discipline.centre.dailytrackers.domain;
+using discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Documents;
 using discipline.centre.dailytrackers.sharedkernel.Domain;
-using discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Mappers;
 using Shouldly;
 using Xunit;
 
@@ -8,18 +9,26 @@ namespace discipline.centre.dailytrackers.infrastructure.unit_tests.DAL.DailyTra
 public sealed class StageMappingExtensionsTests
 {
     [Fact]
-    public void MapAsDocument_GivenStage_ShouldReturnStageDocument()
+    public void MapAsDocument_GivenDailyTracker_ShouldReturnDailyTrackerDocument()
     {
         //arrange
-        var stage = StageFakeDataFactory.Get();
+        var stage = StageFakeDataFactory.Get(1);
+        var activity = ActivityFakeDataFactory.Get(true, true, [stage]);
+        var dailyTracker = DailyTrackerFakeDataFactory.Get(activity);
         
         //act
-        var document = stage.MapAsDocument();
+        var document = dailyTracker.MapAsDocument();
         
         //assert
-        document.StageId.ShouldBe(stage.Id.ToString());
-        document.Title.ShouldBe(stage.Title.Value);
-        document.Index.ShouldBe(stage.Index.Value);
-        document.IsChecked.ShouldBe(stage.IsChecked.Value);
+        document.DailyTrackerId.ShouldBe(dailyTracker.Id.ToString());
+        document.UserId.ShouldBe(dailyTracker.UserId.ToString());
+        document.Day.ShouldBe(document.Day);
+        document.Activities.First().Title.ShouldBe(activity.Details.Title);
+        document.Activities.First().Note.ShouldBe(activity.Details.Note);
+        document.Activities.First().ParentActivityRuleId.ShouldBe(activity.ParentActivityRuleId?.ToString());
+        document.Activities.First().IsChecked.ShouldBe(activity.IsChecked.Value);
+        document.Activities.First().Stages?.First().Title.ShouldBe(stage.Title);
+        document.Activities.First().Stages?.First().Index.ShouldBe(stage.Index.Value);
+        document.Activities.First().Stages?.First().IsChecked.ShouldBeFalse();
     }
 }

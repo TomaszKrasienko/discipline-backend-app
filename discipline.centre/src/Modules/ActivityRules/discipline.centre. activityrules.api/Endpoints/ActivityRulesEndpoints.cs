@@ -1,3 +1,4 @@
+using discipline.centre.activityrules.api;
 using discipline.centre.activityrules.application.ActivityRules.Commands;
 using discipline.centre.activityrules.application.ActivityRules.DTOs;
 using discipline.centre.activityrules.application.ActivityRules.Queries;
@@ -6,12 +7,11 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.Auth;
 using discipline.centre.shared.infrastructure.IdentityContext.Abstractions;
 using discipline.centre.shared.infrastructure.ResourceHeader;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 // ReSharper disable All
-namespace discipline.centre.activityrules.api.Endpoints;
+namespace Microsoft.AspNetCore.Builder;
 
 internal static class ActivityRulesEndpoints
 {

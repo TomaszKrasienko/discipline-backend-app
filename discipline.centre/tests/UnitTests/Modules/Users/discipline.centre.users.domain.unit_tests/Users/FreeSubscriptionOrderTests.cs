@@ -5,7 +5,7 @@ using discipline.centre.users.domain.Users;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.domain.unit_tests.Users;
+namespace discipline.centre.users.domain.unit_tests.Users;
 
 public class FreeSubscriptionOrderTests
 {

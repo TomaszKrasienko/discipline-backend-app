@@ -4,7 +4,7 @@ using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
 
-namespace discipline.centre.application.unit_tests.Users.Commands.SignUp;
+namespace discipline.centre.users.application.unit_tests.Users.Commands.SignUp;
 
 public sealed class SignUpCommandValidatorTests
 {

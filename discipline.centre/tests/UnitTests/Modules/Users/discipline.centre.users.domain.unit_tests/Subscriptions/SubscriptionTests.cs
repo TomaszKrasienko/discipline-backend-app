@@ -4,7 +4,7 @@ using discipline.centre.users.domain.Subscriptions;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.domain.unit_tests.Subscriptions;
+namespace discipline.centre.users.domain.unit_tests.Subscriptions;
 
 public class SubscriptionTests
 {

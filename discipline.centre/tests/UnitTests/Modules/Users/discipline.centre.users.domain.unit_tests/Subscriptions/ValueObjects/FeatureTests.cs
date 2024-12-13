@@ -3,7 +3,7 @@ using discipline.centre.users.domain.Subscriptions.ValueObjects;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.domain.unit_tests.Subscriptions.ValueObjects;
+namespace discipline.centre.users.domain.unit_tests.Subscriptions.ValueObjects;
 
 public sealed class FeatureTests
 {

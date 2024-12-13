@@ -3,7 +3,7 @@ using discipline.centre.users.domain.Users.ValueObjects.Users;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.domain.unit_tests.Users.ValueObjects.Users;
+namespace discipline.centre.users.domain.unit_tests.Users.ValueObjects.Users;
 
 public sealed class EmailTests
 {

@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using discipline.centre.activityrules.domain.Rules;
+using discipline.centre.activityrules.domain.Rules.ActivityRules;
 using discipline.centre.shared.abstractions.SharedKernel;
 
 namespace discipline.centre.activityrules.domain.ValueObjects.ActivityRules;

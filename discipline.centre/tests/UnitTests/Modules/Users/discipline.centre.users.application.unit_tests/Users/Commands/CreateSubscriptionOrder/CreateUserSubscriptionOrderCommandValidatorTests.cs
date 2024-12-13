@@ -5,7 +5,7 @@ using FluentValidation;
 using FluentValidation.TestHelper;
 using Xunit;
 
-namespace discipline.centre.application.unit_tests.Users.Commands.CreateSubscriptionOrder;
+namespace discipline.centre.users.application.unit_tests.Users.Commands.CreateSubscriptionOrder;
 
 public sealed class CreateUserSubscriptionOrderCommandValidatorTests
 {

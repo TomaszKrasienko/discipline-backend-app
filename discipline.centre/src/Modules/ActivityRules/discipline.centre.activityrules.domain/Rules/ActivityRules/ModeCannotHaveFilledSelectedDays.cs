@@ -1,9 +1,8 @@
-using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.shared.abstractions.SharedKernel;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 
-namespace discipline.centre.activityrules.domain.Rules;
+namespace discipline.centre.activityrules.domain.Rules.ActivityRules;
 
 internal sealed class ModeCannotHaveFilledSelectedDays(Mode mode, List<int>? selectedDays) : IBusinessRule
 {

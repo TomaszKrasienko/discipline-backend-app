@@ -1,7 +1,7 @@
 using discipline.centre.shared.abstractions.SharedKernel;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 
-namespace discipline.centre.activityrules.domain.Rules;
+namespace discipline.centre.activityrules.domain.Rules.ActivityRules;
 
 internal sealed class SelectedDayCanNotBeOutOfRangeRule(int value) : IBusinessRule
 {

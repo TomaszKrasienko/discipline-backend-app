@@ -14,7 +14,7 @@ public sealed class Stage : Entity<StageId>
     /// <summary>
     /// <remarks>Use only for Mongo purposes</remarks>
     /// </summary>
-    public Stage(StageId stageId, string title, int index, bool isChecked) : base(stageId)
+    public Stage(StageId stageId, Title title, OrderIndex index, IsChecked isChecked) : base(stageId)
     {
         Title = title;
         Index = index;

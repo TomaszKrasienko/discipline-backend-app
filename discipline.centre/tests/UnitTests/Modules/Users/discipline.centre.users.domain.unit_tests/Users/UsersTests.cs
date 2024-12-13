@@ -7,7 +7,7 @@ using discipline.centre.users.tests.sharedkernel.Domain;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.domain.unit_tests.Users;
+namespace discipline.centre.users.domain.unit_tests.Users;
 
 public sealed class UsersTests
 {

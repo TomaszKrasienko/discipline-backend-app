@@ -17,4 +17,10 @@ internal sealed class Serializer : ISerializer
 
     public byte[] ToByteJson<T>(T value) where T : class
         => Encoding.UTF8.GetBytes(ToJson(value));
+
+    public object? ToObject(string json, Type type)
+        => JsonSerializer.Deserialize(json, type, _options);
+
+    public T? ToObject<T>(string json) where T : class
+        => JsonSerializer.Deserialize<T>(json, _options);
 }

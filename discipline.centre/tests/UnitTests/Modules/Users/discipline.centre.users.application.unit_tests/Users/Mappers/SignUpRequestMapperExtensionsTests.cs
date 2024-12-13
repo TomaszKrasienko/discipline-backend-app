@@ -4,7 +4,7 @@ using discipline.centre.users.tests.sharedkernel.Application;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.application.unit_tests.Users.Mappers;
+namespace discipline.centre.users.application.unit_tests.Users.Mappers;
 
 public sealed class SignUpRequestMapperExtensionsTests
 {

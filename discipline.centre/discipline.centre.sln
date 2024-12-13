@@ -101,6 +101,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.sharedkernel", "tests\Shared\discipline.centre.dailytrackers.sharedkernel\discipline.centre.dailytrackers.sharedkernel.csproj", "{FA7B6E01-8737-43B9-A14E-75572C5F5DE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.api", "src\Modules\DailyTrackers\discipline.centre.dailytrackers.api\discipline.centre.dailytrackers.api.csproj", "{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -152,6 +154,7 @@ Global
 		{9F3320B6-7AE4-4936-8B47-423FC0984830} = {BAF9F813-AECB-482A-92FD-7DF16F2A190F}
 		{87DF237D-7CA5-4AF9-9F28-54E83FF18BB2} = {CA251747-98D4-440F-9126-558AA1FC3CD9}
 		{FA7B6E01-8737-43B9-A14E-75572C5F5DE2} = {74A65E38-E753-4294-AA8A-BD999C102C9E}
+		{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5} = {BAF9F813-AECB-482A-92FD-7DF16F2A190F}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E8D4460A-0BBA-4AC1-B492-F5FF10286113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -270,5 +273,9 @@ Global
 		{FA7B6E01-8737-43B9-A14E-75572C5F5DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA7B6E01-8737-43B9-A14E-75572C5F5DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA7B6E01-8737-43B9-A14E-75572C5F5DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

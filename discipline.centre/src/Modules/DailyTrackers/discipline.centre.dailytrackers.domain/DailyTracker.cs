@@ -17,7 +17,11 @@ public sealed class DailyTracker : AggregateRoot<DailyTrackerId>
     /// <summary>
     /// <remarks>Use only for Mongo purposes</remarks>
     /// </summary>
-    public DailyTracker(DailyTrackerId id, Day day, UserId userId) : base(id)
+    public DailyTracker(DailyTrackerId id, Day day, UserId userId, List<Activity> activities) : this(id,
+        day, userId)
+        => _activities = activities;
+
+    private DailyTracker(DailyTrackerId id, Day day, UserId userId) : base(id)
     {
         Day = day;
         UserId = userId;

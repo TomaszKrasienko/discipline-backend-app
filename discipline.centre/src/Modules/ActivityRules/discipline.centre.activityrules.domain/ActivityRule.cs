@@ -1,4 +1,5 @@
 using discipline.centre.activityrules.domain.Rules;
+using discipline.centre.activityrules.domain.Rules.ActivityRules;
 using discipline.centre.activityrules.domain.Rules.Stages;
 using discipline.centre.activityrules.domain.Specifications;
 using discipline.centre.activityrules.domain.ValueObjects;
