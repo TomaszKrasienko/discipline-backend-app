@@ -11,5 +11,6 @@ internal static class ModulesServicesConfigurationExtensions
         => services
             .AddSingleton<IModuleTypesTranslator, ModuleTypesTranslator>()
             .AddSingleton<IModuleClient, ModuleClient>()
-            .AddSingleton<IModuleRegistry, ModuleRegistry>();
+            .AddSingleton<IModuleRegistry, ModuleRegistry>()
+            .AddSingleton<IModuleSubscriber, ModuleSubscriber>();
 }

@@ -12,7 +12,7 @@ internal sealed class GetActivityRuleByIdQueryHandler(
     public async Task<ActivityRuleDto?> HandleAsync(GetActivityRuleByIdQuery query, CancellationToken cancellationToken = default)
         => (await context.GetCollection<ActivityRuleDocument>()
             .Find(x 
-                => x.Id == query.ActivityRuleIdId.ToString()
+                => x.Id == query.ActivityRuleId.ToString()
                 && x.UserId == query.UserId.ToString())
             .SingleOrDefaultAsync(cancellationToken))?.MapAsDto();
 }

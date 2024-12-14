@@ -5,11 +5,13 @@ using discipline.centre.shared.abstractions.Serialization;
 
 namespace discipline.centre.shared.infrastructure.Serialization;
 
-internal sealed class Serializer : ISerializer
+internal sealed class SystemTestSerializer : ISerializer
 {
     private readonly JsonSerializerOptions _options = new ()
     {
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        PropertyNameCaseInsensitive = false,
+        Converters = { new JsonStringEnumConverter() }
     };
 
     public string ToJson<T>(T value) where T : class

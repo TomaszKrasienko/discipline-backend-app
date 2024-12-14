@@ -1,6 +1,7 @@
 using discipline.centre.dailytrackers.application.ActivityRules.Clients;
 using discipline.centre.dailytrackers.application.ActivityRules.Clients.DTOs;
 using discipline.centre.dailytrackers.application.DailyTrackers.Commands;
+using discipline.centre.dailytrackers.application.DailyTrackers.Services;
 using discipline.centre.dailytrackers.domain;
 using discipline.centre.dailytrackers.domain.Repositories;
 using discipline.centre.dailytrackers.domain.Specifications;
@@ -70,6 +71,10 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
         await _repository
             .Received(0)
             .AddAsync(Arg.Any<DailyTracker>(), default);
+        
+        _activityIdStorage
+            .Received(1)
+            .Set(Arg.Any<ActivityId>());
     }
     
     [Fact]
@@ -128,6 +133,10 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
         await _repository
             .Received(0)
             .UpdateAsync(Arg.Any<DailyTracker>(), default);
+        
+        _activityIdStorage
+            .Received(1)
+            .Set(Arg.Any<ActivityId>());
     }
     
     [Fact]
@@ -203,13 +212,12 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
         //assert
         exception.ShouldBeOfType<DomainException>();
     }
-
-
     
     #region arrange
     private readonly IClock _clock;
     private readonly IActivityRulesApiClient _apiClient;
     private readonly IWriteReadDailyTrackerRepository _repository;
+    private readonly IActivityIdStorage _activityIdStorage;
     private readonly ICommandHandler<CreateActivityFromActivityRuleCommand> _handler;
 
     public CreateActivityFromActivityRuleCommandHandlerTests()
@@ -217,7 +225,9 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
         _clock = Substitute.For<IClock>();
         _apiClient = Substitute.For<IActivityRulesApiClient>();
         _repository = Substitute.For<IWriteReadDailyTrackerRepository>();
-        _handler = new CreateActivityFromActivityRuleCommandHandler(_clock, _apiClient, _repository);
+        _activityIdStorage = Substitute.For<IActivityIdStorage>();  
+        _handler = new CreateActivityFromActivityRuleCommandHandler(_clock, _apiClient, _repository,
+            _activityIdStorage);
     }
     #endregion
 }

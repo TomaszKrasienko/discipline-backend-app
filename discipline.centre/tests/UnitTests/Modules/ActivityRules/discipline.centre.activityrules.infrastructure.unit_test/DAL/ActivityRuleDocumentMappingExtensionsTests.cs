@@ -70,7 +70,7 @@ public sealed class ActivityRuleDocumentMappingExtensionsTests
         var result = activityRuleDocument.MapAsDto();
         
         //assert
-        result.ActivityRuleIdId.ShouldBe(ActivityRuleId.Parse(activityRuleDocument.Id));
+        result.ActivityRuleId.ShouldBe(ActivityRuleId.Parse(activityRuleDocument.Id));
         result.Title.ShouldBe(activityRuleDocument.Title);
         result.Note.ShouldBe(activityRuleDocument.Note);
         result.Mode.ShouldBe(activityRuleDocument.Mode);
@@ -99,7 +99,7 @@ public sealed class ActivityRuleDocumentMappingExtensionsTests
         var result = activityRuleDocument.MapAsDto();
         
         //assert
-        result.ActivityRuleIdId.ShouldBe(ActivityRuleId.Parse(activityRuleDocument.Id));
+        result.ActivityRuleId.ShouldBe(ActivityRuleId.Parse(activityRuleDocument.Id));
         result.Title.ShouldBe(activityRuleDocument.Title);
         result.Mode.ShouldBe(activityRuleDocument.Mode);
         result.SelectedDays!.Contains(selectedDays[0]).ShouldBeTrue();

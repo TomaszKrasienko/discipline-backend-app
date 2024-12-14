@@ -1,5 +1,6 @@
 using discipline.centre.shared.abstractions.Serialization;
 using discipline.centre.shared.infrastructure.Modules.Abstractions;
+using Newtonsoft.Json;
 
 namespace discipline.centre.shared.infrastructure.Modules;
 
@@ -9,14 +10,11 @@ internal sealed class ModuleTypesTranslator(
     public object Translate(object value, Type type)
     {
         var sourceJson = serializer.ToJson(value);
-        return serializer.ToObject(sourceJson, type)
-               ?? throw new ArgumentException($"Can't convert value into type: {type.Name}");
+        var targetInstance = serializer.ToObject(sourceJson, type);
+        
+        return targetInstance ?? throw new ArgumentException($"Can't convert value into type: {type.Name}");
     }
 
     public TResult Translate<TResult>(object value) where TResult : class
-    {
-        var sourceJson = serializer.ToJson(value);
-        return serializer.ToObject<TResult>(sourceJson) 
-               ?? throw new ArgumentException($"Can't convert value into type: {typeof(TResult).Name}");
-    }
+        => (TResult)Translate(value, typeof(TResult));
 }

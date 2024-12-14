@@ -21,7 +21,7 @@ internal static class ActivityRuleDocumentMappingExtensions
     internal static ActivityRuleDto MapAsDto(this ActivityRuleDocument document)
         => new()
         {
-            ActivityRuleIdId = ActivityRuleId.Parse(document.Id),
+            ActivityRuleId = ActivityRuleId.Parse(document.Id),
             Title = document.Title,
             Note = document.Note,
             Mode = document.Mode,

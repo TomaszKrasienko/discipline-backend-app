@@ -26,10 +26,9 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
         var activityRule = ActivityRuleFakeDataFactory.Get();
         var user = await AuthorizeWithFreeSubscriptionPicked();
         var activityRuleDocument = activityRule.MapAsDocument();
-        activityRuleDocument.UserId = user.Id.ToString();
 
         await TestAppDb.GetCollection<ActivityRuleDocument>()
-            .InsertOneAsync(activityRuleDocument);
+            .InsertOneAsync(activityRuleDocument with {UserId = user.Id.ToString()});
 
         var request = new UpdateActivityRuleDto(new ActivityRuleDetailsSpecification("new_test_title", "new_test_note"),
             Mode.CustomMode, [0]);

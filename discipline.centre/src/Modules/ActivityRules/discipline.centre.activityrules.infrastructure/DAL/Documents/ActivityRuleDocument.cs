@@ -4,14 +4,14 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace discipline.centre.activityrules.infrastructure.DAL.Documents;
 
-internal sealed class ActivityRuleDocument : IDocument
+internal sealed record ActivityRuleDocument : IDocument
 {
     [BsonElement("id")]
     [BsonId]
     public required string Id { get; init; }
     
     [BsonElement("userId")] 
-    public required string UserId { get; set; }
+    public required string UserId { get; init; }
     
     [BsonElement("title")]
     public required string Title { get; init; }
