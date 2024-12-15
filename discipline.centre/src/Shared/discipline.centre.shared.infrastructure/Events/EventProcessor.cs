@@ -1,19 +1,20 @@
 using discipline.centre.shared.abstractions.Events;
+using discipline.centre.shared.abstractions.Serialization;
 using discipline.centre.shared.abstractions.SharedKernel;
+using discipline.centre.shared.infrastructure.Events.Brokers.Abstractions;
 
 namespace discipline.centre.shared.infrastructure.Events;
 
 internal sealed class EventProcessor(
-    IEventMapper mapper) : IEventProcessor
+    IRedisPubSubClient redisPubSubClient,
+    ISerializer serializer) : IEventProcessor
 {
-    public Task PublishAsync(params DomainEvent[] domainEvents)
+    public async Task PublishAsync(params IEvent[] domainEvents)
     {
-        List<IEvent> events = new List<IEvent>();
         foreach (var @event in domainEvents)
         {
-            events.Add(mapper.MapAsEvent(@event));
+            var json = serializer.ToJson(@event);
+            await redisPubSubClient.SendAsync(json, @event.GetType().Name);
         }
-            
-        return Task.CompletedTask;
     }
 }

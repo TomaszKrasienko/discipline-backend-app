@@ -4,6 +4,7 @@ using discipline.centre.shared.abstractions.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.users.application.Users.Commands;
+using discipline.centre.users.application.Users.Events;
 using discipline.centre.users.domain.Users;
 using discipline.centre.users.domain.Users.Events;
 using discipline.centre.users.domain.Users.Repositories;
@@ -43,9 +44,9 @@ public sealed class SignUpCommandHandlerTests
         
         await _eventProcessor
             .Received(1)
-            .PublishAsync(Arg.Is<UserCreated>(arg 
+            .PublishAsync(Arg.Is<UserSignedUp>(arg 
                 => arg.UserId == command.Id
-                && arg.Email.Value == command.Email));
+                && arg.Email == command.Email));
     }
     
     [Fact]
@@ -104,7 +105,7 @@ public sealed class SignUpCommandHandlerTests
         //assert
         await _eventProcessor
             .Received(0)
-            .PublishAsync(Arg.Any<DomainEvent>());
+            .PublishAsync(Arg.Any<IEvent>());
     }
 
     [Theory]
@@ -140,7 +141,7 @@ public sealed class SignUpCommandHandlerTests
         //assert
         await _eventProcessor
             .Received(0)
-            .PublishAsync(Arg.Any<DomainEvent>());
+            .PublishAsync(Arg.Any<IEvent>());
     }
 
     public static IEnumerable<object[]> GetInvalidSignUpCommand()

@@ -1,7 +1,9 @@
+using discipline.centre.activityrules.application.ActivityRules.Events;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.Repositories;
 using discipline.centre.activityrules.domain.Specifications;
 using discipline.centre.shared.abstractions.CQRS.Commands;
+using discipline.centre.shared.abstractions.Events;
 using discipline.centre.shared.abstractions.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using FluentValidation;
@@ -30,7 +32,8 @@ public sealed class CreateActivityRuleCommandValidator : AbstractValidator<Creat
 }
 
 internal sealed class CreateActivityRuleCommandHandler(
-    IReadWriteActivityRuleRepository readWriteActivityRuleRepository) : ICommandHandler<CreateActivityRuleCommand>
+    IReadWriteActivityRuleRepository readWriteActivityRuleRepository,
+    IEventProcessor eventProcessor) : ICommandHandler<CreateActivityRuleCommand>
 {
     public async Task HandleAsync(CreateActivityRuleCommand command, CancellationToken cancellationToken = default)
     {
@@ -44,5 +47,7 @@ internal sealed class CreateActivityRuleCommandHandler(
         var activity = ActivityRule.Create(command.Id, command.UserId, command.Details,
             command.Mode, command.SelectedDays, command.Stages);
         await readWriteActivityRuleRepository.AddAsync(activity, cancellationToken);
+        await eventProcessor.PublishAsync(activity.DomainEvents.Select(x
+            => x.MapAsIntegrationEvent()).ToArray());
     }
 }

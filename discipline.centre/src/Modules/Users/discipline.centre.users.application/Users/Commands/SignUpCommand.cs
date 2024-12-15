@@ -1,7 +1,9 @@
+using System.Runtime.CompilerServices;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.Events;
 using discipline.centre.shared.abstractions.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
+using discipline.centre.users.application.Users.Events;
 using discipline.centre.users.domain.Users;
 using discipline.centre.users.domain.Users.Repositories;
 using FluentValidation;
@@ -70,6 +72,7 @@ internal sealed class SignUpCommandHandler(
         
         var user = User.Create(command.Id, command.Email, command.Password, command.FirstName, command.LastName);
         await writeUserRepository.AddAsync(user, cancellationToken);
-        await eventProcessor.PublishAsync(user.DomainEvents.ToArray());
+        await eventProcessor.PublishAsync(user.DomainEvents.Select(x 
+            => x.MapAsIntegrationEvent()).ToArray());
     }
 }
