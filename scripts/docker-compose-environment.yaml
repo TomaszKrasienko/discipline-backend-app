@@ -17,11 +17,27 @@ services:
       - 6012:6379
     volumes: 
       - cache:/data
+    networks:
+      - discipline-network
+  postgres:
+    image: postgres
+    container_name: discipline-postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=rootpwd
+    ports:
+      - 6013:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - discipline-network
 
 volumes:
   mongo:
     driver: local
   cache:
+    driver: local
+  postgres:
     driver: local
 
 networks:

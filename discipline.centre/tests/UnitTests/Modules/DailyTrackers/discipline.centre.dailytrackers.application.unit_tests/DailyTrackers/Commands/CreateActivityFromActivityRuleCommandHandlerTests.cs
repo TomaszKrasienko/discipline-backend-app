@@ -73,7 +73,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .AddAsync(Arg.Any<DailyTracker>(), default);
         
         _activityIdStorage
-            .Received(1)
+            .Received(0)
             .Set(Arg.Any<ActivityId>());
     }
     

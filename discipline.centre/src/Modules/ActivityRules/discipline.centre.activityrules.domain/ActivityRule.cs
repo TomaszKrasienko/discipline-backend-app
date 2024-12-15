@@ -1,3 +1,4 @@
+using discipline.centre.activityrules.domain.Events;
 using discipline.centre.activityrules.domain.Rules;
 using discipline.centre.activityrules.domain.Rules.ActivityRules;
 using discipline.centre.activityrules.domain.Rules.Stages;
@@ -36,6 +37,8 @@ public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
         Details = details;  
         Mode = mode;
         SelectedDays = selectedDays;
+        
+        AddDomainEvent(new ActivityRuleCreated(id, userId));
     }
     
     public static ActivityRule Create(ActivityRuleId id, UserId userId, ActivityRuleDetailsSpecification details, string mode, 

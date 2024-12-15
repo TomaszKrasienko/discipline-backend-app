@@ -1,3 +1,4 @@
+using discipline.centre.activityrules.domain.Events;
 using discipline.centre.activityrules.domain.Specifications;
 using discipline.centre.activityrules.domain.ValueObjects;
 using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
@@ -28,6 +29,24 @@ public partial class CreateTests
         CompareStages(parameters.Stages, result.Stages?.ToList()).ShouldBeTrue();
     }
 
+    [Fact]
+    public void GivenValidaArguments_ShouldAddDomainEventActivityRuleCreated()
+    {
+        //arrange
+        var activityRuleId = ActivityRuleId.New();
+        var userId = UserId.New();
+        
+        //act
+        var result = ActivityRule.Create(activityRuleId, userId, new ActivityRuleDetailsSpecification("test_title",
+            null), Mode.EveryDayMode);
+        
+        //assert
+        var @event = result.DomainEvents.FirstOrDefault(x => x is ActivityRuleCreated);
+        @event.ShouldNotBeNull();
+        ((ActivityRuleCreated)@event).ActivityRuleId.ShouldBe(activityRuleId);
+        ((ActivityRuleCreated)@event).UserId.ShouldBe(userId);
+    }
+    
     [Theory]
     [MemberData(nameof(GetInvalidCreateActivityRulesData))]
     public void GivenInvalidArgument_ShouldReturnDomainExceptionWithCode(CreateActivityRuleParams parameters, string code)
