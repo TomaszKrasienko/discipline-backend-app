@@ -1,4 +1,4 @@
-namespace discipline.centre.shared.infrastructure.Events.Configuration;
+namespace discipline.centre.shared.infrastructure.Events.Brokers.Configuration;
 
 internal sealed class RedisBrokerOptions
 {

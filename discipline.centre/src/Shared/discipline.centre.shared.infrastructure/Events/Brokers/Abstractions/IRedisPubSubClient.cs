@@ -1,9 +1,9 @@
-namespace discipline.centre.shared.infrastructure.Events;
+namespace discipline.centre.shared.infrastructure.Events.Brokers.Abstractions;
 
 /// <summary>
 /// Interface for communication by Redis
 /// </summary>
-internal interface IRedisPubSub
+internal interface IRedisPubSubClient
 {
     /// <summary>
     /// Sends message in JSON by Redis
