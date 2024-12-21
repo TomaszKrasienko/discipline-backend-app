@@ -20,7 +20,7 @@ internal static class ActivityRulesEndpoints
     
     internal static WebApplication MapActivityRulesEndpoints(this WebApplication app)
     {
-        app.MapPost($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}", async (CreateActivityRuleDto command, IHttpContextAccessor httpContext, 
+        app.MapPost($"api/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}", async (CreateActivityRuleDto command, IHttpContextAccessor httpContext, 
                 ICqrsDispatcher dispatcher, CancellationToken cancellationToken, IIdentityContext identityContext) => 
             {
                 var activityRuleId = ActivityRuleId.New();
@@ -45,7 +45,7 @@ internal static class ActivityRulesEndpoints
             .RequireAuthorization()
             .RequireAuthorization(UserStatePolicy.Name);
 
-        app.MapPut($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}/{{activityRuleId:ulid}}", async (Ulid activityRuleId, UpdateActivityRuleDto dto,
+        app.MapPut($"api/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}/{{activityRuleId:ulid}}", async (Ulid activityRuleId, UpdateActivityRuleDto dto,
             CancellationToken cancellationToken, ICqrsDispatcher dispatcher, IIdentityContext identityContext) =>
         {
             var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
@@ -68,7 +68,7 @@ internal static class ActivityRulesEndpoints
         .RequireAuthorization()
         .RequireAuthorization(UserStatePolicy.Name);
 
-        app.MapDelete($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}/{{activityRuleId:ulid}}", async (
+        app.MapDelete($"api/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}/{{activityRuleId:ulid}}", async (
             Ulid activityRuleId, CancellationToken cancellationToken, ICqrsDispatcher dispatcher, IIdentityContext identityContext) =>
         {
             var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
@@ -89,7 +89,7 @@ internal static class ActivityRulesEndpoints
         .RequireAuthorization()
         .RequireAuthorization(UserStatePolicy.Name);
 
-        app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}/{{activityRuleId:ulid}}", async (Ulid activityRuleId,
+        app.MapGet($"api/{ActivityRulesModule.ModuleName}/{ActivityRulesTag}/{{activityRuleId:ulid}}", async (Ulid activityRuleId,
                 CancellationToken cancellationToken, ICqrsDispatcher dispatcher, IIdentityContext identityContext) =>
             {   
                 var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);

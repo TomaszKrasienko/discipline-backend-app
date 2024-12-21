@@ -25,7 +25,7 @@ internal static class AuthServicesConfigurationExtensions
     private static IServiceCollection AddTokenValidation(this IServiceCollection services)
     {
         var authOptions = services.GetOptions<AuthOptions>();
-        var validationParameters = new TokenValidationParameters()
+        var feValidationParameters = new TokenValidationParameters()
         {
             ValidateIssuer = true,
             ValidateAudience = true,
@@ -35,11 +35,21 @@ internal static class AuthServicesConfigurationExtensions
             ValidAudience = authOptions.Audience,
             LogValidationExceptions = true,
         };
+        
+        var internalValidationParameters = new TokenValidationParameters()
+        {
+            //TODO: Add parameters
+        };
 
         RSA publicRsa = RSA.Create();
         publicRsa.ImportFromPem(File.ReadAllText(authOptions.PublicCertPath));
         var publicKey = new RsaSecurityKey(publicRsa);
-        validationParameters.IssuerSigningKey = publicKey;
+        feValidationParameters.IssuerSigningKey = publicKey;
+        
+        RSA publicInternalRsa = RSA.Create();
+        publicInternalRsa.ImportFromPem(File.ReadAllText(authOptions.PublicInternalCertPath));
+        var internalPublicKey = new RsaSecurityKey(publicInternalRsa);
+        internalValidationParameters.IssuerSigningKey = internalPublicKey;
 
 
         services.AddAuthentication(o =>
@@ -47,9 +57,13 @@ internal static class AuthServicesConfigurationExtensions
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(options =>
+            .AddJwtBearer("Bearer", options =>
             {
-                options.TokenValidationParameters = validationParameters;
+                options.TokenValidationParameters = feValidationParameters;
+            })
+            .AddJwtBearer("Bearer_hf", options =>
+            {
+                options.TokenValidationParameters = internalValidationParameters;
             });
         
         return services;

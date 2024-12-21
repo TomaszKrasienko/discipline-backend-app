@@ -19,7 +19,10 @@ internal sealed class ActivityRulesModule : IModule
 
     public void Use(WebApplication app)
     {
-        app.MapActivityRulesEndpoints();
+        app
+            .MapActivityRulesEndpoints()
+            .MapActivityRulesInternalEndpoints();
+        
         app.UseModuleRequest()
             .MapModuleRequest<GetActivityRuleByIdQuery, ActivityRuleDto>("activity-rules/get",(query, sp) 
                 => sp.GetRequiredService<ICqrsDispatcher>().SendAsync(query, default));
