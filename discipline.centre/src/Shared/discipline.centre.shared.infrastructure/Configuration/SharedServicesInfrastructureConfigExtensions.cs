@@ -20,7 +20,7 @@ public static class SharedServicesInfrastructureConfigExtensions
             .AddDal(configuration)
             .AddEvents(configuration)
             .AddClock()
-            .AddAuth(configuration)
+            .AddJwtAuth(configuration)
             .AddSerializer()
             .AddDistributedCache(configuration)
             .AddExceptionsHandling()
@@ -45,7 +45,7 @@ public static class SharedServicesInfrastructureConfigExtensions
             });
         });
     
-    internal static IServiceCollection ValidateAndBind<TOptions, TOptionsValidator>(this IServiceCollection services,
+    public static IServiceCollection ValidateAndBind<TOptions, TOptionsValidator>(this IServiceCollection services,
         IConfiguration configuration) where TOptions : class where TOptionsValidator : class, IValidateOptions<TOptions>
     {
         services

@@ -7,7 +7,7 @@ builder.Services.AddHealthChecks();
 var assemblies = ModuleLoader.GetAssemblies(builder.Configuration);
 var modules = ModuleLoader.GetModules(assemblies);
 builder.Services.AddInfrastructure(assemblies, builder.Configuration);
-builder.Services.AddModulesConfiguration(modules);
+builder.Services.AddModulesConfiguration(modules, builder.Configuration);
 
 var app = builder.Build();
 

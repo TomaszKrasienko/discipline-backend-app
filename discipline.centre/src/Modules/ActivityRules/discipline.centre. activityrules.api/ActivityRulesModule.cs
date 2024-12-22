@@ -3,6 +3,7 @@ using discipline.centre.activityrules.application.ActivityRules.Queries;
 using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.shared.abstractions.Modules;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace discipline.centre.activityrules.api;
@@ -14,7 +15,7 @@ internal sealed class ActivityRulesModule : IModule
     
     public string Name => "ActivityRules";
 
-    public void Register(IServiceCollection services)
+    public void Register(IServiceCollection services, IConfiguration configuration)
         => services.AddInfrastructure(ModuleName);
 
     public void Use(WebApplication app)
