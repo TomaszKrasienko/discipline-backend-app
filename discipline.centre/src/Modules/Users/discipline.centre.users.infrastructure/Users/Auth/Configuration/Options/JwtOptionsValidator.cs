@@ -8,7 +8,7 @@ internal sealed class JwtOptionsValidator : IValidateOptions<JwtOptions>
     public ValidateOptionsResult Validate(string? name, JwtOptions options)
     {
         StringBuilder errorMessagesBuilder = new();
-        List<(bool, string?)> stringKeyPublishingValidationResults =
+        List<KeyValuePair<bool, string?>> stringKeyPublishingValidationResults =
         [
             ValidateIfStringIsEmpty(options.KeyPublishing.PrivateCertPath, nameof(options.KeyPublishing.PrivateCertPath)),
             ValidateIfStringIsEmpty(options.KeyPublishing.PrivateCertPassword, nameof(options.KeyPublishing.PrivateCertPassword)),
@@ -16,11 +16,13 @@ internal sealed class JwtOptionsValidator : IValidateOptions<JwtOptions>
             ValidateIfStringIsEmpty(options.KeyPublishing.Audience, nameof(options.KeyPublishing.Audience)),
         ];
 
-        if (!stringKeyPublishingValidationResults.TrueForAll(x => x.Item1))
+        if (!stringKeyPublishingValidationResults.TrueForAll(x => x.Key))
         {
-            errorMessagesBuilder.Append(stringKeyPublishingValidationResults
-                .Where(x => !x.Item1)
-                .Select(x => $"{x.Item2}, "));
+            errorMessagesBuilder.Append(
+                string.Join(',', stringKeyPublishingValidationResults
+                    .Where(x => !x.Key)
+                    .Select(x => x.Value)
+                    .ToArray()));
         }
 
         if (options.KeyPublishing.TokenExpiry == TimeSpan.Zero)
@@ -33,8 +35,8 @@ internal sealed class JwtOptionsValidator : IValidateOptions<JwtOptions>
             : ValidateOptionsResult.Fail(errorMessagesBuilder.ToString());
     }
     
-    private static (bool, string?) ValidateIfStringIsEmpty(string value, string fieldName)
+    private static KeyValuePair<bool, string?> ValidateIfStringIsEmpty(string value, string fieldName)
         => string.IsNullOrWhiteSpace(value) 
-            ? (false, $"The field {fieldName} cannot be empty") 
-            : (true, null);
+            ? new KeyValuePair<bool, string?>(false, $"The field {fieldName} cannot be empty") 
+            : new KeyValuePair<bool, string?>(true, null);
 }
