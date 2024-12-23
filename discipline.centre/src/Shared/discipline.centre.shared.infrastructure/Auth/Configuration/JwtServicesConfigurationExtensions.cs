@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using discipline.centre.shared.infrastructure.Auth;
 using discipline.centre.shared.infrastructure.Auth.Configuration;
+using discipline.centre.shared.infrastructure.Auth.Const;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +13,6 @@ internal static class JwtServicesConfigurationExtensions
 {
     private const string DefaultAuthorizeParamsKey = "Default";
     private const string HangfireAuthorizeParamsKey = "Hangfire";
-    private const string HangfireAuthorizeSchema = "HangfireServer";
     
     internal static IServiceCollection AddJwtAuth(this IServiceCollection services, IConfiguration configuration)
         => services
@@ -71,7 +71,7 @@ internal static class JwtServicesConfigurationExtensions
             {
                 options.TokenValidationParameters = defaultValidationParameters;
             })
-            .AddJwtBearer(HangfireAuthorizeSchema, options =>
+            .AddJwtBearer(AuthorizationSchemes.HangfireAuthorizeSchema, options =>
             {
                 options.TokenValidationParameters = internalValidationParameters;
             });

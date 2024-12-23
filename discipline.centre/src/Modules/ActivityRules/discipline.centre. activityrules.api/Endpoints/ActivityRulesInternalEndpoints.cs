@@ -3,6 +3,7 @@ using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using Microsoft.AspNetCore.Http;
 using discipline.centre.activityrules.api;
+using discipline.centre.shared.infrastructure.Auth.Const;
 using Microsoft.AspNetCore.Authorization;
 
 // ReSharper disable once CheckNamespace
@@ -31,7 +32,7 @@ internal static class ActivityRulesInternalEndpoints
                 })
             .RequireAuthorization(policy =>
             {
-                policy.AuthenticationSchemes.Add("Bearer_hf");
+                policy.AuthenticationSchemes.Add(AuthorizationSchemes.HangfireAuthorizeSchema);
                 policy.RequireAuthenticatedUser();
             });
         
