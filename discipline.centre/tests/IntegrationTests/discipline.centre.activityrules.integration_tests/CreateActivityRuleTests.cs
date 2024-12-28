@@ -25,7 +25,7 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
             "test_note"), Mode.EveryDayMode, null, null);
          
         //act
-        var response = await HttpClient.PostAsJsonAsync("/activity-rules-module/activity-rules", command);
+        var response = await HttpClient.PostAsJsonAsync("api/activity-rules-module/activity-rules", command);
          
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
@@ -55,7 +55,7 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
             null), Mode.EveryDayMode, null, null);
          
         //act
-        var response = await HttpClient.PostAsJsonAsync("/activity-rules-module/activity-rules", command);
+        var response = await HttpClient.PostAsJsonAsync("api/activity-rules-module/activity-rules", command);
          
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -70,7 +70,7 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
             null), Mode.EveryDayMode, null, null);
          
         //act
-        var response = await HttpClient.PostAsJsonAsync("/activity-rules-module/activity-rules", command);
+        var response = await HttpClient.PostAsJsonAsync("api/activity-rules-module/activity-rules", command);
          
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
@@ -84,7 +84,7 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
             null), Mode.EveryDayMode, null, null);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("/activity-rules-module/activity-rules", command);
+        var response = await HttpClient.PostAsJsonAsync("api/activity-rules-module/activity-rules", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -99,7 +99,7 @@ public sealed class CreateActivityRuleTests() : BaseTestsController("activity-ru
             Mode.EveryDayMode, null, null);
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("/activity-rules-module/activity-rules", command);
+        var response = await HttpClient.PostAsJsonAsync("api/activity-rules-module/activity-rules", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);

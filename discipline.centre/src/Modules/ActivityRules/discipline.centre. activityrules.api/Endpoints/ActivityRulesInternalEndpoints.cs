@@ -35,7 +35,19 @@ internal static class ActivityRulesInternalEndpoints
                 policy.AuthenticationSchemes.Add(AuthorizationSchemes.HangfireAuthorizeSchema);
                 policy.RequireAuthenticatedUser();
             });
-        
+
+        app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/{{day}}", async (DateOnly day,
+            ICqrsDispatcher dispatcher, CancellationToken cancellationToken) =>
+                {
+                    var result = await dispatcher.SendAsync(new GetActiveModesByDayQuery(day), cancellationToken);
+                    return Results.Ok(result);
+                })
+            .RequireAuthorization(policy =>
+            {
+                policy.AuthenticationSchemes.Add(AuthorizationSchemes.HangfireAuthorizeSchema);
+                policy.RequireAuthenticatedUser();
+            });
+            
         return app;
     }
 }

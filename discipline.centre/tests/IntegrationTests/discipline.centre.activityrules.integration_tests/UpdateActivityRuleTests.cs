@@ -34,7 +34,7 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
             Mode.CustomMode, [0]);
 
         //act
-        var response = await HttpClient.PutAsJsonAsync($"activity-rules-module/activity-rules/{activityRule.Id.ToString()}", request);
+        var response = await HttpClient.PutAsJsonAsync($"api/activity-rules-module/activity-rules/{activityRule.Id.ToString()}", request);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
@@ -62,7 +62,7 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
             null), "test", null);
 
         //act
-        var response = await HttpClient.PutAsJsonAsync($"activity-rules-module/activity-rules/{activityRule.Id.ToString()}", request);
+        var response = await HttpClient.PutAsJsonAsync($"api/activity-rules-module/activity-rules/{activityRule.Id.ToString()}", request);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -77,7 +77,7 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
         await AuthorizeWithFreeSubscriptionPicked();
         
         //act
-        var response = await HttpClient.PutAsJsonAsync($"activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}", request);
+        var response = await HttpClient.PutAsJsonAsync($"api/activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}", request);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);
@@ -91,7 +91,7 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
             Mode.EveryDayMode, null);
 
         //act
-        var response = await HttpClient.PutAsJsonAsync($"activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}", request);
+        var response = await HttpClient.PutAsJsonAsync($"api/activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}", request);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -106,7 +106,7 @@ public sealed class UpdateActivityRuleTests() : BaseTestsController("activity-ru
         await AuthorizeWithoutSubscription();
         
         //act
-        var response = await HttpClient.PutAsJsonAsync($"activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}", request);
+        var response = await HttpClient.PutAsJsonAsync($"api/activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}", request);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);

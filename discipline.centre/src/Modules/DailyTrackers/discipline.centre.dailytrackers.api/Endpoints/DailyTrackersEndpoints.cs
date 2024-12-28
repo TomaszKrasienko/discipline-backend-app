@@ -18,7 +18,7 @@ internal static class DailyTrackersEndpoints
 
     internal static WebApplication MapDailyTrackersEndpoints(this WebApplication app)
     {
-        app.MapPost($"/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/activities/{{activityRuleId:ulid}}",
+        app.MapPost($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/activities/{{activityRuleId:ulid}}",
             async (Ulid activityRuleId, CancellationToken cancellationToken, IActivityIdStorage storage,
                 IIdentityContext identityContext, ICqrsDispatcher dispatcher, IHttpContextAccessor contextAccessor) =>
             {

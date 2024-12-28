@@ -29,7 +29,7 @@ public sealed class CreateActivityFromActivityRuleTests() : BaseTestsController(
         
         //act
         var result = await HttpClient.PostAsJsonAsync(
-            $"daily-trackers-module/daily-trackers/activities/{activityRule.Id.ToString()}", command);
+            $"api/daily-trackers-module/daily-trackers/activities/{activityRule.Id.ToString()}", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.NoContent);

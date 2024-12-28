@@ -27,7 +27,7 @@ public sealed class GetByIdActivityRuleTests() : BaseTestsController("activity-r
             .InsertOneAsync(activityRule.MapAsDocument());
         
         //act
-        var response = await HttpClient.GetAsync($"activity-rules-module/activity-rules/{activityRule.Id.ToString()}");
+        var response = await HttpClient.GetAsync($"api/activity-rules-module/activity-rules/{activityRule.Id.ToString()}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -43,7 +43,7 @@ public sealed class GetByIdActivityRuleTests() : BaseTestsController("activity-r
         await AuthorizeWithFreeSubscriptionPicked();
         
         //act
-        var response = await HttpClient.GetAsync($"activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}");
+        var response = await HttpClient.GetAsync($"api/activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -53,7 +53,7 @@ public sealed class GetByIdActivityRuleTests() : BaseTestsController("activity-r
     public async Task GetById_Unauthorized_ShouldReturn401Unauthorized()
     {
         //act
-        var response = await HttpClient.GetAsync($"activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}");
+        var response = await HttpClient.GetAsync($"api/activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -66,7 +66,7 @@ public sealed class GetByIdActivityRuleTests() : BaseTestsController("activity-r
         await AuthorizeWithoutSubscription();
         
         //act
-        var response = await HttpClient.GetAsync($"activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}");
+        var response = await HttpClient.GetAsync($"api/activity-rules-module/activity-rules/{ActivityRuleId.New().ToString()}");
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
