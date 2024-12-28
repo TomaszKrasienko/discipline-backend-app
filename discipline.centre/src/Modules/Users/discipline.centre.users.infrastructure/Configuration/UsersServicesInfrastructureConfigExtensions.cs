@@ -13,5 +13,5 @@ public static class UsersServicesInfrastructureConfigExtensions
             .AddDal(assemblyName)
             .AddUsersAuth(configuration)
             .AddTokenStorage()
-            .AddRefreshTokenStorage();
+            .AddRefreshTokenStorage(configuration);
 }

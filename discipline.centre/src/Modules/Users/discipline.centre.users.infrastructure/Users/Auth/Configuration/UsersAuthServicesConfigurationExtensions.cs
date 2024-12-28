@@ -2,6 +2,7 @@ using discipline.centre.users.infrastructure.Users.Auth;
 using discipline.centre.users.application.Users.Services;
 using discipline.centre.users.infrastructure.Users.Auth.Configuration;
 using discipline.centre.users.infrastructure.Users.Auth.Configuration.Options;
+using discipline.centre.users.infrastructure.Users.RefreshToken.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 
@@ -14,6 +15,5 @@ internal static class UsersAuthServicesConfigurationExtensions
         => services
             .AddSingleton<IAuthenticator, JwtAuthenticator>()
             .AddSingleton<IAuthorizationHandler, UserStateAuthorizationHandler>()
-            .ValidateAndBind<JwtOptions, JwtOptionsValidator>(configuration)
-            .ValidateAndBind<RefreshTokenOptions, RefreshTokenOptionsValidator>(configuration);
+            .ValidateAndBind<JwtOptions, JwtOptionsValidator>(configuration);
 }

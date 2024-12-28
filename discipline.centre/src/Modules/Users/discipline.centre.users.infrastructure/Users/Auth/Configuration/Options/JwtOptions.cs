@@ -2,5 +2,5 @@ namespace discipline.centre.users.infrastructure.Users.Auth.Configuration.Option
 
 internal sealed record JwtOptions
 {
-    public required KeyPublishingOptions KeyPublishing { get; init; }
+    public KeyPublishingOptions KeyPublishing { get; init; } = new ();
 }

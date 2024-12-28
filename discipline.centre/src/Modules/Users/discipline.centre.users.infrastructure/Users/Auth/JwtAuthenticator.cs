@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using discipline.centre.shared.abstractions.Clock;
-using discipline.centre.shared.infrastructure.Auth.Configuration;
 using discipline.centre.users.application.Users.Services;
 using discipline.centre.users.infrastructure.Users.Auth.Configuration.Options;
 using Microsoft.Extensions.Options;

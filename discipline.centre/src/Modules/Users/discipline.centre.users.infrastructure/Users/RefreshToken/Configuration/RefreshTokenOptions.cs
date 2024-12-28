@@ -1,4 +1,4 @@
-namespace discipline.centre.users.infrastructure.Users.Auth.Configuration.Options;
+namespace discipline.centre.users.infrastructure.Users.RefreshToken.Configuration;
 
 internal sealed class RefreshTokenOptions
 {

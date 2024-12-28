@@ -5,6 +5,7 @@ using discipline.centre.shared.abstractions.Clock;
 using discipline.centre.shared.infrastructure.Auth.Configuration;
 using discipline.centre.users.application.Users.Services;
 using discipline.centre.users.infrastructure.Users.Auth;
+using discipline.centre.users.infrastructure.Users.Auth.Configuration.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NSubstitute;
@@ -42,7 +43,7 @@ public sealed class JwtAuthenticatorTests
     private JwtSecurityToken GetTokenFromString(string token)
     {
         RSA privateRsa = RSA.Create();
-        privateRsa.ImportFromPem(input: File.ReadAllText(_options.Value.PublicCertPath));
+        privateRsa.ImportFromPem(input: File.ReadAllText(_options.Value.KeyPublishing.PrivateCertPath));
         
         return _jwtSecurityTokenHandler.ReadJwtToken(token);
     }
@@ -73,14 +74,14 @@ public sealed class JwtAuthenticatorTests
     private TokenValidationParameters GetValidationParameters()
     {
         RSA privateRsa = RSA.Create();
-        privateRsa.ImportFromPem(input: File.ReadAllText(_options.Value.PublicCertPath));
+        privateRsa.ImportFromPem(input: File.ReadAllText(_options.Value.KeyPublishing.PrivateCertPath));
         var publicKey = new RsaSecurityKey(privateRsa);
         
         return new TokenValidationParameters {
             ValidateIssuer = true,
-            ValidIssuer = _options.Value.Issuer,
+            ValidIssuer = _options.Value.KeyPublishing.Issuer,
             ValidateAudience = true,
-            ValidAudience = _options.Value.Audience,
+            ValidAudience = _options.Value.KeyPublishing.Audience,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = publicKey,
             ValidateLifetime = true
@@ -89,21 +90,22 @@ public sealed class JwtAuthenticatorTests
     
     #region arrange
     private readonly IClock _clock;
-    private readonly IOptions<AuthOptions> _options;
+    private readonly IOptions<JwtOptions> _options;
     private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
     private readonly IAuthenticator _authenticator;
 
     public JwtAuthenticatorTests()
     {
         _clock = Substitute.For<IClock>();
-        _options = Options.Create(new AuthOptions()
-        {
-            PublicCertPath = "Certs/public.pem",
-            PrivateCertPath = "Certs/private.pem",
-            Issuer = "test_issuer",
-            Audience = "test_audience",
-            Password = "Discipline123!",
-            TokenExpiry = TimeSpan.FromMinutes(10)
+        _options = Options.Create(new JwtOptions()
+        { 
+            KeyPublishing = new ()
+            {
+                PrivateCertPath = "Certs/private.pem",
+                Issuer = "test_issuer",
+                Audience = "test_audience",
+                TokenExpiry = TimeSpan.FromMinutes(10)
+            }
         });
         _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         _authenticator = new JwtAuthenticator(_clock, _options);

@@ -5,6 +5,7 @@ using discipline.centre.shared.infrastructure.Auth.Configuration;
 using discipline.centre.users.application.Users.DTOs;
 using discipline.centre.users.application.Users.Services;
 using discipline.centre.users.infrastructure.Users.Auth.Configuration.Options;
+using discipline.centre.users.infrastructure.Users.RefreshToken.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace discipline.centre.users.infrastructure.Users.RefreshToken;

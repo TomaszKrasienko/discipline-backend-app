@@ -1,7 +1,7 @@
 using System.Text;
 using Microsoft.Extensions.Options;
 
-namespace discipline.centre.users.infrastructure.Users.Auth.Configuration.Options;
+namespace discipline.centre.users.infrastructure.Users.RefreshToken.Configuration;
 
 internal sealed class RefreshTokenOptionsValidator : IValidateOptions<RefreshTokenOptions>
 {
