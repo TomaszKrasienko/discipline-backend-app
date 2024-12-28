@@ -10,20 +10,17 @@ internal sealed class GetActiveModesByDayQueryHandler : IQueryHandler<GetActiveM
 {
     public Task<ActiveModesDto> HandleAsync(GetActiveModesByDayQuery query, CancellationToken cancellationToken = default)
     {
-        var activeModesDto = new ActiveModesDto
-        {
-            Values = [Mode.EveryDayMode]
-        };
+        List<string> modes = [Mode.EveryDayMode];
         
         var dayOfWeek = query.Day.DayOfWeek;
         
         switch (dayOfWeek)
         {
             case DayOfWeek.Monday:
-                activeModesDto.Values.Add(Mode.FirstDayOfWeekMode);
+                modes.Add(Mode.FirstDayOfWeekMode);
                 break;
             case DayOfWeek.Sunday:
-                activeModesDto.Values.Add(Mode.LastDayOfWeekMode);
+                modes.Add(Mode.LastDayOfWeekMode);
                 break;
         }
 
@@ -35,15 +32,19 @@ internal sealed class GetActiveModesByDayQueryHandler : IQueryHandler<GetActiveM
 
         if(query.Day.Day == 1)
         {
-            activeModesDto.Values.Add(Mode.FirstDayOfMonth);
+            modes.Add(Mode.FirstDayOfMonth);
         }
         if(query.Day.Day == lastDayOfMonth)
         {
-            activeModesDto.Values.Add(Mode.LastDayOfMonthMode);
+            modes.Add(Mode.LastDayOfMonthMode);
         }
         
-        activeModesDto.Values.Add((query.Day.DayOfWeek == 0 ? 7 : (int)query.Day.DayOfWeek).ToString());
+        var day = (query.Day.DayOfWeek == 0 ? 7 : (int)query.Day.DayOfWeek);
         
-        return Task.FromResult(activeModesDto);
+        return Task.FromResult(new ActiveModesDto()
+        {
+            Modes = modes,
+            Day = day
+        });
     }
 }
