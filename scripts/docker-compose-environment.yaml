@@ -31,6 +31,15 @@ services:
       - postgres:/var/lib/postgresql/data
     networks:
       - discipline-network
+  jeager:
+    image: jaegertracing/all-in-one:latest
+    container_name: discipline-jeager
+    ports:
+      - 6021:4317
+      - 6022:16686
+      - 6023:14250
+    environment:
+      COLLECTOR_ZIPKIN_HOST_PORT: ":9411"
 
 volumes:
   mongo:

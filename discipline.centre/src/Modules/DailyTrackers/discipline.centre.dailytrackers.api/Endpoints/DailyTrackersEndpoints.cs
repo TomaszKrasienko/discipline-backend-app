@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using discipline.centre.dailytrackers.application.DailyTrackers.Commands;
 using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.dailytrackers.api;

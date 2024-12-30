@@ -1,6 +1,7 @@
 using System.Reflection;
 using discipline.centre.shared.infrastructure.Configuration;
 using discipline.centre.shared.infrastructure.Constraint.Configuration;
+using discipline.centre.shared.infrastructure.Logging.Configuration;
 using discipline.centre.shared.infrastructure.Serialization.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -27,7 +28,8 @@ public static class SharedServicesInfrastructureConfigExtensions
             .AddValidation(assemblies)
             .AddIdentityContext()
             .AddConstraints()
-            .AddModule();
+            .AddModule()
+            .AddLogging(configuration);
 
     private static IServiceCollection AddAppOptions(this IServiceCollection services, IConfiguration configuration)
         => services.ValidateAndBind<AppOptions, AppOptionsValidator>(configuration);

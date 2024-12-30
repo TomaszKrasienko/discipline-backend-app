@@ -60,7 +60,7 @@ Content-Type: application/json
 
 {
   "details": {
-      "title": "string4",
+      "title": "string8",
       "note": "string"
     },
   "mode": "Custom",
@@ -68,8 +68,5 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:5039/activity-rules-module/activity-rules-internal/01JDEP3BF41G70HE5XPB832AW9/01JFN338C5DJJABT6FHV6PJ428
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE3MzQ4MDE0MjYsImV4cCI6MTczNDgwMTQ4NiwiaXNzIjoiZGlzY2lwbGluZS5oYW5nZmlyZSIsImF1ZCI6ImRpc2NpcGxpbmUifQ.I59VIoAH8D5KiyZNzCOJJ5Rk7YtYLxthqN1NdhQyR1Ou2iqhhvpaTSMGvxMW-lLN15-iuooYSk-axDaxcQ9Xa2rn6pgg-CprasOoLPHBZJFNMTtHXljG-dRkMRmed2-0Z3nZxoddrAXLl3Z0HukqtcPOtF0esV9C-H6TuoAfRvIeiTMk8LvuXcqAf97tcaZk1fmcAZZCGhxbgfJjwYuChlHtMXQZr2lgEZUMyhWwgjJPJfSaveXUd1E-R99dl1ytKJaozM43K-Msm2ghBkGbh6TvVRhbYGW2A7dhAjJV9bPxfFINt0jvMvkhQN4cyYmmpOreEoDPd5CNnJBO0yYv_A
-
-###
-http://localhost:5039/activity-rules-module/activity-rules-internal/2024-1-1
+POST {{host_address}}/api/daily-trackers-module/daily-trackers/activities/01JGCE46YF5B6CD3P6RGJMZGZJ
+Authorization: Bearer {{token}}

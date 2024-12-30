@@ -36,7 +36,7 @@ internal static class ActivityRulesInternalEndpoints
                 policy.RequireAuthenticatedUser();
             });
 
-        app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/{{day}}", async (DateOnly day,
+        app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/modes/{{day}}", async (DateOnly day,
             ICqrsDispatcher dispatcher, CancellationToken cancellationToken) =>
                 {
                     var result = await dispatcher.SendAsync(new GetActiveModesByDayQuery(day), cancellationToken);

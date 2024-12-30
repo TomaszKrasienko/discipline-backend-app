@@ -7,6 +7,10 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
     <PackageVersion Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.10.0" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.10.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.10.1" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.10.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="7.0.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore.ReDoc" Version="7.0.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore.Swagger" Version="7.0.0" />
