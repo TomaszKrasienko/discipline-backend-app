@@ -27,7 +27,7 @@ internal static class LoggingServicesConfigurationExtensions
         
         services.AddOpenTelemetry()
             .ConfigureResource(resource
-                => ResourceBuilder.CreateDefault().AddService(appOptions.Name!))
+                => resource.AddService(appOptions.Name!))
             .WithTracing(tracing 
                 => tracing
                     .AddAspNetCoreInstrumentation()

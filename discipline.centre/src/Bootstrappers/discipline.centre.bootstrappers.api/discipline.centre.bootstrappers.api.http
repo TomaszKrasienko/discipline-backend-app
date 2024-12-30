@@ -54,6 +54,7 @@ Content-Type: application/json
 }
 
 ###
+# @name create_activity_rule
 POST {{host_address}}/api/activity-rules-module/activity-rules
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -68,5 +69,8 @@ Content-Type: application/json
 }
 
 ###
-POST {{host_address}}/api/daily-trackers-module/daily-trackers/activities/01JGCE46YF5B6CD3P6RGJMZGZJ
+@activity_rule_id = {{create_activity_rule.response.headers.headers.x-resource-id}}
+
+###
+POST {{host_address}}/api/daily-trackers-module/daily-trackers/activities/{{activity_rule_id}}
 Authorization: Bearer {{token}}

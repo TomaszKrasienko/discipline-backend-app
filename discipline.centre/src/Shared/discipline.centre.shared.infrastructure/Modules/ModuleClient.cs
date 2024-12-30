@@ -16,17 +16,34 @@ internal sealed class ModuleClient(
 
     public async Task<TResult?> SendAsync<TResult>(string path, object request) where TResult : class
     {
-        using var activity = _activitySource.StartActivity(path, ActivityKind.Client);
-        var moduleRequestRegistration = moduleRegistry.GetRequestRegistration(path);
-
-        if (moduleRequestRegistration is null)
-        {
-            throw new InvalidOperationException($"Module for path:{path} not found");
-        }
+        var methodName = GetMethodName(path);
         
-        var receivedRequest = moduleTypesTranslator.Translate(request, moduleRequestRegistration.RequestType);
-        var result = await moduleRequestRegistration.Action(receivedRequest);
-        activity?.SetTag("custom.client.result", "Success");
-        return result is null ? null : moduleTypesTranslator.Translate<TResult>(result);
+        using var activity = _activitySource.StartActivity($"{methodName} {path}", ActivityKind.Client);        
+        activity?.SetTag("custom.request.path", path);
+
+        try
+        {
+            var moduleRequestRegistration = moduleRegistry.GetRequestRegistration(path);
+
+            if (moduleRequestRegistration is null)
+            {
+                throw new InvalidOperationException($"Module for path:{path} not found");
+            }
+
+            var receivedRequest = moduleTypesTranslator.Translate(request, moduleRequestRegistration.RequestType);
+            var result = await moduleRequestRegistration.Action(receivedRequest);
+            activity?.SetTag("custom.client.result", "Success");
+            return result is null ? null : moduleTypesTranslator.Translate<TResult>(result);
+        }
+        catch (Exception ex)
+        {
+            activity?.SetTag("error", true);
+            activity?.SetTag("error.message", ex.Message);
+            activity?.SetTag("error.stacktrace", ex.StackTrace);
+            throw; 
+        }
     }
+    
+    private static string GetMethodName(string path)
+        => path.Split('/').AsEnumerable().Last().ToUpper();
 }
