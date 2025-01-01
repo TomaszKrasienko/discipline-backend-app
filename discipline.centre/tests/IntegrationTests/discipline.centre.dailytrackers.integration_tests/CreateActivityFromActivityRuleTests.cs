@@ -24,12 +24,10 @@ public sealed class CreateActivityFromActivityRuleTests() : BaseTestsController(
         var activityRuleDocument = activityRule.MapAsDocument();
         await TestAppDb.GetCollection<ActivityRuleDocument>("activity-rules-module")
             .InsertOneAsync(activityRuleDocument with {UserId = user.Id.ToString()});
-
-        var command = new CreateActivityFromActivityRuleCommand(activityRule.Id, user.Id);
         
         //act
-        var result = await HttpClient.PostAsJsonAsync(
-            $"api/daily-trackers-module/daily-trackers/activities/{activityRule.Id.ToString()}", command);
+        var result = await HttpClient.PostAsync(
+            $"api/daily-trackers-module/daily-trackers/activities/{activityRule.Id.ToString()}", null);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.NoContent);

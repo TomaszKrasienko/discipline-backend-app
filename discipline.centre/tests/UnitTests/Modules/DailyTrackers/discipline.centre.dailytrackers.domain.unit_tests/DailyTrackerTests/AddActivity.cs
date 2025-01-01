@@ -20,12 +20,11 @@ public sealed class AddActivityTests
             new ("test_state_title", 1)
         };
         
-        
         var dailyTracker = DailyTracker.Create(DailyTrackerId.New(), DateOnly.FromDateTime(DateTime.UtcNow), UserId.New(),
             new ActivityDetailsSpecification("test_title", null), null, null);
         
         //act
-        var activity = dailyTracker.AddActivity(new ActivityDetailsSpecification(title, note),
+        var activity = dailyTracker.AddActivity(ActivityId.New(), new ActivityDetailsSpecification(title, note),
             parentActivityRuleId, stages);
 
         //assert
@@ -46,7 +45,7 @@ public sealed class AddActivityTests
             new ActivityDetailsSpecification(title, null), null, null);
         
         //act
-        var exception = Record.Exception(() => dailyTracker.AddActivity(new ActivityDetailsSpecification(title, null),
+        var exception = Record.Exception(() => dailyTracker.AddActivity(ActivityId.New(), new ActivityDetailsSpecification(title, null),
             null, null));
 
         //assert

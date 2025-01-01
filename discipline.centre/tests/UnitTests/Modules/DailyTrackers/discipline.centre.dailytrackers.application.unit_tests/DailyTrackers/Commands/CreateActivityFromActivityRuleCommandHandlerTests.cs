@@ -1,7 +1,6 @@
 using discipline.centre.dailytrackers.application.ActivityRules.Clients;
 using discipline.centre.dailytrackers.application.ActivityRules.Clients.DTOs;
 using discipline.centre.dailytrackers.application.DailyTrackers.Commands;
-using discipline.centre.dailytrackers.application.DailyTrackers.Services;
 using discipline.centre.dailytrackers.domain;
 using discipline.centre.dailytrackers.domain.Repositories;
 using discipline.centre.dailytrackers.domain.Specifications;
@@ -11,7 +10,6 @@ using discipline.centre.shared.abstractions.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using NSubstitute;
-using NSubstitute.ReceivedExtensions;
 using NSubstitute.ReturnsExtensions;
 using Shouldly;
 using Xunit;
@@ -26,7 +24,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
     public async Task? Handle_GivenValidCommandAndExistingDailyTracker_ShouldAddActivityAndUpdate()
     {
         //arrange
-        var command = new CreateActivityFromActivityRuleCommand(ActivityRuleId.New(), UserId.New());
+        var command = new CreateActivityFromActivityRuleCommand(ActivityId.New(), ActivityRuleId.New(), UserId.New());
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         
         _clock
@@ -64,24 +62,21 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
 
         dailyTracker
             .Activities.Any(x
-                => x.ParentActivityRuleId == command.ActivityRuleId
-                   && x.Details.Title == activityRuleDto.Title
-                   && x.Details.Note == activityRuleDto.Note).ShouldBeTrue();
+                => x.Id == command.ActivityId 
+               && x.ParentActivityRuleId == command.ActivityRuleId
+               && x.Details.Title == activityRuleDto.Title
+               && x.Details.Note == activityRuleDto.Note).ShouldBeTrue();
         
         await _repository
             .Received(0)
             .AddAsync(Arg.Any<DailyTracker>(), default);
-        
-        _activityIdStorage
-            .Received(0)
-            .Set(Arg.Any<ActivityId>());
     }
     
     [Fact]
     public async Task? Handle_GivenValidCommandAndNotExistingDailyTracker_ShouldCreateActivityFromActivityRule()
     {
         //arrange
-        var command = new CreateActivityFromActivityRuleCommand(ActivityRuleId.New(), UserId.New());
+        var command = new CreateActivityFromActivityRuleCommand(ActivityId.New(), ActivityRuleId.New(), UserId.New());
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         
         _clock
@@ -123,27 +118,25 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .AddAsync(Arg.Is<DailyTracker>(arg
                 => arg.Day.Value == today
                    && arg.UserId == command.UserId
-                   && arg.Activities.First().Details.Title == activityRuleDto.Title
-                   && arg.Activities.First().Details.Note == activityRuleDto.Note
-                   && arg.Activities.First().ParentActivityRuleId == activityRuleDto.ActivityRuleId
-                   && arg.Activities.First().Stages![0].Title == activityRuleDto.Stages[0].Title
-                   && arg.Activities.First().Stages![0].Index == activityRuleDto.Stages[0].Index
+                   && arg.Activities.Any(x 
+                       => x.Id == command.ActivityId 
+                       && x.Details.Title == activityRuleDto.Title
+                       && x.Details.Note == activityRuleDto.Note
+                       && x.ParentActivityRuleId == activityRuleDto.ActivityRuleId
+                       && x.Stages![0].Title == activityRuleDto.Stages[0].Title
+                       && x.Stages![0].Index == activityRuleDto.Stages[0].Index)
             ));
         
         await _repository
             .Received(0)
             .UpdateAsync(Arg.Any<DailyTracker>(), default);
-        
-        _activityIdStorage
-            .Received(1)
-            .Set(Arg.Any<ActivityId>());
     }
     
     [Fact]
     public async Task Handle_GivenNotExistingActivityRule_ShouldThrowNotFoundException()
     {
         //arrange
-        var command = new CreateActivityFromActivityRuleCommand(ActivityRuleId.New(), UserId.New());
+        var command = new CreateActivityFromActivityRuleCommand(ActivityId.New(), ActivityRuleId.New(), UserId.New());
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         
         _clock
@@ -169,7 +162,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
     public async Task Handle_GivenAlreadyExistedActivityForActivityRule_ShouldThrowAlreadyRegisteredException()
     {
         //arrange
-        var command = new CreateActivityFromActivityRuleCommand(ActivityRuleId.New(), UserId.New());
+        var command = new CreateActivityFromActivityRuleCommand(ActivityId.New(), ActivityRuleId.New(), UserId.New());
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         
         var activityRuleDto = new ActivityRuleDto()
@@ -217,7 +210,6 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
     private readonly IClock _clock;
     private readonly IActivityRulesApiClient _apiClient;
     private readonly IWriteReadDailyTrackerRepository _repository;
-    private readonly IActivityIdStorage _activityIdStorage;
     private readonly ICommandHandler<CreateActivityFromActivityRuleCommand> _handler;
 
     public CreateActivityFromActivityRuleCommandHandlerTests()
@@ -225,9 +217,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
         _clock = Substitute.For<IClock>();
         _apiClient = Substitute.For<IActivityRulesApiClient>();
         _repository = Substitute.For<IWriteReadDailyTrackerRepository>();
-        _activityIdStorage = Substitute.For<IActivityIdStorage>();  
-        _handler = new CreateActivityFromActivityRuleCommandHandler(_clock, _apiClient, _repository,
-            _activityIdStorage);
+        _handler = new CreateActivityFromActivityRuleCommandHandler(_clock, _apiClient, _repository);
     }
     #endregion
 }

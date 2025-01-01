@@ -31,11 +31,11 @@ public sealed class DailyTracker : AggregateRoot<DailyTrackerId>
         ActivityRuleId? parentActivityRuleId, List<StageSpecification>? stages)
     {
         var dailyTracker = new DailyTracker(id, day, userId);
-        dailyTracker.AddActivity(details, parentActivityRuleId, stages);
+        dailyTracker.AddActivity(ActivityId.New(), details, parentActivityRuleId, stages);
         return dailyTracker;
     }
 
-    public Activity AddActivity(ActivityDetailsSpecification details,
+    public Activity AddActivity(ActivityId activityId, ActivityDetailsSpecification details,
         ActivityRuleId? parentActivityRuleId, List<StageSpecification>? stages)
     {
         if (_activities.Exists(x => x.Details.Title == details.Title))
@@ -44,7 +44,7 @@ public sealed class DailyTracker : AggregateRoot<DailyTrackerId>
                 $"Activity with title '{details.Title}' already exists.");
         }
         
-        var activity = Activity.Create(ActivityId.New(), details, parentActivityRuleId, stages);
+        var activity = Activity.Create(activityId, details, parentActivityRuleId, stages);
         _activities.Add(activity);
         return activity;
     }

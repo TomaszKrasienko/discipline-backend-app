@@ -15,6 +15,5 @@ public static class DailyTrackersServicesInfrastructureConfigurationExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, string assemblyName)
         => services
             .AddDal(assemblyName)
-            .AddApiClients()
-            .AddStorage();
+            .AddApiClients();
 }

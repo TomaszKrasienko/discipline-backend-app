@@ -1,7 +1,6 @@
 using discipline.centre.dailytrackers.application.DailyTrackers.Commands;
 using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.dailytrackers.api;
-using discipline.centre.dailytrackers.application.DailyTrackers.Services;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.IdentityContext.Abstractions;
 using discipline.centre.shared.infrastructure.ResourceHeader;
@@ -18,19 +17,14 @@ internal static class DailyTrackersEndpoints
     internal static WebApplication MapDailyTrackersEndpoints(this WebApplication app)
     {
         app.MapPost($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/activities/{{activityRuleId:ulid}}",
-            async (Ulid activityRuleId, CancellationToken cancellationToken, IActivityIdStorage storage,
-                IIdentityContext identityContext, ICqrsDispatcher dispatcher, IHttpContextAccessor contextAccessor) =>
+            async (Ulid activityRuleId, CancellationToken cancellationToken, IIdentityContext identityContext, 
+                ICqrsDispatcher dispatcher, IHttpContextAccessor contextAccessor) =>
             {
                 var stronglyTypedActivityRuleId = new ActivityRuleId(activityRuleId);
-
-                await dispatcher.HandleAsync(new CreateActivityFromActivityRuleCommand(stronglyTypedActivityRuleId,
+                var activityId = ActivityId.New();
+                
+                await dispatcher.HandleAsync(new CreateActivityFromActivityRuleCommand(activityId, stronglyTypedActivityRuleId,
                     identityContext.GetUser()), cancellationToken);
-
-                var activityId = storage.Get();
-                if (activityId is null)
-                {
-                    return Results.BadRequest();
-                }
                 
                 contextAccessor.AddResourceIdHeader(activityId.ToString());
 

@@ -1,6 +1,5 @@
 using discipline.centre.dailytrackers.application.ActivityRules.Clients;
 using discipline.centre.dailytrackers.application.ActivityRules.Clients.DTOs;
-using discipline.centre.dailytrackers.application.DailyTrackers.Services;
 using discipline.centre.dailytrackers.domain;
 using discipline.centre.dailytrackers.domain.Repositories;
 using discipline.centre.dailytrackers.domain.Specifications;
@@ -11,11 +10,11 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.dailytrackers.application.DailyTrackers.Commands;
 
-public sealed record CreateActivityFromActivityRuleCommand(ActivityRuleId ActivityRuleId, UserId UserId) : ICommand;
+public sealed record CreateActivityFromActivityRuleCommand(ActivityId ActivityId, ActivityRuleId ActivityRuleId, UserId UserId) : ICommand;
 
 internal sealed class CreateActivityFromActivityRuleCommandHandler(
     IClock clock, IActivityRulesApiClient apiClient,
-    IWriteReadDailyTrackerRepository repository, IActivityIdStorage activityIdStorage) : ICommandHandler<CreateActivityFromActivityRuleCommand>
+    IWriteReadDailyTrackerRepository repository) : ICommandHandler<CreateActivityFromActivityRuleCommand>
 {
     public async Task HandleAsync(CreateActivityFromActivityRuleCommand command, CancellationToken cancellationToken = default)
     {
@@ -34,7 +33,7 @@ internal sealed class CreateActivityFromActivityRuleCommandHandler(
         
         if (dailyTracker is not null)
         {
-            AddActivity(dailyTracker, activityRule.Title, activityRule.Note, command.ActivityRuleId, stages);
+            AddActivity(dailyTracker, command.ActivityId, activityRule.Title, activityRule.Note, command.ActivityRuleId, stages);
             await repository.UpdateAsync(dailyTracker, cancellationToken);
             return;
         }
@@ -43,8 +42,6 @@ internal sealed class CreateActivityFromActivityRuleCommandHandler(
             new ActivityDetailsSpecification(activityRule.Title, activityRule.Note),
             activityRule.ActivityRuleId, stages);
         await repository.AddAsync(dailyTracker, cancellationToken);
-        
-        activityIdStorage.Set(dailyTracker.Activities.First().Id);
     }
 
     private static List<StageSpecification>? MapStages(ActivityRuleDto activityRule)
@@ -61,8 +58,8 @@ internal sealed class CreateActivityFromActivityRuleCommandHandler(
         return stages;
     }
     
-    private static void AddActivity(DailyTracker dailyTracker, string title, string? note,
+    private static void AddActivity(DailyTracker dailyTracker, ActivityId activityId, string title, string? note,
         ActivityRuleId? parentActivityRuleId, List<StageSpecification>? stages)
-        =>  dailyTracker.AddActivity(new ActivityDetailsSpecification(title, note), parentActivityRuleId,
+        =>  dailyTracker.AddActivity(activityId, new ActivityDetailsSpecification(title, note), parentActivityRuleId,
             stages);
 }
