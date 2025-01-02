@@ -45,7 +45,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .GetActivityRuleByIdAsync(command.ActivityRuleId, command.UserId)
             .Returns(activityRuleDto);
   
-        var dailyTracker = DailyTracker.Create(DailyTrackerId.New(), today, command.UserId,
+        var dailyTracker = DailyTracker.Create(DailyTrackerId.New(), today, command.UserId, ActivityId.New(),
             new ActivityDetailsSpecification("test_title", null), null, null);
 
         _repository
@@ -187,7 +187,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .GetActivityRuleByIdAsync(command.ActivityRuleId, command.UserId)
             .Returns(activityRuleDto);
 
-        var dailyTracker = DailyTracker.Create(DailyTrackerId.New(), today, command.UserId,
+        var dailyTracker = DailyTracker.Create(DailyTrackerId.New(), today, command.UserId, ActivityId.New(),
             new ActivityDetailsSpecification(activityRuleDto.Title, activityRuleDto.Note),
             activityRuleDto.ActivityRuleId, null);
         

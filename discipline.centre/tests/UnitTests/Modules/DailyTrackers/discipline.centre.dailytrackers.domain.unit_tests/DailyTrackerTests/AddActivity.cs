@@ -12,6 +12,7 @@ public sealed class AddActivityTests
     public void GivenUniqueTitle_ShouldAddActivity()
     {
         //arrange
+        var activityId = ActivityId.New();
         var title = "test_activity_title";
         var note = "test_activity_note";
         var parentActivityRuleId = ActivityRuleId.New();
@@ -20,15 +21,15 @@ public sealed class AddActivityTests
             new ("test_state_title", 1)
         };
         
-        var dailyTracker = DailyTracker.Create(DailyTrackerId.New(), DateOnly.FromDateTime(DateTime.UtcNow), UserId.New(),
+        var dailyTracker = DailyTracker.Create(DailyTrackerId.New(), DateOnly.FromDateTime(DateTime.UtcNow), UserId.New(), ActivityId.New(),
             new ActivityDetailsSpecification("test_title", null), null, null);
         
         //act
-        var activity = dailyTracker.AddActivity(ActivityId.New(), new ActivityDetailsSpecification(title, note),
+        dailyTracker.AddActivity(activityId, new ActivityDetailsSpecification(title, note),
             parentActivityRuleId, stages);
 
         //assert
-        var newActivity = dailyTracker.Activities.Single(x => x.Id == activity.Id);
+        var newActivity = dailyTracker.Activities.Single(x => x.Id == activityId);
         newActivity.Details.Title.ShouldBe(title);
         newActivity.Details.Note.ShouldBe(note);
         newActivity.ParentActivityRuleId.ShouldBe(parentActivityRuleId);
@@ -41,7 +42,7 @@ public sealed class AddActivityTests
     {
         //arrange
         var title = "test_activity_title";
-        var dailyTracker = DailyTracker.Create(DailyTrackerId.New(), DateOnly.FromDateTime(DateTime.UtcNow), UserId.New(),
+        var dailyTracker = DailyTracker.Create(DailyTrackerId.New(), DateOnly.FromDateTime(DateTime.UtcNow), UserId.New(), ActivityId.New(),
             new ActivityDetailsSpecification(title, null), null, null);
         
         //act

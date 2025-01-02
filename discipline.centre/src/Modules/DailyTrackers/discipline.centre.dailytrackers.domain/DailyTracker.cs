@@ -27,11 +27,11 @@ public sealed class DailyTracker : AggregateRoot<DailyTrackerId>
         UserId = userId;
     }
 
-    public static DailyTracker Create(DailyTrackerId id, DateOnly day, UserId userId, ActivityDetailsSpecification details,
-        ActivityRuleId? parentActivityRuleId, List<StageSpecification>? stages)
+    public static DailyTracker Create(DailyTrackerId id, DateOnly day, UserId userId, ActivityId activityId,
+        ActivityDetailsSpecification details, ActivityRuleId? parentActivityRuleId, List<StageSpecification>? stages)
     {
         var dailyTracker = new DailyTracker(id, day, userId);
-        dailyTracker.AddActivity(ActivityId.New(), details, parentActivityRuleId, stages);
+        dailyTracker.AddActivity(activityId, details, parentActivityRuleId, stages);
         return dailyTracker;
     }
 

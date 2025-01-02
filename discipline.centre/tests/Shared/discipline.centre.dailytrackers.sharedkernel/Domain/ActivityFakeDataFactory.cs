@@ -9,14 +9,11 @@ public static class ActivityFakeDataFactory
 {
     public static Activity Get(bool withNote = false, bool withParent = false, List<Stage>? stages = null)
     {
-        List<StageSpecification> stageSpecifications = null;
+        List<StageSpecification>? stageSpecifications = null;
         if (stages is not null)
         {
             stageSpecifications = [];
-            foreach (var stage in stages)
-            {
-                stageSpecifications.Add(new StageSpecification(stage.Title, stage.Index));
-            }
+            stageSpecifications.AddRange(stages.Select(stage => new StageSpecification(stage.Title, stage.Index)));
         }
 
         var faker = new Faker<Activity>()

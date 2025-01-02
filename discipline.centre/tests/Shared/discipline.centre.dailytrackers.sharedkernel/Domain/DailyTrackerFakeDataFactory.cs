@@ -9,14 +9,11 @@ public static class DailyTrackerFakeDataFactory
 {
     public static DailyTracker Get(Activity? activity = null)
     {
-        List<StageSpecification> stageSpecifications = null;
-        if (activity is not null && activity.Stages is not null)
+        List<StageSpecification>? stageSpecifications = null;
+        if (activity?.Stages != null)
         {
             stageSpecifications = [];
-            foreach (var stage in activity.Stages)
-            {
-                stageSpecifications.Add(new StageSpecification(stage.Title, stage.Index));
-            }
+            stageSpecifications.AddRange(activity.Stages.Select(stage => new StageSpecification(stage.Title, stage.Index)));
         }
         
         var faker = new Faker<DailyTracker>()
@@ -24,6 +21,7 @@ public static class DailyTrackerFakeDataFactory
                 DailyTrackerId.New(), 
                 DateOnly.FromDateTime(DateTime.UtcNow),
                 UserId.New(), 
+                ActivityId.New(),
                 new ActivityDetailsSpecification(
                     activity is null ? x.Random.String(minLength:3, maxLength:30) : activity.Details.Title,
                     activity?.Details.Note),

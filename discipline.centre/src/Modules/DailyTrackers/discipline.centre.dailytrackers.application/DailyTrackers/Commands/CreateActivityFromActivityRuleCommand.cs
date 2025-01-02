@@ -38,7 +38,7 @@ internal sealed class CreateActivityFromActivityRuleCommandHandler(
             return;
         }
         
-        dailyTracker = DailyTracker.Create(DailyTrackerId.New(), today, command.UserId,
+        dailyTracker = DailyTracker.Create(DailyTrackerId.New(), today, command.UserId, command.ActivityId,
             new ActivityDetailsSpecification(activityRule.Title, activityRule.Note),
             activityRule.ActivityRuleId, stages);
         await repository.AddAsync(dailyTracker, cancellationToken);

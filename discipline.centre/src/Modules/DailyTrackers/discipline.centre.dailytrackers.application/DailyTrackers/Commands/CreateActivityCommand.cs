@@ -1,3 +1,4 @@
+using discipline.centre.dailytrackers.domain;
 using discipline.centre.dailytrackers.domain.Repositories;
 using discipline.centre.dailytrackers.domain.Specifications;
 using discipline.centre.shared.abstractions.CQRS.Commands;
@@ -16,7 +17,16 @@ internal sealed class CreateActivityCommandHandler(
         var dailyTracker = await writeReadDailyTrackerRepository
             .GetDailyTrackerByDayAsync(command.Day, command.UserId, cancellationToken);
 
-        dailyTracker!.AddActivity(command.ActivityId, command.Details, null, command.Stages);
-
+        if (dailyTracker is null)
+        {
+            dailyTracker = DailyTracker.Create(DailyTrackerId.New(), command.Day, command.UserId, command.ActivityId, 
+                command.Details, null, command.Stages);
+            await writeReadDailyTrackerRepository.AddAsync(dailyTracker, cancellationToken);
+            return;
+        }
+        
+        dailyTracker.AddActivity(command.ActivityId, command.Details, null, command.Stages);
+        
+        await writeReadDailyTrackerRepository.UpdateAsync(dailyTracker, cancellationToken);
     }
 }

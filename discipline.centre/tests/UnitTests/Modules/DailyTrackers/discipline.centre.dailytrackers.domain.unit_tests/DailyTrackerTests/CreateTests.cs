@@ -1,4 +1,5 @@
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
+using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using Shouldly;
 using Xunit;
 
@@ -11,7 +12,7 @@ public partial class CreateTests
     public void GivenValidArguments_ShouldReturnDailyTrackerWithValue(CreateTestParameters parameters)
     {
         //act
-        var result = DailyTracker.Create(parameters.DailyTrackerId, parameters.Day, parameters.UserId,
+        var result = DailyTracker.Create(parameters.DailyTrackerId, parameters.Day, parameters.UserId, ActivityId.New(), 
             parameters.Details, parameters.ParentActivityRuleId, parameters.Stages);
         
         //assert
@@ -28,7 +29,7 @@ public partial class CreateTests
     public void GivenInvalidArguments_ShouldThrowDomainExceptionWithCode(CreateTestParameters parameters, string code)
     {
         //act
-        var exception = Record.Exception(() => DailyTracker.Create(parameters.DailyTrackerId, parameters.Day, parameters.UserId,
+        var exception = Record.Exception(() => DailyTracker.Create(parameters.DailyTrackerId, parameters.Day, parameters.UserId, ActivityId.New(),
             parameters.Details, parameters.ParentActivityRuleId, parameters.Stages));
         
         //assert
