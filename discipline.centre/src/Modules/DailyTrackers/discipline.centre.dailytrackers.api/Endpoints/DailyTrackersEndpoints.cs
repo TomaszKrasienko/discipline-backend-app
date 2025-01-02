@@ -1,6 +1,7 @@
 using discipline.centre.dailytrackers.application.DailyTrackers.Commands;
 using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.dailytrackers.api;
+using discipline.centre.dailytrackers.application.DailyTrackers.DTOs;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.Auth;
 using discipline.centre.shared.infrastructure.IdentityContext.Abstractions;
@@ -42,11 +43,11 @@ internal static class DailyTrackersEndpoints
             .RequireAuthorization(UserStatePolicy.Name);
         
         app.MapPost($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/activities", async (
-            CreateActivityCommand command, CancellationToken cancellationToken, ICqrsDispatcher dispatcher,
+            CreateActivityDto dto, CancellationToken cancellationToken, ICqrsDispatcher dispatcher,
             IIdentityContext identityContext, IHttpContextAccessor contextAccessor) =>
             {
                 var activityId = ActivityId.New();
-                await dispatcher.HandleAsync(command with { ActivityId = activityId, UserId = identityContext.GetUser() }, cancellationToken);
+                await dispatcher.HandleAsync(dto.MapAsCommand(activityId, identityContext.GetUser()), cancellationToken);
                 contextAccessor.AddResourceIdHeader(activityId.ToString());
 
                 return Results.NoContent();
