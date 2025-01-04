@@ -17,6 +17,7 @@ namespace Microsoft.AspNetCore.Builder;
 internal static class DailyTrackersEndpoints
 {
     private const string DailyTrackersTag = "daily-trackers";
+    private const string GetByIdEndpoint = "get-by-id";
 
     internal static WebApplication MapDailyTrackersEndpoints(this WebApplication app)
     {
@@ -33,7 +34,7 @@ internal static class DailyTrackersEndpoints
                 
                 contextAccessor.AddResourceIdHeader(activityId.ToString());
 
-                return Results.NoContent();
+                return Results.CreatedAtRoute(GetByIdEndpoint, new { activityId = activityId }, null);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
@@ -52,7 +53,7 @@ internal static class DailyTrackersEndpoints
                 await dispatcher.HandleAsync(dto.MapAsCommand(activityId, identityContext.GetUser()), cancellationToken);
                 contextAccessor.AddResourceIdHeader(activityId.ToString());
 
-                return Results.NoContent();
+                return Results.CreatedAtRoute(GetByIdEndpoint, new { activityId = activityId.ToString() }, null);
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
@@ -79,7 +80,7 @@ internal static class DailyTrackersEndpoints
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
             .Produces(StatusCodes.Status403Forbidden, typeof(void))
             .Produces(StatusCodes.Status404NotFound, typeof(void))
-            .WithName("GetActivityById")
+            .WithName(GetByIdEndpoint)
             .WithTags(DailyTrackersTag)
             .WithDescription("Gets activity by its unique identifier.")
             .RequireAuthorization()

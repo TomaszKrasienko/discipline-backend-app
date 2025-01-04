@@ -72,5 +72,35 @@ Content-Type: application/json
 @activity_rule_id = {{create_activity_rule.response.headers.headers.x-resource-id}}
 
 ###
+# @name create_activity_from_rule
 POST {{host_address}}/api/daily-trackers-module/daily-trackers/activities/{{activity_rule_id}}
+Authorization: Bearer {{token}}
+
+@activity_id_from_rule = {{create_activity_from_rule.response.headers.x-resource-id}}
+
+###
+# @name create_activity
+POST {{host_address}}/api/daily-trackers-module/daily-trackers/activities
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "day": "2025-01-04",
+  "details": {
+    "title": "string",
+    "note": "string"
+  },
+  "stages": [
+    {
+    "title": "string",
+    "index": 1
+    }
+  ]
+}
+
+###
+@activity_id = {{create_activity.response.headers.x-resource-id}}
+
+###
+GET {{host_address}}/api/daily-trackers-module/daily-trackers/activities/{{activity_id}}
 Authorization: Bearer {{token}}
