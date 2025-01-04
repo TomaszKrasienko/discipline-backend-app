@@ -15,7 +15,7 @@ internal static class DailyTrackerDocumentMappingExtensions
     /// </summary>
     /// <param name="document">Instance of <see cref="DailyTrackerDocument"/> to be mapped</param>
     /// <returns>Instance of <see cref="DailyTracker"/></returns>
-    internal static DailyTracker MapAsDocument(this DailyTrackerDocument document)
+    internal static DailyTracker MapAsEntity(this DailyTrackerDocument document)
         => new DailyTracker(
             DailyTrackerId.Parse(document.DailyTrackerId),
             document.Day,

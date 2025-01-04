@@ -2,12 +2,14 @@ using discipline.centre.dailytrackers.application.DailyTrackers.Commands;
 using discipline.centre.shared.abstractions.CQRS;
 using discipline.centre.dailytrackers.api;
 using discipline.centre.dailytrackers.application.DailyTrackers.DTOs;
+using discipline.centre.dailytrackers.application.DailyTrackers.Queries;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.Auth;
 using discipline.centre.shared.infrastructure.IdentityContext.Abstractions;
 using discipline.centre.shared.infrastructure.ResourceHeader;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.AspNetCore.Builder;
@@ -60,6 +62,26 @@ internal static class DailyTrackersEndpoints
             .WithName("CreateActivity")
             .WithTags(DailyTrackersTag)
             .WithDescription("Creates activity.")
+            .RequireAuthorization()
+            .RequireAuthorization(UserStatePolicy.Name);
+        
+        app.MapGet($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/activities/{{activityId:ulid}}", async (
+            Ulid activityId, CancellationToken cancellationToken, IIdentityContext identityContext, ICqrsDispatcher dispatcher) =>
+            {
+                var stronglyTypedActivityId = new ActivityId(activityId);
+                var result = await dispatcher.SendAsync(
+                    new GetActivityByIdQuery(identityContext.GetUser(), stronglyTypedActivityId),
+                    cancellationToken);
+
+                return result is null ? Results.NotFound() : Results.Ok(result);
+            })
+            .Produces(StatusCodes.Status200OK, typeof(ActivityDto))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
+            .Produces(StatusCodes.Status404NotFound, typeof(void))
+            .WithName("GetActivityById")
+            .WithTags(DailyTrackersTag)
+            .WithDescription("Gets activity by its unique identifier.")
             .RequireAuthorization()
             .RequireAuthorization(UserStatePolicy.Name);
         

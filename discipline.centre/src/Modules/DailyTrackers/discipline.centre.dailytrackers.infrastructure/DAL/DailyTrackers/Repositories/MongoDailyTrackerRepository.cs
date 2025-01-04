@@ -14,7 +14,7 @@ internal sealed class MongoDailyTrackerRepository(
         => (await context.GetCollection<DailyTrackerDocument>().Find(x
                 => x.Day == day
                    && x.UserId == userId.ToString())
-            .SingleOrDefaultAsync(cancellationToken))?.MapAsDocument();
+            .SingleOrDefaultAsync(cancellationToken))?.MapAsEntity();
 
     public Task AddAsync(DailyTracker dailyTracker, CancellationToken cancellationToken = default)
         => context.GetCollection<DailyTrackerDocument>()

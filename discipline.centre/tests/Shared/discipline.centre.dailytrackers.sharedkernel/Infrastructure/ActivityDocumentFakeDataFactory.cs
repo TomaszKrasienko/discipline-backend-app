@@ -11,8 +11,8 @@ internal static class ActivityDocumentFakeDataFactory
         var faker = new Faker<ActivityDocument>()
             .RuleFor(x => x.ActivityId, ActivityId.New().ToString())
             .RuleFor(x => x.Title, f => f.Random.String(minLength: 3, maxLength: 30))
-            .RuleFor(x => x.Note, f => withNote ? null : f.Lorem.Sentence())
-            .RuleFor(x => x.ParentActivityRuleId, withParentActivity ? null : ActivityRuleId.New().ToString())
+            .RuleFor(x => x.Note, f => withNote ? f.Lorem.Sentence() : null)
+            .RuleFor(x => x.ParentActivityRuleId, withParentActivity ? ActivityRuleId.New().ToString() :  null)
             .RuleFor(x => x.Stages, stages);
         
         return faker.Generate(1).Single();

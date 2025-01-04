@@ -19,7 +19,7 @@ public sealed class DailyTrackerDocumentMappingExtensionsTests
         var dailyTrackerDocument = DailyTrackerDocumentFakeDataFactory.Get([activityDocument]);
         
         //act
-        var entity = dailyTrackerDocument.MapAsDocument();
+        var entity = dailyTrackerDocument.MapAsEntity();
 
         //assert
         entity.Id.ShouldBe(DailyTrackerId.Parse(dailyTrackerDocument.DailyTrackerId));
