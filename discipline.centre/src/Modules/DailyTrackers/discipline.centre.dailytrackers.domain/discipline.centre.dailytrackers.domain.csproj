@@ -10,7 +10,7 @@
     
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.centre.dailytrackers.domain.unit_tests"/>
-        <InternalsVisibleTo Include="discipline.centre.dailytrackers.sharedkernel"/>
+        <InternalsVisibleTo Include="discipline.centre.dailytrackers.tests.sharedkernel"/>
         <InternalsVisibleTo Include="discipline.centre.dailytrackers.application.unit_tests"/>
     </ItemGroup>
 

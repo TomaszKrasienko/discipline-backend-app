@@ -21,7 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\..\src\Modules\DailyTrackers\discipline.centre.dailytrackers.infrastructure\discipline.centre.dailytrackers.infrastructure.csproj" />
-      <ProjectReference Include="..\..\..\..\Shared\discipline.centre.dailytrackers.sharedkernel\discipline.centre.dailytrackers.sharedkernel.csproj" />
+      <ProjectReference Include="..\..\..\..\Shared\discipline.centre.dailytrackers.tests.sharedkernel\discipline.centre.dailytrackers.tests.sharedkernel.csproj" />
     </ItemGroup>
 
 </Project>

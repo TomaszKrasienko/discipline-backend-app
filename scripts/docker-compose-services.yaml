@@ -8,7 +8,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=docker
     volumes:
-      - ./../discipline.centre/src/Bootstrappers/discipline.centre.bootstrappers.api/Certs:/discipline/certs
+      - ./../discipline.centre/src/Bootstrappers/discipline.centre.bootstrappers.api/Certs:/app/discipline/certs
     networks:
       - discipline-network
 

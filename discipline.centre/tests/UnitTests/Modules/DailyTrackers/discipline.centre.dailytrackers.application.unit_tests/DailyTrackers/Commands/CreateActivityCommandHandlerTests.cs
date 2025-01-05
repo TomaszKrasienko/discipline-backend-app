@@ -2,7 +2,7 @@ using discipline.centre.dailytrackers.application.DailyTrackers.Commands;
 using discipline.centre.dailytrackers.domain;
 using discipline.centre.dailytrackers.domain.Repositories;
 using discipline.centre.dailytrackers.domain.Specifications;
-using discipline.centre.dailytrackers.sharedkernel.Domain;
+using discipline.centre.dailytrackers.tests.sharedkernel.Domain;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;

@@ -21,7 +21,9 @@ internal static class ModuleLoader
 
         var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
             .Where(x => !allNotDynamicLocations.Contains(x, StringComparer.InvariantCultureIgnoreCase))
+            .Where(x => x.Contains(ModulePartsPrefix) && !x.Contains("tests")) 
             .ToList();
+        
         var disabledModules = new List<string>();
         foreach (var file in files)
         {
@@ -33,7 +35,6 @@ internal static class ModuleLoader
             }
             
             var moduleName = fileName.Split(".")[2].ToLowerInvariant();
-            var test = configuration.GetSection(moduleName);
             
             var enabled = configuration.GetValue<bool>($"{moduleName}:module:enabled");
             if (enabled)
@@ -45,6 +46,7 @@ internal static class ModuleLoader
         {
             files.Remove(module);
         }
+        
         files.ForEach(x => allAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(x))));
         return allAssemblies;
     }

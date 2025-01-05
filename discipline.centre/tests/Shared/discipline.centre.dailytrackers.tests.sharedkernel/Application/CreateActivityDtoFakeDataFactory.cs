@@ -2,7 +2,7 @@ using Bogus;
 using discipline.centre.dailytrackers.application.DailyTrackers.DTOs;
 using discipline.centre.dailytrackers.domain.Specifications;
 
-namespace discipline.centre.dailytrackers.sharedkernel.Application;
+namespace discipline.centre.dailytrackers.tests.sharedkernel.Application;
 
 public static class CreateActivityDtoFakeDataFactory
 {

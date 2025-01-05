@@ -1,6 +1,5 @@
 using discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Documents;
-using discipline.centre.dailytrackers.sharedkernel.Domain;
-using discipline.centre.dailytrackers.sharedkernel.Infrastructure;
+using discipline.centre.dailytrackers.tests.sharedkernel.Infrastructure;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using Shouldly;
 using StackExchange.Redis;

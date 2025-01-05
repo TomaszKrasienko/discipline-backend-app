@@ -2,7 +2,7 @@ using Bogus;
 using discipline.centre.dailytrackers.domain;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-namespace discipline.centre.dailytrackers.sharedkernel.Domain;
+namespace discipline.centre.dailytrackers.tests.sharedkernel.Domain;
 
 public static class StageFakeDataFactory
 {

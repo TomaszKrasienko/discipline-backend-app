@@ -2,7 +2,7 @@ using Bogus;
 using discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Documents;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-namespace discipline.centre.dailytrackers.sharedkernel.Infrastructure;
+namespace discipline.centre.dailytrackers.tests.sharedkernel.Infrastructure;
 
 internal static class ActivityDocumentFakeDataFactory
 {

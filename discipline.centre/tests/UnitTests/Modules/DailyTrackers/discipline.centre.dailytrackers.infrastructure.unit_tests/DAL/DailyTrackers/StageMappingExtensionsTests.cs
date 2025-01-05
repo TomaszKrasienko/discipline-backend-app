@@ -1,6 +1,6 @@
 using discipline.centre.dailytrackers.domain;
 using discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Documents;
-using discipline.centre.dailytrackers.sharedkernel.Domain;
+using discipline.centre.dailytrackers.tests.sharedkernel.Domain;
 using Shouldly;
 using Xunit;
 

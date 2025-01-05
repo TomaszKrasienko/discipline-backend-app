@@ -102,7 +102,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.infrastructure.unit_tests", "tests\UnitTests\Modules\DailyTrackers\discipline.centre.dailytrackers.infrastructure.unit_tests\discipline.centre.dailytrackers.infrastructure.unit_tests.csproj", "{87DF237D-7CA5-4AF9-9F28-54E83FF18BB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.sharedkernel", "tests\Shared\discipline.centre.dailytrackers.sharedkernel\discipline.centre.dailytrackers.sharedkernel.csproj", "{FA7B6E01-8737-43B9-A14E-75572C5F5DE2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.tests.sharedkernel", "tests\Shared\discipline.centre.dailytrackers.tests.sharedkernel\discipline.centre.dailytrackers.tests.sharedkernel.csproj", "{FA7B6E01-8737-43B9-A14E-75572C5F5DE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.api", "src\Modules\DailyTrackers\discipline.centre.dailytrackers.api\discipline.centre.dailytrackers.api.csproj", "{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5}"
 EndProject
