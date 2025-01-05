@@ -33,7 +33,7 @@ services:
       - discipline-network
   jeager:
     image: jaegertracing/all-in-one:latest
-    container_name: discipline-jeager
+    container_name: discipline-jaeger
     ports:
       - 6021:4317
       - 6022:16686

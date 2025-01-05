@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHealthChecks();
+builder.Host.ConfigureModules();
 var assemblies = ModuleLoader.GetAssemblies(builder.Configuration);
 var modules = ModuleLoader.GetModules(assemblies);
 builder.Services.AddInfrastructure(assemblies, builder.Configuration);

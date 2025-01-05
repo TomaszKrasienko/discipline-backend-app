@@ -25,12 +25,16 @@ internal static class ModuleLoader
         var disabledModules = new List<string>();
         foreach (var file in files)
         {
-            if (!file.Contains(ModulePartsPrefix))
+            var fileName = file.Split('/').Last(); 
+            
+            if (!fileName.Contains(ModulePartsPrefix))
             {
                 continue;
             }
-
-            var moduleName = file.Split(ModulePartsPrefix)[1].Split(".")[0].ToLowerInvariant();
+            
+            var moduleName = fileName.Split(".")[2].ToLowerInvariant();
+            var test = configuration.GetSection(moduleName);
+            
             var enabled = configuration.GetValue<bool>($"{moduleName}:module:enabled");
             if (enabled)
             {

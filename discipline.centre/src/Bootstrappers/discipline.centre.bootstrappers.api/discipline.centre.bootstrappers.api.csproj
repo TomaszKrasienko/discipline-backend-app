@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Modules\ActivityRules\discipline.centre. activityrules.api\discipline.centre. activityrules.api.csproj" />
+      <ProjectReference Include="..\..\Modules\ActivityRules\discipline.centre.activityrules.api\discipline.centre.activityrules.api.csproj" />
       <ProjectReference Include="..\..\Modules\DailyTrackers\discipline.centre.dailytrackers.api\discipline.centre.dailytrackers.api.csproj" />
       <ProjectReference Include="..\..\Modules\Users\discipline.centre.users.api\discipline.centre.users.api.csproj" />
       <ProjectReference Include="..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />

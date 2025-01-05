@@ -1,14 +1,14 @@
 services:
-  discipline-backend:
-    container_name: discipline-backend
+  discipline-centre-hub:
+    container_name: discipline-centre-hub
     build: 
-      context: ./../discipline-backend-app
+      context: ./../discipline.centre
     ports:
-      - 6001:8080
+      - 7001:8080
     environment:
       - ASPNETCORE_ENVIRONMENT=docker
     volumes:
-      - ./../discipline-backend-app/discipline.api/certs:/certs
+      - ./../discipline.centre/src/Bootstrappers/discipline.centre.bootstrappers.api/Certs:/discipline/certs
     networks:
       - discipline-network
 
