@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="discipline.centre.activityrules.infrastructure.unit_test"/>
+        <InternalsVisibleTo Include="discipline.centre.activityrules.infrastructure.unit_tests"/>
         <InternalsVisibleTo Include="discipline.centre.activityrules.tests.sharedkernel"/>
         <InternalsVisibleTo Include="discipline.centre.activityrules.integration_tests"/>
         <InternalsVisibleTo Include="discipline.centre.dailytrackers.integration_tests"/>

@@ -11,4 +11,10 @@
       <ProjectReference Include="..\discipline.centre.dailytrackers.infrastructure\discipline.centre.dailytrackers.infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="module.dailytrackers.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

@@ -68,7 +68,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.infrastructure", "src\Modules\ActivityRules\discipline.centre.activityrules.infrastructure\discipline.centre.activityrules.infrastructure.csproj", "{495053F4-1CCD-48DA-8CC3-C8012BCB7362}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.infrastructure.unit_test", "tests\UnitTests\Modules\ActivityRules\discipline.centre.activityrules.infrastructure.unit_test\discipline.centre.activityrules.infrastructure.unit_test.csproj", "{98C44B15-8772-450D-A0EB-402B523344B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.infrastructure.unit_tests", "tests\UnitTests\Modules\ActivityRules\discipline.centre.activityrules.infrastructure.unit_tests\discipline.centre.activityrules.infrastructure.unit_tests.csproj", "{98C44B15-8772-450D-A0EB-402B523344B0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre. activityrules.api", "src\Modules\ActivityRules\discipline.centre.activityrules.api\discipline.centre.activityrules.api.csproj", "{7EFA520D-524E-4D37-84DD-E3E4FD45B323}"
 EndProject

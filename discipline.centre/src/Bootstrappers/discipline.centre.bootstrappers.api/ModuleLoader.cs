@@ -25,6 +25,8 @@ internal static class ModuleLoader
             .ToList();
         
         var disabledModules = new List<string>();
+        var enabledModules = new List<string>();
+        
         foreach (var file in files)
         {
             var fileName = file.Split('/').Last(); 
@@ -35,19 +37,32 @@ internal static class ModuleLoader
             }
             
             var moduleName = fileName.Split(".")[2].ToLowerInvariant();
-            
             var enabled = configuration.GetValue<bool>($"{moduleName}:module:enabled");
+            
             if (enabled)
             {
-                disabledModules.Add(file);
+                enabledModules.Add(moduleName);
+                continue;
             }
+            
+            disabledModules.Add(file);
         }
+        
         foreach (var module in disabledModules)
         {
             files.Remove(module);
         }
         
         files.ForEach(x => allAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(x))));
+        
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"Modules {string.Join(", ", enabledModules.Distinct())} enabled");
+        Console.ResetColor();
+        
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"Module: {string.Join(", ", disabledModules.Distinct())} disabled");
+        Console.ResetColor();
+        
         return allAssemblies;
     }
     
