@@ -1,9 +1,10 @@
 namespace discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-public record DailyTrackerId(Ulid Value) : ITypeId<DailyTrackerId>
+public record DailyTrackerId(Ulid Value) : ITypeId<DailyTrackerId, Ulid>
 {
-    public static DailyTrackerId New()
-        => new (Ulid.NewUlid());
+    public static DailyTrackerId Create() => Create(Ulid.NewUlid());
+
+    public static DailyTrackerId Create(Ulid value) => new DailyTrackerId(value);
 
     public static DailyTrackerId Parse(string stringTypedId)
     {
@@ -14,7 +15,4 @@ public record DailyTrackerId(Ulid Value) : ITypeId<DailyTrackerId>
 
         return new DailyTrackerId(parsedId);
     }
-
-    public override string ToString()
-        => Value.ToString();
 }

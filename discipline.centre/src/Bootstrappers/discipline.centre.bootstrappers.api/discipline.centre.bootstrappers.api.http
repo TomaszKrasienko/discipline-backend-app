@@ -61,11 +61,11 @@ Content-Type: application/json
 
 {
   "details": {
-      "title": "string1",
+      "title": "rule 3 first day",
       "note": "string"
     },
-  "mode": "Custom",
-  "selectedDays":[1,2,3]
+  "mode": "FirstDayOfWeek",
+  "selectedDays":null
 }
 
 ###
@@ -104,3 +104,6 @@ Content-Type: application/json
 ###
 GET {{host_address}}/api/daily-trackers-module/daily-trackers/activities/{{activity_id}}
 Authorization: Bearer {{token}}
+
+###
+GET {{host_address}}/activity-rules-module/activity-rules-internal/modes/07-01-2025

@@ -1,4 +1,6 @@
+using discipline.centre.dailytrackers.application.DailyTrackers.Commands;
 using discipline.centre.shared.abstractions.Modules;
+using discipline.centre.shared.infrastructure.Events.Brokers.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +14,9 @@ internal sealed class DailyTrackersModule : IModule
     public string Name => "DailyTrackers";
     
     public void Register(IServiceCollection services, IConfiguration configuration)
-        => services.AddInfrastructure(ModuleName);
+        => services
+            .AddInfrastructure(ModuleName)
+            .AddRedisConsumerService<CreateActivityFromActivityRuleCommand>();
 
     public void Use(WebApplication app)
     {

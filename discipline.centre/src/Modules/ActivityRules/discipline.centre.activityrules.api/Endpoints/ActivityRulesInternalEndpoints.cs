@@ -18,35 +18,37 @@ internal static class ActivityRulesInternalEndpoints
     
     internal static WebApplication MapActivityRulesInternalEndpoints(this WebApplication app)
     {
-        app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/{{userId:ulid}}/{{activityRuleId:ulid}}",
-                async (Ulid userId, Ulid activityRuleId, CancellationToken cancellationToken,
-                    ICqrsDispatcher dispatcher) =>
-                {
-                    var stronglyTypedUserId = new UserId(userId);
-                    var stronglyTypedActivityRuleId = new ActivityRuleId(activityRuleId);
-
-                    var result = await dispatcher.SendAsync(
-                        new GetActivityRuleByIdQuery(stronglyTypedActivityRuleId, stronglyTypedUserId),
-                        cancellationToken);
-                    return result is null ? Results.NotFound() : Results.Ok(result);
-                })
-            .RequireAuthorization(policy =>
+        app.MapGet(
+            $"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/{{userId:ulid}}/{{activityRuleId:ulid}}",
+            async (Ulid userId, Ulid activityRuleId, CancellationToken cancellationToken,
+                ICqrsDispatcher dispatcher) =>
             {
-                policy.AuthenticationSchemes.Add(AuthorizationSchemes.HangfireAuthorizeSchema);
-                policy.RequireAuthenticatedUser();
-            });
+                var stronglyTypedUserId = new UserId(userId);
+                var stronglyTypedActivityRuleId = new ActivityRuleId(activityRuleId);
 
-        app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/modes/{{day}}", async (DateOnly day,
-            ICqrsDispatcher dispatcher, CancellationToken cancellationToken) =>
-                {
-                    var result = await dispatcher.SendAsync(new GetActiveModesByDayQuery(day), cancellationToken);
-                    return Results.Ok(result);
-                })
-            .RequireAuthorization(policy =>
-            {
-                policy.AuthenticationSchemes.Add(AuthorizationSchemes.HangfireAuthorizeSchema);
-                policy.RequireAuthenticatedUser();
+                var result = await dispatcher.SendAsync(
+                    new GetActivityRuleByIdQuery(stronglyTypedActivityRuleId, stronglyTypedUserId),
+                    cancellationToken);
+                return result is null ? Results.NotFound() : Results.Ok(result);
             });
+            // .RequireAuthorization(policy =>
+            // {
+            //     policy.AuthenticationSchemes.Add(AuthorizationSchemes.HangfireAuthorizeSchema);
+            //     policy.RequireAuthenticatedUser();
+            // });
+
+            app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/modes/{{day}}", async (
+                string day, ICqrsDispatcher dispatcher, CancellationToken cancellationToken) =>
+            {
+                var convertedDay = DateOnly.Parse(day);
+                var result = await dispatcher.SendAsync(new GetActiveModesByDayQuery(convertedDay), cancellationToken);
+                return Results.Ok(result);
+            });
+            // .RequireAuthorization(policy =>
+            // {
+            //     policy.AuthenticationSchemes.Add(AuthorizationSchemes.HangfireAuthorizeSchema);
+            //     policy.RequireAuthenticatedUser();
+            // });
             
         return app;
     }

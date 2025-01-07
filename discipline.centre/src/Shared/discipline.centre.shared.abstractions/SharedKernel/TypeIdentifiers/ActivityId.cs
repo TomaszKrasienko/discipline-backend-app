@@ -1,9 +1,10 @@
 namespace discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-public sealed record ActivityId(Ulid Value) : ITypeId<ActivityId>
+public sealed record ActivityId(Ulid Value) : ITypeId<ActivityId, Ulid>
 {
-    public static ActivityId New()
-        => new(Ulid.NewUlid());
+    public static ActivityId Create() => Create(Ulid.NewUlid());
+    
+    public static ActivityId Create(Ulid value) => new (value);
 
     public static ActivityId Parse(string stringTypedId)
     {
@@ -14,7 +15,4 @@ public sealed record ActivityId(Ulid Value) : ITypeId<ActivityId>
 
         return new ActivityId(parsedId);
     }
-
-    public override string ToString()
-        => Value.ToString();
 }
