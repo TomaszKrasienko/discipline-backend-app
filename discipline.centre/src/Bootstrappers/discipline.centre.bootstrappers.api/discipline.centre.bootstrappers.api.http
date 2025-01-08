@@ -61,7 +61,7 @@ Content-Type: application/json
 
 {
   "details": {
-      "title": "rule 3 first day",
+      "title": "rule 5 first day",
       "note": "string"
     },
   "mode": "FirstDayOfWeek",
@@ -70,6 +70,9 @@ Content-Type: application/json
 
 ###
 @activity_rule_id = {{create_activity_rule.response.headers.headers.x-resource-id}}
+
+http://localhost:5039/api/activity-rules-module/activity-rules/01JH3SXRJ9CZEX0X7Q96WHHAR2
+Authorization: Bearer {{token}}
 
 ###
 # @name create_activity_from_rule

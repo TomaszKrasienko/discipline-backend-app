@@ -7,7 +7,7 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.dailytrackers.domain;
 
-public sealed class Activity : Entity<ActivityId>
+public sealed class Activity : Entity<ActivityId, Ulid>
 {
     private List<Stage>? _stages;
     public Details Details { get; private set; } 

@@ -1,9 +1,8 @@
 namespace discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-public sealed record UserCalendarId(Ulid Value) : ITypeId<UserCalendarId>
+public sealed record UserCalendarId(Ulid Value) : ITypeId<UserCalendarId, Ulid>
 {
-    public static UserCalendarId New()
-        => new (Ulid.NewUlid());
+    public static UserCalendarId New() => new(Ulid.NewUlid());
 
     public static UserCalendarId Parse(string stringTypedId)
     {
@@ -14,7 +13,4 @@ public sealed record UserCalendarId(Ulid Value) : ITypeId<UserCalendarId>
 
         return new UserCalendarId(parsedId);
     }
-
-    public override string ToString()
-        => Value.ToString();
 }

@@ -13,10 +13,6 @@ internal sealed class CreateSubscriptionCommandValidator : AbstractValidator<Cre
 {
     public CreateSubscriptionCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .Must(x => x != SubscriptionId.Empty())
-            .WithMessage("Id can not be empty");
-
         RuleFor(x => x.Title)
             .NotNull()
             .NotEmpty()

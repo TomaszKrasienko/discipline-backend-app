@@ -2,8 +2,9 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.shared.abstractions.SharedKernel.Aggregate;
 
-public abstract class AggregateRoot<TIdentifier>(TIdentifier id) : Entity<TIdentifier>(id), IAggregateRoot 
-    where TIdentifier : class, ITypeId<TIdentifier>
+public abstract class AggregateRoot<TIdentifier, TValue>(TIdentifier id) : Entity<TIdentifier, TValue>(id), IAggregateRoot 
+    where TIdentifier : class, ITypeId<TIdentifier, TValue>
+    where TValue : struct
 {
     private readonly List<DomainEvent> _domainEvents = [];
     

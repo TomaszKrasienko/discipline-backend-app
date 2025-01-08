@@ -1,15 +1,8 @@
 namespace discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-public sealed record UserId(Ulid Value) : ITypeId<UserId>
+public sealed record UserId(Ulid Value) : ITypeId<UserId, Ulid>
 {
-    public static UserId New()
-        => new (Ulid.NewUlid());
-
-    public override string ToString()
-        => Value.ToString();
-
-    public static UserId Empty()
-        => new UserId(Ulid.Empty);
+    public static UserId New() => new(Ulid.NewUlid());
 
     public static UserId Parse(string stringTypedId)
     {
@@ -20,4 +13,6 @@ public sealed record UserId(Ulid Value) : ITypeId<UserId>
 
         return new UserId(parsedId);
     }
+
+    public override string ToString() => Value.ToString();
 }

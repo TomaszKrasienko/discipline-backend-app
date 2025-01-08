@@ -6,7 +6,7 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.dailytrackers.domain;
 
-public sealed class DailyTracker : AggregateRoot<DailyTrackerId>
+public sealed class DailyTracker : AggregateRoot<DailyTrackerId, Ulid>
 {
     private readonly List<Activity> _activities = [];
     public Day Day { get; private set; }

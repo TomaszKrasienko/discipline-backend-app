@@ -1,9 +1,8 @@
 namespace discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-public sealed record SubscriptionOrderId(Ulid Value) : ITypeId<SubscriptionOrderId>
+public sealed record SubscriptionOrderId(Ulid Value) : ITypeId<SubscriptionOrderId, Ulid>
 {
-    public static SubscriptionOrderId New()
-        => new (Ulid.NewUlid());
+    public static SubscriptionOrderId New() => new(Ulid.NewUlid());
 
     public static SubscriptionOrderId Parse(string stringTypedId)
     {
@@ -14,10 +13,4 @@ public sealed record SubscriptionOrderId(Ulid Value) : ITypeId<SubscriptionOrder
 
         return new SubscriptionOrderId(parsedId);
     }
-
-    public static SubscriptionOrderId Empty()
-        => new SubscriptionOrderId(Ulid.Empty);
-
-    public override string ToString()
-        => Value.ToString();
 }

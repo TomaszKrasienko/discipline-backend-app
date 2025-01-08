@@ -5,7 +5,7 @@ using discipline.centre.users.domain.Users.ValueObjects.SubscriptionOrders;
 
 namespace discipline.centre.users.domain.Users;
 
-public abstract class SubscriptionOrder : Entity<SubscriptionOrderId>
+public abstract class SubscriptionOrder : Entity<SubscriptionOrderId, Ulid>
 {
     public CreatedAt CreatedAt { get; private set; }
     public SubscriptionId SubscriptionId { get; private set; }

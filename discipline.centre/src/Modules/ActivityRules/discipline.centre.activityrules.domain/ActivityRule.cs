@@ -12,7 +12,7 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.activityrules.domain;
 
-public sealed class ActivityRule : AggregateRoot<ActivityRuleId>
+public sealed class ActivityRule : AggregateRoot<ActivityRuleId, Ulid>
 {
     private List<Stage>? _stages;
     public UserId UserId { get; }

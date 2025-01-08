@@ -1,9 +1,8 @@
 namespace discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-public sealed record EventId(Ulid Value) : ITypeId<EventId>
+public sealed record EventId(Ulid Value) : ITypeId<EventId, Ulid>
 {
-    public static EventId New()
-        => new (Ulid.NewUlid());
+    public static EventId New() => new(Ulid.NewUlid());
 
     public static EventId Parse(string stringTypedId)
     {
@@ -14,7 +13,4 @@ public sealed record EventId(Ulid Value) : ITypeId<EventId>
 
         return new EventId(parsedId);
     }
-
-    public override string ToString()
-        => Value.ToString();
 }

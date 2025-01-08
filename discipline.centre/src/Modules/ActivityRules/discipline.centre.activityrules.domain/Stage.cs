@@ -5,7 +5,7 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.activityrules.domain;
 
-public sealed class Stage : Entity<StageId>
+public sealed class Stage : Entity<StageId, Ulid>
 {
     public Title Title { get; private set; }
     public OrderIndex Index { get; set; }

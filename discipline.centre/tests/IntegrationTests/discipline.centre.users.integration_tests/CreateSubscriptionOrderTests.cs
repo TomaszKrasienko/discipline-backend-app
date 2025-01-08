@@ -44,7 +44,7 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
         var user = await AuthorizeWithoutSubscription();
         var subscriptionDocument = SubscriptionDocumentFactory.Get();
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
-        var command = new CreateUserSubscriptionOrderCommand(UserId.Empty(), SubscriptionOrderId.Empty(), 
+        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), 
             SubscriptionId.Parse(subscriptionDocument.Id), null, Guid.NewGuid().ToString());
         
         //act

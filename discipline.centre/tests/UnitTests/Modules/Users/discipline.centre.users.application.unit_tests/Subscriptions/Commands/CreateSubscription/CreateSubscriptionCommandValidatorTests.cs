@@ -44,12 +44,6 @@ public sealed class CreateSubscriptionCommandValidatorTests
 
     public static IEnumerable<object[]> GetInvalidCreateSubscriptionCommand()
     {
-        yield return 
-        [
-            new CreateSubscriptionCommand(SubscriptionId.Empty(), "test", 1m, 1m, ["test"]),
-            nameof(CreateSubscriptionCommand.Id)
-        ];
-
         yield return
         [
             new CreateSubscriptionCommand(SubscriptionId.New(), string.Empty, 1m,1m, ["test"]),
