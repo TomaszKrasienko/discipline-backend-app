@@ -39,8 +39,6 @@ internal sealed class IdentityContext : IIdentityContext
         {
             throw new ArgumentException("Invalid userId format");
         }
-        
-        
 
         _userId = new UserId(userId);
         Status = user.Claims.SingleOrDefault(x => x.Type == "Status")?.Value;

@@ -15,6 +15,7 @@ public class TypeIdJsonConverter<TIdentifier, TValue> : JsonConverter<IBaseTypeI
 
     public override void Write(Utf8JsonWriter writer, IBaseTypeId<TIdentifier, TValue> value, JsonSerializerOptions options)
     {
-        JsonSerializer.Serialize(writer, value.Value, options);
+        // JsonSerializer.Serialize(writer, value.Value, options);
+        writer.WriteStringValue(value.Value.ToString());
     }
 }

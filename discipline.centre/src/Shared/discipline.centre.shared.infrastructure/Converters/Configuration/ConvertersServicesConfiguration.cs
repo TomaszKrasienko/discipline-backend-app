@@ -36,5 +36,6 @@ internal static class ConvertersServicesConfiguration
                     options.SerializerOptions.Converters.Add(jsonConverter);
                 }
             }
+            options.SerializerOptions.Converters.Add(new TypeIdJsonConverter<ActivityRuleId, Ulid>());
         });
 }
