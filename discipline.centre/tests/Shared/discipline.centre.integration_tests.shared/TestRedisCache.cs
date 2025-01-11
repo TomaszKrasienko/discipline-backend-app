@@ -8,7 +8,7 @@ namespace discipline.centre.integration_tests.shared;
 public sealed class TestRedisCache : IDisposable
 {
     private RedisContainer? _redisContainer;
-    private IConnectionMultiplexer _connectionMultiplexer;
+    private readonly IConnectionMultiplexer _connectionMultiplexer;
     public string ConnectionString { get; }
     
     public TestRedisCache()

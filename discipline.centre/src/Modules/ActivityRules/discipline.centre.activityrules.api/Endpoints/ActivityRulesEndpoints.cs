@@ -108,7 +108,7 @@ internal static class ActivityRulesEndpoints
                Description = "Get activity rule by id" 
             })
             .RequireAuthorization()
-            .RequireAuthorization(UserStatePolicy.Name);;
+            .RequireAuthorization(UserStatePolicy.Name);
 
         return app;
     }

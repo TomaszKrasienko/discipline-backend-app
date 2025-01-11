@@ -42,15 +42,14 @@ public sealed class Activity : Entity<ActivityId, Ulid>
     }
 
     private void AddStages(List<StageSpecification> stages)
-        => stages.ForEach(x => AddStage(x));
+        => stages.ForEach(AddStage);
 
-    private Stage AddStage(StageSpecification stage)
+    private void AddStage(StageSpecification stage)
     {
         CheckRule(new StagesMustHaveOrderedIndexRule(_stages, stage));
         CheckRule(new StageTitleMustBeUniqueRule(_stages, stage));
         var newStage = Stage.Create(StageId.New(), stage.Title, stage.Index);
         _stages ??= [];
         _stages.Add(newStage);
-        return newStage;
     }
 }

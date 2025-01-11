@@ -9,7 +9,7 @@ internal static class StageFakeDataFactory
     internal static Stage Get(int index)
         => Get(index, 1).Single();
     
-    private static List<Stage> Get(int index, int count = 1)
+    private static List<Stage> Get(int count, int index)
         => GetFaker(index).Generate(count);
     
     private static Faker<Stage> GetFaker(int index)

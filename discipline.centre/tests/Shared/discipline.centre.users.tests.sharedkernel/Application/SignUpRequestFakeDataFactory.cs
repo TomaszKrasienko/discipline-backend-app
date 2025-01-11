@@ -5,10 +5,10 @@ namespace discipline.centre.users.tests.sharedkernel.Application;
 
 public static class SignUpRequestFakeDataFactory
 {
-    public static SignUpRequest Get()
+    public static SignUpDto Get()
     {
-        var faker = new Faker<SignUpRequest>()
-            .CustomInstantiator(v => new SignUpRequest(
+        var faker = new Faker<SignUpDto>()
+            .CustomInstantiator(v => new SignUpDto(
                 v.Internet.Email(),
                 "Test123!",
                 v.Name.FirstName(),

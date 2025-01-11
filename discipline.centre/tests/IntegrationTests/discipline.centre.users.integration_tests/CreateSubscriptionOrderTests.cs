@@ -23,11 +23,11 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
         var user = await AuthorizeWithoutSubscription();
         var subscriptionDocument = SubscriptionDocumentFactory.Get(10, 100);
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
-        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), new SubscriptionId(Ulid.Parse((string)subscriptionDocument.Id)),
+        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), new SubscriptionId(Ulid.Parse(subscriptionDocument.Id)),
             SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"users-module/users/subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -48,7 +48,7 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
             SubscriptionId.Parse(subscriptionDocument.Id), null, Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"users-module/users/subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -67,7 +67,7 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
             SubscriptionId.New(), SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"users-module/users/subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -81,7 +81,7 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
             SubscriptionId.New(), SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"users-module/users/subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -96,7 +96,7 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
             new SubscriptionId(Ulid.Empty), SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"users-module/users/subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

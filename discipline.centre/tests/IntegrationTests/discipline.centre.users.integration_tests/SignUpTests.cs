@@ -22,7 +22,7 @@ public sealed class SignUpTests() : BaseTestsController("users-module")
             "test_first_name", "test_last_name");
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("users-module/users", command);
+        var response = await HttpClient.PostAsJsonAsync("api/users-module/users", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
@@ -50,7 +50,7 @@ public sealed class SignUpTests() : BaseTestsController("users-module")
             "test_last_name");
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("users-module/users", command);
+        var response = await HttpClient.PostAsJsonAsync("api/users-module/users", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -64,7 +64,7 @@ public sealed class SignUpTests() : BaseTestsController("users-module")
             "test_last_name");
         
         //act
-        var response = await HttpClient.PostAsJsonAsync("users-module/users", command);
+        var response = await HttpClient.PostAsJsonAsync("api/users-module/users", command);
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

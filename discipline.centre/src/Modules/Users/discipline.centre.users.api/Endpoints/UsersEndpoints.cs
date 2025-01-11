@@ -3,6 +3,7 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.IdentityContext.Abstractions;
 using discipline.centre.shared.infrastructure.ResourceHeader;
 using discipline.centre.users.application.Users.Commands;
+using discipline.centre.users.application.Users.DTOs.Endpoints;
 using discipline.centre.users.application.Users.Queries;
 using discipline.centre.users.application.Users.Services;
 using Microsoft.AspNetCore.Builder;
@@ -20,11 +21,11 @@ internal static class UsersEndpoints
     
     internal static WebApplication MapUsersEndpoints(this WebApplication app)
     {
-        app.MapPost($"{UsersModule.ModuleName}/{UserTag}", async (SignUpCommand command,
+        app.MapPost($"api/{UsersModule.ModuleName}/{UserTag}", async (SignUpDto dto,
             CancellationToken cancellationToken, ICqrsDispatcher commandDispatcher, IHttpContextAccessor contextAccessor) =>
             {
                 var userId = UserId.New();
-                await commandDispatcher.HandleAsync(command with {Id = userId}, cancellationToken);
+                await commandDispatcher.HandleAsync(dto.MapAsCommand(userId), cancellationToken);
                 contextAccessor.AddResourceIdHeader(userId.ToString());
                 
                 return Results.CreatedAtRoute(nameof(GetById),  new {userId = userId.ToString()}, null);
@@ -39,7 +40,7 @@ internal static class UsersEndpoints
                 Description = "Signs-up user"
             });
         
-        app.MapPost($"{UsersModule.ModuleName}/{UserTag}/tokens", async (SignInCommand command,
+        app.MapPost($"api/{UsersModule.ModuleName}/{UserTag}/tokens", async (SignInCommand command,
                 ICqrsDispatcher commandDispatcher, ITokenStorage tokenStorage, CancellationToken cancellationToken) =>
             {
                 await commandDispatcher.HandleAsync(command, cancellationToken);
@@ -57,7 +58,7 @@ internal static class UsersEndpoints
                 Description = "Signs-in user"
             });
         
-        app.MapPost($"{UsersModule.ModuleName}/{UserTag}/subscription-order", async (CreateUserSubscriptionOrderCommand command,
+        app.MapPost($"api/{UsersModule.ModuleName}/{UserTag}/subscription-order", async (CreateUserSubscriptionOrderCommand command,
                 IIdentityContext identityContext, ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var subscriptionOrderId = SubscriptionOrderId.New();
@@ -78,7 +79,7 @@ internal static class UsersEndpoints
             })
             .RequireAuthorization();
         
-        app.MapGet($"{UsersModule.ModuleName}/{UserTag}/{{userId:ulid}}", async (Ulid userId,
+        app.MapGet($"api/{UsersModule.ModuleName}/{UserTag}/{{userId:ulid}}", async (Ulid userId,
                 CancellationToken cancellationToken, ICqrsDispatcher dispatcher) =>
             {
                 var stronglyUserId = new UserId(userId);

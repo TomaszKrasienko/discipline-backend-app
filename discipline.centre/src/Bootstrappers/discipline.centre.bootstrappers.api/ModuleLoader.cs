@@ -1,5 +1,7 @@
 using System.Reflection;
+using discipline.centre.bootstrappers.api.Extensions;
 using discipline.centre.shared.abstractions.Modules;
+using discipline.centre.users.api;
 
 namespace discipline.centre.bootstrappers.api;
 
@@ -7,7 +9,7 @@ internal static class ModuleLoader
 {
     private const string ModulePartsPrefix = "discipline.centre";
     
-    internal static List<Assembly> GetAssemblies(IConfiguration configuration)
+    internal static List<Assembly> GetAssemblies(IConfiguration configuration, IHostEnvironment environment)
     {
         var allAssemblies = AppDomain
             .CurrentDomain
@@ -15,13 +17,17 @@ internal static class ModuleLoader
             .ToList();
 
         var allNotDynamicLocations = allAssemblies
-            .Where(x => !x.IsDynamic)
+            .Where(x
+                => !x.IsDynamic)
             .Select(x => x.Location)
             .ToArray();
 
         var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
-            .Where(x => !allNotDynamicLocations.Contains(x, StringComparer.InvariantCultureIgnoreCase))
-            .Where(x => x.Contains(ModulePartsPrefix) && !x.Contains("tests")) 
+            .Where(x 
+                => !allNotDynamicLocations.Contains(x, StringComparer.InvariantCultureIgnoreCase))
+            .Where(x 
+                => x.Contains(ModulePartsPrefix)
+                && environment.IsTestsEnvironment() || x.Contains("tests")) 
             .ToList();
         
         var disabledModules = new List<string>();

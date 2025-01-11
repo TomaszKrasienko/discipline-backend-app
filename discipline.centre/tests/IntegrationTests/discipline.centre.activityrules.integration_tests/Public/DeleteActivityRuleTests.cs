@@ -41,7 +41,7 @@ public sealed class DeleteActivityRuleTests() : BaseTestsController("activity-ru
     public async Task Delete_GivenNotExistingActivityRule_ShouldReturn204NoContentStatusCode()
     {
         //arrange
-        var user = await AuthorizeWithFreeSubscriptionPicked();
+        _ = await AuthorizeWithFreeSubscriptionPicked();
         var activityRuleId = ActivityRuleId.New().ToString();
         
         //act

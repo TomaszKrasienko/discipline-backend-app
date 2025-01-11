@@ -25,5 +25,8 @@
       <ProjectReference Include="..\..\..\src\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj" />
       <ProjectReference Include="..\discipline.centre.users.tests.sharedkernel\discipline.centre.users.tests.sharedkernel.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Certs\" />
+    </ItemGroup>
 
 </Project>
