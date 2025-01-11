@@ -61,7 +61,7 @@ Content-Type: application/json
 
 {
   "details": {
-      "title": "rule 1 first day",
+      "title": "rule 2 first day",
       "note": "string"
     },
   "mode": "FirstDayOfWeek",

@@ -13,4 +13,6 @@ public record DailyTrackerId(Ulid Value) : ITypeId<DailyTrackerId, Ulid>
 
         return new DailyTrackerId(parsedId);
     }
+
+    public override string ToString() => Value.ToString();
 }

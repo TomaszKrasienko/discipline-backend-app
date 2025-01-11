@@ -13,4 +13,6 @@ public sealed record StageId(Ulid Value) : ITypeId<StageId, Ulid>
 
         return new StageId(parsedId);
     }
+
+    public override string ToString() => Value.ToString();
 }

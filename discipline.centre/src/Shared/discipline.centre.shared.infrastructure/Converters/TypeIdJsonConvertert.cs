@@ -4,18 +4,18 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.shared.infrastructure.Converters;
 
-public class TypeIdJsonConverter<TIdentifier, TValue> : JsonConverter<IBaseTypeId<TIdentifier, TValue>> 
-    where TIdentifier : class, ITypeId<TIdentifier, TValue> 
+public class TypeIdJsonConverter<TIdentifier, TValue> : JsonConverter<TIdentifier>
+    where TIdentifier : IBaseTypeId<TValue>
     where TValue : struct
 {
-    public override IBaseTypeId<TIdentifier, TValue>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override TIdentifier? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
+        //TODO: This should stay like that
         throw new NotImplementedException();
     }
 
-    public override void Write(Utf8JsonWriter writer, IBaseTypeId<TIdentifier, TValue> value, JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, TIdentifier value, JsonSerializerOptions options)
     {
-        // JsonSerializer.Serialize(writer, value.Value, options);
-        writer.WriteStringValue(value.Value.ToString());
+        writer.WriteStringValue(value.ToString());
     }
 }

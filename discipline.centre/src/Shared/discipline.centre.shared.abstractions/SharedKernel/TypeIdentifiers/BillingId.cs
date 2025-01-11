@@ -13,4 +13,6 @@ public sealed record BillingId(Ulid Value) : ITypeId<BillingId, Ulid>
 
         return new BillingId(parsedId);
     }
+
+    public override string ToString() => Value.ToString();
 }
