@@ -20,6 +20,18 @@ Content-Type: application/json
 }
 
 ###
+# @name sign_up
+POST {{host_address}}/api/users-module/users
+Content-Type: application/json
+
+{
+  "email": "tomasz.krasienko",
+  "password": "Test123!",
+  "firstName": "Tom",
+  "lastName": "Krasienko"
+}
+
+###
 @user_id = {{sign_up.response.headers.x-resource-id}}
 
 ###

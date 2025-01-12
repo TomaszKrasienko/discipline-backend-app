@@ -27,7 +27,7 @@ internal static class ModuleLoader
                 => !allNotDynamicLocations.Contains(x, StringComparer.InvariantCultureIgnoreCase))
             .Where(x 
                 => x.Contains(ModulePartsPrefix)
-                && environment.IsTestsEnvironment() || x.Contains("tests")) 
+                && environment.IsTestsEnvironment() || !x.Contains("tests")) 
             .ToList();
         
         var disabledModules = new List<string>();

@@ -15,7 +15,7 @@ namespace discipline.centre.users.integration_tests;
 public sealed class SignUpTests() : BaseTestsController("users-module")
 {
     [Fact]
-    public async Task SignUp_GivenNotRegisteredEmailAndValidArguments_ShouldReturn200OkStatusCodeAndAddUserToDb()
+    public async Task SignUp_GivenNotRegisteredEmailAndValidArguments_ShouldReturn200OkStatusCodeAndAddUser()
     {
         //arrange
         var command = new SignUpCommand(new UserId(Ulid.Empty), "test@test.pl", "Test123!",
