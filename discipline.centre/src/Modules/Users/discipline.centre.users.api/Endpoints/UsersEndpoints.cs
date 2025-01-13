@@ -58,11 +58,11 @@ internal static class UsersEndpoints
                 Description = "Signs-in user"
             });
         
-        app.MapPost($"api/{UsersModule.ModuleName}/{UserTag}/subscription-order", async (CreateUserSubscriptionOrderCommand command,
+        app.MapPost($"api/{UsersModule.ModuleName}/{UserTag}/subscription-order", async (CreateUserSubscriptionOrderDto dto,
                 IIdentityContext identityContext, ICqrsDispatcher commandDispatcher, CancellationToken cancellationToken) =>
             {
                 var subscriptionOrderId = SubscriptionOrderId.New();
-                await commandDispatcher.HandleAsync(command with { Id = subscriptionOrderId, UserId = identityContext.GetUser() },
+                await commandDispatcher.HandleAsync(dto.MapAsCommand(identityContext.GetUser(), subscriptionOrderId),
                     cancellationToken);
                 
                 return Results.Ok();

@@ -16,16 +16,12 @@ public sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
 {
     public SignUpCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .Must(id => id != new UserId(Ulid.Empty))
-            .WithMessage("User \"ID\" can not be empty");
-
         RuleFor(x => x.Email)
             .NotNull()
             .NotEmpty()
-            .WithMessage("User \"Email\" can not be empty")
+            .WithMessage("User 'Email' can not be empty")
             .EmailAddress()
-            .WithMessage("User \"Email\" is invalid");
+            .WithMessage("User 'Email' is invalid");
 
         RuleFor(x => x.Password)
             .NotNull()
@@ -35,7 +31,7 @@ public sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
             .Must(x => x.Any(char.IsUpper))
             .Must(x => x.Any(char.IsNumber))
             .Must(x => x.Any(c => !char.IsLetterOrDigit(c)))
-            .WithMessage("User \"Password\" is invalid");
+            .WithMessage("User 'Password' is invalid");
 
         RuleFor(x => x.FirstName)
             .NotNull()

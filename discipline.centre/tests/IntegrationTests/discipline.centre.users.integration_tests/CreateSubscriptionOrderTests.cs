@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using discipline.centre.integration_tests.shared;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.users.application.Users.Commands;
+using discipline.centre.users.application.Users.DTOs.Endpoints;
 using discipline.centre.users.domain.Users.Enums;
 using discipline.centre.users.infrastructure.DAL.Subscriptions.Documents;
 using discipline.centre.users.infrastructure.DAL.Users.Documents;
@@ -17,17 +18,17 @@ namespace discipline.centre.users.integration_tests;
 public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-module")
 {
     [Fact]
-    public async Task CreateUserSubscriptionOrder_GivenExistingUserAndPaidSubscription_ShouldReturn200OkStatusCodeAndAddToDb()
+    public async Task CreateUserSubscriptionOrder_GivenExistingUserAndPaidSubscription_ShouldReturn200OkStatusCodeAndAddSubscription()
     {
         //arrange
         var user = await AuthorizeWithoutSubscription();
         var subscriptionDocument = SubscriptionDocumentFactory.Get(10, 100);
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
-        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), new SubscriptionId(Ulid.Parse(subscriptionDocument.Id)),
-            SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
+        var dto = new CreateUserSubscriptionOrderDto(Ulid.Parse(subscriptionDocument.Id),
+            SubscriptionOrderFrequency.Monthly.ToString(), Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", dto);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -38,17 +39,16 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
     }
     
     [Fact]
-    public async Task CreateUserSubscriptionOrder_GivenExistingUserAndFreeSubscription_ShouldReturn200OkStatusCodeAndAddToDb()
+    public async Task CreateUserSubscriptionOrder_GivenExistingUserAndFreeSubscription_ShouldReturn200OkStatusCodeAndAddSubscription()
     {
         //arrange
         var user = await AuthorizeWithoutSubscription();
         var subscriptionDocument = SubscriptionDocumentFactory.Get();
         await TestAppDb.GetCollection<SubscriptionDocument>().InsertOneAsync(subscriptionDocument);
-        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty), 
-            SubscriptionId.Parse(subscriptionDocument.Id), null, Guid.NewGuid().ToString());
+        var dto = new CreateUserSubscriptionOrderDto(Ulid.Parse(subscriptionDocument.Id), null, Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", dto);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -63,11 +63,10 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
     {
         //arrange
         await AuthorizeWithoutSubscription();
-        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty),
-            SubscriptionId.New(), SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
+        var dto = new CreateUserSubscriptionOrderDto(Ulid.NewUlid(), SubscriptionOrderFrequency.Monthly.ToString(), Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", dto);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -77,11 +76,10 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
     public async Task CreateUserSubscriptionOrder_Unauthorized_ShouldReturn401UnauthorizedStatusCode()
     {
         //arrange
-        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty),
-            SubscriptionId.New(), SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
+        var dto = new CreateUserSubscriptionOrderDto(Ulid.NewUlid(), SubscriptionOrderFrequency.Monthly.ToString(), Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", dto);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -92,11 +90,10 @@ public sealed class CreateSubscriptionOrderTests() : BaseTestsController("users-
     {
         //arrange
         await AuthorizeWithoutSubscription();
-        var command = new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), new SubscriptionOrderId(Ulid.Empty),
-            new SubscriptionId(Ulid.Empty), SubscriptionOrderFrequency.Monthly, Guid.NewGuid().ToString());
+        var dto = new CreateUserSubscriptionOrderDto(Ulid.Empty, SubscriptionOrderFrequency.Monthly.ToString(), Guid.NewGuid().ToString());
         
         //act
-        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", command);
+        var result = await HttpClient.PostAsJsonAsync($"api/users-module/users/subscription-order", dto);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

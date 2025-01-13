@@ -33,11 +33,11 @@
       <None Update="Certs\hangfire_tests_public_key.pem">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Certs\public_tests_private_key.pem">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <None Update="Certs\centre_public_key.pem">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="Certs\public_tests_public_key.pem">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <None Update="Certs\centre_private_key.pem">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

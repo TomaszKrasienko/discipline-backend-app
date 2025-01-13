@@ -12,21 +12,9 @@ GET {{host_address}}/
 POST {{host_address}}/users-module/users
 Content-Type: application/json
 
-{
+{  
   "email": "{{email}}",
   "password": "{{password}}",
-  "firstName": "Tom",
-  "lastName": "Krasienko"
-}
-
-###
-# @name sign_up
-POST {{host_address}}/api/users-module/users
-Content-Type: application/json
-
-{
-  "email": "tomasz.krasienko",
-  "password": "Test123!",
   "firstName": "Tom",
   "lastName": "Krasienko"
 }
@@ -36,7 +24,7 @@ Content-Type: application/json
 
 ###
 # @name sign_in
-POST {{host_address}}/users-module/users/tokens
+POST {{host_address}}/api/users-module/users/tokens
 Content-Type: application/json
 
 {

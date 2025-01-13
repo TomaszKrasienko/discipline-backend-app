@@ -82,7 +82,8 @@ internal static class JwtServicesConfigurationExtensions
     private static RsaSecurityKey GetRsaSecurityKey(string path)
     {
         RSA publicInternalRsa = RSA.Create();
-        publicInternalRsa.ImportFromPem(File.ReadAllText(path));
+        var keyText = File.ReadAllText(path);
+        publicInternalRsa.ImportFromPem(keyText);
         return new RsaSecurityKey(publicInternalRsa);
     }
     

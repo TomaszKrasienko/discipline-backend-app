@@ -26,7 +26,7 @@ public sealed class SignInTests() : BaseTestsController("users-module")
         var command = new SignInCommand(user.Email, user.Password.Value!);
         
         //act
-        var result = await HttpClient.PostAsJsonAsync("users-module/users/tokens", command);
+        var result = await HttpClient.PostAsJsonAsync("api/users-module/users/tokens", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -47,7 +47,7 @@ public sealed class SignInTests() : BaseTestsController("users-module")
         var command = new SignInCommand("test@test.pl", "Test123!");
         
         //act
-        var result = await HttpClient.PostAsJsonAsync("users-module/users/tokens", command);
+        var result = await HttpClient.PostAsJsonAsync("api/users-module/users/tokens", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
@@ -61,7 +61,7 @@ public sealed class SignInTests() : BaseTestsController("users-module")
         var command = new SignInCommand(string.Empty, "Test123!");
         
         //act
-        var result = await HttpClient.PostAsJsonAsync("users-module/users/tokens", command);
+        var result = await HttpClient.PostAsJsonAsync("api/users-module/users/tokens", command);
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.UnprocessableEntity);

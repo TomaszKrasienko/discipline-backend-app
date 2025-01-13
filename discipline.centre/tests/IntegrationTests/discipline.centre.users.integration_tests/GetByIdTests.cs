@@ -25,7 +25,7 @@ public sealed class GetByIdTests() : BaseTestsController("users-module")
         Authorize(user.Id, user.Email, user.Status);
         
         //act
-        var result = await HttpClient.GetAsync($"users-module/users/{user.Id.ToString()}");
+        var result = await HttpClient.GetAsync($"api/users-module/users/{user.Id.ToString()}");
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -42,7 +42,7 @@ public sealed class GetByIdTests() : BaseTestsController("users-module")
         await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.MapAsDocument(user.Password.Value!));
         
         //act
-        var result = await HttpClient.GetAsync($"users-module/users/{user.Id.ToString()}");
+        var result = await HttpClient.GetAsync($"api/users-module/users/{user.Id.ToString()}");
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
@@ -55,7 +55,7 @@ public sealed class GetByIdTests() : BaseTestsController("users-module")
         Authorize(UserId.New(), "test@test.pl", Status.FreeSubscriptionPicked);
         
         //act
-        var result = await HttpClient.GetAsync($"users-module/users/{UserId.New().ToString()}");
+        var result = await HttpClient.GetAsync($"api/users-module/users/{UserId.New().ToString()}");
         
         //assert
         result.StatusCode.ShouldBe(HttpStatusCode.NotFound);

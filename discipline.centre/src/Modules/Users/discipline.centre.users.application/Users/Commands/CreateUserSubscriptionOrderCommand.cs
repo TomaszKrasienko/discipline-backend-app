@@ -20,10 +20,6 @@ public sealed class CreateUserSubscriptionOrderCommandValidator : AbstractValida
 {
     public CreateUserSubscriptionOrderCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .Must(id => id != new SubscriptionOrderId(Ulid.Empty))
-            .WithMessage("\"Id\" can not be empty");
-        
         RuleFor(x => x.SubscriptionId)
             .Must(subscriptionId => subscriptionId != new SubscriptionId(Ulid.Empty))
             .WithMessage("\"SubscriptionId\" can not be empty");

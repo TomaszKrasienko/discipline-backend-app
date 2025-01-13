@@ -46,7 +46,8 @@ internal sealed class JwtAuthenticator(
     private RsaSecurityKey GetPrivateKey()
     {
         RSA privateRsa = RSA.Create();
-        privateRsa.ImportFromEncryptedPem(input: File.ReadAllText(_keyPublishingOptions.PrivateCertPath), password: _keyPublishingOptions.PrivateCertPassword);
+        var keyText = File.ReadAllText(_keyPublishingOptions.PrivateCertPath);
+        privateRsa.ImportFromEncryptedPem(input: keyText, password: _keyPublishingOptions.PrivateCertPassword);
         return new RsaSecurityKey(privateRsa);
     }
 }
