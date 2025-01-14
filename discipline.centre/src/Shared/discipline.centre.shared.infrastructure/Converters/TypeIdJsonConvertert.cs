@@ -10,7 +10,12 @@ public class TypeIdJsonConverter<TIdentifier, TValue> : JsonConverter<TIdentifie
 {
     public override TIdentifier? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        //TODO: This should stay like that
+        if (reader.TokenType == JsonTokenType.String && typeToConvert == typeof(TIdentifier))
+        {
+            var ulidValue = Ulid.Parse(reader.GetString()!);
+            return (TIdentifier)Activator.CreateInstance(typeof(TIdentifier), ulidValue)!;
+        }
+
         throw new NotImplementedException();
     }
 

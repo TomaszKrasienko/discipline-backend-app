@@ -1,10 +1,10 @@
 using System.Net;
-using System.Net.Http.Json;
 using discipline.centre.activityrules.application.ActivityRules.DTOs;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.infrastructure.DAL.Documents;
 using discipline.centre.activityrules.tests.sharedkernel.Domain;
 using discipline.centre.integration_tests.shared;
+using discipline.centre.integration_tests.shared.Serialization;
 using Shouldly;
 using Xunit;
 
@@ -28,9 +28,7 @@ public sealed class GetActivityRuleForUserByIdTests() : BaseTestsController("act
             
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        
-        
-        
-        var result = await response.Content.ReadFromJsonAsync<ActivityRuleDto>();
+        var textResult = await response.Content.ReadAsStringAsync();
+        var result = SerializerForTests.Deserialize<ActivityRuleDto>(textResult);
     }
 }
