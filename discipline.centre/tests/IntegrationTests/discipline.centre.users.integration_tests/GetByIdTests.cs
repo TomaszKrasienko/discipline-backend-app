@@ -19,10 +19,7 @@ public sealed class GetByIdTests() : BaseTestsController("users-module")
     public async Task Handle_GivenExistingUserId_ShouldReturnUser()
     {
         //arrange
-        var user = UserFakeDataFactory.Get();
-        await TestAppDb.GetCollection<UserDocument>().InsertOneAsync(user.MapAsDocument(user.Password.Value!));
-        
-        Authorize(user.Id, user.Email, user.Status);
+        var user = await AuthorizeWithoutSubscription();
         
         //act
         var result = await HttpClient.GetAsync($"api/users-module/users/{user.Id.ToString()}");

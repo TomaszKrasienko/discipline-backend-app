@@ -9,7 +9,7 @@ using MongoDB.Driver;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.activityrules.integration_tests;
+namespace discipline.centre.activityrules.integration_tests.Public;
 
 [Collection("activity-rules-module-delete-activity-rule")]
 public sealed class DeleteActivityRuleTests() : BaseTestsController("activity-rules-module")

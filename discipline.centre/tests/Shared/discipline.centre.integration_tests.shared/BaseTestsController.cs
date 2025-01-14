@@ -1,4 +1,6 @@
 using System.Net.Http.Headers;
+using discipline.centre.integration_tests.shared.InternalAuthentication;
+using discipline.centre.integration_tests.shared.InternalAuthentication.TestsOptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.Clock;
 using discipline.centre.shared.infrastructure.DAL.Collections.Abstractions;
@@ -68,6 +70,15 @@ public abstract class BaseTestsController : IDisposable
         var authOptions = optionsProvider.Get<JwtOptions>();
         var authenticator = new JwtAuthenticator(new Clock(), Options.Create(authOptions));
         var token = authenticator.CreateToken(userId.ToString(), email, status);
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
+    }
+
+    protected virtual void Authorize()
+    {
+        var optionsProvider = new OptionsProvider();
+        var internalAuthOptions = optionsProvider.Get<InternalKeyOptions>();
+        var authenticator = new InternalJwtAuthenticator(new Clock(), Options.Create(internalAuthOptions));
+        var token = authenticator.CreateToken();
         HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
     }
     
