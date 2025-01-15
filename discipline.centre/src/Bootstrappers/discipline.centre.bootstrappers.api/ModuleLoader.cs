@@ -22,12 +22,14 @@ internal static class ModuleLoader
             .Select(x => x.Location)
             .ToArray();
 
+        var test = environment.IsTestsEnvironment();
+        
         var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
             .Where(x 
                 => !allNotDynamicLocations.Contains(x, StringComparer.InvariantCultureIgnoreCase))
             .Where(x 
                 => x.Contains(ModulePartsPrefix)
-                && environment.IsTestsEnvironment() || !x.Contains("tests")) 
+                && (environment.IsTestsEnvironment() || (!x.Contains("tests") && !x.Contains("xunit")))) 
             .ToList();
         
         var disabledModules = new List<string>();

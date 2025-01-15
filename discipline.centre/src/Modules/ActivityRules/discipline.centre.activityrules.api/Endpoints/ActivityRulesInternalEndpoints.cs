@@ -34,6 +34,8 @@ internal static class ActivityRulesInternalEndpoints
                 return result is null ? Results.NotFound() : Results.Ok(result);
             })
             .Produces(StatusCodes.Status200OK, typeof(ActivityRuleDto))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status404NotFound, typeof(void))
             .WithName("GetActivityRuleForUserById")
             .WithTags(ActivityRulesInternalTag)
             .RequireAuthorization(policy =>
@@ -42,12 +44,17 @@ internal static class ActivityRulesInternalEndpoints
                 policy.RequireAuthenticatedUser();
             });
 
-            app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/modes/{{day:dateonly}}", async (
-                DateOnly day, ICqrsDispatcher dispatcher, CancellationToken cancellationToken) =>
+        app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/modes", async (
+                DateTime day, ICqrsDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var result = await dispatcher.SendAsync(new GetActiveModesByDayQuery(day), cancellationToken);
+                var result = await dispatcher.SendAsync(new GetActiveModesByDayQuery(DateOnly.FromDateTime(day)),
+                    cancellationToken);
                 return Results.Ok(result);
             })
+            .Produces(StatusCodes.Status200OK, typeof(ActiveModesDto))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .WithName("GetActiveModesByDay")
+            .WithTags(ActivityRulesInternalTag)
             .RequireAuthorization(policy =>
             {
                 policy.AuthenticationSchemes.Add(AuthorizationSchemes.HangfireAuthorizeSchema);

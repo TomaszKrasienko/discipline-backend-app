@@ -28,7 +28,32 @@ public sealed class GetActivityRuleForUserByIdTests() : BaseTestsController("act
             
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        
         var textResult = await response.Content.ReadAsStringAsync();
         var result = SerializerForTests.Deserialize<ActivityRuleDto>(textResult);
+        result!.ActivityRuleId.ShouldBe(activityRule.Id);
+    }
+    
+    [Fact]
+    public async Task GetActivityRuleForUserById_GivenNotExistingActivityRuleForUser_ShouldReturn404NotFoundStatusCode()
+    {
+        //arrange
+        Authorize();
+        
+        //act
+        var response = await HttpClient.GetAsync($"activity-rules-module/activity-rules-internal/{Ulid.NewUlid().ToString()}/{Ulid.NewUlid().ToString()}");
+
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
+    
+    [Fact]
+    public async Task GetActivityRuleForUserById_Unauthorized_ShouldReturn401StatusCodeUnauthorized()
+    {
+        //act
+        var response = await HttpClient.GetAsync($"activity-rules-module/activity-rules-internal/{Ulid.NewUlid().ToString()}/{Ulid.NewUlid().ToString()}");
+            
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 }

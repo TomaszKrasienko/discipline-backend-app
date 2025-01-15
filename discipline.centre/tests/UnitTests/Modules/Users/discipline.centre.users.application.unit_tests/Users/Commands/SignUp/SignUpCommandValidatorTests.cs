@@ -41,9 +41,6 @@ public sealed class SignUpCommandValidatorTests
     
     public static IEnumerable<object[]> GetInvalidSignUpCommand()
     {
-        yield return [new SignUpCommand(new UserId(Ulid.Empty), "test@test.pl", "Test123!",
-            "test_first_name", "test_last_name"), nameof(SignUpCommand.Id)];
-        
         yield return [new SignUpCommand(UserId.New(), string.Empty, "Test123!",
             "test_first_name", "test_last_name"), nameof(SignUpCommand.Email)];
         

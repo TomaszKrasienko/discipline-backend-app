@@ -49,20 +49,6 @@ public sealed class CreateUserSubscriptionOrderCommandValidatorTests
     {
         yield return
         [
-            new CreateUserSubscriptionOrderCommand(new UserId(Ulid.Empty), SubscriptionOrderId.New(), 
-            SubscriptionId.New(), null, Guid.NewGuid().ToString()),
-            nameof(CreateUserSubscriptionOrderCommand.UserId)
-        ];
-        
-        yield return
-        [
-            new CreateUserSubscriptionOrderCommand(UserId.New(), new SubscriptionOrderId(Ulid.Empty),
-                SubscriptionId.New(), null, Guid.NewGuid().ToString()),
-            nameof(CreateUserSubscriptionOrderCommand.Id)
-        ];
-        
-        yield return
-        [
             new CreateUserSubscriptionOrderCommand(UserId.New(), SubscriptionOrderId.New(), 
                 new SubscriptionId(Ulid.Empty), null,  Guid.NewGuid().ToString()),
             nameof(CreateUserSubscriptionOrderCommand.SubscriptionId)

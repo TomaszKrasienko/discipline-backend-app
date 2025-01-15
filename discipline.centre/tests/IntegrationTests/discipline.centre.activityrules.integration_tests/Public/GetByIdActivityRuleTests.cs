@@ -6,11 +6,12 @@ using discipline.centre.activityrules.domain.Specifications;
 using discipline.centre.activityrules.domain.ValueObjects.ActivityRules;
 using discipline.centre.activityrules.infrastructure.DAL.Documents;
 using discipline.centre.integration_tests.shared;
+using discipline.centre.integration_tests.shared.Serialization;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.activityrules.integration_tests;
+namespace discipline.centre.activityrules.integration_tests.Public;
 
 [Collection("activity-rules-module-get-activity-rule-by-id")]
 public sealed class GetByIdActivityRuleTests() : BaseTestsController("activity-rules-module")
@@ -31,9 +32,10 @@ public sealed class GetByIdActivityRuleTests() : BaseTestsController("activity-r
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        var result = await response.Content.ReadFromJsonAsync<ActivityRuleDto>();
-        result?.Title.ShouldBe(activityRule.Details.Title);
+        
+        var textResult = await response.Content.ReadAsStringAsync();
+        var result = SerializerForTests.Deserialize<ActivityRuleDto>(textResult);
+        result!.ActivityRuleId.ShouldBe(activityRule.Id);
     }
 
     [Fact]
