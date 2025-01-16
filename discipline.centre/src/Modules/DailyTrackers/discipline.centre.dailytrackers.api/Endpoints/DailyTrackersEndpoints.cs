@@ -34,10 +34,12 @@ internal static class DailyTrackersEndpoints
                 
                 contextAccessor.AddResourceIdHeader(activityId.ToString());
 
-                return Results.CreatedAtRoute(GetByIdEndpoint, new { activityId = activityId }, null);
+                return Results.CreatedAtRoute(GetByIdEndpoint, new { activityId = activityId.ToString() });
             })
             .Produces(StatusCodes.Status201Created, typeof(void))
             .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
             .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
             .WithName("CreateActivityFromActivityRule")
             .WithTags(DailyTrackersTag)
@@ -59,13 +61,13 @@ internal static class DailyTrackersEndpoints
             .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
             .Produces(StatusCodes.Status403Forbidden, typeof(void))
-            .Produces(StatusCodes.Status422UnprocessableEntity, typeof(ProblemDetails))
             .WithName("CreateActivity")
             .WithTags(DailyTrackersTag)
             .WithDescription("Creates activity.")
             .RequireAuthorization()
             .RequireAuthorization(UserStatePolicy.Name);
         
+        // ReSharper disable once RouteTemplates.RouteParameterConstraintNotResolved
         app.MapGet($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/activities/{{activityId:ulid}}", async (
             Ulid activityId, CancellationToken cancellationToken, IIdentityContext identityContext, ICqrsDispatcher dispatcher) =>
             {

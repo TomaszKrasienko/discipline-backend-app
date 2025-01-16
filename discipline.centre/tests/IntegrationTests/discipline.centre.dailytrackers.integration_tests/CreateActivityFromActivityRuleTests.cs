@@ -30,7 +30,7 @@ public sealed class CreateActivityFromActivityRuleTests() : BaseTestsController(
             $"api/daily-trackers-module/daily-trackers/activities/{activityRule.Id.ToString()}", null);
         
         //assert
-        result.StatusCode.ShouldBe(HttpStatusCode.NoContent);
+        result.StatusCode.ShouldBe(HttpStatusCode.Created);
 
         var resourceId = GetResourceIdFromHeader(result);
         var dailyTracker = await TestAppDb.GetCollection<DailyTrackerDocument>()
@@ -39,6 +39,43 @@ public sealed class CreateActivityFromActivityRuleTests() : BaseTestsController(
         
         dailyTracker.Activities.First().ParentActivityRuleId.ShouldBe(activityRule.Id.ToString());
         dailyTracker.Activities.First().Title.ShouldBe(activityRule.Details.Title);
+    }
+
+    [Fact]
+    public async Task GivenNotExistingActivityRuleShouldReturn400BadRequestStatusCode()
+    {
+        _ = await AuthorizeWithFreeSubscriptionPicked();
         
+        //act
+        var result = await HttpClient.PostAsync(
+            $"api/daily-trackers-module/daily-trackers/activities/{Ulid.NewUlid()}", null);
+        
+        //assert
+        result.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task Unauthorized401Unauthorized()
+    {
+        //act
+        var result = await HttpClient.PostAsync(
+            $"api/daily-trackers-module/daily-trackers/activities/{Ulid.NewUlid()}", null);
+        
+        //assert
+        result.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task AuthorizedByUserWithStatusCreated_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange
+        _ = await AuthorizeWithoutSubscription();
+        
+        //act
+        var result = await HttpClient.PostAsync(
+            $"api/daily-trackers-module/daily-trackers/activities/{Ulid.NewUlid()}", null);
+        
+        //assert
+        result.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

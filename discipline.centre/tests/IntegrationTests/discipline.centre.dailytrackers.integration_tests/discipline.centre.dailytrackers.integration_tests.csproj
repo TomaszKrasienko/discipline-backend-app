@@ -21,4 +21,19 @@
       <ProjectReference Include="..\..\Shared\discipline.centre.integration_tests.shared\discipline.centre.integration_tests.shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Certs\hangfire_tests_private_key.pem">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Certs\hangfire_tests_public_key.pem">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Certs\centre_private_key.pem">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Certs\centre_public_key.pem">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
