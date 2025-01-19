@@ -14,14 +14,14 @@ internal sealed class MongoDailyTrackerRepository(
         => (await context.GetCollection<DailyTrackerDocument>().Find(x
                 => x.Day == day
                    && x.UserId == userId.ToString())
-            .SingleOrDefaultAsync(cancellationToken))?.MapAsEntity();
+            .SingleOrDefaultAsync(cancellationToken))?.AsEntity();
 
     public Task AddAsync(DailyTracker dailyTracker, CancellationToken cancellationToken = default)
         => context.GetCollection<DailyTrackerDocument>()
-            .InsertOneAsync(dailyTracker.MapAsDocument(), cancellationToken: cancellationToken);
+            .InsertOneAsync(dailyTracker.AsDocument(), cancellationToken: cancellationToken);
 
     public Task UpdateAsync(DailyTracker dailyTracker, CancellationToken cancellationToken = default)
         => context.GetCollection<DailyTrackerDocument>()
             .FindOneAndReplaceAsync(x => x.DailyTrackerId == dailyTracker.Id.ToString(),
-                dailyTracker.MapAsDocument(), null, cancellationToken);
+                dailyTracker.AsDocument(), null, cancellationToken);
 }

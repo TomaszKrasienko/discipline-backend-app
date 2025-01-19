@@ -10,13 +10,13 @@ namespace discipline.centre.dailytrackers.infrastructure.unit_tests.DAL.DailyTra
 public sealed class ActivityDocumentMappingExtensionsTests
 {
     [Fact]
-    public void MapAsDto_WhenActivityDocumentWithoutStages_ShouldReturnActivityDtoWithoutStages()
+    public void AsDto_WhenActivityDocumentWithoutStages_ShouldReturnActivityDtoWithoutStages()
     {
         //arrange
         var activityDocument = ActivityDocumentFakeDataFactory.Get(true, true, null);
         
         //act
-        var result = activityDocument.MapAsDto();
+        var result = activityDocument.AsDto();
 
         //assert
         result.ActivityId.ShouldBe(ActivityId.Parse(activityDocument.ActivityId));
@@ -28,14 +28,14 @@ public sealed class ActivityDocumentMappingExtensionsTests
     }
     
     [Fact]
-    public void MapAsDto_WhenActivityDocumentWithStages_ShouldReturnActivityDtoWithStages()
+    public void AsDto_WhenActivityDocumentWithStages_ShouldReturnActivityDtoWithStages()
     {
         //arrange
         var stageDocument = StageDocumentFakeDataFactory.Get(1);
         var activityDocument = ActivityDocumentFakeDataFactory.Get(true, true, [stageDocument]);
         
         //act
-        var result = activityDocument.MapAsDto();
+        var result = activityDocument.AsDto();
 
         //assert
         result.ActivityId.ShouldBe(ActivityId.Parse(activityDocument.ActivityId));

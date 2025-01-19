@@ -10,11 +10,11 @@ internal static class DailyTrackerMappingExtensions
     /// </summary>
     /// <param name="dailyTracker">An instance of <see cref="Activity"/> to be mapped</param>
     /// <returns>Mapped <see cref="DailyTrackerDocument"/></returns>
-    internal static DailyTrackerDocument MapAsDocument(this DailyTracker dailyTracker)
+    internal static DailyTrackerDocument AsDocument(this DailyTracker dailyTracker)
         => new()
         {
             DailyTrackerId = dailyTracker.Id.ToString(),
             UserId = dailyTracker.UserId.ToString(),
-            Activities = dailyTracker.Activities.Select(x => x.MapAsDocument()).ToList()
+            Activities = dailyTracker.Activities.Select(x => x.AsDocument()).ToList()
         };
 }

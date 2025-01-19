@@ -85,6 +85,6 @@ public sealed class GetActivityByIdTests() : BaseTestsController("daily-trackers
         var response = await HttpClient.GetAsync($"api/daily-trackers-module/daily-trackers/activities/{Ulid.NewUlid().ToString()}");
         
         //assert
-        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

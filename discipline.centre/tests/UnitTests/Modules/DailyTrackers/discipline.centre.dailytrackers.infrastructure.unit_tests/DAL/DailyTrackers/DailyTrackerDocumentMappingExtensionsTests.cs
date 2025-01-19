@@ -1,7 +1,6 @@
 using discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Documents;
 using discipline.centre.dailytrackers.tests.sharedkernel.Infrastructure;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
-using MongoDB.Driver;
 using Shouldly;
 using Xunit;
 
@@ -10,7 +9,7 @@ namespace discipline.centre.dailytrackers.infrastructure.unit_tests.DAL.DailyTra
 public sealed class DailyTrackerDocumentMappingExtensionsTests
 {
     [Fact]
-    public void MapAsEntity_GivenDailyTrackerDocument_ShouldMapToDailyTracker()
+    public void AsEntity_GivenDailyTrackerDocument_ShouldMapToDailyTracker()
     {
         //arrange
         var stageDocument = StageDocumentFakeDataFactory.Get();
@@ -18,7 +17,7 @@ public sealed class DailyTrackerDocumentMappingExtensionsTests
         var dailyTrackerDocument = DailyTrackerDocumentFakeDataFactory.Get([activityDocument]);
         
         //act
-        var entity = dailyTrackerDocument.MapAsEntity();
+        var entity = dailyTrackerDocument.AsEntity();
 
         //assert
         entity.Id.ShouldBe(DailyTrackerId.Parse(dailyTrackerDocument.DailyTrackerId));
@@ -32,5 +31,29 @@ public sealed class DailyTrackerDocumentMappingExtensionsTests
         entity.Activities.First().Stages![0].Title.Value.ShouldBe(stageDocument.Title);
         entity.Activities.First().Stages![0].Index.Value.ShouldBe(stageDocument.Index);
         entity.Activities.First().Stages![0].IsChecked.Value.ShouldBe(stageDocument.IsChecked);
+    }
+
+    [Fact]
+    public void AsDto_GivenDailyTrackerDocument_ShouldMapToDailyTrackerDto()
+    {
+        //arrange
+        var stageDocument = StageDocumentFakeDataFactory.Get();
+        var activityDocument = ActivityDocumentFakeDataFactory.Get(true, true, [stageDocument]);
+        var dailyTrackerDocument = DailyTrackerDocumentFakeDataFactory.Get([activityDocument]);
+        
+        //act
+        var dto = dailyTrackerDocument.AsDto();
+        
+        //assert
+        dto.Day.ShouldBe(dailyTrackerDocument.Day);
+        dto.Activities.First().ActivityId.Value.ToString().ShouldBe(activityDocument.ActivityId);
+        dto.Activities.First().Details.Title.ShouldBe(activityDocument.Title);
+        dto.Activities.First().Details.Note.ShouldBe(activityDocument.Note);
+        dto.Activities.First().ParentActivityRuleId!.Value.ToString().ShouldBe(activityDocument.ParentActivityRuleId);
+        dto.Activities.First().IsChecked.ShouldBe(activityDocument.IsChecked);
+        dto.Activities.First().Stages!.First().StageId.Value.ToString().ShouldBe(stageDocument.StageId);
+        dto.Activities.First().Stages!.First().Title.ShouldBe(stageDocument.Title);
+        dto.Activities.First().Stages!.First().Index.ShouldBe(stageDocument.Index);
+        dto.Activities.First().Stages!.First().IsChecked.ShouldBe(stageDocument.IsChecked);
     }
 }

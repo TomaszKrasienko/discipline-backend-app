@@ -1,5 +1,5 @@
+using discipline.centre.dailytrackers.application.DailyTrackers.DTOs;
 using discipline.centre.dailytrackers.domain;
-using discipline.centre.dailytrackers.domain.ValueObjects.Activities;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 // ReSharper disable once CheckNamespace
@@ -14,22 +14,19 @@ internal static class DailyTrackerDocumentMappingExtensions
     /// Maps <see cref="DailyTrackerDocument"/> on <see cref="DailyTracker"/>
     /// </summary>
     /// <param name="document">Instance of <see cref="DailyTrackerDocument"/> to be mapped</param>
-    /// <returns>Instance of <see cref="DailyTracker"/></returns>
-    internal static DailyTracker MapAsEntity(this DailyTrackerDocument document)
-        => new DailyTracker(
+    /// <returns>Mapped instance of <see cref="DailyTracker"/></returns>
+    internal static DailyTracker AsEntity(this DailyTrackerDocument document)
+        => new (
             DailyTrackerId.Parse(document.DailyTrackerId),
             document.Day,
             UserId.Parse(document.UserId),
-            document.Activities.Select(MapAsEntity).ToList());
+            document.Activities.Select(x => x.AsEntity()).ToList());
 
-    private static Activity MapAsEntity(this ActivityDocument document)
-        => new Activity(
-            ActivityId.Parse(document.ActivityId),
-            Details.Create(document.Title, document.Note),
-            document.IsChecked,
-            document.ParentActivityRuleId is not null ? ActivityRuleId.Parse(document.ParentActivityRuleId) : null,
-            document.Stages?.Select(MapAsEntity).ToList());
-
-    private static Stage MapAsEntity(this StageDocument document)
-        => new (StageId.Parse(document.StageId), document.Title, document.Index, document.IsChecked);
+    /// <summary>
+    /// Maps <see cref="DailyTrackerDocument"/> as <see cref="DailyTrackerDto"/>
+    /// </summary>
+    /// <param name="document">Instance of <see cref="DailyTrackerDocument"/> to be mapped</param>
+    /// <returns>Mapped instance of <see cref="DailyTrackerDto"/></returns>
+    internal static DailyTrackerDto AsDto(this DailyTrackerDocument document)
+        => new(document.Day, document.Activities.Select(x => x.AsDto()).ToArray());
 }

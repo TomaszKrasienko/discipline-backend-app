@@ -1,15 +1,14 @@
 using discipline.centre.dailytrackers.domain;
-using discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Documents;
 using discipline.centre.dailytrackers.tests.sharedkernel.Domain;
 using Shouldly;
 using Xunit;
 
 namespace discipline.centre.dailytrackers.infrastructure.unit_tests.DAL.DailyTrackers;
 
-public sealed class StageMappingExtensionsTests
+public sealed class DailyTrackerMappingExtensionsTests
 {
     [Fact]
-    public void MapAsDocument_GivenDailyTracker_ShouldReturnDailyTrackerDocument()
+    public void AsDocument_GivenDailyTracker_ShouldReturnDailyTrackerDocument()
     {
         //arrange
         var stage = StageFakeDataFactory.Get(1);
@@ -17,7 +16,7 @@ public sealed class StageMappingExtensionsTests
         var dailyTracker = DailyTrackerFakeDataFactory.Get(activity);
         
         //act
-        var document = dailyTracker.MapAsDocument();
+        var document = dailyTracker.AsDocument();
         
         //assert
         document.DailyTrackerId.ShouldBe(dailyTracker.Id.ToString());

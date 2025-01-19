@@ -11,7 +11,7 @@ internal static class ActivityMappingExtensions
     /// </summary>
     /// <param name="activity">An instance of <see cref="Activity"/> to be mapped</param>
     /// <returns>Mapped <see cref="ActivityDocument"/></returns>
-    internal static ActivityDocument MapAsDocument(this Activity activity)
+    internal static ActivityDocument AsDocument(this Activity activity)
         => new()
         {
             ActivityId = activity.Id.ToString(),
@@ -19,10 +19,10 @@ internal static class ActivityMappingExtensions
             Note = activity.Details.Note,
             IsChecked = activity.IsChecked,
             ParentActivityRuleId = activity.ParentActivityRuleId?.ToString(),
-            Stages = activity.Stages?.Select(MapAsDocument).ToList()
+            Stages = activity.Stages?.Select(AsDocument).ToList()
         };
     
-    private static StageDocument MapAsDocument(this Stage stage)
+    private static StageDocument AsDocument(this Stage stage)
         => new ()
         {
             StageId = stage.Id.ToString(),

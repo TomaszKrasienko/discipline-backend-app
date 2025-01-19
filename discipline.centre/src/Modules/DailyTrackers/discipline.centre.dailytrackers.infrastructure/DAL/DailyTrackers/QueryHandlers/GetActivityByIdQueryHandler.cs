@@ -20,6 +20,6 @@ internal sealed class GetActivityByIdQueryHandler(
         
         return result?
             .Activities?
-            .SingleOrDefault(x => x.ActivityId == query.ActivityId.ToString())?.MapAsDto();   
+            .SingleOrDefault(x => x.ActivityId == query.ActivityId.ToString())?.AsDto();   
     }
 }
