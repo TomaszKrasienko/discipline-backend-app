@@ -10,13 +10,14 @@ using Xunit;
 
 namespace discipline.centre.dailytrackers.integration_tests;
 
+[Collection("daily-trackers-module-create-activity")]
 public sealed class CreateActivityTests() : BaseTestsController("daily-trackers-module")
 {
     [Fact]
     public async Task GivenValidArguments_ShouldReturn200OkStatusCodeAndAddActivity()
     {
         //arrange 
-        var user = await AuthorizeWithFreeSubscriptionPicked();
+        _ = await AuthorizeWithFreeSubscriptionPicked();
 
         var createActivityDto = new CreateActivityDto(DateOnly.FromDateTime(DateTime.Now),
             new ActivityDetailsSpecification("test_activity_title", "test_activity_note"),
@@ -45,8 +46,7 @@ public sealed class CreateActivityTests() : BaseTestsController("daily-trackers-
 
         var createActivityDto = new CreateActivityDto(DateOnly.FromDateTime(DateTime.Now),
             new ActivityDetailsSpecification("test_activity_title", "test_activity_note"), null);
-
-
+        
         var dailyTracker = new DailyTrackerDocument
         {
             DailyTrackerId = Ulid.NewUlid().ToString(),
@@ -67,5 +67,37 @@ public sealed class CreateActivityTests() : BaseTestsController("daily-trackers-
         
         //assert
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task Unauthorized_ShouldReturn401UnauthorizedStatusCode()
+    {
+        //arrange 
+        var createActivityDto = new CreateActivityDto(DateOnly.FromDateTime(DateTime.Now),
+            new ActivityDetailsSpecification("test_activity_title", "test_activity_note"),
+            [new StageSpecification("test_stage_title", 1)]);
+
+        //act
+        var response = await HttpClient.PostAsJsonAsync("api/daily-trackers-module/daily-trackers/activities", createActivityDto);
+
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+    
+    [Fact]
+    public async Task UAuthorizedByUserWithStatusCreated_ShouldReturn403ForbiddenStatusCode()
+    {
+        //arrange 
+        _ = await AuthorizeWithoutSubscription();
+        
+        var createActivityDto = new CreateActivityDto(DateOnly.FromDateTime(DateTime.Now),
+            new ActivityDetailsSpecification("test_activity_title", "test_activity_note"),
+            [new StageSpecification("test_stage_title", 1)]);
+
+        //act
+        var response = await HttpClient.PostAsJsonAsync("api/daily-trackers-module/daily-trackers/activities", createActivityDto);
+
+        //assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }
