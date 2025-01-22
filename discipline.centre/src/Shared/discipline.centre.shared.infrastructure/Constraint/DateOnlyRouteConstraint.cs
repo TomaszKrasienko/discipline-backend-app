@@ -11,7 +11,7 @@ internal sealed class DateOnlyRouteConstraint : IRouteConstraint
     {
         if (values.TryGetValue(routeKey, out var value) && value is string valueAsString)
         {
-            return DateOnly.TryParseExact(valueAsString, "dd-MM-yyyy", CultureInfo.InvariantCulture,
+            return DateOnly.TryParseExact(valueAsString, "yyyy-MM-dd", CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out _);
         }
         return false;

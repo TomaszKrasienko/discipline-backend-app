@@ -48,4 +48,9 @@ public sealed class DailyTracker : AggregateRoot<DailyTrackerId, Ulid>
         _activities.Add(activity);
         return activity;
     }
+
+    public void MarkActivityStageAsChecked(ActivityId activityId, StageId stageId)
+    {
+        
+    }
 }

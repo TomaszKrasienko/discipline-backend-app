@@ -15,4 +15,13 @@ public interface IReadDailyTrackerRepository
     /// <param name="cancellationToken">Token for monitoring cancellation requests.</param>
     /// <returns>The instance of <see cref="DailyTracker"/> if exists, otherwise null</returns>
     Task<DailyTracker?> GetDailyTrackerByDayAsync(DateOnly day, UserId userId, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Asynchronously retrieves <see cref="DailyTracker"/> based on specific parameters.
+    /// </summary>
+    /// <param name="id">The identifier for which <see cref="DailyTracker"/> is requested.</param>
+    /// <param name="userId">The <c>User</c> identifier for which <see cref="DailyTracker"/> is requested.</param>
+    /// <param name="cancellationToken">Token for monitoring cancellation requests.</param>
+    /// <returns>The instance of <see cref="DailyTracker"/> if exists, otherwise null</returns>
+    Task<DailyTracker?> GetDailyTrackerByIdAsync(DailyTrackerId id, UserId userId, CancellationToken cancellationToken = default);
 }

@@ -3,6 +3,7 @@ using discipline.centre.dailytrackers.domain.Specifications;
 using discipline.centre.dailytrackers.domain.ValueObjects;
 using discipline.centre.dailytrackers.domain.ValueObjects.Activities;
 using discipline.centre.shared.abstractions.SharedKernel;
+using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.dailytrackers.domain;
@@ -33,6 +34,7 @@ public sealed class Activity : Entity<ActivityId, Ulid>
         var activityDetails = Details.Create(details.Title, details.Note);
         var activity = new Activity(activityId, activityDetails, true, 
             parentActivityRuleId, null);
+        
         if (stages is not null)
         {
             activity.AddStages(stages);
@@ -51,5 +53,18 @@ public sealed class Activity : Entity<ActivityId, Ulid>
         var newStage = Stage.Create(StageId.New(), stage.Title, stage.Index);
         _stages ??= [];
         _stages.Add(newStage);
+    }
+
+    internal void MarkStageAsChecked(StageId stageId)
+    {
+        var stage = _stages?.SingleOrDefault(x => x.Id == stageId);
+        
+        if (stage is null)
+        {
+            throw new DomainException("DailyTracker.Activity.StageNotFound",
+                $"Stage with 'ID': {stageId.ToString()} for activity with 'ID': '{Id.ToString()}' was not found.");
+        }
+        
+        stage.MarkAsChecked();
     }
 }

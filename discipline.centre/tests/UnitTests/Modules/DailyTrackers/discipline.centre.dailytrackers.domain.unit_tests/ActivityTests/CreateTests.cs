@@ -7,7 +7,7 @@ using Xunit;
 
 namespace discipline.centre.dailytrackers.domain.unit_tests.ActivityTests;
 
-public partial class ActivityTests
+public partial class CreateTests
 {
     [Theory]
     [MemberData(nameof(GetValidCreateData))]
@@ -67,7 +67,7 @@ public partial class ActivityTests
     }
 }
 
-public partial class ActivityTests
+public partial class CreateTests
 {
     public static IEnumerable<object[]> GetValidCreateData()
     {

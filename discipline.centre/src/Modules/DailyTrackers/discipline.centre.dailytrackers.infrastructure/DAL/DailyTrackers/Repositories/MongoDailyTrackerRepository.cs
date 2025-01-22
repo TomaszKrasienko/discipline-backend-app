@@ -13,8 +13,16 @@ internal sealed class MongoDailyTrackerRepository(
         CancellationToken cancellationToken = default)
         => (await context.GetCollection<DailyTrackerDocument>().Find(x
                 => x.Day == day
-                   && x.UserId == userId.ToString())
+                && x.UserId == userId.ToString())
             .SingleOrDefaultAsync(cancellationToken))?.AsEntity();
+
+    public async Task<DailyTracker?> GetDailyTrackerByIdAsync(DailyTrackerId id, UserId userId,
+        CancellationToken cancellationToken = default)
+        => (await context.GetCollection<DailyTrackerDocument>().Find(x
+                => x.DailyTrackerId == id.ToString() 
+                && x.UserId == userId.ToString())
+            .SingleOrDefaultAsync(cancellationToken))?.AsEntity();
+
 
     public Task AddAsync(DailyTracker dailyTracker, CancellationToken cancellationToken = default)
         => context.GetCollection<DailyTrackerDocument>()

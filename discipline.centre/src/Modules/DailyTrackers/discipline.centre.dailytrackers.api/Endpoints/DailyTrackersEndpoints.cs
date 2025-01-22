@@ -88,6 +88,17 @@ internal static class DailyTrackersEndpoints
             .RequireAuthorization()
             .RequireAuthorization(UserStatePolicy.Name);
         
+        // ReSharper disable once RouteTemplates.RouteParameterConstraintNotResolved
+        app.MapGet($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/{{day:dateonly}}", async (
+            DateOnly day, CancellationToken cancellationToken, IIdentityContext identityContext,
+            ICqrsDispatcher dispatcher) =>
+        {
+            var result = await dispatcher.SendAsync(
+                new GetDailyTrackerQuery(identityContext.GetUser(), day), cancellationToken);
+
+            return result is null ? Results.NotFound() : Results.Ok(result);
+        });
+        
         return app;
     }
 }
