@@ -123,8 +123,8 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
                        && x.Details.Title == activityRuleDto.Title
                        && x.Details.Note == activityRuleDto.Note
                        && x.ParentActivityRuleId == activityRuleDto.ActivityRuleId
-                       && x.Stages![0].Title == activityRuleDto.Stages[0].Title
-                       && x.Stages![0].Index == activityRuleDto.Stages[0].Index)
+                       && x.Stages!.First().Title == activityRuleDto.Stages[0].Title
+                       && x.Stages!.First().Index == activityRuleDto.Stages[0].Index)
             ));
         
         await _repository

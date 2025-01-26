@@ -46,7 +46,7 @@ internal static class ActivityDocumentMappingExtensions
             Details.Create(document.Title, document.Note),
             document.IsChecked,
             document.ParentActivityRuleId is not null ? ActivityRuleId.Parse(document.ParentActivityRuleId) : null,
-            document.Stages?.Select(AsEntity).ToList());
+            document.Stages?.Select(AsEntity).ToHashSet());
 
     private static Stage AsEntity(this StageDocument document)
         => new (StageId.Parse(document.StageId), document.Title, document.Index, document.IsChecked);

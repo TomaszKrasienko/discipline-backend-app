@@ -24,21 +24,6 @@ public sealed class MarkStageAsChecked
     }
     
     [Fact]
-    public void ShouldThrowDomainException_WhenStageIsNotExists()
-    {
-        //arrange
-        var activity = Activity.Create(ActivityId.New(), new ActivityDetailsSpecification("test_activity_title", null),
-            null, null);
-        
-        //act
-        var exception = Record.Exception(() => activity.MarkStageAsChecked(StageId.New()));
-        
-        //assert
-        exception.ShouldBeOfType<DomainException>();
-        ((DomainException)exception).Code.ShouldBe("DailyTracker.Activity.StageNotFound");
-    }
-    
-    [Fact]
     public void ShouldChangeIsCheckedOfStageAndIsCheckedOfActivity_WhenLastStageMarkedAsChecked()
     {
         //arrange
@@ -52,5 +37,20 @@ public sealed class MarkStageAsChecked
         //assert
         stage.IsChecked.Value.ShouldBeTrue();
         activity.IsChecked.Value.ShouldBeTrue();
+    }
+    
+    [Fact]
+    public void ShouldThrowDomainException_WhenStageIsNotExists()
+    {
+        //arrange
+        var activity = Activity.Create(ActivityId.New(), new ActivityDetailsSpecification("test_activity_title", null),
+            null, null);
+        
+        //act
+        var exception = Record.Exception(() => activity.MarkStageAsChecked(StageId.New()));
+        
+        //assert
+        exception.ShouldBeOfType<DomainException>();
+        ((DomainException)exception).Code.ShouldBe("DailyTracker.Activity.StageNotFound");
     }
 }

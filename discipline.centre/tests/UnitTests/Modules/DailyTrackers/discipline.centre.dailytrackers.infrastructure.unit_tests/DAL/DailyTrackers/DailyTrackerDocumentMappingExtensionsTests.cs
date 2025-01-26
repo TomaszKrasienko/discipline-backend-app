@@ -27,10 +27,10 @@ public sealed class DailyTrackerDocumentMappingExtensionsTests
         entity.Activities.First().Details.Title.ShouldBe(activityDocument.Title);
         entity.Activities.First().Details.Note.ShouldBe(activityDocument.Note);
         entity.Activities.First().IsChecked.Value.ShouldBe(activityDocument.IsChecked);
-        entity.Activities.First().Stages![0].Id.ShouldBe(StageId.Parse(stageDocument.StageId));
-        entity.Activities.First().Stages![0].Title.Value.ShouldBe(stageDocument.Title);
-        entity.Activities.First().Stages![0].Index.Value.ShouldBe(stageDocument.Index);
-        entity.Activities.First().Stages![0].IsChecked.Value.ShouldBe(stageDocument.IsChecked);
+        entity.Activities.First().Stages!.First().Id.ShouldBe(StageId.Parse(stageDocument.StageId));
+        entity.Activities.First().Stages!.First().Title.Value.ShouldBe(stageDocument.Title);
+        entity.Activities.First().Stages!.First().Index.Value.ShouldBe(stageDocument.Index);
+        entity.Activities.First().Stages!.First().IsChecked.Value.ShouldBe(stageDocument.IsChecked);
     }
 
     [Fact]

@@ -26,4 +26,7 @@ public sealed class Stage : Entity<StageId, Ulid>
     
     internal void MarkAsChecked()
         => IsChecked = true;
+    
+    internal void ChangeIndex(int index)
+        => Index = index;
 }

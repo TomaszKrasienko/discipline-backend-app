@@ -29,16 +29,16 @@ public partial class CreateTests
     public void GivenValidArgumentsWithStage_ShouldReturnActivityWithStage()
     {
         //arrange
-        var stageTitle = "test_stage_title";
-        var index = 1;
+        const string stageTitle = "test_stage_title";
+        const int index = 1;
         
         //act
         var result = Activity.Create(ActivityId.New(), new ActivityDetailsSpecification("test_title", null),
             null, [new StageSpecification(stageTitle, index)]);
         
         //assert
-        result.Stages![0].Title.Value.ShouldBe(stageTitle);
-        result.Stages![0].Index.Value.ShouldBe(index);
+        result.Stages!.First().Title.Value.ShouldBe(stageTitle);
+        result.Stages!.First().Index.Value.ShouldBe(index);
     }
 
     [Theory]

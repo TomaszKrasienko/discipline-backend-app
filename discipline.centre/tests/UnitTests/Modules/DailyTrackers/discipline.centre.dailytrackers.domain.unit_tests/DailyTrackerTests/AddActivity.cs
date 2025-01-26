@@ -33,8 +33,8 @@ public sealed class AddActivityTests
         newActivity.Details.Title.ShouldBe(title);
         newActivity.Details.Note.ShouldBe(note);
         newActivity.ParentActivityRuleId.ShouldBe(parentActivityRuleId);
-        newActivity.Stages![0].Title.Value.ShouldBe(stages[0].Title);
-        newActivity.Stages![0].Index.Value.ShouldBe(stages[0].Index);
+        newActivity.Stages!.First().Title.Value.ShouldBe(stages[0].Title);
+        newActivity.Stages!.First().Index.Value.ShouldBe(stages[0].Index);
     }
     
     [Fact]
