@@ -37,4 +37,20 @@ public sealed class MarkStageAsChecked
         exception.ShouldBeOfType<DomainException>();
         ((DomainException)exception).Code.ShouldBe("DailyTracker.Activity.StageNotFound");
     }
+    
+    [Fact]
+    public void ShouldChangeIsCheckedOfStageAndIsCheckedOfActivity_WhenLastStageMarkedAsChecked()
+    {
+        //arrange
+        var activity = Activity.Create(ActivityId.New(), new ActivityDetailsSpecification("test_activity_title", null),
+            null, [new StageSpecification("test_stage_title", 1)]);
+        var stage = activity.Stages!.Single();
+
+        //act
+        activity.MarkStageAsChecked(stage!.Id);
+        
+        //assert
+        stage.IsChecked.Value.ShouldBeTrue();
+        activity.IsChecked.Value.ShouldBeTrue();
+    }
 }

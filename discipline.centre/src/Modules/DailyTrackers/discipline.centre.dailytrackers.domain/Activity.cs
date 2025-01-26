@@ -66,5 +66,15 @@ public sealed class Activity : Entity<ActivityId, Ulid>
         }
         
         stage.MarkAsChecked();
+
+        if (_stages?.Any(x => !x.IsChecked.Value) ?? true)
+        {
+            return;
+        }
+        
+        MarkAsChecked();
     }
+
+    private void MarkAsChecked()
+        => IsChecked = true;
 }

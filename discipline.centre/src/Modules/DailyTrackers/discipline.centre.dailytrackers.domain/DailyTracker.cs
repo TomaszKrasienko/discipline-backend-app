@@ -51,6 +51,14 @@ public sealed class DailyTracker : AggregateRoot<DailyTrackerId, Ulid>
 
     public void MarkActivityStageAsChecked(ActivityId activityId, StageId stageId)
     {
+        var activity = _activities.SingleOrDefault(x => x.Id == activityId);
         
+        if (activity is null)
+        {
+            throw new DomainException("DailyTracker.Activity.NotFound",
+                $"Activity with id {activityId} not found.");    
+        }
+        
+        activity.MarkStageAsChecked(stageId);
     }
 }
