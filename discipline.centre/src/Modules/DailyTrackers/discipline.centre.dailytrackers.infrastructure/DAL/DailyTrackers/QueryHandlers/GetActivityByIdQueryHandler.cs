@@ -6,6 +6,7 @@ using MongoDB.Driver;
 
 namespace discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.QueryHandlers;
 
+/// <inheritdoc cref="GetActivityByIdQuery"/>
 internal sealed class GetActivityByIdQueryHandler(
     DailyTrackersMongoContext dailyTrackersMongoContext) : IQueryHandler<GetActivityByIdQuery, ActivityDto?>
 {

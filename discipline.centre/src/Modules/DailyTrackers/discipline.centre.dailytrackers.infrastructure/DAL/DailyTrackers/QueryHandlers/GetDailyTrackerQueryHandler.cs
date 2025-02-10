@@ -7,9 +7,9 @@ using MongoDB.Driver;
 namespace discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.QueryHandlers;
 
 internal sealed class GetDailyTrackerQueryHandler(
-    DailyTrackersMongoContext dailyTrackersMongoContext) : IQueryHandler<GetDailyTrackerQuery, DailyTrackerDto?>
+    DailyTrackersMongoContext dailyTrackersMongoContext) : IQueryHandler<GetDailyTrackerByDayQuery, DailyTrackerDto?>
 {
-    public async Task<DailyTrackerDto?> HandleAsync(GetDailyTrackerQuery query, CancellationToken cancellationToken = default)
+    public async Task<DailyTrackerDto?> HandleAsync(GetDailyTrackerByDayQuery query, CancellationToken cancellationToken = default)
     {
         var dailyTracker = await dailyTrackersMongoContext
             .GetCollection<DailyTrackerDocument>()

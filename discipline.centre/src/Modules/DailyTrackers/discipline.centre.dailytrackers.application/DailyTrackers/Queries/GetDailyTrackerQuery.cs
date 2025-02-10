@@ -4,4 +4,4 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.dailytrackers.application.DailyTrackers.Queries;
 
-public sealed record GetDailyTrackerQuery(UserId UserId, DateOnly Day) : IQuery<DailyTrackerDto?>;
+public sealed record GetDailyTrackerByDayQuery(UserId UserId, DateOnly Day) : IQuery<DailyTrackerDto?>;

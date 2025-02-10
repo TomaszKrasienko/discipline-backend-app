@@ -93,11 +93,19 @@ internal static class DailyTrackersEndpoints
             DateOnly day, CancellationToken cancellationToken, IIdentityContext identityContext,
             ICqrsDispatcher dispatcher) =>
         {
-            var result = await dispatcher.SendAsync(
-                new GetDailyTrackerQuery(identityContext.GetUser(), day), cancellationToken);
+            var result = await dispatcher.SendAsync(new GetDailyTrackerByDayQuery(identityContext.GetUser(), day), cancellationToken);
 
             return result is null ? Results.NotFound() : Results.Ok(result);
-        });
+        })
+        .Produces(StatusCodes.Status200OK, typeof(ActivityDto))
+        .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+        .Produces(StatusCodes.Status403Forbidden, typeof(void))
+        .Produces(StatusCodes.Status404NotFound, typeof(void))
+        .WithName("GetDailyTrackerByDay")
+        .WithTags(DailyTrackersTag)
+        .WithDescription("Gets activity by its day.")
+        .RequireAuthorization()
+        .RequireAuthorization(UserStatePolicy.Name);
         
         return app;
     }
