@@ -18,6 +18,7 @@ public static class SharedServicesInfrastructureConfigExtensions
         => services
             .AddAppOptions(configuration)
             .AddUiDocumentation()
+            .AddCorsPolicy()
             .AddCqrs(assemblies)
             .AddDal(configuration)
             .AddEvents(configuration)
@@ -48,6 +49,19 @@ public static class SharedServicesInfrastructureConfigExtensions
                 Version = "v1"
             });
         });
+
+    private static IServiceCollection AddCorsPolicy(this IServiceCollection services)
+    {
+        services.AddCors(x =>
+        {
+            x.AddPolicy("CorsPolicy", builder
+                => builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .SetIsOriginAllowed(_ => true));
+        });
+        return services;
+    }
     
     public static IServiceCollection ValidateAndBind<TOptions, TOptionsValidator>(this IServiceCollection services,
         IConfiguration configuration) where TOptions : class where TOptionsValidator : class, IValidateOptions<TOptions>

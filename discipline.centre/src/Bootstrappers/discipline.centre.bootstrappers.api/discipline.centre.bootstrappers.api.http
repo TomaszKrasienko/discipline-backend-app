@@ -4,7 +4,7 @@
 GET {{host_address}}/
 
 ###
-@email = tom.krasienko@gmail.com
+@email = tom.krasienko@gmail.com1
 @password = TomaszK123!
 
 ###

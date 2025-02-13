@@ -46,12 +46,12 @@ public sealed class DailyTrackerDocumentMappingExtensionsTests
         
         //assert
         dto.Day.ShouldBe(dailyTrackerDocument.Day);
-        dto.Activities.First().ActivityId.Value.ToString().ShouldBe(activityDocument.ActivityId);
+        dto.Activities.First().ActivityId.ShouldBe(activityDocument.ActivityId);
         dto.Activities.First().Details.Title.ShouldBe(activityDocument.Title);
         dto.Activities.First().Details.Note.ShouldBe(activityDocument.Note);
-        dto.Activities.First().ParentActivityRuleId!.Value.ToString().ShouldBe(activityDocument.ParentActivityRuleId);
+        dto.Activities.First().ParentActivityRuleId!.ShouldBe(activityDocument.ParentActivityRuleId);
         dto.Activities.First().IsChecked.ShouldBe(activityDocument.IsChecked);
-        dto.Activities.First().Stages!.First().StageId.Value.ToString().ShouldBe(stageDocument.StageId);
+        dto.Activities.First().Stages!.First().StageId.ShouldBe(stageDocument.StageId);
         dto.Activities.First().Stages!.First().Title.ShouldBe(stageDocument.Title);
         dto.Activities.First().Stages!.First().Index.ShouldBe(stageDocument.Index);
         dto.Activities.First().Stages!.First().IsChecked.ShouldBe(stageDocument.IsChecked);

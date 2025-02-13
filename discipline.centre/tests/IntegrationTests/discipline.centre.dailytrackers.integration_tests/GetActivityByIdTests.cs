@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using discipline.centre.dailytrackers.application.DailyTrackers.DTOs;
+using discipline.centre.dailytrackers.application.DailyTrackers.DTOs.Responses;
 using discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Documents;
 using discipline.centre.integration_tests.shared;
 using discipline.centre.integration_tests.shared.Serialization;
@@ -49,7 +50,7 @@ public sealed class GetActivityByIdTests() : BaseTestsController("daily-trackers
 
         var result = await response.Content.ReadAsStringAsync();
         var activity = SerializerForTests.Deserialize<ActivityDto>(result);
-        activity!.ActivityId.Value.ToString().ShouldBe(dailyTracker.Activities.First().ActivityId);
+        activity!.ActivityId.ShouldBe(dailyTracker.Activities.First().ActivityId);
     }
 
     [Fact]

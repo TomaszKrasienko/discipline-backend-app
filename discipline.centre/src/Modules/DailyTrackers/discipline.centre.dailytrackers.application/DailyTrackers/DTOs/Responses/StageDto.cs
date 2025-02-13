@@ -1,7 +1,6 @@
 using discipline.centre.dailytrackers.domain;
-using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-namespace discipline.centre.dailytrackers.application.DailyTrackers.DTOs;
+namespace discipline.centre.dailytrackers.application.DailyTrackers.DTOs.Responses;
 
 /// <summary>
 /// Data Transfer Object representing a <see cref="Stage"/>.
@@ -11,7 +10,7 @@ public sealed record StageDto
     /// <summary>
     /// Unique identifier of the <see cref="Stage"/>.
     /// </summary>
-    public required StageId StageId { get; init; }
+    public required string StageId { get; init; }
     
     /// <summary>
     /// Title of the <see cref="Stage"/>.

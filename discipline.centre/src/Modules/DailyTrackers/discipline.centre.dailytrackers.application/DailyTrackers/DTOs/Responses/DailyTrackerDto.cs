@@ -1,6 +1,4 @@
-using discipline.centre.dailytrackers.domain;
-
-namespace discipline.centre.dailytrackers.application.DailyTrackers.DTOs;
+namespace discipline.centre.dailytrackers.application.DailyTrackers.DTOs.Responses;
 
 /// <summary>
 /// Data transfer object (DTO) representing the daily tracker information.

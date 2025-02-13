@@ -1,4 +1,5 @@
 using discipline.centre.dailytrackers.application.DailyTrackers.DTOs;
+using discipline.centre.dailytrackers.application.DailyTrackers.DTOs.Responses;
 using discipline.centre.dailytrackers.domain;
 using discipline.centre.dailytrackers.domain.Specifications;
 using discipline.centre.dailytrackers.domain.ValueObjects.Activities;
@@ -17,11 +18,11 @@ internal static class ActivityDocumentMappingExtensions
     internal static ActivityDto AsDto(this ActivityDocument document)
         => new()
         {
-            ActivityId = ActivityId.Parse(document.ActivityId),
+            ActivityId = document.ActivityId,
             Details = new ActivityDetailsSpecification(document.Title, document.Note),
             IsChecked = document.IsChecked,
             ParentActivityRuleId = document.ParentActivityRuleId is not null
-                ? ActivityRuleId.Parse(document.ParentActivityRuleId)
+                ? document.ParentActivityRuleId
                 : null,
             Stages = document.Stages?.Select(x => x.AsDto()).ToList()
         };
@@ -29,7 +30,7 @@ internal static class ActivityDocumentMappingExtensions
     private static StageDto AsDto(this StageDocument document)
         => new()
         {
-            StageId = StageId.Parse(document.StageId),
+            StageId = document.StageId,
             Title = document.Title,
             Index = document.Index,
             IsChecked = document.IsChecked,

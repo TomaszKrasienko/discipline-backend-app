@@ -1,8 +1,7 @@
 using System.Diagnostics;
 using discipline.centre.dailytrackers.domain.Specifications;
-using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-namespace discipline.centre.dailytrackers.application.DailyTrackers.DTOs;
+namespace discipline.centre.dailytrackers.application.DailyTrackers.DTOs.Responses;
 
 /// <summary>
 /// Data Transfer Object representing a <see cref="Activity"/>
@@ -12,7 +11,7 @@ public sealed record ActivityDto
     /// <summary>
     /// Unique identifier of the <see cref="Activity"/>
     /// </summary>
-    public required ActivityId ActivityId { get; init; }
+    public required string ActivityId { get; init; }
     
     /// <summary>
     /// Details of the <see cref="Details"/>. For more, see <see cref="ActivityDetailsSpecification"/>.
@@ -27,7 +26,7 @@ public sealed record ActivityDto
     /// <summary>
     /// Represents optional 'ActivityRule' as a parent of <see cref="Activity"/>.
     /// </summary>
-    public ActivityRuleId? ParentActivityRuleId { get; init; }
+    public string? ParentActivityRuleId { get; init; }
     
     /// <summary>
     /// Collection of <see cref="StageDto"/>.

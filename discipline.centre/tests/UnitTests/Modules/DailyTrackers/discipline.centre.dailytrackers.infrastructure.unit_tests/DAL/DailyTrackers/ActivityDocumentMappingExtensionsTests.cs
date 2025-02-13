@@ -19,11 +19,11 @@ public sealed class ActivityDocumentMappingExtensionsTests
         var result = activityDocument.AsDto();
 
         //assert
-        result.ActivityId.ShouldBe(ActivityId.Parse(activityDocument.ActivityId));
+        result.ActivityId.ShouldBe(activityDocument.ActivityId);
         result.Details.Title.ShouldBe(activityDocument.Title);
         result.Details.Note.ShouldBe(activityDocument.Note);
         result.IsChecked.ShouldBe(activityDocument.IsChecked);
-        result.ParentActivityRuleId.ShouldBe(ActivityRuleId.Parse(activityDocument.ParentActivityRuleId!));
+        result.ParentActivityRuleId.ShouldBe(activityDocument.ParentActivityRuleId!);
         result.Stages.ShouldBeNull();
     }
     
@@ -38,11 +38,11 @@ public sealed class ActivityDocumentMappingExtensionsTests
         var result = activityDocument.AsDto();
 
         //assert
-        result.ActivityId.ShouldBe(ActivityId.Parse(activityDocument.ActivityId));
+        result.ActivityId.ShouldBe(activityDocument.ActivityId);
         result.Details.Title.ShouldBe(activityDocument.Title);
         result.Details.Note.ShouldBe(activityDocument.Note);
         result.IsChecked.ShouldBe(activityDocument.IsChecked);
-        result.ParentActivityRuleId.ShouldBe(ActivityRuleId.Parse(activityDocument.ParentActivityRuleId!));
+        result.ParentActivityRuleId.ShouldBe(activityDocument.ParentActivityRuleId!);
         result.Stages!.Count.ShouldBe(1);
         result.Stages.First().Title.ShouldBe(stageDocument.Title);
         result.Stages.First().Index.ShouldBe(stageDocument.Index);
