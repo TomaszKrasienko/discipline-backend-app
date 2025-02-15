@@ -4,7 +4,7 @@
 GET {{host_address}}/
 
 ###
-@email = tom.krasienko@gmail.com1
+@email = tom.krasienko@gmail.com
 @password = TomaszK123!
 
 ###
@@ -89,7 +89,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "day": "2025-01-04",
+  "day": "2025-02-15",
   "details": {
     "title": "string",
     "note": "string"
@@ -110,7 +110,8 @@ GET {{host_address}}/api/daily-trackers-module/daily-trackers/activities/{{activ
 Authorization: Bearer {{token}}
 
 ###
-GET {{host_address}}/activity-rules-module/activity-rules-internal/modes/07-01-2025
+GET {{host_address}}/api/daily-trackers-module/daily-trackers/2025-02-15
+Authorization: Bearer {{token}}
 
 ###
 http://localhost:5039/activity-rules-module/activity-rules-internal/modes?day=2025-01-01

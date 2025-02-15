@@ -17,6 +17,6 @@ internal sealed class GetDailyTrackerQueryHandler(
             .Find(x => x.Day == query.Day)
             .SingleOrDefaultAsync(cancellationToken);
 
-        return dailyTracker.AsDto();
+        return dailyTracker?.AsDto();
     }
 }
