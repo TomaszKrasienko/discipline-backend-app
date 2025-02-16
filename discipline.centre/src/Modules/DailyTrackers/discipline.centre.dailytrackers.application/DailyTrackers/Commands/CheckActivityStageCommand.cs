@@ -22,5 +22,8 @@ internal sealed class CheckActivityStageCommandHandler(
             throw new NotFoundException("CheckActivityStage.DailyTracker", nameof(DailyTracker), 
                 command.DailyTrackerId.ToString());
         }
+        
+        dailyTracker.MarkActivityStageAsChecked(command.ActivityId, command.StageId);
+        await writeReadDailyTrackerRepository.UpdateAsync(dailyTracker, cancellationToken);
     }
 }

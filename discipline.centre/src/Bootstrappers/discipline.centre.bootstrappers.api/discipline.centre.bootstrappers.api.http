@@ -89,15 +89,23 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "day": "2025-02-15",
+  "day": "2025-02-16",
   "details": {
-    "title": "string",
-    "note": "string"
+    "title": "Pierwsze zadanie to do3",
+    "note": "Pamiętać o odebraniu paczek, posprzątaniu i jedzeniu"
   },
   "stages": [
     {
-    "title": "string",
-    "index": 1
+      "title": "odebranie paczki",
+      "index": 1
+    },
+    {
+      "title": "zjedzenie",
+      "index": 2
+    },
+    {
+      "title": "praca domowa",
+      "index": 3
     }
   ]
 }
