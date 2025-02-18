@@ -119,7 +119,7 @@ internal static class DailyTrackersEndpoints
             await dispatcher.HandleAsync(new MarkActivityStageAsCheckedCommand(identityContext.GetUser(), dailyTrackerStronglyId, activityStronglyId, stronglyStageId), cancellationToken);
             return Results.NoContent();
         })
-        .Produces(StatusCodes.Status204NoContent, typeof(ActivityDto))
+        .Produces(StatusCodes.Status204NoContent, typeof(void))
         .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
         .Produces(StatusCodes.Status401Unauthorized, typeof(void))
         .Produces(StatusCodes.Status403Forbidden, typeof(void))

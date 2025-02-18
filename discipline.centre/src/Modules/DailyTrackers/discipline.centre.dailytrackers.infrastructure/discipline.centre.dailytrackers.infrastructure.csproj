@@ -12,6 +12,7 @@
     
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.centre.dailytrackers.infrastructure.unit_tests"/>
+        <InternalsVisibleTo Include="discipline.centre.dailytrackers.integration_tests"/>
     </ItemGroup>
 
 </Project>
