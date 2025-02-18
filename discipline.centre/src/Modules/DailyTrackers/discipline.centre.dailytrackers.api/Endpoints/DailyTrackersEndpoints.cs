@@ -108,6 +108,28 @@ internal static class DailyTrackersEndpoints
         .RequireAuthorization()
         .RequireAuthorization(UserStatePolicy.Name);
         
+        // ReSharper disable once RouteTemplates.RouteParameterConstraintNotResolved
+        app.MapPatch($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/{{dailyTrackerId:ulid}}/activities/{{activityId:ulid}}/stages/{{stageId:ulid}}/check", async (
+                Ulid dailyTrackerId, Ulid activityId, Ulid stageId, CancellationToken cancellationToken, IIdentityContext identityContext, ICqrsDispatcher dispatcher) =>
+        {
+            var dailyTrackerStronglyId = new DailyTrackerId(dailyTrackerId);
+            var activityStronglyId = new ActivityId(activityId);
+            var stronglyStageId = new StageId(stageId);
+            
+            await dispatcher.HandleAsync(new MarkActivityStageAsCheckedCommand(identityContext.GetUser(), dailyTrackerStronglyId, activityStronglyId, stronglyStageId), cancellationToken);
+            return Results.NoContent();
+        })
+        .Produces(StatusCodes.Status204NoContent, typeof(ActivityDto))
+        .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
+        .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+        .Produces(StatusCodes.Status403Forbidden, typeof(void))
+        .Produces(StatusCodes.Status404NotFound, typeof(void))
+        .WithName("MarkActivityStageAsChecked")
+        .WithTags(DailyTrackersTag)
+        .WithDescription("Changes checked flag at activity stage")
+        .RequireAuthorization()
+        .RequireAuthorization(UserStatePolicy.Name);
+        
         return app;
     }
 }
