@@ -89,7 +89,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "day": "2025-02-16",
+  "day": "2025-02-19",
   "details": {
     "title": "Pierwsze zadanie to do3",
     "note": "Pamiętać o odebraniu paczek, posprzątaniu i jedzeniu"
@@ -118,8 +118,9 @@ GET {{host_address}}/api/daily-trackers-module/daily-trackers/activities/{{activ
 Authorization: Bearer {{token}}
 
 ###
-GET {{host_address}}/api/daily-trackers-module/daily-trackers/2025-02-15
+GET {{host_address}}/api/daily-trackers-module/daily-trackers/2025-02-19
 Authorization: Bearer {{token}}
 
 ###
-http://localhost:5039/activity-rules-module/activity-rules-internal/modes?day=2025-01-01
+PATCH {{host_address}}/api/daily-trackers-module/daily-trackers/01JMFXN33E64FZ5EN6WN3S9AF0/activities/01JMFXN31WSM5KQ2EK5PDP6HKA/stages/01JMFXN33T2EZ4HA2HA10CSBN8/check
+Authorization: Bearer {{token}}

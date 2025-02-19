@@ -22,6 +22,7 @@ public partial class CreateTests
         result.Details.Title.ShouldBe(parameters.Details.Title);
         result.Details.Note.ShouldBe(parameters.Details.Note);
         result.ParentActivityRuleId.ShouldBe(parameters.ActivityRuleId);
+        result.IsChecked.Value.ShouldBeFalse();
         result.Stages.ShouldBeNull();
     }
 

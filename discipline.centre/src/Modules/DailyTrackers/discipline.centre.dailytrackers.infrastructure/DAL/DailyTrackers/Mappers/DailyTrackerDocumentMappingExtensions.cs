@@ -29,5 +29,5 @@ internal static class DailyTrackerDocumentMappingExtensions
     /// <param name="document">Instance of <see cref="DailyTrackerDocument"/> to be mapped</param>
     /// <returns>Mapped instance of <see cref="DailyTrackerDto"/></returns>
     internal static DailyTrackerDto AsDto(this DailyTrackerDocument document)
-        => new(document.Day, document.Activities.Select(x => x.AsDto()).ToArray());
+        => new(document.DailyTrackerId, document.Day, document.Activities.Select(x => x.AsDto()).ToArray());
 }

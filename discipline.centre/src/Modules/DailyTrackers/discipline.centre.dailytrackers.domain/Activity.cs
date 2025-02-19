@@ -59,7 +59,7 @@ public sealed class Activity : Entity<ActivityId, Ulid>
         ActivityRuleId? parentActivityRuleId, List<StageSpecification>? stages)
     {
         var activityDetails = Details.Create(details.Title, details.Note);
-        var activity = new Activity(activityId, activityDetails, true, 
+        var activity = new Activity(activityId, activityDetails, false, 
             parentActivityRuleId, null);
         
         if (stages is not null)
@@ -93,7 +93,7 @@ public sealed class Activity : Entity<ActivityId, Ulid>
     internal void Edit(ActivityDetailsSpecification details)
         => Details = Details.Create(details.Title, details.Note);
     
-    private void MarkAsChecked()
+    internal void MarkAsChecked()
         => IsChecked = true;
     
     internal Stage AddStage(string title)
@@ -151,7 +151,7 @@ public sealed class Activity : Entity<ActivityId, Ulid>
         
         stage.MarkAsChecked();
 
-        if (_stages?.Any(x => !x.IsChecked.Value) ?? true)
+        if (_stages is not null && _stages.Any(x => !x.IsChecked.Value))
         {
             return;
         }

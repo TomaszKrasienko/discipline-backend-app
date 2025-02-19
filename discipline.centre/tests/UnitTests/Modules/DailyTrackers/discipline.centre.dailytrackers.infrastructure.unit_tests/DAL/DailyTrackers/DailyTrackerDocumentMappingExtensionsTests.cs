@@ -45,6 +45,7 @@ public sealed class DailyTrackerDocumentMappingExtensionsTests
         var dto = dailyTrackerDocument.AsDto();
         
         //assert
+        dto.DailyTrackerId.ShouldBe(dailyTrackerDocument.DailyTrackerId);
         dto.Day.ShouldBe(dailyTrackerDocument.Day);
         dto.Activities.First().ActivityId.ShouldBe(activityDocument.ActivityId);
         dto.Activities.First().Details.Title.ShouldBe(activityDocument.Title);
