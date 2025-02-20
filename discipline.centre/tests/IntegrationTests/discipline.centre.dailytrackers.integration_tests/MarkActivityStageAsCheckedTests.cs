@@ -96,7 +96,6 @@ public sealed class MarkActivityStageAsCheckedTests() : BaseTestsController("dai
         _ = await AuthorizeWithFreeSubscriptionPicked();
         var dailyTrackerId = DailyTrackerId.New();
         var activityId = ActivityId.New();
-
         var stageId = StageId.New();
         
         // Act
