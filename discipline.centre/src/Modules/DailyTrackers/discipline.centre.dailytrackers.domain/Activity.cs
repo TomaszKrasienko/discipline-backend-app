@@ -92,9 +92,19 @@ public sealed class Activity : Entity<ActivityId, Ulid>
 
     internal void Edit(ActivityDetailsSpecification details)
         => Details = Details.Create(details.Title, details.Note);
-    
+
     internal void MarkAsChecked()
-        => IsChecked = true;
+    {
+        if (_stages is not null && _stages.Any())
+        {
+            foreach (var stage in _stages)
+            {
+                stage.MarkAsChecked();
+            }
+        }
+        
+        IsChecked = true;
+    } 
     
     internal Stage AddStage(string title)
     {

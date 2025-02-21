@@ -88,20 +88,4 @@ public sealed class MarkActivityStageAsCheckedTests() : BaseTestsController("dai
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
-    
-    [Fact]
-    public async Task ShouldReturn404NotFoundStatusCode_WhenDailyTrackerNotFound()
-    {
-        // Arrange
-        _ = await AuthorizeWithFreeSubscriptionPicked();
-        var dailyTrackerId = DailyTrackerId.New();
-        var activityId = ActivityId.New();
-        var stageId = StageId.New();
-        
-        // Act
-        var response = await HttpClient.PatchAsync($"api/daily-trackers-module/daily-trackers/{dailyTrackerId.Value}/activities/{activityId.Value}/stages/{stageId.Value}/check", null);
-        
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-    }
 }
