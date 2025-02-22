@@ -1,0 +1,26 @@
+using discipline.centre.dailytrackers.domain.Repositories;
+using discipline.centre.shared.abstractions.CQRS.Commands;
+using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
+
+namespace discipline.centre.dailytrackers.application.DailyTrackers.Commands;
+
+public sealed record DeleteActivityStageCommand(DailyTrackerId DailyTrackerId, ActivityId ActivityId, 
+    StageId StageId, UserId UserId) : ICommand;
+    
+internal sealed class DeleteActivityStageCommandHandler(
+    IWriteReadDailyTrackerRepository writeReadDailyTrackerRepository) : ICommandHandler<DeleteActivityStageCommand>
+{
+    public async Task HandleAsync(DeleteActivityStageCommand command, CancellationToken cancellationToken = default)
+    {
+        var dailyTracker = await writeReadDailyTrackerRepository.GetDailyTrackerByIdAsync(command.DailyTrackerId, 
+            command.UserId, cancellationToken);
+
+        if (dailyTracker is null)
+        {
+            return;
+        }
+        
+        dailyTracker.DeleteActivityStage(command.ActivityId, command.StageId);
+        await writeReadDailyTrackerRepository.UpdateAsync(dailyTracker, cancellationToken);
+    }
+}
