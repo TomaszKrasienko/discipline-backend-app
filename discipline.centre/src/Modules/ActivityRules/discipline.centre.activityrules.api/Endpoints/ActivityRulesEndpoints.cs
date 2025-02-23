@@ -26,7 +26,7 @@ internal static class ActivityRulesEndpoints
                 var activityRuleId = ActivityRuleId.New();
                 var userId = identityContext.GetUser();
                 
-                await dispatcher.HandleAsync(command.MapAsCommand(activityRuleId, userId), cancellationToken);
+                await dispatcher.HandleAsync(command.MapAsCommand(userId, activityRuleId), cancellationToken);
                 httpContext.AddResourceIdHeader(activityRuleId.ToString());
                 
                 return Results.CreatedAtRoute(nameof(GetActivityRuleById), new {activityRuleId = activityRuleId.ToString()}, null);
@@ -50,7 +50,8 @@ internal static class ActivityRulesEndpoints
         {
             var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
             var userId = identityContext.GetUser();
-            await dispatcher.HandleAsync(dto.MapAsCommand(stronglyActivityRuleId, userId), cancellationToken);
+            
+            await dispatcher.HandleAsync(dto.MapAsCommand(userId, stronglyActivityRuleId), cancellationToken);
 
             return Results.NoContent();
         })
@@ -73,7 +74,8 @@ internal static class ActivityRulesEndpoints
         {
             var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
             var userId = identityContext.GetUser();
-            await dispatcher.HandleAsync(new DeleteActivityRuleCommand(stronglyActivityRuleId, userId), cancellationToken);
+            
+            await dispatcher.HandleAsync(new DeleteActivityRuleCommand(userId, stronglyActivityRuleId), cancellationToken);
 
             return Results.NoContent();
         })
@@ -93,8 +95,9 @@ internal static class ActivityRulesEndpoints
                 CancellationToken cancellationToken, ICqrsDispatcher dispatcher, IIdentityContext identityContext) =>
             {   
                 var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
-                var result = await dispatcher.SendAsync(new GetActivityRuleByIdQuery(stronglyActivityRuleId,
-                    identityContext.GetUser()), cancellationToken);
+                var stronglyUserId = identityContext.GetUser();
+                
+                var result = await dispatcher.SendAsync(new GetActivityRuleByIdQuery(stronglyUserId, stronglyActivityRuleId), cancellationToken);
                 
                 return result is null ? Results.NotFound() : Results.Ok(result);
             })            

@@ -10,7 +10,7 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.dailytrackers.application.DailyTrackers.Commands;
 
-public sealed record CreateActivityFromActivityRuleCommand(ActivityId ActivityId, ActivityRuleId ActivityRuleId, UserId UserId) : ICommand;
+public sealed record CreateActivityFromActivityRuleCommand(UserId UserId, ActivityId ActivityId, ActivityRuleId ActivityRuleId) : ICommand;
 
 internal sealed class CreateActivityFromActivityRuleCommandHandler(
     IClock clock, IActivityRulesApiClient apiClient,

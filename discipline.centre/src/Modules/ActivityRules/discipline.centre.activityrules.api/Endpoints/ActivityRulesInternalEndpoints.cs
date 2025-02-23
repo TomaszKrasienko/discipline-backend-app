@@ -20,17 +20,14 @@ internal static class ActivityRulesInternalEndpoints
     
     internal static WebApplication MapActivityRulesInternalEndpoints(this WebApplication app)
     {
-        app.MapGet(
-            $"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/{{userId:ulid}}/{{activityRuleId:ulid}}",
-            async (Ulid userId, Ulid activityRuleId, CancellationToken cancellationToken,
-                ICqrsDispatcher dispatcher) =>
+        app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/{{userId:ulid}}/{{activityRuleId:ulid}}",
+            async (Ulid userId, Ulid activityRuleId, CancellationToken cancellationToken, ICqrsDispatcher dispatcher) =>
             {
-                var stronglyTypedUserId = new UserId(userId);
-                var stronglyTypedActivityRuleId = new ActivityRuleId(activityRuleId);
+                var stronglyUserId = new UserId(userId);
+                var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
 
-                var result = await dispatcher.SendAsync(
-                    new GetActivityRuleByIdQuery(stronglyTypedActivityRuleId, stronglyTypedUserId),
-                    cancellationToken);
+                var result = await dispatcher.SendAsync(new GetActivityRuleByIdQuery(stronglyUserId, stronglyActivityRuleId), cancellationToken);
+                
                 return result is null ? Results.NotFound() : Results.Ok(result);
             })
             .Produces(StatusCodes.Status200OK, typeof(ActivityRuleDto))
@@ -47,8 +44,8 @@ internal static class ActivityRulesInternalEndpoints
         app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/modes", async (
                 DateTime day, ICqrsDispatcher dispatcher, CancellationToken cancellationToken) =>
             {
-                var result = await dispatcher.SendAsync(new GetActiveModesByDayQuery(DateOnly.FromDateTime(day)),
-                    cancellationToken);
+                var result = await dispatcher.SendAsync(new GetActiveModesByDayQuery(DateOnly.FromDateTime(day)), cancellationToken);
+                
                 return Results.Ok(result);
             })
             .Produces(StatusCodes.Status200OK, typeof(ActiveModesDto))

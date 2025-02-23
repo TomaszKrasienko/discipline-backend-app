@@ -24,7 +24,7 @@ public sealed class DeleteActivityRuleCommandHandlerTests
             .GetByIdAsync(activityRule.Id, activityRule.UserId)
             .Returns(activityRule);
 
-        var command = new DeleteActivityRuleCommand(activityRule.Id, activityRule.UserId);
+        var command = new DeleteActivityRuleCommand(activityRule.UserId, activityRule.Id);
         
         //act
         await Act(command);
@@ -39,7 +39,7 @@ public sealed class DeleteActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingActivityRule_ShouldNotAttemptsToDeleteByRepository()
     {
         //arrange
-        var command = new DeleteActivityRuleCommand(ActivityRuleId.New(), UserId.New());
+        var command = new DeleteActivityRuleCommand(UserId.New(), ActivityRuleId.New());
 
         _readWriteActivityRuleRepository
             .GetByIdAsync(command.ActivityRuleId, command.UserId)
@@ -51,7 +51,7 @@ public sealed class DeleteActivityRuleCommandHandlerTests
         //assert
         await _readWriteActivityRuleRepository
             .Received(0)
-            .DeleteAsync(Arg.Any<ActivityRule>(), default);
+            .DeleteAsync(Arg.Any<ActivityRule>(), CancellationToken.None);
     }
     
     #region arrange

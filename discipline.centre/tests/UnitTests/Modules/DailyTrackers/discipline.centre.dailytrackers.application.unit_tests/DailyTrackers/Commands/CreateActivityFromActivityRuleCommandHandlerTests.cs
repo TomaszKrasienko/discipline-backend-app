@@ -21,10 +21,10 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
     private Task Act(CreateActivityFromActivityRuleCommand command) => _handler.HandleAsync(command, default);
 
     [Fact]
-    public async Task? Handle_GivenValidCommandAndExistingDailyTracker_ShouldAddActivityAndUpdate()
+    public async Task Handle_GivenValidCommandAndExistingDailyTracker_ShouldAddActivityAndUpdate()
     {
         //arrange
-        var command = new CreateActivityFromActivityRuleCommand(ActivityId.New(), ActivityRuleId.New(), UserId.New());
+        var command = new CreateActivityFromActivityRuleCommand(UserId.New(), ActivityId.New(), ActivityRuleId.New());
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         
         _clock
@@ -73,10 +73,10 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
     }
     
     [Fact]
-    public async Task? Handle_GivenValidCommandAndNotExistingDailyTracker_ShouldCreateActivityFromActivityRule()
+    public async Task Handle_GivenValidCommandAndNotExistingDailyTracker_ShouldCreateActivityFromActivityRule()
     {
         //arrange
-        var command = new CreateActivityFromActivityRuleCommand(ActivityId.New(), ActivityRuleId.New(), UserId.New());
+        var command = new CreateActivityFromActivityRuleCommand(UserId.New(), ActivityId.New(), ActivityRuleId.New());
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         
         _clock
@@ -106,7 +106,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .Returns(activityRuleDto);
 
         _repository
-            .GetDailyTrackerByDayAsync(today, command.UserId, default)
+            .GetDailyTrackerByDayAsync(today, command.UserId, CancellationToken.None)
             .ReturnsNull();
         
         //act
@@ -129,14 +129,14 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
         
         await _repository
             .Received(0)
-            .UpdateAsync(Arg.Any<DailyTracker>(), default);
+            .UpdateAsync(Arg.Any<DailyTracker>(), CancellationToken.None);
     }
     
     [Fact]
     public async Task Handle_GivenNotExistingActivityRule_ShouldThrowNotFoundException()
     {
         //arrange
-        var command = new CreateActivityFromActivityRuleCommand(ActivityId.New(), ActivityRuleId.New(), UserId.New());
+        var command = new CreateActivityFromActivityRuleCommand(UserId.New(), ActivityId.New(), ActivityRuleId.New());
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         
         _clock
@@ -144,7 +144,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .Returns(today);
 
         _repository
-            .GetDailyTrackerByDayAsync(today, command.UserId, default)
+            .GetDailyTrackerByDayAsync(today, command.UserId, CancellationToken.None)
             .ReturnsNull();
 
         _apiClient
@@ -162,7 +162,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
     public async Task Handle_GivenAlreadyExistedActivityForActivityRule_ShouldThrowAlreadyRegisteredException()
     {
         //arrange
-        var command = new CreateActivityFromActivityRuleCommand(ActivityId.New(), ActivityRuleId.New(), UserId.New());
+        var command = new CreateActivityFromActivityRuleCommand(UserId.New(), ActivityId.New(), ActivityRuleId.New());
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
         
         var activityRuleDto = new ActivityRuleDto()
@@ -196,7 +196,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .Returns(today);
         
         _repository
-            .GetDailyTrackerByDayAsync(today, command.UserId, default)
+            .GetDailyTrackerByDayAsync(today, command.UserId, CancellationToken.None)
             .Returns(dailyTracker);
         
         //act

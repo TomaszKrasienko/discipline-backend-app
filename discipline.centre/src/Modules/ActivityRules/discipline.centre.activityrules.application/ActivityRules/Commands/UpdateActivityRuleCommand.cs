@@ -8,7 +8,7 @@ using FluentValidation;
 
 namespace discipline.centre.activityrules.application.ActivityRules.Commands;
 
-public sealed record UpdateActivityRuleCommand(ActivityRuleId Id, UserId UserId, ActivityRuleDetailsSpecification Details, 
+public sealed record UpdateActivityRuleCommand(UserId UserId, ActivityRuleId Id, ActivityRuleDetailsSpecification Details, 
     string Mode, List<int>? SelectedDays) : ICommand;
 
 public sealed class UpdateActivityRuleCommandValidator : AbstractValidator<UpdateActivityRuleCommand>

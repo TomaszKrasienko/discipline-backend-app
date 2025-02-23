@@ -24,7 +24,7 @@ public partial class CreateActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingTitle_ShouldCreateActivityRule()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
+        var command = new CreateActivityRuleCommand(UserId.New(), ActivityRuleId.New(), 
             new ActivityRuleDetailsSpecification("test_title", "test_note"), Mode.CustomMode, [1], 
             [new StageSpecification("test_stage_title", 1)]);
         
@@ -49,7 +49,7 @@ public partial class CreateActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenNotExistingTitle_ShouldSendIntegrationEvent()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
+        var command = new CreateActivityRuleCommand(UserId.New(), ActivityRuleId.New(), 
             new ActivityRuleDetailsSpecification("test_title", "test_note"), Mode.CustomMode, [1], 
             [new StageSpecification("test_stage_title", 1)]);
         
@@ -72,7 +72,7 @@ public partial class CreateActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenAlreadyRegisteredRuleTitle_ShouldThrowAlreadyRegisteredExceptionWithCode()
     {
         //arrange
-        var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
+        var command = new CreateActivityRuleCommand(UserId.New(), ActivityRuleId.New(), 
             new ActivityRuleDetailsSpecification("Rule title", "Rule note"),
             Mode.EveryDayMode, null, null);
         _readWriteActivityRuleRepository
@@ -91,10 +91,10 @@ public partial class CreateActivityRuleCommandHandlerTests
     public async Task HandleAsync_GivenAlreadyRegisteredRuleTitle_ShouldNotAddAnyActivityRuleByRepository()
     {
         //arrange
-       var command = new CreateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), new ActivityRuleDetailsSpecification(
+       var command = new CreateActivityRuleCommand(UserId.New(), ActivityRuleId.New(), new ActivityRuleDetailsSpecification(
            "Rule title", "Rule note"), Mode.EveryDayMode, null, null);
        _readWriteActivityRuleRepository
-            .ExistsAsync(command.Details.Title, command.UserId, default)
+            .ExistsAsync(command.Details.Title, command.UserId, CancellationToken.None)
             .Returns(true);
 
         //act
@@ -103,7 +103,7 @@ public partial class CreateActivityRuleCommandHandlerTests
         //assert
         await _readWriteActivityRuleRepository
             .Received(0)
-            .AddAsync(Arg.Any<ActivityRule>(), default);
+            .AddAsync(Arg.Any<ActivityRule>(), CancellationToken.None);
     }
 
     [Theory]
@@ -112,7 +112,7 @@ public partial class CreateActivityRuleCommandHandlerTests
     {
         //arrange
         _readWriteActivityRuleRepository
-            .ExistsAsync(command.Details.Title, command.UserId, default)
+            .ExistsAsync(command.Details.Title, command.UserId, CancellationToken.None)
             .Returns(false);
         
         //act
@@ -121,7 +121,7 @@ public partial class CreateActivityRuleCommandHandlerTests
         //assert
         await _readWriteActivityRuleRepository
             .Received(0)
-            .AddAsync(Arg.Any<ActivityRule>(), default);
+            .AddAsync(Arg.Any<ActivityRule>(), CancellationToken.None);
     }
     
     #region arrange

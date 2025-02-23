@@ -6,8 +6,8 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.dailytrackers.application.DailyTrackers.Commands;
 
-public sealed record CheckActivityStageCommand(DailyTrackerId DailyTrackerId, ActivityId ActivityId, 
-    StageId StageId, UserId UserId) : ICommand;
+public sealed record CheckActivityStageCommand(UserId UserId, DailyTrackerId DailyTrackerId, ActivityId ActivityId, 
+    StageId StageId) : ICommand;
 
 internal sealed class CheckActivityStageCommandHandler(
     IWriteReadDailyTrackerRepository writeReadDailyTrackerRepository) : ICommandHandler<CheckActivityStageCommand>

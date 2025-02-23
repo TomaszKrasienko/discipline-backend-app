@@ -17,7 +17,7 @@ public sealed class CreateActivityDtoMapperExtensionsTests
         var userId = UserId.New();
         
         //act
-        var result = createActivityDto.MapAsCommand(activityId, userId);
+        var result = createActivityDto.MapAsCommand(userId, activityId);
         
         //assert
         result.Day.ShouldBe(createActivityDto.Day);
@@ -37,7 +37,7 @@ public sealed class CreateActivityDtoMapperExtensionsTests
         var userId = UserId.New();
         
         //act
-        var result = createActivityDto.MapAsCommand(activityId, userId);
+        var result = createActivityDto.MapAsCommand(userId, activityId);
         
         //assert
         result.Day.ShouldBe(createActivityDto.Day);

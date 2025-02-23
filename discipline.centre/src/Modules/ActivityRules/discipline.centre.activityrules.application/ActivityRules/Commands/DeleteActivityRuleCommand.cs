@@ -4,7 +4,7 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
 namespace discipline.centre.activityrules.application.ActivityRules.Commands;
 
-public sealed record DeleteActivityRuleCommand(ActivityRuleId ActivityRuleId, UserId UserId) : ICommand;
+public sealed record DeleteActivityRuleCommand(UserId UserId, ActivityRuleId ActivityRuleId) : ICommand;
 
 internal sealed class DeleteActivityRuleCommandHandler(
     IReadWriteActivityRuleRepository readWriteActivityRuleRepository) : ICommandHandler<DeleteActivityRuleCommand>
