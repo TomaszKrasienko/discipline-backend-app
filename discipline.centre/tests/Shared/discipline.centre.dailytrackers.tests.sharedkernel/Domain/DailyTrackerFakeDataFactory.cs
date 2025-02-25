@@ -21,7 +21,7 @@ public static class DailyTrackerFakeDataFactory
                 DailyTrackerId.New(), 
                 DateOnly.FromDateTime(DateTime.UtcNow),
                 UserId.New(), 
-                ActivityId.New(),
+                activity is null ? ActivityId.New() : activity.Id,
                 new ActivityDetailsSpecification(
                     activity is null ? x.Random.String(minLength:3, maxLength:30) : activity.Details.Title,
                     activity?.Details.Note),

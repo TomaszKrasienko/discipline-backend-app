@@ -45,10 +45,10 @@ public partial class UpdateActivityRuleCommandHandlerTests
     }
     
     [Fact]
-    public async Task HandleAsync_GivenNotExistingActivityRule_ShouldThrowNotFoundException()
+    public async Task GivenNotExistingActivityRule_WhenHandleAsync_ThenThrowNotFoundException()
     {
         //arrange
-        var command = new UpdateActivityRuleCommand(ActivityRuleId.New(), UserId.New(), 
+        var command = new UpdateActivityRuleCommand(UserId.New(), ActivityRuleId.New(), 
             new ActivityRuleDetailsSpecification("test_title", "test_note"), Mode.EveryDayMode, null);
 
         _readWriteActivityRuleRepository

@@ -9,18 +9,18 @@ namespace discipline.centre.activityrules.application.unit_tests.ActivityRules.D
 public sealed class UpdateActivityRuleDtoMapperExtensionsTests
 {
     [Fact]
-    public void MapAsCommand_GivenUpdateActivityRuleDtoWithActivityRuleId_ShouldReturnUpdateActivityRuleId()
+    public void GivenUpdateActivityRuleDtoWithActivityRuleId_WhenMapAsCommand_ShouldReturnUpdateActivityRuleCommand()
     {
         //arrange
         var dto = UpdateActivityRuleDtoFakeDataFactory.Get();
-        var id = ActivityRuleId.New();
+        var activityRuleId = ActivityRuleId.New();
         var userId = UserId.New();
         
         //act
-        var result = dto.MapAsCommand(id, userId);
+        var result = dto.MapAsCommand(userId, activityRuleId);
         
         //assert
-        result.Id.ShouldBe(id);
+        result.Id.ShouldBe(activityRuleId);
         result.UserId.ShouldBe(userId);
         result.Details.Title.ShouldBe(dto.Details.Title);
         result.Mode.ShouldBe(dto.Mode);

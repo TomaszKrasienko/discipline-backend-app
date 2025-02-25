@@ -17,7 +17,7 @@ public sealed class CreateActivityRuleDtoMapperExtensionsTests
         var userId = UserId.New();
         
         //act
-        var result = dto.MapAsCommand(activityRuleId, userId);
+        var result = dto.MapAsCommand(userId, activityRuleId);
         
         //assert
         result.Id.ShouldBe(activityRuleId);

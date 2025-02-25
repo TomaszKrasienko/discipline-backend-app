@@ -52,7 +52,7 @@ public sealed class MarkActivityAsCheckedCommandHandlerTests
         await Act(command);
         
         // Assert
-        activity.IsChecked.Value.ShouldBeTrue();
+        dailyTracker.Activities.Single().IsChecked.Value.ShouldBeTrue();
     }
     
     [Fact]
