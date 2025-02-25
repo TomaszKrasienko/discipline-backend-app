@@ -86,6 +86,33 @@ public sealed class DeleteActivityStageCommandHandlerTests
             .Received(0)
             .UpdateAsync(Arg.Any<DailyTracker>());
     }
+
+    [Fact]
+    public async Task GivenNotExistingActivity_WhenHandleAsync_ThenShouldNotUpdateDailyTracker()
+    {
+        
+        var dailyTrackerId = DailyTrackerId.New();
+        var userId = UserId.New();
+        var activityId = ActivityId.New();
+
+        var dailyTracker = DailyTracker.Create(dailyTrackerId, new DateOnly(2025, 1, 1),
+            userId, activityId, new ActivityDetailsSpecification("test_title", null), null,
+            [new StageSpecification("test_title", 1)]);
+
+        _writeReadDailyTrackerRepository
+            .GetDailyTrackerByIdAsync(dailyTrackerId, userId, CancellationToken.None)
+            .Returns(dailyTracker);
+
+        var command = new DeleteActivityStageCommand(userId, dailyTrackerId, ActivityId.New(), StageId.New());
+        
+        // Act
+        await Act(command);
+        
+        // Assert
+        await _writeReadDailyTrackerRepository
+            .Received(0)
+            .UpdateAsync(dailyTracker);
+    }
     
     #region Arrange
     private readonly IWriteReadDailyTrackerRepository _writeReadDailyTrackerRepository;

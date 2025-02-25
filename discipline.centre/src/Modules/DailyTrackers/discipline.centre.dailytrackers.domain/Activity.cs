@@ -116,13 +116,13 @@ public sealed class Activity : Entity<ActivityId, Ulid>
         return stage;
     }
 
-    internal void DeleteStage(StageId stageId)
+    internal bool DeleteStage(StageId stageId)
     {
         var stage = _stages?.SingleOrDefault(x => x.Id == stageId);
         
         if (stage is null)
         {
-            return;
+            return false;
         }
         
         _stages!.Remove(stage);
@@ -130,7 +130,7 @@ public sealed class Activity : Entity<ActivityId, Ulid>
         if (_stages.Count == 0)
         {
             _stages = null;
-            return;
+            return true;
         }
         
         var newStages = _stages!.OrderBy(x => x.Index.Value).ToList();
@@ -138,6 +138,8 @@ public sealed class Activity : Entity<ActivityId, Ulid>
         {
             _stages!.First(x => x.Id == newStages[i].Id).ChangeIndex(i + 1);
         }
+
+        return true;
     }
 
     private void CheckStageTitleUniqueness(string title)

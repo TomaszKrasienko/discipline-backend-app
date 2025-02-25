@@ -20,7 +20,11 @@ internal sealed class DeleteActivityStageCommandHandler(
             return;
         }
         
-        dailyTracker.DeleteActivityStage(command.ActivityId, command.StageId);
-        await writeReadDailyTrackerRepository.UpdateAsync(dailyTracker, cancellationToken);
+        var isDeleted = dailyTracker.DeleteActivityStage(command.ActivityId, command.StageId);
+
+        if (isDeleted)
+        {
+            await writeReadDailyTrackerRepository.UpdateAsync(dailyTracker, cancellationToken);
+        }
     }
 }
