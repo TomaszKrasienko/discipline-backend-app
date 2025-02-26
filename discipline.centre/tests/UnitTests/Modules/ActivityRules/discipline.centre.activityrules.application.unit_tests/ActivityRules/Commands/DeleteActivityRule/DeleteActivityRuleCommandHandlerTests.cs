@@ -56,9 +56,8 @@ public sealed class DeleteActivityRuleCommandHandlerTests
         await _eventProcessor
             .Received(1)
             .PublishAsync(Arg.Is<ActivityRuleDeleted>(arg
-                => arg.UserId == activityRule.UserId
-                   && arg.ActivityRuleId == activityRule.Id));
-
+                => arg.UserId == activityRule.UserId.Value
+                && arg.ActivityRuleId == activityRule.Id.Value));
     }
     
     [Fact]
@@ -78,6 +77,25 @@ public sealed class DeleteActivityRuleCommandHandlerTests
         await _readWriteActivityRuleRepository
             .Received(0)
             .DeleteAsync(Arg.Any<ActivityRule>(), CancellationToken.None);
+    }
+    
+    [Fact]
+    public async Task HandleAsync_GivenNotExistingActivityRule_ShouldNotAttemptsToSendActivityRuleRemovedEvent()
+    {
+        //arrange
+        var command = new DeleteActivityRuleCommand(UserId.New(), ActivityRuleId.New());
+
+        _readWriteActivityRuleRepository
+            .GetByIdAsync(command.ActivityRuleId, command.UserId)
+            .ReturnsNull();
+        
+        //act
+        await Act(command);
+        
+        //assert
+        await _eventProcessor
+            .Received(0)
+            .PublishAsync(Arg.Any<ActivityRuleDeleted>());
     }
     
     #region arrange
