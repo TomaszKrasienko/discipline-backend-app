@@ -14,4 +14,5 @@ public interface IModuleClient
     /// <typeparam name="TResult">The type of the response type</typeparam>
     /// <returns>Instance of <see cref="TResult"/> <c>null</c></returns>
     Task<TResult?> SendAsync<TResult>(string path, object request) where TResult : class;
+    Task PublishAsync(object @event);
 }

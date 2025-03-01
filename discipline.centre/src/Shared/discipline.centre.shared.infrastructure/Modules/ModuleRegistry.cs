@@ -6,6 +6,7 @@ namespace discipline.centre.shared.infrastructure.Modules;
 internal sealed class ModuleRegistry : IModuleRegistry
 {
     private readonly Dictionary<string, ModuleRequestRegistration> _requestRegistrations = [];
+    private readonly List<ModuleBroadcastRegistration> _broadcastRegistrations = [];
     
     public ModuleRequestRegistration? GetRequestRegistration(string path)
         => _requestRegistrations.TryGetValue(path, out var registration) ? registration : null;
@@ -24,5 +25,19 @@ internal sealed class ModuleRegistry : IModuleRegistry
         {
             throw new InvalidOperationException($"Failed to add Module Registration for {path}.");
         }
+    }
+
+    public IEnumerable<ModuleBroadcastRegistration> GetBroadcastRegistrations(string key)
+        => _broadcastRegistrations.Where(x => x.Key == key);
+
+    public void AddBroadcastingRegistration(Type requestType, Func<object, Task> action)
+    {
+        if (string.IsNullOrWhiteSpace(requestType.Namespace))
+        {
+            throw new InvalidOperationException("Missing namespace");
+        }
+
+        var registration = new ModuleBroadcastRegistration(requestType, action);
+        _broadcastRegistrations.Add(registration);
     }
 }

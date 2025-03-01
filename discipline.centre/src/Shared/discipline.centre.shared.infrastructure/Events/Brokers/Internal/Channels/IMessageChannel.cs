@@ -1,7 +1,7 @@
 using System.Threading.Channels;
 using discipline.centre.shared.abstractions.Events;
 
-namespace discipline.centre.shared.infrastructure.Events.Channels;
+namespace discipline.centre.shared.infrastructure.Events.Brokers.Internal.Channels;
 
 internal interface IMessageChannel
 {

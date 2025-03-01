@@ -6,8 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace discipline.centre.shared.infrastructure.Modules;
 
-internal sealed class ModuleClient(
-    IModuleRegistry moduleRegistry,
+internal sealed class ModuleClient(IModuleRegistry moduleRegistry,
     IModuleTypesTranslator moduleTypesTranslator,
     IOptions<OpenTelemetryOptions> openTelemetryOptions)
     : IModuleClient
@@ -43,7 +42,23 @@ internal sealed class ModuleClient(
             throw; 
         }
     }
-    
+
+    public async Task PublishAsync(object @event)
+    {
+        var key = @event.GetType().Name;
+        var registrations = moduleRegistry.GetBroadcastRegistrations(key);
+
+        var tasks = new List<Task>();
+
+        foreach (var registration in registrations)
+        {
+            var action = registration.Action;
+            var receiverMessage = moduleTypesTranslator.Translate(@event, registration.ReceiverType);
+            tasks.Add(registration.Action(receiverMessage));
+        }
+        await Task.WhenAll(tasks);
+    }
+
     private static string GetMethodName(string path)
         => path.Split('/').AsEnumerable().Last().ToUpper();
 }
