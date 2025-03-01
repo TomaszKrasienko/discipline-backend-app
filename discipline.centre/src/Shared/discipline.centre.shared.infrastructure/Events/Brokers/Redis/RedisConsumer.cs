@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
-namespace discipline.centre.shared.infrastructure.Events.Brokers;
+namespace discipline.centre.shared.infrastructure.Events.Brokers.Redis;
 
 internal sealed class RedisConsumer<TCommand>(
     ILogger<RedisConsumer<TCommand>> logger,

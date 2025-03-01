@@ -1,6 +1,6 @@
 using discipline.centre.dailytrackers.application.DailyTrackers.Commands;
 using discipline.centre.shared.abstractions.Modules;
-using discipline.centre.shared.infrastructure.Events.Brokers.Configuration;
+using discipline.centre.shared.infrastructure.Events.Brokers.Redis.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

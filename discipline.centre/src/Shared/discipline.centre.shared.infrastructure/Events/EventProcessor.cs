@@ -1,7 +1,7 @@
 using discipline.centre.shared.abstractions.Events;
 using discipline.centre.shared.abstractions.Serialization;
 using discipline.centre.shared.abstractions.SharedKernel;
-using discipline.centre.shared.infrastructure.Events.Brokers.Abstractions;
+using discipline.centre.shared.infrastructure.Events.Brokers.Redis.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace discipline.centre.shared.infrastructure.Events;

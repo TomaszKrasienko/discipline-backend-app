@@ -1,4 +1,4 @@
-namespace discipline.centre.shared.infrastructure.Events.Brokers.Abstractions;
+namespace discipline.centre.shared.infrastructure.Events.Brokers.Redis.Abstractions;
 
 /// <summary>
 /// Interface for communication by Redis

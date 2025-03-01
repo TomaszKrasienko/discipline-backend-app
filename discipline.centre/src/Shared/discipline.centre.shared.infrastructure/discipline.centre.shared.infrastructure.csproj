@@ -33,4 +33,8 @@
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.centre.integration_tests.shared"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Events\Brokers\Internal\" />
+    </ItemGroup>
 </Project>

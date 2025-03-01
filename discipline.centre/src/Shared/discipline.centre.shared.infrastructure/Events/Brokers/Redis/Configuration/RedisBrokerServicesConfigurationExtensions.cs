@@ -1,6 +1,7 @@
 using discipline.centre.shared.infrastructure.Events.Brokers;
-using discipline.centre.shared.infrastructure.Events.Brokers.Abstractions;
-using discipline.centre.shared.infrastructure.Events.Brokers.Configuration;
+using discipline.centre.shared.infrastructure.Events.Brokers.Redis;
+using discipline.centre.shared.infrastructure.Events.Brokers.Redis.Abstractions;
+using discipline.centre.shared.infrastructure.Events.Brokers.Redis.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;

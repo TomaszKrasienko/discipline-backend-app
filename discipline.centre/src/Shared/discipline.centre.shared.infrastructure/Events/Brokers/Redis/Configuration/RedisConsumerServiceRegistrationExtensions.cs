@@ -1,7 +1,7 @@
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace discipline.centre.shared.infrastructure.Events.Brokers.Configuration;
+namespace discipline.centre.shared.infrastructure.Events.Brokers.Redis.Configuration;
 
 public static class RedisConsumerServiceRegistrationExtensions
 {

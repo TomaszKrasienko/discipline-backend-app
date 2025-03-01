@@ -1,8 +1,7 @@
 using discipline.centre.shared.abstractions.Events;
 using discipline.centre.shared.infrastructure.Events;
-using discipline.centre.shared.infrastructure.Events.Brokers.Configuration;
 using Microsoft.Extensions.Configuration;
-using RedisBrokerOptions = discipline.centre.shared.infrastructure.Events.Brokers.Configuration.RedisBrokerOptions;
+using RedisBrokerOptions = discipline.centre.shared.infrastructure.Events.Brokers.Redis.Configuration.RedisBrokerOptions;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
