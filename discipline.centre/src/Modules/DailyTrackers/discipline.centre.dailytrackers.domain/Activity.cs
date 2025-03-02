@@ -170,4 +170,7 @@ public sealed class Activity : Entity<ActivityId, Ulid>
         
         MarkAsChecked();
     }
+
+    public void ClearParentActivityRuleId()
+        => ParentActivityRuleId = null;
 }

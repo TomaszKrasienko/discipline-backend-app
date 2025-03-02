@@ -24,4 +24,6 @@ public interface IReadDailyTrackerRepository
     /// <param name="cancellationToken">Token for monitoring cancellation requests.</param>
     /// <returns>The instance of <see cref="DailyTracker"/> if exists, otherwise null</returns>
     Task<DailyTracker?> GetDailyTrackerByIdAsync(DailyTrackerId id, UserId userId, CancellationToken cancellationToken = default);
+    
+    Task<List<DailyTracker>> GetDailyTrackersByParentActivityRuleId(ActivityRuleId activityRuleId, UserId userId, CancellationToken cancellationToken = default);
 }

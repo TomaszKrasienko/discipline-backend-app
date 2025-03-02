@@ -86,4 +86,9 @@ public sealed class DailyTracker : AggregateRoot<DailyTrackerId, Ulid>
         
         return activity.DeleteStage(stageId);
     }
+
+    public void ClearParentActivityRuleIdIs(ActivityRuleId parentActivityRuleId)
+    {
+        
+    }
 }
