@@ -1,5 +1,5 @@
-# @host_address = http://localhost:5039
-@host_address = http://localhost:7001
+@host_address = http://localhost:5039
+# @host_address = http://localhost:7001
 
 ###
 GET {{host_address}}/
@@ -10,7 +10,7 @@ GET {{host_address}}/
 
 ###
 # @name sign_up
-POST {{host_address}}/users-module/users
+POST {{host_address}}/api/users-module/users
 Content-Type: application/json
 
 {  
@@ -34,24 +34,19 @@ Content-Type: application/json
 }
 
 ###
-GET {{host_address}}/users-module/users/{{user_id}}
+GET {{host_address}}/api/users-module/users/{{user_id}}
 Authorization: bearer {{token}}
 
 ###
 @token = {{sign_in.response.body.$.token}}
 
 ###
-POST {{host_address}}/users-module/users/subscription-order
+POST {{host_address}}/api/users-module/users/subscription-order
 Authorization: bearer {{token}}
 Content-Type: application/json
 
 {
-  "userId": {
-    "value": "01JDC7WJ7XTCR7YEEX81RJMSJE"
-  },
-  "subscriptionId": {
-    "value": "01JDEMJMBP7DMM3GMNWCE62FS2"
-  }
+  "subscriptionId": "01JDEMJMBP7DMM3GMNWCE62FS2"
 }
 
 ###
@@ -71,6 +66,10 @@ Content-Type: application/json
 
 ###
 @activity_rule_id = {{create_activity_rule.response.headers.x-resource-id}}
+
+###
+DELETE {{host_address}}/api/activity-rules-module/activity-rules/{{activity_rule_id}}
+Authorization: Bearer {{token}}
 
 ###
 GET {{host_address}}/api/activity-rules-module/activity-rules/{{activity_rule_id}}

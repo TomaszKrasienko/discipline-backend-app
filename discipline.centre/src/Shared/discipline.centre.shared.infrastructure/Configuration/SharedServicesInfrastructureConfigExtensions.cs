@@ -21,7 +21,7 @@ public static class SharedServicesInfrastructureConfigExtensions
             .AddCorsPolicy()
             .AddCqrs(assemblies)
             .AddDal(configuration)
-            .AddEvents(configuration)
+            .AddEvents(configuration, assemblies)
             .AddClock()
             .AddJwtAuth(configuration)
             .AddSerializer()
@@ -30,7 +30,7 @@ public static class SharedServicesInfrastructureConfigExtensions
             .AddValidation(assemblies)
             .AddIdentityContext()
             .AddConstraints()
-            .AddModule()
+            .AddModule(assemblies) 
             .AddLogging(configuration)
             .AddConverters(assemblies);
 
