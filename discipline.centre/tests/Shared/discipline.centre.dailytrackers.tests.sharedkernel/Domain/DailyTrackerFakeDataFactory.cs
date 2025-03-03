@@ -7,7 +7,7 @@ namespace discipline.centre.dailytrackers.tests.sharedkernel.Domain;
 
 public static class DailyTrackerFakeDataFactory
 {
-    public static DailyTracker Get(Activity? activity = null)
+    public static DailyTracker Get(Activity? activity = null, UserId? userId = null)    
     {
         List<StageSpecification>? stageSpecifications = null;
         if (activity?.Stages != null)
@@ -20,10 +20,10 @@ public static class DailyTrackerFakeDataFactory
             .CustomInstantiator(x => DailyTracker.Create(
                 DailyTrackerId.New(), 
                 DateOnly.FromDateTime(DateTime.UtcNow),
-                UserId.New(), 
+                userId ?? UserId.New(), 
                 activity is null ? ActivityId.New() : activity.Id,
                 new ActivityDetailsSpecification(
-                    activity is null ? x.Random.String(minLength:3, maxLength:30) : activity.Details.Title,
+                    activity is null ? x.Random.String(minLength:3, maxLength:30, minChar: 'a', maxChar:'z' ) : activity.Details.Title,
                     activity?.Details.Note),
                 activity?.ParentActivityRuleId,
                 stageSpecifications

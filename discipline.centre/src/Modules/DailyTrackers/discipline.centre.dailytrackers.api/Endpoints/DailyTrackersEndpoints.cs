@@ -10,6 +10,7 @@ using discipline.centre.shared.infrastructure.IdentityContext.Abstractions;
 using discipline.centre.shared.infrastructure.ResourceHeader;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+// ReSharper disable All
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.AspNetCore.Builder;
@@ -21,7 +22,6 @@ internal static class DailyTrackersEndpoints
 
     internal static WebApplication MapDailyTrackersEndpoints(this WebApplication app)
     {
-        // ReSharper disable once RouteTemplates.RouteParameterConstraintNotResolved
         app.MapPost($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/activities/{{activityRuleId:ulid}}",
             async (Ulid activityRuleId, CancellationToken cancellationToken, IIdentityContext identityContext, 
                 ICqrsDispatcher dispatcher, IHttpContextAccessor contextAccessor) =>
@@ -68,7 +68,6 @@ internal static class DailyTrackersEndpoints
             .RequireAuthorization()
             .RequireAuthorization(UserStatePolicy.Name);
         
-        // ReSharper disable once RouteTemplates.RouteParameterConstraintNotResolved
         app.MapGet($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/activities/{{activityId:ulid}}", async (
             Ulid activityId, CancellationToken cancellationToken, IIdentityContext identityContext, ICqrsDispatcher dispatcher) =>
             {
@@ -89,7 +88,6 @@ internal static class DailyTrackersEndpoints
             .RequireAuthorization()
             .RequireAuthorization(UserStatePolicy.Name);
         
-        // ReSharper disable once RouteTemplates.RouteParameterConstraintNotResolved
         app.MapGet($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/{{day:dateonly}}", async (
             DateOnly day, CancellationToken cancellationToken, IIdentityContext identityContext,
             ICqrsDispatcher dispatcher) =>
@@ -130,7 +128,6 @@ internal static class DailyTrackersEndpoints
             .RequireAuthorization()
             .RequireAuthorization(UserStatePolicy.Name);
         
-        // ReSharper disable once RouteTemplates.RouteParameterConstraintNotResolved
         app.MapPatch($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/{{dailyTrackerId:ulid}}/activities/{{activityId:ulid}}/stages/{{stageId:ulid}}/check", 
             async (Ulid dailyTrackerId, Ulid activityId, Ulid stageId, CancellationToken cancellationToken, IIdentityContext identityContext, ICqrsDispatcher dispatcher) =>
             {
@@ -150,6 +147,28 @@ internal static class DailyTrackersEndpoints
             .WithName("MarkActivityStageAsChecked")
             .WithTags(DailyTrackersTag)
             .WithDescription("Changes checked flag at activity stage")
+            .RequireAuthorization()
+            .RequireAuthorization(UserStatePolicy.Name);
+        
+        app.MapDelete($"$api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/{{dailyTrackerId:ulid}}/activities/{{activityId:ulid}}",
+                async (Ulid dailyTrackerId, Ulid activityId, CancellationToken cancellationToken, IIdentityContext identityContext, ICqrsDispatcher dispatcher) =>
+                {
+                    var stronglyDailyTrackerId = new DailyTrackerId(dailyTrackerId);
+                    var stronglyActivityId = new ActivityId(activityId);
+                    var userId = identityContext.GetUser();
+                
+                    await dispatcher.HandleAsync(new DeleteActivityCommand(userId, stronglyDailyTrackerId, stronglyActivityId), cancellationToken);
+                
+                    return Results.NoContent();
+                })            
+            .Produces(StatusCodes.Status204NoContent, typeof(void))
+            .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
+            .Produces(StatusCodes.Status401Unauthorized, typeof(void))
+            .Produces(StatusCodes.Status403Forbidden, typeof(void))
+            .Produces(StatusCodes.Status404NotFound, typeof(void))
+            .WithName("DeleteActivity")
+            .WithTags(DailyTrackersTag)
+            .WithDescription("Removes activity")
             .RequireAuthorization()
             .RequireAuthorization(UserStatePolicy.Name);
         

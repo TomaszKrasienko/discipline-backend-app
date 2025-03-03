@@ -12,8 +12,8 @@ internal sealed class DeleteActivityStageCommandHandler(
 {
     public async Task HandleAsync(DeleteActivityStageCommand command, CancellationToken cancellationToken = default)
     {
-        var dailyTracker = await writeReadDailyTrackerRepository.GetDailyTrackerByIdAsync(command.DailyTrackerId, 
-            command.UserId, cancellationToken);
+        var dailyTracker = await writeReadDailyTrackerRepository.GetDailyTrackerByIdAsync(command.UserId,
+            command.DailyTrackerId, cancellationToken);
 
         if (dailyTracker is null)
         {

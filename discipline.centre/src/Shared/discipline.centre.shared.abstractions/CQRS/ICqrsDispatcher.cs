@@ -5,8 +5,8 @@ namespace discipline.centre.shared.abstractions.CQRS;
 
 public interface ICqrsDispatcher
 {
-    Task HandleAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default) 
+    Task HandleAsync<TCommand>(TCommand command, CancellationToken cancellationToken) 
         where TCommand : class, ICommand;
     
-    Task<TResult> SendAsync<TResult>(IQuery<TResult> query, CancellationToken cancellationToken = default);
+    Task<TResult> SendAsync<TResult>(IQuery<TResult> query, CancellationToken cancellationToken);
 }

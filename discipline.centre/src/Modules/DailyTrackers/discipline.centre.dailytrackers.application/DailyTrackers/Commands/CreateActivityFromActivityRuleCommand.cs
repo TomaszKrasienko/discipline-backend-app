@@ -27,7 +27,7 @@ internal sealed class CreateActivityFromActivityRuleCommandHandler(
         }   
 
         var today = clock.DateNow();
-        var dailyTracker = await repository.GetDailyTrackerByDayAsync(today, command.UserId, cancellationToken);
+        var dailyTracker = await repository.GetDailyTrackerByDayAsync(command.UserId, today, cancellationToken);
 
         var stages = MapStages(activityRule);
         

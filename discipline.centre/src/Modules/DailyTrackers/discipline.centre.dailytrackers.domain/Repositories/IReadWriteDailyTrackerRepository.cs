@@ -10,14 +10,15 @@ public interface IReadWriteDailyTrackerRepository : IReadDailyTrackerRepository
     /// </summary>
     /// <param name="dailyTracker">The Daily tracker to be added.</param>
     /// <param name="cancellationToken">Token for monitoring cancellation requests.</param>
-    Task AddAsync(DailyTracker dailyTracker, CancellationToken cancellationToken = default);
+    Task AddAsync(DailyTracker dailyTracker, CancellationToken cancellationToken);
     
     /// <summary>
     /// Asynchronously updates an existing <see cref="DailyTracker"/> in databse
     /// </summary>
     /// <param name="dailyTracker">The Daily tracker to be updated.</param>
     /// <param name="cancellationToken">Token for monitoring cancellation requests.</param>
-    Task UpdateAsync(DailyTracker dailyTracker, CancellationToken cancellationToken = default);
+    Task UpdateAsync(DailyTracker dailyTracker, CancellationToken cancellationToken);
 
-    Task UpdateRangeAsync(IEnumerable<DailyTracker> dailyTrackers, CancellationToken cancellationToken = default);
+    Task UpdateRangeAsync(IEnumerable<DailyTracker> dailyTrackers, CancellationToken cancellationToken);
+    Task DeleteAsync(DailyTracker dailyTracker, CancellationToken cancellationToken);
 }

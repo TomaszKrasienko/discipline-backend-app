@@ -14,7 +14,7 @@ internal sealed class MarkActivityAsCheckedCommandHandler(
 {
     public async Task HandleAsync(MarkActivityAsCheckedCommand command, CancellationToken cancellationToken = default)
     {
-        var dailyTracker = await writeReadDailyTrackerRepository.GetDailyTrackerByIdAsync(command.DailyTrackerId, command.UserId,
+        var dailyTracker = await writeReadDailyTrackerRepository.GetDailyTrackerByIdAsync(command.UserId, command.DailyTrackerId, 
             cancellationToken);
 
         if (dailyTracker is null)

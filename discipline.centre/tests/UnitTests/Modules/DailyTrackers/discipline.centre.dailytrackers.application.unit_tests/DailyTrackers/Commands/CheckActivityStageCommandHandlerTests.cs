@@ -25,7 +25,7 @@ public sealed class CheckActivityStageCommandHandlerTests
         var command = new CheckActivityStageCommand(dailyTracker.UserId, dailyTracker.Id, activity.Id, stage.Id);
         
         _writeReadDailyTrackerRepository
-            .GetDailyTrackerByIdAsync(command.DailyTrackerId, command.UserId, CancellationToken.None)
+            .GetDailyTrackerByIdAsync(command.UserId, command.DailyTrackerId, CancellationToken.None)
             .Returns(dailyTracker);
         
         //act

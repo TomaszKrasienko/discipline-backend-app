@@ -13,7 +13,7 @@ internal sealed class ActivityRuleDeletedHandler(IReadWriteDailyTrackerRepositor
         var userId = new UserId(@event.UserId);
 
         var dailyTrackers = await readWriteDailyTrackerRepository
-            .GetDailyTrackersByParentActivityRuleId(activityRuleId, userId, cancellationToken);
+            .GetDailyTrackersByParentActivityRuleId(userId, activityRuleId, cancellationToken);
 
         foreach (var dailyTracker in dailyTrackers)
         {

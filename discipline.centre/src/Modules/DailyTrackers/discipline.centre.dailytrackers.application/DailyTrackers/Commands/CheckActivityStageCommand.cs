@@ -15,7 +15,7 @@ internal sealed class CheckActivityStageCommandHandler(
     public async Task HandleAsync(CheckActivityStageCommand command, CancellationToken cancellationToken = default)
     {
         var dailyTracker = await writeReadDailyTrackerRepository
-            .GetDailyTrackerByIdAsync(command.DailyTrackerId, command.UserId, cancellationToken);
+            .GetDailyTrackerByIdAsync(command.UserId, command.DailyTrackerId, cancellationToken);
 
         if (dailyTracker is null)
         {

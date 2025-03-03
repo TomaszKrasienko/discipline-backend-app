@@ -27,7 +27,7 @@ public sealed class MarkActivityStageAsCheckedCommandHandlerTests
         var command = new MarkActivityStageAsCheckedCommand(dailyTracker.UserId, dailyTracker.Id, activity.Id, stage.Id);
 
         _writeReadDailyTrackerRepository
-            .GetDailyTrackerByIdAsync(command.DailyTrackerId, command.UserId, CancellationToken.None)
+            .GetDailyTrackerByIdAsync(command.UserId, command.DailyTrackerId, CancellationToken.None)
             .Returns(dailyTracker);
         
         //act
@@ -50,7 +50,7 @@ public sealed class MarkActivityStageAsCheckedCommandHandlerTests
         var command = new MarkActivityStageAsCheckedCommand(dailyTracker.UserId, dailyTracker.Id, activity.Id, stage.Id);
         
         _writeReadDailyTrackerRepository
-            .GetDailyTrackerByIdAsync(command.DailyTrackerId, command.UserId, CancellationToken.None)
+            .GetDailyTrackerByIdAsync(command.UserId, command.DailyTrackerId, CancellationToken.None)
             .Returns(dailyTracker);
         
         //act

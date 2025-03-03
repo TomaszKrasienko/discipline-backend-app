@@ -18,6 +18,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\src\Modules\DailyTrackers\discipline.centre.dailytrackers.application\discipline.centre.dailytrackers.application.csproj" />
       <ProjectReference Include="..\..\Shared\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj" />
+      <ProjectReference Include="..\..\Shared\discipline.centre.dailytrackers.tests.sharedkernel\discipline.centre.dailytrackers.tests.sharedkernel.csproj" />
       <ProjectReference Include="..\..\Shared\discipline.centre.integration_tests.shared\discipline.centre.integration_tests.shared.csproj" />
     </ItemGroup>
 

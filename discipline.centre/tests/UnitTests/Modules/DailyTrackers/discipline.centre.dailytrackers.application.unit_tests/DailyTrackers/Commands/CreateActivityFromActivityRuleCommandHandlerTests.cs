@@ -49,7 +49,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             new ActivityDetailsSpecification("test_title", null), null, null);
 
         _repository
-            .GetDailyTrackerByDayAsync(today, command.UserId, default)
+            .GetDailyTrackerByDayAsync(command.UserId, today, CancellationToken.None)
             .Returns(dailyTracker);
         
         //act
@@ -58,7 +58,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
         //assert
         await _repository
             .Received(1)
-            .UpdateAsync(dailyTracker);
+            .UpdateAsync(dailyTracker, CancellationToken.None);
 
         dailyTracker
             .Activities.Any(x
@@ -69,7 +69,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
         
         await _repository
             .Received(0)
-            .AddAsync(Arg.Any<DailyTracker>(), default);
+            .AddAsync(Arg.Any<DailyTracker>(), CancellationToken.None);
     }
     
     [Fact]
@@ -106,7 +106,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .Returns(activityRuleDto);
 
         _repository
-            .GetDailyTrackerByDayAsync(today, command.UserId, CancellationToken.None)
+            .GetDailyTrackerByDayAsync(command.UserId, today, CancellationToken.None)
             .ReturnsNull();
         
         //act
@@ -125,7 +125,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
                        && x.ParentActivityRuleId == activityRuleDto.ActivityRuleId
                        && x.Stages!.First().Title == activityRuleDto.Stages[0].Title
                        && x.Stages!.First().Index == activityRuleDto.Stages[0].Index)
-            ));
+            ), CancellationToken.None);
         
         await _repository
             .Received(0)
@@ -144,7 +144,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .Returns(today);
 
         _repository
-            .GetDailyTrackerByDayAsync(today, command.UserId, CancellationToken.None)
+            .GetDailyTrackerByDayAsync(command.UserId, today, CancellationToken.None)
             .ReturnsNull();
 
         _apiClient
@@ -196,7 +196,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .Returns(today);
         
         _repository
-            .GetDailyTrackerByDayAsync(today, command.UserId, CancellationToken.None)
+            .GetDailyTrackerByDayAsync(command.UserId, today, CancellationToken.None)
             .Returns(dailyTracker);
         
         //act

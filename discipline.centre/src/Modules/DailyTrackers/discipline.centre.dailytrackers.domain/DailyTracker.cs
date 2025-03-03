@@ -61,6 +61,19 @@ public sealed class DailyTracker : AggregateRoot<DailyTrackerId, Ulid>
         
         activity.MarkAsChecked();
     }
+
+    public bool DeleteActivity(ActivityId activityId)
+    {
+        var activity = _activities.SingleOrDefault(x => x.Id == activityId);
+
+        if (activity is null)
+        {
+            return false;
+        }
+        
+        _activities.Remove(activity);
+        return true;
+    }
     
     public void MarkActivityStageAsChecked(ActivityId activityId, StageId stageId)
     {

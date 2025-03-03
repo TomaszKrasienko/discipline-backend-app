@@ -28,7 +28,7 @@ public sealed class ActivityRuleDeletedHandlerTests
             ActivityId.New(), new ActivityDetailsSpecification("test_title", null), activityRuleId, []);
         
         _readWriteDailyTrackerRepository
-            .GetDailyTrackersByParentActivityRuleId(activityRuleId, userId, CancellationToken.None)
+            .GetDailyTrackersByParentActivityRuleId(userId, activityRuleId, CancellationToken.None)
             .Returns([dailyTracker1, dailyTracker2]);
         
         // Act
@@ -56,7 +56,7 @@ public sealed class ActivityRuleDeletedHandlerTests
             ActivityId.New(), new ActivityDetailsSpecification("test_title", null), activityRuleId, []);
         
         _readWriteDailyTrackerRepository
-            .GetDailyTrackersByParentActivityRuleId(activityRuleId, userId, CancellationToken.None)
+            .GetDailyTrackersByParentActivityRuleId(userId, activityRuleId, CancellationToken.None)
             .Returns([dailyTracker1, dailyTracker2]);
         
         // Act

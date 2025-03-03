@@ -15,7 +15,7 @@ namespace discipline.centre.dailytrackers.application.unit_tests.DailyTrackers.C
 
 public sealed class CreateActivityCommandHandlerTests
 {
-    private Task Act(CreateActivityCommand command) => _handler.HandleAsync(command);
+    private Task Act(CreateActivityCommand command) => _handler.HandleAsync(command, CancellationToken.None);
 
     [Fact]
     public async Task HandleAsync_GivenNotExistingActivityTitleAndNotExistingDailyTracker_ShouldAddDailyTracker()
@@ -26,7 +26,7 @@ public sealed class CreateActivityCommandHandlerTests
         null);
 
         _writeReadDailyTrackerRepository
-            .GetDailyTrackerByDayAsync(command.Day, command.UserId, default)
+            .GetDailyTrackerByDayAsync(command.UserId, command.Day, CancellationToken.None)
             .ReturnsNull();
 
         //act
@@ -42,7 +42,7 @@ public sealed class CreateActivityCommandHandlerTests
                    && arg.Activities.Any(x
                        => x.Id == command.ActivityId 
                        && x.Details.Title == command.Details.Title)
-                   ), default);
+                   ), CancellationToken.None);
     }
     
     [Fact]
@@ -58,7 +58,7 @@ public sealed class CreateActivityCommandHandlerTests
             null);
         
         _writeReadDailyTrackerRepository
-            .GetDailyTrackerByDayAsync(command.Day, dailyTracker.UserId)
+            .GetDailyTrackerByDayAsync( dailyTracker.UserId, command.Day, CancellationToken.None)
             .Returns(dailyTracker);
         
         //act
@@ -82,7 +82,7 @@ public sealed class CreateActivityCommandHandlerTests
             null);
         
         _writeReadDailyTrackerRepository
-            .GetDailyTrackerByDayAsync(command.Day, dailyTracker.UserId)
+            .GetDailyTrackerByDayAsync(dailyTracker.UserId, command.Day, CancellationToken.None)
             .Returns(dailyTracker);
         
         //act
@@ -91,7 +91,7 @@ public sealed class CreateActivityCommandHandlerTests
         //assert
         await _writeReadDailyTrackerRepository
             .Received(1)
-            .UpdateAsync(dailyTracker, default);
+            .UpdateAsync(dailyTracker, CancellationToken.None);
     }
     
     [Fact]
@@ -107,7 +107,7 @@ public sealed class CreateActivityCommandHandlerTests
             null);
         
         _writeReadDailyTrackerRepository
-            .GetDailyTrackerByDayAsync(command.Day, dailyTracker.UserId)
+            .GetDailyTrackerByDayAsync(dailyTracker.UserId, command.Day, CancellationToken.None)
             .Returns(dailyTracker);
         
         //act

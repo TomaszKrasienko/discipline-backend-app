@@ -9,22 +9,24 @@ namespace discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Repos
 internal sealed class MongoDailyTrackerRepository(
     DailyTrackersMongoContext context) : IReadWriteDailyTrackerRepository
 {
-    public async Task<DailyTracker?> GetDailyTrackerByDayAsync(DateOnly day, UserId userId,
+    public async Task<DailyTracker?> GetDailyTrackerByDayAsync(UserId userId, 
+        DateOnly day,
         CancellationToken cancellationToken = default)
         => (await context.GetCollection<DailyTrackerDocument>().Find(x
                 => x.Day == day
                 && x.UserId == userId.ToString())
             .SingleOrDefaultAsync(cancellationToken))?.AsEntity();
 
-    public async Task<DailyTracker?> GetDailyTrackerByIdAsync(DailyTrackerId id, UserId userId,
+    public async Task<DailyTracker?> GetDailyTrackerByIdAsync(UserId userId, 
+        DailyTrackerId id,
         CancellationToken cancellationToken = default)
         => (await context.GetCollection<DailyTrackerDocument>().Find(x
                 => x.DailyTrackerId == id.ToString() 
                 && x.UserId == userId.ToString())
             .SingleOrDefaultAsync(cancellationToken))?.AsEntity();
 
-    public async Task<List<DailyTracker>> GetDailyTrackersByParentActivityRuleId(ActivityRuleId activityRuleId,
-        UserId userId,
+    public async Task<List<DailyTracker>> GetDailyTrackersByParentActivityRuleId(UserId userId, 
+        ActivityRuleId activityRuleId,
         CancellationToken cancellationToken = default)
         => (await context.GetCollection<DailyTrackerDocument>()
                 .Find(dt => dt.Activities.Any(activity
@@ -54,4 +56,8 @@ internal sealed class MongoDailyTrackerRepository(
         
         await Task.WhenAll(tasks);
     }
+
+    public Task DeleteAsync(DailyTracker dailyTracker, CancellationToken cancellationToken)
+        => context.GetCollection<DailyTrackerDocument>().DeleteOneAsync(x => x.DailyTrackerId == dailyTracker.Id.ToString(),
+            cancellationToken);
 }

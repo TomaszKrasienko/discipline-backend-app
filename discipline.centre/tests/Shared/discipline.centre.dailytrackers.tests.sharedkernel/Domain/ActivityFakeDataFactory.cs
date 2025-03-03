@@ -19,7 +19,7 @@ public static class ActivityFakeDataFactory
         var faker = new Faker<Activity>()
             .CustomInstantiator(x => Activity.Create(
                 ActivityId.New(),
-                new ActivityDetailsSpecification(x.Random.String(minLength: 3, maxLength: 30), 
+                new ActivityDetailsSpecification(x.Random.String(minLength: 3, maxLength: 30, minChar:'a', maxChar:'z'), 
                     withNote ? x.Lorem.Word() : null),
                 withParent ? ActivityRuleId.New() : null,
                 stageSpecifications));

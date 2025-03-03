@@ -15,7 +15,7 @@ internal sealed class CreateActivityCommandHandler(
     public async Task HandleAsync(CreateActivityCommand command, CancellationToken cancellationToken = default)
     {
         var dailyTracker = await writeReadDailyTrackerRepository
-            .GetDailyTrackerByDayAsync(command.Day, command.UserId, cancellationToken);
+            .GetDailyTrackerByDayAsync(command.UserId, command.Day, cancellationToken);
 
         if (dailyTracker is null)
         {

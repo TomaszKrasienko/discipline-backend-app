@@ -21,7 +21,7 @@ public sealed class MarkActivityAsCheckedCommandHandlerTests
         var dailyTracker = DailyTrackerFakeDataFactory.Get(activity);
 
         _writeReadDailyTrackerRepository
-            .GetDailyTrackerByIdAsync(dailyTracker.Id, dailyTracker.UserId, CancellationToken.None)
+            .GetDailyTrackerByIdAsync(dailyTracker.UserId, dailyTracker.Id, CancellationToken.None)
             .Returns(dailyTracker);
 
         var command = new MarkActivityAsCheckedCommand(dailyTracker.UserId, dailyTracker.Id, activity.Id);
@@ -43,7 +43,7 @@ public sealed class MarkActivityAsCheckedCommandHandlerTests
         var dailyTracker = DailyTrackerFakeDataFactory.Get(activity);
 
         _writeReadDailyTrackerRepository
-            .GetDailyTrackerByIdAsync(dailyTracker.Id, dailyTracker.UserId, CancellationToken.None)
+            .GetDailyTrackerByIdAsync(dailyTracker.UserId, dailyTracker.Id, CancellationToken.None)
             .Returns(dailyTracker);
 
         var command = new MarkActivityAsCheckedCommand(dailyTracker.UserId, dailyTracker.Id, activity.Id);
