@@ -4,7 +4,7 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using Shouldly;
 using Xunit;
 
-namespace discipline.centre.dailytrackers.application.unit_tests.Mappers;
+namespace discipline.centre.dailytrackers.application.unit_tests.DailyTrackers.Mappers;
 
 public sealed class CreateActivityDtoMapperExtensionsTests
 {    

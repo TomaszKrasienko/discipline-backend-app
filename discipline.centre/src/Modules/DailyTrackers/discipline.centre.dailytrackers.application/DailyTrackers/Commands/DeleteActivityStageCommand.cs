@@ -8,7 +8,7 @@ public sealed record DeleteActivityStageCommand(UserId UserId, DailyTrackerId Da
     StageId StageId) : ICommand;
     
 internal sealed class DeleteActivityStageCommandHandler(
-    IWriteReadDailyTrackerRepository writeReadDailyTrackerRepository) : ICommandHandler<DeleteActivityStageCommand>
+    IReadWriteDailyTrackerRepository writeReadDailyTrackerRepository) : ICommandHandler<DeleteActivityStageCommand>
 {
     public async Task HandleAsync(DeleteActivityStageCommand command, CancellationToken cancellationToken = default)
     {

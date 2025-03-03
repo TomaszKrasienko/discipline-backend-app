@@ -11,5 +11,5 @@ internal static class DalServicesConfigurationExtensions
         => services
             .AddMongoContext<DailyTrackersMongoContext>()
             .AddScoped<IReadDailyTrackerRepository, MongoDailyTrackerRepository>()
-            .AddScoped<IWriteReadDailyTrackerRepository, MongoDailyTrackerRepository>();
+            .AddScoped<IReadWriteDailyTrackerRepository, MongoDailyTrackerRepository>();
 }

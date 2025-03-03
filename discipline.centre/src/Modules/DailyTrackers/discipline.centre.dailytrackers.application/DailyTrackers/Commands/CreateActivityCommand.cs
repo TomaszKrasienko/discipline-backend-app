@@ -10,7 +10,7 @@ public sealed record CreateActivityCommand(UserId UserId, ActivityId ActivityId,
     List<StageSpecification>? Stages) : ICommand;
 
 internal sealed class CreateActivityCommandHandler(
-    IWriteReadDailyTrackerRepository writeReadDailyTrackerRepository) : ICommandHandler<CreateActivityCommand>
+    IReadWriteDailyTrackerRepository writeReadDailyTrackerRepository) : ICommandHandler<CreateActivityCommand>
 {
     public async Task HandleAsync(CreateActivityCommand command, CancellationToken cancellationToken = default)
     {

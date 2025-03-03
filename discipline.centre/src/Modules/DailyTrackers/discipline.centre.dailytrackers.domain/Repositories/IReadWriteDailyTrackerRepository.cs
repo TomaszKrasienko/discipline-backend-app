@@ -3,7 +3,7 @@ namespace discipline.centre.dailytrackers.domain.Repositories;
 /// <summary>
 /// The <see cref="DailyTracker"/> interface to perform database <c>write</c> and <c>read</c> operations
 /// </summary>
-public interface IWriteReadDailyTrackerRepository : IReadDailyTrackerRepository
+public interface IReadWriteDailyTrackerRepository : IReadDailyTrackerRepository
 {
     /// <summary>
     /// Asynchronously adds a new <see cref="DailyTracker"/> to database
@@ -18,4 +18,6 @@ public interface IWriteReadDailyTrackerRepository : IReadDailyTrackerRepository
     /// <param name="dailyTracker">The Daily tracker to be updated.</param>
     /// <param name="cancellationToken">Token for monitoring cancellation requests.</param>
     Task UpdateAsync(DailyTracker dailyTracker, CancellationToken cancellationToken = default);
+
+    Task UpdateRangeAsync(IEnumerable<DailyTracker> dailyTrackers, CancellationToken cancellationToken = default);
 }

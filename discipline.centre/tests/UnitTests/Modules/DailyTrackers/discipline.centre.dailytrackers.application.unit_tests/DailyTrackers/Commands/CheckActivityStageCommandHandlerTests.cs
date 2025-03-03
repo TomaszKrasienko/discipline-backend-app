@@ -54,12 +54,12 @@ public sealed class CheckActivityStageCommandHandlerTests
     }
     
     #region arrange
-    private readonly IWriteReadDailyTrackerRepository _writeReadDailyTrackerRepository;
+    private readonly IReadWriteDailyTrackerRepository _writeReadDailyTrackerRepository;
     private readonly CheckActivityStageCommandHandler _handler;
 
     public CheckActivityStageCommandHandlerTests()
     {
-        _writeReadDailyTrackerRepository = Substitute.For<IWriteReadDailyTrackerRepository>();
+        _writeReadDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
         _handler = new CheckActivityStageCommandHandler(_writeReadDailyTrackerRepository);
     }
     #endregion

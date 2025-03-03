@@ -10,7 +10,7 @@ public sealed record MarkActivityAsCheckedCommand(UserId UserId, DailyTrackerId 
     ActivityId ActivityId) : ICommand;
     
 internal sealed class MarkActivityAsCheckedCommandHandler(
-    IWriteReadDailyTrackerRepository writeReadDailyTrackerRepository) : ICommandHandler<MarkActivityAsCheckedCommand>
+    IReadWriteDailyTrackerRepository writeReadDailyTrackerRepository) : ICommandHandler<MarkActivityAsCheckedCommand>
 {
     public async Task HandleAsync(MarkActivityAsCheckedCommand command, CancellationToken cancellationToken = default)
     {

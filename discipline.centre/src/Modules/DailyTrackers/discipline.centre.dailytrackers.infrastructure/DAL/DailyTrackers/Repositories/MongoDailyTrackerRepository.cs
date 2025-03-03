@@ -7,7 +7,7 @@ using MongoDB.Driver;
 namespace discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Repositories;
 
 internal sealed class MongoDailyTrackerRepository(
-    DailyTrackersMongoContext context) : IWriteReadDailyTrackerRepository
+    DailyTrackersMongoContext context) : IReadWriteDailyTrackerRepository
 {
     public async Task<DailyTracker?> GetDailyTrackerByDayAsync(DateOnly day, UserId userId,
         CancellationToken cancellationToken = default)
@@ -42,4 +42,16 @@ internal sealed class MongoDailyTrackerRepository(
         => context.GetCollection<DailyTrackerDocument>()
             .FindOneAndReplaceAsync(x => x.DailyTrackerId == dailyTracker.Id.ToString(),
                 dailyTracker.AsDocument(), null, cancellationToken);
+
+    public async Task UpdateRangeAsync(IEnumerable<DailyTracker> dailyTrackers, CancellationToken cancellationToken = default)
+    {
+        var tasks = new List<Task>();
+        
+        foreach (var dailyTracker in dailyTrackers)
+        {
+            tasks.Add(UpdateAsync(dailyTracker, cancellationToken));
+        }
+        
+        await Task.WhenAll(tasks);
+    }
 }

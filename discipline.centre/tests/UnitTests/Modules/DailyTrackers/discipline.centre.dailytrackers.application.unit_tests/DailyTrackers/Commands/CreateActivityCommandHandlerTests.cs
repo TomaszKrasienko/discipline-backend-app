@@ -118,12 +118,12 @@ public sealed class CreateActivityCommandHandlerTests
     }
     
     #region arrange
-    private readonly IWriteReadDailyTrackerRepository _writeReadDailyTrackerRepository;
+    private readonly IReadWriteDailyTrackerRepository _writeReadDailyTrackerRepository;
     private readonly ICommandHandler<CreateActivityCommand> _handler;
 
     public CreateActivityCommandHandlerTests()
     {
-        _writeReadDailyTrackerRepository = Substitute.For<IWriteReadDailyTrackerRepository>();
+        _writeReadDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
         _handler = new CreateActivityCommandHandler(_writeReadDailyTrackerRepository);
     }
     #endregion

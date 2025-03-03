@@ -10,7 +10,7 @@ internal sealed class EventDispatcher(IServiceProvider serviceProvider) : IEvent
         using var scope = serviceProvider.CreateScope();
         var handlers = scope.ServiceProvider.GetRequiredService<IEnumerable<IEventHandler<TEvent>>>();
 
-        var tasks = handlers.Select(x => x.HandleAsync(@event));
+        var tasks = handlers.Select(x => x.HandleAsync(@event, CancellationToken.None));
         await Task.WhenAll(tasks);
     }
 }

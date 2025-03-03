@@ -1,13 +1,25 @@
+using discipline.centre.dailytrackers.domain.Repositories;
 using discipline.centre.shared.abstractions.Events;
+using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using Microsoft.Extensions.Logging;
 
 namespace discipline.centre.dailytrackers.application.DailyTrackers.Events.Handler;
 
-internal sealed class ActivityRuleDeletedHandler(ILogger<ActivityRuleDeleted> logger) : IEventHandler<ActivityRuleDeleted>
+internal sealed class ActivityRuleDeletedHandler(IReadWriteDailyTrackerRepository readWriteDailyTrackerRepository) : IEventHandler<ActivityRuleDeleted>
 {
-    public Task HandleAsync(ActivityRuleDeleted @event)
+    public async Task HandleAsync(ActivityRuleDeleted @event, CancellationToken cancellationToken)
     {
-        logger.LogInformation("ActivityRuleDeleted event handler triggered");
-        return Task.CompletedTask;
+        var activityRuleId = new ActivityRuleId(@event.ActivityRuleId);
+        var userId = new UserId(@event.UserId);
+
+        var dailyTrackers = await readWriteDailyTrackerRepository
+            .GetDailyTrackersByParentActivityRuleId(activityRuleId, userId, cancellationToken);
+
+        foreach (var dailyTracker in dailyTrackers)
+        {
+            dailyTracker.ClearParentActivityRuleIdIs(activityRuleId);
+        }
+
+        await readWriteDailyTrackerRepository.UpdateRangeAsync(dailyTrackers, cancellationToken);
     }
 }

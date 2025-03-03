@@ -89,6 +89,9 @@ public sealed class DailyTracker : AggregateRoot<DailyTrackerId, Ulid>
 
     public void ClearParentActivityRuleIdIs(ActivityRuleId parentActivityRuleId)
     {
-        
+        foreach (var activity in _activities.Where(x => x.ParentActivityRuleId == parentActivityRuleId))
+        {
+            activity.ClearParentActivityRuleId();
+        }
     }
 }
