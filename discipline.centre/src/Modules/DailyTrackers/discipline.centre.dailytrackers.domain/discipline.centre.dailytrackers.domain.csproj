@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>discipline.centre.dailytrackers.domain</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.dailytrackers.domain.unit_tests"/>
+        <InternalsVisibleTo Include="discipline.centre.dailytrackers.tests.sharedkernel"/>
+        <InternalsVisibleTo Include="discipline.centre.dailytrackers.application.unit_tests"/>
+    </ItemGroup>
+
+</Project>

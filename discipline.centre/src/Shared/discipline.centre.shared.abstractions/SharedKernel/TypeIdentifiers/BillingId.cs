@@ -1,9 +1,8 @@
 namespace discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-public sealed record BillingId(Ulid Value) : ITypeId<BillingId>
+public sealed record BillingId(Ulid Value) : ITypeId<BillingId, Ulid>
 {
-    public static BillingId New()
-        => new (Ulid.NewUlid());
+    public static BillingId New() => new(Ulid.NewUlid());
 
     public static BillingId Parse(string stringTypedId)
     {
@@ -14,4 +13,6 @@ public sealed record BillingId(Ulid Value) : ITypeId<BillingId>
 
         return new BillingId(parsedId);
     }
+
+    public override string ToString() => Value.ToString();
 }

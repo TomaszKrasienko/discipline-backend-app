@@ -1,8 +1,6 @@
-using discipline.centre.shared.abstractions.SharedKernel;
-
 namespace discipline.centre.shared.abstractions.Events;
 
 public interface IEventProcessor
 {
-    Task PublishAsync(params DomainEvent[] domainEvents);
+    Task PublishAsync(params IEvent[] events);
 }

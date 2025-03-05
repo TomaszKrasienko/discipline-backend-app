@@ -4,16 +4,18 @@ using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using discipline.centre.shared.infrastructure.Auth.Configuration;
 using discipline.centre.users.application.Users.DTOs;
 using discipline.centre.users.application.Users.Services;
+using discipline.centre.users.infrastructure.Users.Auth.Configuration.Options;
+using discipline.centre.users.infrastructure.Users.RefreshToken.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace discipline.centre.users.infrastructure.Users.RefreshToken;
 
 internal sealed class RefreshTokenFacade(
     ICacheFacade cacheFacade,
-    IOptions<AuthOptions> options) : IRefreshTokenFacade
+    IOptions<RefreshTokenOptions> options) : IRefreshTokenFacade
 {
-    private readonly TimeSpan _expiry = options.Value.RefreshTokenExpiry;
-    private readonly int _refreshTokenLength = options.Value.RefreshTokenLength;
+    private readonly TimeSpan _expiry = options.Value.Expiry;
+    private readonly int _refreshTokenLength = options.Value.Length;
     
     public async Task<string> GenerateAndSaveAsync(UserId userId, CancellationToken cancellationToken = default)
     {

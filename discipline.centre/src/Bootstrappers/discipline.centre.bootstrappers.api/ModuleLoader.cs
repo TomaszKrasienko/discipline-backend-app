@@ -1,5 +1,7 @@
 using System.Reflection;
+using discipline.centre.bootstrappers.api.Extensions;
 using discipline.centre.shared.abstractions.Modules;
+using discipline.centre.users.api;
 
 namespace discipline.centre.bootstrappers.api;
 
@@ -7,7 +9,7 @@ internal static class ModuleLoader
 {
     private const string ModulePartsPrefix = "discipline.centre";
     
-    internal static List<Assembly> GetAssemblies(IConfiguration configuration)
+    internal static List<Assembly> GetAssemblies(IConfiguration configuration, IHostEnvironment environment)
     {
         var allAssemblies = AppDomain
             .CurrentDomain
@@ -15,33 +17,59 @@ internal static class ModuleLoader
             .ToList();
 
         var allNotDynamicLocations = allAssemblies
-            .Where(x => !x.IsDynamic)
+            .Where(x
+                => !x.IsDynamic)
             .Select(x => x.Location)
             .ToArray();
-
+        
         var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")
-            .Where(x => !allNotDynamicLocations.Contains(x, StringComparer.InvariantCultureIgnoreCase))
+            .Where(x 
+                => !allNotDynamicLocations.Contains(x, StringComparer.InvariantCultureIgnoreCase))
+            .Where(x 
+                => x.Contains(ModulePartsPrefix)
+                && (environment.IsTestsEnvironment() || !x.Contains("tests")) 
+                && !x.Contains("xunit")) 
             .ToList();
+        
         var disabledModules = new List<string>();
+        var enabledModules = new List<string>();
+        
         foreach (var file in files)
         {
-            if (!file.Contains(ModulePartsPrefix))
+            var fileName = file.Split('/').Last(); 
+            
+            if (!fileName.Contains(ModulePartsPrefix))
             {
                 continue;
             }
-
-            var moduleName = file.Split(ModulePartsPrefix)[1].Split(".")[0].ToLowerInvariant();
+            
+            var moduleName = fileName.Split(".")[2].ToLowerInvariant();
             var enabled = configuration.GetValue<bool>($"{moduleName}:module:enabled");
+            
             if (enabled)
             {
-                disabledModules.Add(file);
+                enabledModules.Add(moduleName);
+                continue;
             }
+            
+            disabledModules.Add(file);
         }
+        
         foreach (var module in disabledModules)
         {
             files.Remove(module);
         }
+        
         files.ForEach(x => allAssemblies.Add(AppDomain.CurrentDomain.Load(AssemblyName.GetAssemblyName(x))));
+        
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"Modules {string.Join(", ", enabledModules.Distinct())} enabled");
+        Console.ResetColor();
+        
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"Module: {string.Join(", ", disabledModules.Distinct())} disabled");
+        Console.ResetColor();
+        
         return allAssemblies;
     }
     

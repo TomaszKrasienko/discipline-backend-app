@@ -16,8 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F27CEEB6
 		tests\Directory.Packages.props = tests\Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{3236FA37-1EBA-4FC8-9034-1F549EA7C26A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{39202405-EC06-4926-A1BD-19CC04E02FC1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.domain", "src\Modules\Users\discipline.centre.users.domain\discipline.centre.users.domain.csproj", "{E8D4460A-0BBA-4AC1-B492-F5FF10286113}"
@@ -28,13 +26,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.shared.ab
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{E5810C99-A4A0-4358-A1DA-EEF9BD2254FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.domain.unit_tests", "tests\Modules\Users\discipline.centre.users.domain.unit_tests\discipline.centre.users.domain.unit_tests.csproj", "{AA163074-5CD3-48DC-BE0D-FA416374999C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.domain.unit_tests", "tests\UnitTests\Modules\Users\discipline.centre.users.domain.unit_tests\discipline.centre.users.domain.unit_tests.csproj", "{AA163074-5CD3-48DC-BE0D-FA416374999C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.tests.sharedkernel", "tests\Modules\Users\discipline.centre.users.tests.sharedkernel\discipline.centre.users.tests.sharedkernel.csproj", "{62F5A7C0-E6B2-4F8A-A2B9-012BA1F2D56A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.tests.sharedkernel", "tests\Shared\discipline.centre.users.tests.sharedkernel\discipline.centre.users.tests.sharedkernel.csproj", "{62F5A7C0-E6B2-4F8A-A2B9-012BA1F2D56A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.application", "src\Modules\Users\discipline.centre.users.application\discipline.centre.users.application.csproj", "{87E7DA29-315B-4218-A004-E8715F3A5C0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.application.unit_tests", "tests\Modules\Users\discipline.centre.users.application.unit_tests\discipline.centre.users.application.unit_tests.csproj", "{B5182762-CA81-40DA-9090-7CDA1412CCBF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.application.unit_tests", "tests\UnitTests\Modules\Users\discipline.centre.users.application.unit_tests\discipline.centre.users.application.unit_tests.csproj", "{B5182762-CA81-40DA-9090-7CDA1412CCBF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.shared.infrastructure", "src\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj", "{48C35B4E-EA35-4EBF-9288-D956FFAAA64F}"
 EndProject
@@ -44,11 +42,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.bootstrap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.infrastructure", "src\Modules\Users\discipline.centre.users.infrastructure\discipline.centre.users.infrastructure.csproj", "{25D20643-BEE8-42E5-9A3C-061DB36CA437}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.infrastructure.unit_tests", "tests\Modules\Users\discipline.centre.users.infrastructure.unit_tests\discipline.centre.users.infrastructure.unit_tests.csproj", "{873ABC59-3130-42F9-ABA9-29BEF7F3EF7F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.infrastructure.unit_tests", "tests\UnitTests\Modules\Users\discipline.centre.users.infrastructure.unit_tests\discipline.centre.users.infrastructure.unit_tests.csproj", "{873ABC59-3130-42F9-ABA9-29BEF7F3EF7F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.api", "src\Modules\Users\discipline.centre.users.api\discipline.centre.users.api.csproj", "{1081CBF0-B65A-4BC2-B8E0-D42818AC0717}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.integration_tests", "tests\Modules\Users\discipline.centre.users.integration_tests\discipline.centre.users.integration_tests.csproj", "{A114B134-7AC9-4336-A729-85F8983971F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.users.integration_tests", "tests\IntegrationTests\discipline.centre.users.integration_tests\discipline.centre.users.integration_tests.csproj", "{A114B134-7AC9-4336-A729-85F8983971F0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{74A65E38-E753-4294-AA8A-BD999C102C9E}"
 EndProject
@@ -60,21 +58,55 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ActivityRules", "ActivityRules", "{94897377-2950-45C5-9172-1E4282D7E406}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.domain.unit_tests", "tests\Modules\ActivityRules\discipline.centre.activityrules.domain.unit_tests\discipline.centre.activityrules.domain.unit_tests.csproj", "{3DC7A48D-B2C4-4A0E-816D-2BAF13860D00}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.domain.unit_tests", "tests\UnitTests\Modules\ActivityRules\discipline.centre.activityrules.domain.unit_tests\discipline.centre.activityrules.domain.unit_tests.csproj", "{3DC7A48D-B2C4-4A0E-816D-2BAF13860D00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.tests.sharedkernel", "tests\Modules\ActivityRules\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj", "{C621530B-01D3-489E-AA98-76555479E13D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.tests.sharedkernel", "tests\Shared\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj", "{C621530B-01D3-489E-AA98-76555479E13D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.application", "src\Modules\ActivityRules\discipline.centre.activityrules.application\discipline.centre.activityrules.application.csproj", "{8F979A9E-D703-4BB3-91F5-389614EC0E32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.application.unit_tests", "tests\Modules\ActivityRules\discipline.centre.activityrules.application.unit_tests\discipline.centre.activityrules.application.unit_tests.csproj", "{895CD930-8160-45C1-A3D3-CA07CEFFCE78}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.application.unit_tests", "tests\UnitTests\Modules\ActivityRules\discipline.centre.activityrules.application.unit_tests\discipline.centre.activityrules.application.unit_tests.csproj", "{895CD930-8160-45C1-A3D3-CA07CEFFCE78}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.infrastructure", "src\Modules\ActivityRules\discipline.centre.activityrules.infrastructure\discipline.centre.activityrules.infrastructure.csproj", "{495053F4-1CCD-48DA-8CC3-C8012BCB7362}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.infrastructure.unit_test", "tests\Modules\ActivityRules\discipline.centre.activityrules.infrastructure.unit_test\discipline.centre.activityrules.infrastructure.unit_test.csproj", "{98C44B15-8772-450D-A0EB-402B523344B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.infrastructure.unit_tests", "tests\UnitTests\Modules\ActivityRules\discipline.centre.activityrules.infrastructure.unit_tests\discipline.centre.activityrules.infrastructure.unit_tests.csproj", "{98C44B15-8772-450D-A0EB-402B523344B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre. activityrules.api", "src\Modules\ActivityRules\discipline.centre. activityrules.api\discipline.centre. activityrules.api.csproj", "{7EFA520D-524E-4D37-84DD-E3E4FD45B323}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre. activityrules.api", "src\Modules\ActivityRules\discipline.centre.activityrules.api\discipline.centre.activityrules.api.csproj", "{7EFA520D-524E-4D37-84DD-E3E4FD45B323}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.integration_tests", "tests\Modules\ActivityRules\discipline.centre.activityrules.integration_tests\discipline.centre.activityrules.integration_tests.csproj", "{3F9FCFB9-313A-45FD-9AD8-3BCAF4CD389B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.activityrules.integration_tests", "tests\IntegrationTests\discipline.centre.activityrules.integration_tests\discipline.centre.activityrules.integration_tests.csproj", "{3F9FCFB9-313A-45FD-9AD8-3BCAF4CD389B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DailyTrackers", "DailyTrackers", "{BAF9F813-AECB-482A-92FD-7DF16F2A190F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.domain", "src\Modules\DailyTrackers\discipline.centre.dailytrackers.domain\discipline.centre.dailytrackers.domain.csproj", "{4CDA37AD-AA64-4127-9D25-AA26D287E7CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DailyTrackers", "DailyTrackers", "{CA251747-98D4-440F-9126-558AA1FC3CD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.domain.unit_tests", "tests\UnitTests\Modules\DailyTrackers\discipline.centre.dailytrackers.domain.unit_tests\discipline.centre.dailytrackers.domain.unit_tests.csproj", "{E9331A47-A8F9-4157-B8D5-70ECE4FFBEB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{BCC8198E-B43C-4E6B-BD49-EB581BB97AE7}"
+	ProjectSection(SolutionItems) = preProject
+		tests\UnitTests\Directory.Build.props = tests\UnitTests\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{16137903-C380-47EC-B4E8-FAA2A29AEE5B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{1DEDCD3A-C32B-4E99-87F0-B53809A0CB82}"
+	ProjectSection(SolutionItems) = preProject
+		tests\IntegrationTests\Directory.Build.props = tests\IntegrationTests\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.application", "src\Modules\DailyTrackers\discipline.centre.dailytrackers.application\discipline.centre.dailytrackers.application.csproj", "{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.application.unit_tests", "tests\UnitTests\Modules\DailyTrackers\discipline.centre.dailytrackers.application.unit_tests\discipline.centre.dailytrackers.application.unit_tests.csproj", "{20F8D837-7A52-4475-BFF0-90EEE73A4BAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.infrastructure", "src\Modules\DailyTrackers\discipline.centre.dailytrackers.infrastructure\discipline.centre.dailytrackers.infrastructure.csproj", "{9F3320B6-7AE4-4936-8B47-423FC0984830}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.infrastructure.unit_tests", "tests\UnitTests\Modules\DailyTrackers\discipline.centre.dailytrackers.infrastructure.unit_tests\discipline.centre.dailytrackers.infrastructure.unit_tests.csproj", "{87DF237D-7CA5-4AF9-9F28-54E83FF18BB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.tests.sharedkernel", "tests\Shared\discipline.centre.dailytrackers.tests.sharedkernel\discipline.centre.dailytrackers.tests.sharedkernel.csproj", "{FA7B6E01-8737-43B9-A14E-75572C5F5DE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.api", "src\Modules\DailyTrackers\discipline.centre.dailytrackers.api\discipline.centre.dailytrackers.api.csproj", "{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.dailytrackers.integration_tests", "tests\IntegrationTests\discipline.centre.dailytrackers.integration_tests\discipline.centre.dailytrackers.integration_tests.csproj", "{B34539DA-07A6-43F9-A703-FC469C058806}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,14 +118,11 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{40698DDB-0A27-4727-A845-E35999288295} = {D54FB3C4-A433-4D71-8EE2-73F1EC856143}
-		{3236FA37-1EBA-4FC8-9034-1F549EA7C26A} = {F27CEEB6-F209-4256-BF65-7961254366F3}
 		{39202405-EC06-4926-A1BD-19CC04E02FC1} = {40698DDB-0A27-4727-A845-E35999288295}
 		{E8D4460A-0BBA-4AC1-B492-F5FF10286113} = {39202405-EC06-4926-A1BD-19CC04E02FC1}
 		{9F5F398F-AEF0-4D53-85BC-D71091703D93} = {D54FB3C4-A433-4D71-8EE2-73F1EC856143}
 		{13E1CF7F-D73B-4667-B084-3E7423009156} = {9F5F398F-AEF0-4D53-85BC-D71091703D93}
-		{E5810C99-A4A0-4358-A1DA-EEF9BD2254FB} = {3236FA37-1EBA-4FC8-9034-1F549EA7C26A}
 		{AA163074-5CD3-48DC-BE0D-FA416374999C} = {E5810C99-A4A0-4358-A1DA-EEF9BD2254FB}
-		{62F5A7C0-E6B2-4F8A-A2B9-012BA1F2D56A} = {E5810C99-A4A0-4358-A1DA-EEF9BD2254FB}
 		{87E7DA29-315B-4218-A004-E8715F3A5C0A} = {39202405-EC06-4926-A1BD-19CC04E02FC1}
 		{B5182762-CA81-40DA-9090-7CDA1412CCBF} = {E5810C99-A4A0-4358-A1DA-EEF9BD2254FB}
 		{48C35B4E-EA35-4EBF-9288-D956FFAAA64F} = {9F5F398F-AEF0-4D53-85BC-D71091703D93}
@@ -102,20 +131,36 @@ Global
 		{25D20643-BEE8-42E5-9A3C-061DB36CA437} = {39202405-EC06-4926-A1BD-19CC04E02FC1}
 		{873ABC59-3130-42F9-ABA9-29BEF7F3EF7F} = {E5810C99-A4A0-4358-A1DA-EEF9BD2254FB}
 		{1081CBF0-B65A-4BC2-B8E0-D42818AC0717} = {39202405-EC06-4926-A1BD-19CC04E02FC1}
-		{A114B134-7AC9-4336-A729-85F8983971F0} = {E5810C99-A4A0-4358-A1DA-EEF9BD2254FB}
 		{74A65E38-E753-4294-AA8A-BD999C102C9E} = {F27CEEB6-F209-4256-BF65-7961254366F3}
 		{648CF7EA-4E19-4CF9-AAA6-C71F8BFBF319} = {74A65E38-E753-4294-AA8A-BD999C102C9E}
 		{62F191FA-2492-4BB5-A613-53F2DCDCF3B6} = {40698DDB-0A27-4727-A845-E35999288295}
 		{C4250CFF-5E5B-456A-94C7-3B05F3861DE1} = {62F191FA-2492-4BB5-A613-53F2DCDCF3B6}
-		{94897377-2950-45C5-9172-1E4282D7E406} = {3236FA37-1EBA-4FC8-9034-1F549EA7C26A}
 		{3DC7A48D-B2C4-4A0E-816D-2BAF13860D00} = {94897377-2950-45C5-9172-1E4282D7E406}
-		{C621530B-01D3-489E-AA98-76555479E13D} = {94897377-2950-45C5-9172-1E4282D7E406}
 		{8F979A9E-D703-4BB3-91F5-389614EC0E32} = {62F191FA-2492-4BB5-A613-53F2DCDCF3B6}
 		{895CD930-8160-45C1-A3D3-CA07CEFFCE78} = {94897377-2950-45C5-9172-1E4282D7E406}
 		{495053F4-1CCD-48DA-8CC3-C8012BCB7362} = {62F191FA-2492-4BB5-A613-53F2DCDCF3B6}
 		{98C44B15-8772-450D-A0EB-402B523344B0} = {94897377-2950-45C5-9172-1E4282D7E406}
 		{7EFA520D-524E-4D37-84DD-E3E4FD45B323} = {62F191FA-2492-4BB5-A613-53F2DCDCF3B6}
-		{3F9FCFB9-313A-45FD-9AD8-3BCAF4CD389B} = {94897377-2950-45C5-9172-1E4282D7E406}
+		{BAF9F813-AECB-482A-92FD-7DF16F2A190F} = {40698DDB-0A27-4727-A845-E35999288295}
+		{4CDA37AD-AA64-4127-9D25-AA26D287E7CC} = {BAF9F813-AECB-482A-92FD-7DF16F2A190F}
+		{E9331A47-A8F9-4157-B8D5-70ECE4FFBEB3} = {CA251747-98D4-440F-9126-558AA1FC3CD9}
+		{BCC8198E-B43C-4E6B-BD49-EB581BB97AE7} = {F27CEEB6-F209-4256-BF65-7961254366F3}
+		{16137903-C380-47EC-B4E8-FAA2A29AEE5B} = {BCC8198E-B43C-4E6B-BD49-EB581BB97AE7}
+		{CA251747-98D4-440F-9126-558AA1FC3CD9} = {16137903-C380-47EC-B4E8-FAA2A29AEE5B}
+		{94897377-2950-45C5-9172-1E4282D7E406} = {16137903-C380-47EC-B4E8-FAA2A29AEE5B}
+		{E5810C99-A4A0-4358-A1DA-EEF9BD2254FB} = {16137903-C380-47EC-B4E8-FAA2A29AEE5B}
+		{1DEDCD3A-C32B-4E99-87F0-B53809A0CB82} = {F27CEEB6-F209-4256-BF65-7961254366F3}
+		{3F9FCFB9-313A-45FD-9AD8-3BCAF4CD389B} = {1DEDCD3A-C32B-4E99-87F0-B53809A0CB82}
+		{A114B134-7AC9-4336-A729-85F8983971F0} = {1DEDCD3A-C32B-4E99-87F0-B53809A0CB82}
+		{C621530B-01D3-489E-AA98-76555479E13D} = {74A65E38-E753-4294-AA8A-BD999C102C9E}
+		{62F5A7C0-E6B2-4F8A-A2B9-012BA1F2D56A} = {74A65E38-E753-4294-AA8A-BD999C102C9E}
+		{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73} = {BAF9F813-AECB-482A-92FD-7DF16F2A190F}
+		{20F8D837-7A52-4475-BFF0-90EEE73A4BAE} = {CA251747-98D4-440F-9126-558AA1FC3CD9}
+		{9F3320B6-7AE4-4936-8B47-423FC0984830} = {BAF9F813-AECB-482A-92FD-7DF16F2A190F}
+		{87DF237D-7CA5-4AF9-9F28-54E83FF18BB2} = {CA251747-98D4-440F-9126-558AA1FC3CD9}
+		{FA7B6E01-8737-43B9-A14E-75572C5F5DE2} = {74A65E38-E753-4294-AA8A-BD999C102C9E}
+		{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5} = {BAF9F813-AECB-482A-92FD-7DF16F2A190F}
+		{B34539DA-07A6-43F9-A703-FC469C058806} = {1DEDCD3A-C32B-4E99-87F0-B53809A0CB82}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E8D4460A-0BBA-4AC1-B492-F5FF10286113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -206,5 +251,41 @@ Global
 		{3F9FCFB9-313A-45FD-9AD8-3BCAF4CD389B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F9FCFB9-313A-45FD-9AD8-3BCAF4CD389B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F9FCFB9-313A-45FD-9AD8-3BCAF4CD389B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CDA37AD-AA64-4127-9D25-AA26D287E7CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CDA37AD-AA64-4127-9D25-AA26D287E7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CDA37AD-AA64-4127-9D25-AA26D287E7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CDA37AD-AA64-4127-9D25-AA26D287E7CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9331A47-A8F9-4157-B8D5-70ECE4FFBEB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9331A47-A8F9-4157-B8D5-70ECE4FFBEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9331A47-A8F9-4157-B8D5-70ECE4FFBEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9331A47-A8F9-4157-B8D5-70ECE4FFBEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C7B6E47-0E0A-44AE-BCE4-EBC25C8D6B73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20F8D837-7A52-4475-BFF0-90EEE73A4BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20F8D837-7A52-4475-BFF0-90EEE73A4BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20F8D837-7A52-4475-BFF0-90EEE73A4BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20F8D837-7A52-4475-BFF0-90EEE73A4BAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F3320B6-7AE4-4936-8B47-423FC0984830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F3320B6-7AE4-4936-8B47-423FC0984830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F3320B6-7AE4-4936-8B47-423FC0984830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F3320B6-7AE4-4936-8B47-423FC0984830}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87DF237D-7CA5-4AF9-9F28-54E83FF18BB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87DF237D-7CA5-4AF9-9F28-54E83FF18BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87DF237D-7CA5-4AF9-9F28-54E83FF18BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87DF237D-7CA5-4AF9-9F28-54E83FF18BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA7B6E01-8737-43B9-A14E-75572C5F5DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA7B6E01-8737-43B9-A14E-75572C5F5DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA7B6E01-8737-43B9-A14E-75572C5F5DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA7B6E01-8737-43B9-A14E-75572C5F5DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD5AB3F7-E81C-4B07-A133-8EF8CCCEECD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B34539DA-07A6-43F9-A703-FC469C058806}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B34539DA-07A6-43F9-A703-FC469C058806}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B34539DA-07A6-43F9-A703-FC469C058806}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B34539DA-07A6-43F9-A703-FC469C058806}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

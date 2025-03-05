@@ -10,7 +10,7 @@ internal sealed class UlidRouteConstraint : IRouteConstraint
     {
         if (values.TryGetValue(routeKey, out var value) && value is string valueString)
         {
-            return Ulid.TryParse(valueString, out var ulidValue);
+            return Ulid.TryParse(valueString, out _);
         }
         return false;
     }

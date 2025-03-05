@@ -5,7 +5,7 @@ using discipline.centre.users.domain.Subscriptions.ValueObjects;
 
 namespace discipline.centre.users.domain.Subscriptions;
 
-public sealed class Subscription : AggregateRoot<SubscriptionId>
+public sealed class Subscription : AggregateRoot<SubscriptionId, Ulid>
 {
     private HashSet<Feature>? _features;
     public Title Title { get; private set; }

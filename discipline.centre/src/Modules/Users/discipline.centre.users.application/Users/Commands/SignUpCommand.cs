@@ -1,7 +1,9 @@
+using System.Runtime.CompilerServices;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.Events;
 using discipline.centre.shared.abstractions.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
+using discipline.centre.users.application.Users.Events;
 using discipline.centre.users.domain.Users;
 using discipline.centre.users.domain.Users.Repositories;
 using FluentValidation;
@@ -14,16 +16,12 @@ public sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
 {
     public SignUpCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .Must(id => id != new UserId(Ulid.Empty))
-            .WithMessage("User \"ID\" can not be empty");
-
         RuleFor(x => x.Email)
             .NotNull()
             .NotEmpty()
-            .WithMessage("User \"Email\" can not be empty")
+            .WithMessage("User 'Email' can not be empty")
             .EmailAddress()
-            .WithMessage("User \"Email\" is invalid");
+            .WithMessage("User 'Email' is invalid");
 
         RuleFor(x => x.Password)
             .NotNull()
@@ -33,7 +31,7 @@ public sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
             .Must(x => x.Any(char.IsUpper))
             .Must(x => x.Any(char.IsNumber))
             .Must(x => x.Any(c => !char.IsLetterOrDigit(c)))
-            .WithMessage("User \"Password\" is invalid");
+            .WithMessage("User 'Password' is invalid");
 
         RuleFor(x => x.FirstName)
             .NotNull()
@@ -70,6 +68,7 @@ internal sealed class SignUpCommandHandler(
         
         var user = User.Create(command.Id, command.Email, command.Password, command.FirstName, command.LastName);
         await writeUserRepository.AddAsync(user, cancellationToken);
-        await eventProcessor.PublishAsync(user.DomainEvents.ToArray());
+        await eventProcessor.PublishAsync(user.DomainEvents.Select(x 
+            => x.MapAsIntegrationEvent()).ToArray());
     }
 }

@@ -13,5 +13,9 @@
         <InternalsVisibleTo Include="discipline.centre.users.application.unit_tests"/>
         <InternalsVisibleTo Include="discipline.centre.integration_tests.shared"/>
     </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="System.Text.Json" />
+    </ItemGroup>
 
 </Project>

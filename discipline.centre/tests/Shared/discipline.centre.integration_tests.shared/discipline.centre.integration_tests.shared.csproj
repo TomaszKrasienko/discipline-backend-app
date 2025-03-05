@@ -9,18 +9,24 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+      <PackageReference Include="MongoDB.Driver" />
+      <PackageReference Include="System.Text.Json" />
       <PackageReference Include="Testcontainers" />
       <PackageReference Include="Testcontainers.MongoDb" />
       <PackageReference Include="Testcontainers.Redis" />
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\src\Bootstrappers\discipline.centre.bootstrappers.api\discipline.centre.bootstrappers.api.csproj" />
-      <ProjectReference Include="..\..\Modules\Users\discipline.centre.users.tests.sharedkernel\discipline.centre.users.tests.sharedkernel.csproj" />
-    </ItemGroup>
-
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer"/>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\Bootstrappers\discipline.centre.bootstrappers.api\discipline.centre.bootstrappers.api.csproj" />
+      <ProjectReference Include="..\..\..\src\Modules\Users\discipline.centre.users.domain\discipline.centre.users.domain.csproj" />
+      <ProjectReference Include="..\..\..\src\Modules\Users\discipline.centre.users.infrastructure\discipline.centre.users.infrastructure.csproj" />
+      <ProjectReference Include="..\..\..\src\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj" />
+      <ProjectReference Include="..\discipline.centre.users.tests.sharedkernel\discipline.centre.users.tests.sharedkernel.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Certs\" />
     </ItemGroup>
 
 </Project>

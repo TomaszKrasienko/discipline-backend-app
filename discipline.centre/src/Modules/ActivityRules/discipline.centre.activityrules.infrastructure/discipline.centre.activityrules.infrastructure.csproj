@@ -7,9 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="discipline.centre.activityrules.infrastructure.unit_test"/>
+        <InternalsVisibleTo Include="discipline.centre.activityrules.infrastructure.unit_tests"/>
         <InternalsVisibleTo Include="discipline.centre.activityrules.tests.sharedkernel"/>
         <InternalsVisibleTo Include="discipline.centre.activityrules.integration_tests"/>
+        <InternalsVisibleTo Include="discipline.centre.dailytrackers.integration_tests"/>
     </ItemGroup>
     
     <ItemGroup>
@@ -17,6 +18,10 @@
       <ProjectReference Include="..\..\Users\discipline.centre.users.domain\discipline.centre.users.domain.csproj" />
       <ProjectReference Include="..\discipline.centre.activityrules.application\discipline.centre.activityrules.application.csproj" />
       <ProjectReference Include="..\discipline.centre.activityrules.domain\discipline.centre.activityrules.domain.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="System.Text.Json" />
     </ItemGroup>
 
 </Project>

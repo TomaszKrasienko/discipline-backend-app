@@ -1,5 +1,6 @@
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.Repositories;
+using discipline.centre.activityrules.domain.Specifications;
 using discipline.centre.shared.abstractions.CQRS.Commands;
 using discipline.centre.shared.abstractions.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
@@ -7,23 +8,19 @@ using FluentValidation;
 
 namespace discipline.centre.activityrules.application.ActivityRules.Commands;
 
-public sealed record UpdateActivityRuleCommand(ActivityRuleId Id, string Title, string Mode, 
-    List<int>? SelectedDays) : ICommand;
+public sealed record UpdateActivityRuleCommand(UserId UserId, ActivityRuleId Id, ActivityRuleDetailsSpecification Details, 
+    string Mode, List<int>? SelectedDays) : ICommand;
 
 public sealed class UpdateActivityRuleCommandValidator : AbstractValidator<UpdateActivityRuleCommand>
 {
     public UpdateActivityRuleCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .Must(id => id != new ActivityRuleId(Ulid.Empty))
-            .WithMessage("Activity rule \"ID\" can not be empty");
-        RuleFor(x => x.Title)
+        RuleFor(x => x.Details.Title)
             .NotNull()
             .NotEmpty()
             .WithMessage("Activity rule \"Title\" can not be null or empty");
-        RuleFor(x => x.Title)
-            .MinimumLength(3)
-            .MaximumLength(100)
+        RuleFor(x => x.Details.Title)
+            .MaximumLength(30)
             .WithMessage("Activity rule \"Title\" has invalid length");
         RuleFor(x => x.Mode)
             .NotNull()
@@ -33,27 +30,21 @@ public sealed class UpdateActivityRuleCommandValidator : AbstractValidator<Updat
 }
 
 internal sealed class UpdateActivityRuleCommandHandler(
-    IReadActivityRuleRepository readActivityRuleRepository) : ICommandHandler<UpdateActivityRuleCommand>
+    IReadWriteActivityRuleRepository readWriteActivityRuleRepository) : ICommandHandler<UpdateActivityRuleCommand>
 {
     public async Task HandleAsync(UpdateActivityRuleCommand command, CancellationToken cancellationToken = default)
     {
-        var activityRule = await readActivityRuleRepository.GetByIdAsync(command.Id, cancellationToken);
+        var activityRule = await readWriteActivityRuleRepository.GetByIdAsync(command.Id, command.UserId, cancellationToken);
 
         if (activityRule is null)
         {
             throw new NotFoundException("UpdateActivityRule.ActivityRule", nameof(activityRule), command.Id.ToString());
         }
 
-        if (HasChanges(command, activityRule))
+        if (activityRule.HasChanges(command.Details, command.Mode, command.SelectedDays))
         {
+            activityRule.Edit(command.Details, command.Mode, command.SelectedDays);
+            await readWriteActivityRuleRepository.UpdateAsync(activityRule, cancellationToken);
         }
     }
-
-    private static bool HasChanges(UpdateActivityRuleCommand command, ActivityRule activityRule)
-        => activityRule.Title != command.Title
-           || activityRule.Mode != command.Mode
-           || (activityRule.SelectedDays is not null
-               ? activityRule.SelectedDays!.Values.OrderBy(x => x).Select(x => (int)x)
-                   .SequenceEqual(command.SelectedDays!.OrderBy(x => x))
-               : command.SelectedDays is not null);
 }

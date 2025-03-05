@@ -1,19 +1,28 @@
 using discipline.centre.shared.abstractions.Events;
+using discipline.centre.shared.abstractions.Serialization;
 using discipline.centre.shared.abstractions.SharedKernel;
+using discipline.centre.shared.infrastructure.Events.Brokers.Internal.Abstractions;
+using discipline.centre.shared.infrastructure.Events.Brokers.Redis.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace discipline.centre.shared.infrastructure.Events;
 
 internal sealed class EventProcessor(
-    IEventMapper mapper) : IEventProcessor
+    IServiceProvider serviceProvider,
+    ISerializer serializer) : IEventProcessor
 {
-    public Task PublishAsync(params DomainEvent[] domainEvents)
+    public async Task PublishAsync(params IEvent[] domainEvents)
     {
-        List<IEvent> events = new List<IEvent>();
+        using var scope = serviceProvider.CreateScope();
+        var redisPubSubClient = scope.ServiceProvider.GetRequiredService<IRedisPubSubClient>();
+        var internalDispatcher = scope.ServiceProvider.GetRequiredService<IAsyncMessageDispatcher>();
+        
         foreach (var @event in domainEvents)
         {
-            events.Add(mapper.MapAsEvent(@event));
+            //TODO: Cancellation Token
+            var json = serializer.ToJson(@event);
+            await redisPubSubClient.SendAsync(json, @event.GetType().Name);
+            await internalDispatcher.PublishAsync(@event);
         }
-            
-        return Task.CompletedTask;
     }
 }

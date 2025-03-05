@@ -51,6 +51,13 @@ public sealed class TestAppDb : IDisposable
         => _mongoDatabase
             .GetCollection<TDocument>(
                 _mongoCollectionNameConvention.GetCollectionName<TDocument>());
+
+    public IMongoCollection<TDocument> GetCollection<TDocument>(string databaseName) where TDocument : IDocument
+    {
+        var mongoDatabase = _mongoClient.GetDatabase(databaseName);
+        return mongoDatabase.GetCollection<TDocument>(
+                _mongoCollectionNameConvention.GetCollectionName<TDocument>());
+    }
     
     public void Dispose()
     {

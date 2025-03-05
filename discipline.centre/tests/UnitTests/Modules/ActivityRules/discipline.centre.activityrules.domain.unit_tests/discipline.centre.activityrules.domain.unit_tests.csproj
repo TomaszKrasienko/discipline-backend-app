@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>discipline.centre.activityrules.domain.unit_tests</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+        <PackageReference Include="System.Text.Json" />
+        <PackageReference Include="xunit"/>
+        <PackageReference Include="xunit.runner.visualstudio">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Shouldly"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="ActivityRulesTests\CreateTests.TestsDataSeed.cs">
+        <DependentUpon>CreateTests.cs</DependentUpon>
+      </Compile>
+      <Compile Update="ActivityRulesTests\EditTests.TestsDataSeed.cs">
+        <DependentUpon>EditTests.cs</DependentUpon>
+      </Compile>
+      <Compile Update="StageTests\CreateTests.TestsDataSeed.cs">
+        <DependentUpon>CreateTests.cs</DependentUpon>
+      </Compile>
+      <Compile Update="ActivityRulesTests\HasChangesTests.TestsDataSeed.cs">
+        <DependentUpon>HasChangesTests.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\..\src\Modules\ActivityRules\discipline.centre.activityrules.domain\discipline.centre.activityrules.domain.csproj" />
+      <ProjectReference Include="..\..\..\..\Shared\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj" />
+    </ItemGroup>
+
+</Project>

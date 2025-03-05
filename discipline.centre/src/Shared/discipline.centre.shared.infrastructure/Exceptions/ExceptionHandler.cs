@@ -19,7 +19,7 @@ internal sealed class ExceptionHandler(ILogger<IExceptionHandler> logger) : IExc
         var (status, code, message) = exception switch
         {
             ValidationException exc 
-                => (StatusCodes.Status422UnprocessableEntity, exc.Code, $"{exc.Message}. {exc.ValidationParams}"),
+                => (StatusCodes.Status422UnprocessableEntity, exc.Code, string.Join('.', exc.ValidationParams.Values.Select(x => x).SelectMany(y => y).ToList())),
             DomainException exc 
                 => (StatusCodes.Status400BadRequest, exc.Code, exc.Message),
             UnauthorizedException exc

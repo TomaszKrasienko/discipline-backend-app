@@ -1,4 +1,5 @@
 @host_address = http://localhost:5039
+# @host_address = http://localhost:7001
 
 ###
 GET {{host_address}}/
@@ -9,10 +10,10 @@ GET {{host_address}}/
 
 ###
 # @name sign_up
-POST {{host_address}}/users-module/users
+POST {{host_address}}/api/users-module/users
 Content-Type: application/json
 
-{
+{  
   "email": "{{email}}",
   "password": "{{password}}",
   "firstName": "Tom",
@@ -24,7 +25,7 @@ Content-Type: application/json
 
 ###
 # @name sign_in
-POST {{host_address}}/users-module/users/tokens
+POST {{host_address}}/api/users-module/users/tokens
 Content-Type: application/json
 
 {
@@ -33,32 +34,93 @@ Content-Type: application/json
 }
 
 ###
-GET {{host_address}}/users-module/users/{{user_id}}
+GET {{host_address}}/api/users-module/users/{{user_id}}
 Authorization: bearer {{token}}
 
 ###
 @token = {{sign_in.response.body.$.token}}
 
 ###
-POST {{host_address}}/users-module/users/subscription-order
+POST {{host_address}}/api/users-module/users/subscription-order
 Authorization: bearer {{token}}
 Content-Type: application/json
 
 {
-  "userId": {
-    "value": "01JDC7WJ7XTCR7YEEX81RJMSJE"
-  },
-  "subscriptionId": {
-    "value": "01JDEMJMBP7DMM3GMNWCE62FS2"
-  }
+  "subscriptionId": "01JDEMJMBP7DMM3GMNWCE62FS2"
 }
 
 ###
-POST {{host_address}}/activity-rules-module/activity-rules
+# @name create_activity_rule
+POST {{host_address}}/api/activity-rules-module/activity-rules
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "Title":"test",
-  "Mode":"EveryDay"
+  "details": {
+      "title": "rule 2 first day",
+      "note": "string"
+    },
+  "mode": "FirstDayOfWeek",
+  "selectedDays":null
 }
+
+###
+@activity_rule_id = {{create_activity_rule.response.headers.x-resource-id}}
+
+###
+DELETE {{host_address}}/api/activity-rules-module/activity-rules/{{activity_rule_id}}
+Authorization: Bearer {{token}}
+
+###
+GET {{host_address}}/api/activity-rules-module/activity-rules/{{activity_rule_id}}
+Authorization: Bearer {{token}}
+
+###
+# @name create_activity_from_rule
+POST {{host_address}}/api/daily-trackers-module/daily-trackers/activities/{{activity_rule_id}}
+Authorization: Bearer {{token}}
+
+@activity_id_from_rule = {{create_activity_from_rule.response.headers.x-resource-id}}
+
+###
+# @name create_activity
+POST {{host_address}}/api/daily-trackers-module/daily-trackers/activities
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "day": "2025-02-23",
+  "details": {
+    "title": "Pierwsze zadanie to do1",
+    "note": "Pamiętać o odebraniu paczek, posprzątaniu i jedzeniu"
+  },
+  "stages": [
+    {
+      "title": "odebranie paczki",
+      "index": 1
+    },
+    {
+      "title": "zjedzenie",
+      "index": 2
+    },
+    {
+      "title": "praca domowa",
+      "index": 3
+    }
+  ]
+}
+
+###
+@activity_id = {{create_activity.response.headers.x-resource-id}}
+
+###
+GET {{host_address}}/api/daily-trackers-module/daily-trackers/activities/{{activity_id}}
+Authorization: Bearer {{token}}
+
+###
+GET {{host_address}}/api/daily-trackers-module/daily-trackers/2025-02-19
+Authorization: Bearer {{token}}
+
+###
+PATCH {{host_address}}/api/daily-trackers-module/daily-trackers/01JMFXN33E64FZ5EN6WN3S9AF0/activities/01JMFXN31WSM5KQ2EK5PDP6HKA/stages/01JMFXN33T2EZ4HA2HA10CSBN8/check
+Authorization: Bearer {{token}}

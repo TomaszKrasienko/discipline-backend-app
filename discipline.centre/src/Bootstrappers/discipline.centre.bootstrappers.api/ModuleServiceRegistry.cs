@@ -5,11 +5,11 @@ namespace discipline.centre.bootstrappers.api;
 internal static class ModuleServiceRegistry
 {
     internal static IServiceCollection AddModulesConfiguration(this IServiceCollection services, 
-        IList<IModule> modules)
+        IList<IModule> modules, IConfiguration configuration)
     {
         foreach (var module in modules)
         {
-            module.Register(services);
+            module.Register(services, configuration);
         }
         return services;
     }

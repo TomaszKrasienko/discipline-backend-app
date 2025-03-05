@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>discipline.centre.activityrules.application.unit_tests</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+        <PackageReference Include="System.Text.Json" />
+        <PackageReference Include="xunit"/>
+        <PackageReference Include="xunit.runner.visualstudio">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="NSubstitute"/>
+        <PackageReference Include="Shouldly"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="ActivityRules\Commands\UpdateActivityRule\UpdateActivityRuleCommandValidatorTests.TestsDataSeed.cs">
+        <DependentUpon>UpdateActivityRuleCommandValidatorTests.cs</DependentUpon>
+      </Compile>
+      <Compile Update="ActivityRules\Commands\CreateActivityRule\CreateActivityRuleCommandValidatorTests.TestsDataSeed.cs">
+        <DependentUpon>CreateActivityRuleCommandValidatorTests.cs</DependentUpon>
+      </Compile>
+      <Compile Update="ActivityRules\Commands\CreateActivityRule\CreateActivityRuleCommandHandlerTests.TestsDataSeed.cs">
+        <DependentUpon>CreateActivityRuleCommandHandlerTests.cs</DependentUpon>
+      </Compile>
+      <Compile Update="ActivityRules\Commands\UpdateActivityRule\UpdateActivityRuleCommandHandlerTests.TestsDataSeed.cs">
+        <DependentUpon>UpdateActivityRuleCommandHandlerTests.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\..\src\Modules\ActivityRules\discipline.centre.activityrules.application\discipline.centre.activityrules.application.csproj" />
+      <ProjectReference Include="..\..\..\..\Shared\discipline.centre.activityrules.tests.sharedkernel\discipline.centre.activityrules.tests.sharedkernel.csproj" />
+    </ItemGroup>
+
+</Project>

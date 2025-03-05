@@ -1,33 +1,31 @@
+using discipline.centre.activityrules.application.ActivityRules.Events;
 using discipline.centre.activityrules.domain;
 using discipline.centre.activityrules.domain.Repositories;
+using discipline.centre.activityrules.domain.Specifications;
 using discipline.centre.shared.abstractions.CQRS.Commands;
+using discipline.centre.shared.abstractions.Events;
 using discipline.centre.shared.abstractions.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using FluentValidation;
 
 namespace discipline.centre.activityrules.application.ActivityRules.Commands;
 
-public sealed record CreateActivityRuleCommand(ActivityRuleId Id, UserId UserId, string Title, string Mode,
-    List<int>? SelectedDays) : ICommand;
+public sealed record CreateActivityRuleCommand(UserId UserId, ActivityRuleId Id, ActivityRuleDetailsSpecification Details, 
+    string Mode, List<int>? SelectedDays, List<StageSpecification>? Stages) : ICommand;
     
 public sealed class CreateActivityRuleCommandValidator : AbstractValidator<CreateActivityRuleCommand>
 {
     public CreateActivityRuleCommandValidator()
     {
-        RuleFor(x => x.UserId)
-            .Must(id => id != new UserId(Ulid.Empty))
-            .WithMessage("Activity rule \"UserId\" can not be empty");
-        RuleFor(x => x.Id)
-            .Must(id => id != new ActivityRuleId(Ulid.Empty))
-            .WithMessage("Activity rule \"ID\" can not be empty");
-        RuleFor(x => x.Title)
+        RuleFor(x => x.Details.Title)
             .NotNull()
             .NotEmpty()
             .WithMessage("Activity rule \"Title\" can not be null or empty");
-        RuleFor(x => x.Title)
-            .MinimumLength(3)
-            .MaximumLength(100)
+        
+        RuleFor(x => x.Details.Title)
+            .MaximumLength(30)
             .WithMessage("Activity rule \"Title\" has invalid length");
+        
         RuleFor(x => x.Mode)
             .NotNull()
             .NotEmpty()
@@ -36,20 +34,22 @@ public sealed class CreateActivityRuleCommandValidator : AbstractValidator<Creat
 }
 
 internal sealed class CreateActivityRuleCommandHandler(
-    IReadActivityRuleRepository readActivityRuleRepository,
-    IWriteActivityRuleRepository writeActivityRuleRepository) : ICommandHandler<CreateActivityRuleCommand>
+    IReadWriteActivityRuleRepository readWriteActivityRuleRepository,
+    IEventProcessor eventProcessor) : ICommandHandler<CreateActivityRuleCommand>
 {
     public async Task HandleAsync(CreateActivityRuleCommand command, CancellationToken cancellationToken = default)
     {
-        var isExists = await readActivityRuleRepository.ExistsAsync(command.Title, cancellationToken);
+        var isExists = await readWriteActivityRuleRepository.ExistsAsync(command.Details.Title, command.UserId, cancellationToken);
         if (isExists)
         {
             throw new AlreadyRegisteredException("CreateActivityRule.Title",
-                $"Activity rule with title: {command.Title} already registered");
+                $"Activity rule with title: {command.Details.Title} already registered");
         }
 
-        var activity = ActivityRule.Create(command.Id, command.UserId, command.Title, 
-            command.Mode, command.SelectedDays);
-        await writeActivityRuleRepository.AddAsync(activity, cancellationToken);
+        var activity = ActivityRule.Create(command.Id, command.UserId, command.Details,
+            command.Mode, command.SelectedDays, command.Stages);
+        await readWriteActivityRuleRepository.AddAsync(activity, cancellationToken);
+        await eventProcessor.PublishAsync(activity.DomainEvents.Select(x
+            => x.MapAsIntegrationEvent()).ToArray());
     }
 }

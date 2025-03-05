@@ -1,10 +1,9 @@
 namespace discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-public sealed record ActivityRuleId(Ulid Value) : ITypeId<ActivityRuleId>
+public sealed record ActivityRuleId(Ulid Value) : ITypeId<ActivityRuleId, Ulid>
 {
-    public static ActivityRuleId New()
-        => new(Ulid.NewUlid());
-
+    public static ActivityRuleId New() => new(Ulid.NewUlid());
+    
     public static ActivityRuleId Parse(string stringTypedId)
     {
         if (!Ulid.TryParse(stringTypedId, out var parsedId))
@@ -15,6 +14,5 @@ public sealed record ActivityRuleId(Ulid Value) : ITypeId<ActivityRuleId>
         return new ActivityRuleId(parsedId);
     }
 
-    public override string ToString()
-        => Value.ToString();
+    public override string ToString() => Value.ToString();
 }

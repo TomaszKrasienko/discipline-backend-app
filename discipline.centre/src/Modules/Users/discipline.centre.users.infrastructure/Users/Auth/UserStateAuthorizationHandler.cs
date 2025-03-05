@@ -13,7 +13,7 @@ internal sealed class UserStateAuthorizationHandler() : AuthorizationHandler<Use
             throw new ArgumentException("Context can not be null");
         }
         
-        if (!(Ulid.TryParse(context.User?.Identity?.Name, out var userId)))
+        if (!(Ulid.TryParse(context.User?.Identity?.Name, out _)))
         {
             context.Succeed(requirement);
             return Task.CompletedTask;

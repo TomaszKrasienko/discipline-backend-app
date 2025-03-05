@@ -7,10 +7,12 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
         <PackageReference Include="Swashbuckle.AspNetCore"/>
+        <PackageReference Include="System.Text.Json" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Modules\ActivityRules\discipline.centre. activityrules.api\discipline.centre. activityrules.api.csproj" />
+      <ProjectReference Include="..\..\Modules\ActivityRules\discipline.centre.activityrules.api\discipline.centre.activityrules.api.csproj" />
+      <ProjectReference Include="..\..\Modules\DailyTrackers\discipline.centre.dailytrackers.api\discipline.centre.dailytrackers.api.csproj" />
       <ProjectReference Include="..\..\Modules\Users\discipline.centre.users.api\discipline.centre.users.api.csproj" />
       <ProjectReference Include="..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />
       <ProjectReference Include="..\..\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj" />
@@ -26,6 +28,15 @@
       </None>
       <None Update="certs\public.pem">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Certs\private_key_default.pem">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Certs\public_key_default.pem">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Certs\public_key_hangfire.pem">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 </Project>

@@ -7,13 +7,20 @@ namespace Microsoft.AspNetCore.Builder;
 
 public static class SharedWebApplicationInfrastructureConfigExtensions
 {
-    public static WebApplication UseInfrastructure(this WebApplication app)
+    public static IApplicationBuilder UseInfrastructure(this WebApplication app)
         => app
-            .UseExceptionsHandling()
             .UseUiDocumentation()
+            .UseExceptionsHandling()
+            .UseCorsPolicy()
             .UseAuth();
 
-    private static WebApplication UseAuth(this WebApplication app)
+    private static IApplicationBuilder UseCorsPolicy(this IApplicationBuilder app)
+    {
+        app.UseCors("CorsPolicy");
+        return app;
+    } 
+    
+    private static IApplicationBuilder UseAuth(this IApplicationBuilder app)
     {
         app.UseAuthentication();
         app.UseAuthorization();

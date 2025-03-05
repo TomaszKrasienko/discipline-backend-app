@@ -6,6 +6,8 @@
 
     <ItemGroup>
       <FrameworkReference Include="Microsoft.AspNetCore.App" />
+      <PackageReference Include="OneOf" />
+      <PackageReference Include="System.Text.Json" />
       <PackageReference Include="Ulid"/>
     </ItemGroup>
 

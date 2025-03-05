@@ -11,5 +11,5 @@ internal static class DalServicesConfigurationExtensions
         => services
             .AddScoped<ActivityRulesMongoContext>()
             .AddScoped<IReadActivityRuleRepository, MongoActivityRuleRepository>()
-            .AddScoped<IWriteActivityRuleRepository, MongoActivityRuleRepository>();
+            .AddScoped<IReadWriteActivityRuleRepository, MongoActivityRuleRepository>();
 }

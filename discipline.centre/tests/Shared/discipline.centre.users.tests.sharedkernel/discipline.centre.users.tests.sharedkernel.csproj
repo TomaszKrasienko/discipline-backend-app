@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Bogus"/>
+        <PackageReference Include="System.Text.Json" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.users.infrastructure.unit_tests"/>
+        <InternalsVisibleTo Include="discipline.centre.users.integration_tests"/>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\Modules\Users\discipline.centre.users.application\discipline.centre.users.application.csproj" />
+      <ProjectReference Include="..\..\..\src\Modules\Users\discipline.centre.users.infrastructure\discipline.centre.users.infrastructure.csproj" />
+    </ItemGroup>
+</Project>

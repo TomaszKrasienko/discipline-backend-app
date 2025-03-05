@@ -8,7 +8,7 @@ using discipline.centre.users.domain.Users.ValueObjects.Users;
 
 namespace discipline.centre.users.domain.Users;
 
-public sealed class User : AggregateRoot<UserId>
+public sealed class User : AggregateRoot<UserId, Ulid>
 {
     private SubscriptionOrder? _subscriptionOrder;
     public Email Email { get; }
