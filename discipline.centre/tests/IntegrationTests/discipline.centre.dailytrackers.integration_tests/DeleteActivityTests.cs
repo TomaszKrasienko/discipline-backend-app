@@ -4,6 +4,7 @@ using discipline.centre.dailytrackers.domain.Specifications;
 using discipline.centre.dailytrackers.infrastructure.DAL.DailyTrackers.Documents;
 using discipline.centre.dailytrackers.tests.sharedkernel.Domain;
 using discipline.centre.integration_tests.shared;
+using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using MongoDB.Driver;
 using Shouldly;
 using Xunit;
@@ -38,5 +39,52 @@ public sealed class DeleteActivityTests() : BaseTestsController("daily-trackers-
 
         updatedDailyTracker.ShouldNotBeNull();
         updatedDailyTracker.Activities.Count().ShouldBe(1);
+    }
+
+    [Fact]
+    public async Task GivenExistingDailyTrackerWithOneActivity_WhenRequestedEndpoint_ShouldReturn204NoContentStatusCodeAndDeleteDailyTracker()
+    {
+        // Arrange
+        var user = await AuthorizeWithFreeSubscriptionPicked();
+        var dailyTracker = DailyTrackerFakeDataFactory.Get(null, user.Id);
+        var activity = dailyTracker.Activities.Single();
+        
+        await TestAppDb.GetCollection<DailyTrackerDocument>()
+            .InsertOneAsync(dailyTracker.AsDocument());
+        
+        // Act
+        var response = await HttpClient.DeleteAsync($"$api/daily-trackers-module/daily-trackers/{dailyTracker.Id.ToString()}/activities/{activity.Id.ToString()}");
+        
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
+
+        var doesDailyTrackerExists = await TestAppDb.GetCollection<DailyTrackerDocument>()
+            .Find(x => x.DailyTrackerId == dailyTracker.Id.ToString())
+            .AnyAsync();
+        
+        doesDailyTrackerExists.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task GivenUnauthorizedUser_WhenRequestedEndpoint_ShouldReturn401UnauthorizedStatusCode()
+    {
+        // Act
+        var response = await HttpClient.DeleteAsync($"$api/daily-trackers-module/daily-trackers/{DailyTrackerId.New().ToString()}/activities/{ActivityId.New().ToString()}");
+        
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task GivenUserWithoutSubscription_WhenRequestedEndpoint_ShouldReturn403ForbiddenStatusCode()
+    {
+        // Arrange
+        _ = await AuthorizeWithoutSubscription();
+        
+        // Act
+        var response = await HttpClient.DeleteAsync($"$api/daily-trackers-module/daily-trackers/{DailyTrackerId.New().ToString()}/activities/{ActivityId.New().ToString()}");
+        
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Forbidden);
     }
 }

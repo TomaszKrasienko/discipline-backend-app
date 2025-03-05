@@ -162,10 +162,8 @@ internal static class DailyTrackersEndpoints
                     return Results.NoContent();
                 })            
             .Produces(StatusCodes.Status204NoContent, typeof(void))
-            .Produces(StatusCodes.Status400BadRequest, typeof(ProblemDetails))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
             .Produces(StatusCodes.Status403Forbidden, typeof(void))
-            .Produces(StatusCodes.Status404NotFound, typeof(void))
             .WithName("DeleteActivity")
             .WithTags(DailyTrackersTag)
             .WithDescription("Removes activity")
