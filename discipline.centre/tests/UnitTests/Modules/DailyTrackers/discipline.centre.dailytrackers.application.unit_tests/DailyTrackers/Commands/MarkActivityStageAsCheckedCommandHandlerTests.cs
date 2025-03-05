@@ -26,7 +26,7 @@ public sealed class MarkActivityStageAsCheckedCommandHandlerTests
         
         var command = new MarkActivityStageAsCheckedCommand(dailyTracker.UserId, dailyTracker.Id, activity.Id, stage.Id);
 
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByIdAsync(command.UserId, command.DailyTrackerId, CancellationToken.None)
             .Returns(dailyTracker);
         
@@ -49,7 +49,7 @@ public sealed class MarkActivityStageAsCheckedCommandHandlerTests
         
         var command = new MarkActivityStageAsCheckedCommand(dailyTracker.UserId, dailyTracker.Id, activity.Id, stage.Id);
         
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByIdAsync(command.UserId, command.DailyTrackerId, CancellationToken.None)
             .Returns(dailyTracker);
         
@@ -57,7 +57,7 @@ public sealed class MarkActivityStageAsCheckedCommandHandlerTests
         await Act(command);
         
         //assert
-        await _writeReadDailyTrackerRepository
+        await _readWriteDailyTrackerRepository
             .Received(1)
             .UpdateAsync(dailyTracker, CancellationToken.None);
     }
@@ -77,13 +77,13 @@ public sealed class MarkActivityStageAsCheckedCommandHandlerTests
     }
 
     #region arrange
-    private readonly IReadWriteDailyTrackerRepository _writeReadDailyTrackerRepository;
+    private readonly IReadWriteDailyTrackerRepository _readWriteDailyTrackerRepository;
     private readonly MarkActivityStageAsCheckedCommandHandler _handler;
 
     public MarkActivityStageAsCheckedCommandHandlerTests()
     {
-        _writeReadDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
-        _handler = new MarkActivityStageAsCheckedCommandHandler(_writeReadDailyTrackerRepository);
+        _readWriteDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
+        _handler = new MarkActivityStageAsCheckedCommandHandler(_readWriteDailyTrackerRepository);
     }
     #endregion
 }

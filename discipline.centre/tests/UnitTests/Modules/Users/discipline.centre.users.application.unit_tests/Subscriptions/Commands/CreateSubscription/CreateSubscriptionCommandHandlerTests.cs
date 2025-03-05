@@ -13,21 +13,21 @@ public sealed class CreateSubscriptionCommandHandlerTests
     private Task Act(CreateSubscriptionCommand command) => _handler.HandleAsync(command, default);
 
     [Fact]
-    public async Task Handle_GivenUniqueTitleAndValidaParameters_ShouldAddSubscriptionByRepository()
+    public async Task GivenUniqueTitleAndValidParameters_WhenHandleAsync_ShouldAddSubscriptionByRepository()
     {
-        //arrange
+        // Arrange
         var command = new CreateSubscriptionCommand(SubscriptionId.New(), "test_title", 1m, 10m,
             ["test_feature"]);
 
-        _readSubscriptionRepository
-            .DoesTitleExistAsync(command.Title, default)
+        _readWriteSubscriptionRepository
+            .DoesTitleExistAsync(command.Title, CancellationToken.None)
             .Returns(false);
         
-        //act
+        // Act
         await Act(command);
         
-        //assert
-        await _writeSubscriptionRepository
+        // Assert
+        await _readWriteSubscriptionRepository
             .Received(1)
             .AddAsync(Arg.Is<Subscription>(arg
                 => arg.Id == command.Id
@@ -38,41 +38,41 @@ public sealed class CreateSubscriptionCommandHandlerTests
     }
     
     [Fact]
-    public async Task Handle_GivenNotUniqueTitle_ShouldNotAddAnySubscriptionByRepository()
+    public async Task GivenNotUniqueTitle_WhenHandleAsync_ShouldNotAddAnySubscriptionByRepository()
     {
-        //arrange
+        // Arrange
         var command = new CreateSubscriptionCommand(SubscriptionId.New(), "test_title", 1m, 10m,
             ["test_feature"]);
 
-        _readSubscriptionRepository
-            .DoesTitleExistAsync(command.Title, default)
+        _readWriteSubscriptionRepository
+            .DoesTitleExistAsync(command.Title, CancellationToken.None)
             .Returns(false);
         
-        //act
+        // Act
         await Act(command);
         
-        //assert
-        await _writeSubscriptionRepository
+        // Assert
+        await _readWriteSubscriptionRepository
             .Received(1)
             .AddAsync(Arg.Any<Subscription>());
     }
     
     [Theory]
     [MemberData(nameof(GetInvalidCreateSubscription))]
-    public async Task Handle_GivenUniqueTitleAndInvalidParameters_ShouldNotAddSubscriptionByRepository(CreateSubscriptionCommand command)
+    public async Task GivenUniqueTitleAndInvalidParameters_WhenHandleAsync_ShouldNotAddSubscriptionByRepository(CreateSubscriptionCommand command)
     {
-        //arrange
-        _readSubscriptionRepository
-            .DoesTitleExistAsync(command.Title, default)
+        // Arrange
+        _readWriteSubscriptionRepository
+            .DoesTitleExistAsync(command.Title, CancellationToken.None)
             .Returns(false);
         
-        //act
-        await Record.ExceptionAsync(async () => await Act(command));
+        // Act
+        _ = await Record.ExceptionAsync(() => Act(command));
         
-        //assert
-        await _writeSubscriptionRepository
+        // Assert
+        await _readWriteSubscriptionRepository
             .Received(0)
-            .AddAsync(Arg.Any<Subscription>(), default);
+            .AddAsync(Arg.Any<Subscription>(), CancellationToken.None);
     }
 
     public static IEnumerable<object[]> GetInvalidCreateSubscription()
@@ -98,17 +98,15 @@ public sealed class CreateSubscriptionCommandHandlerTests
         ];
     }
     
-    #region arrange
+    #region Arrange
 
-    private readonly IReadSubscriptionRepository _readSubscriptionRepository;
-    private readonly IWriteSubscriptionRepository _writeSubscriptionRepository;
+    private readonly IReadWriteSubscriptionRepository _readWriteSubscriptionRepository;
     private readonly ICommandHandler<CreateSubscriptionCommand> _handler;
 
     public CreateSubscriptionCommandHandlerTests()
     {
-        _readSubscriptionRepository = Substitute.For<IReadSubscriptionRepository>();
-        _writeSubscriptionRepository = Substitute.For<IWriteSubscriptionRepository>();
-        _handler = new CreateSubscriptionCommandHandler(_readSubscriptionRepository, _writeSubscriptionRepository);
+        _readWriteSubscriptionRepository = Substitute.For<IReadWriteSubscriptionRepository>();
+        _handler = new CreateSubscriptionCommandHandler(_readWriteSubscriptionRepository);
     }
     #endregion
 }

@@ -19,21 +19,21 @@ public sealed class SignUpCommandHandlerTests
     private Task Act(SignUpCommand command) => _handler.HandleAsync(command, default);
 
     [Fact]
-    public async Task HandleAsync_GivenNotRegisteredEmail_ShouldAddUserAndProcessEvent()
+    public async Task GivenNotRegisteredEmail_WhenHandleAsync_ThenShouldAddUserAndProcessEvent()
     {
-        //arrange
+        // Arrange
         var command = new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "test_first_name", "test_last_name");
 
-        _readUserRepository
+        _readWriteUserRepository
             .DoesEmailExistAsync(command.Email)
             .Returns(false);
         
-        //act
+        // Act
         await Act(command);
         
-        //assert
-        await _writeUserRepository
+        // Assert
+        await _readWriteUserRepository
             .Received(1)
             .AddAsync(Arg.Is<User>(arg 
                 => arg.Id == command.Id 
@@ -50,59 +50,59 @@ public sealed class SignUpCommandHandlerTests
     }
     
     [Fact]
-    public async Task HandleAsync_GivenExistingEmail_ShouldThrowAlreadyRegisteredException()
+    public async Task GivenExistingEmail_WhenHandleAsync_ThenShouldThrowAlreadyRegisteredException()
     {
-        //arrange
+        // Arrange
         var command = new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "first_name", "last_name");
 
-        _readUserRepository
-            .DoesEmailExistAsync(command.Email, default)
+        _readWriteUserRepository
+            .DoesEmailExistAsync(command.Email, CancellationToken.None)
             .Returns(true);
         
-        //act
+        // Act
         var exception = await Record.ExceptionAsync(async () => await Act(command));
         
-        //assert
+        // Assert
         exception.ShouldBeOfType<AlreadyRegisteredException>();
         ((AlreadyRegisteredException)exception).Code.ShouldBe("SignUpCommand.Email");
     }
     
     [Fact]
-    public async Task HandleAsync_GivenExistingEmail_ShouldNotAddByRepository()
+    public async Task GivenExistingEmail_WhenHandleAsync_ThenShouldNotAddByRepository()
     {
-        //arrange
+        // Arrange
         var command = new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "first_name", "last_name");
 
-        _readUserRepository
-            .DoesEmailExistAsync(command.Email, default)
+        _readWriteUserRepository
+            .DoesEmailExistAsync(command.Email, CancellationToken.None)
             .Returns(true);
         
-        //act
-        await Record.ExceptionAsync(async () => await Act(command));
+        // Act
+        _ = await Record.ExceptionAsync(() => Act(command));
         
-        //assert
-        await _writeUserRepository
+        // Assert
+        await _readWriteUserRepository
             .Received(0)
-            .AddAsync(Arg.Any<User>(), default);
+            .AddAsync(Arg.Any<User>(), CancellationToken.None);
     }
     
     [Fact]
-    public async Task HandleAsync_GivenExistingEmail_ShouldNotProcessedAnyEvents()
+    public async Task GivenExistingEmail_WhenHandleAsync_ThenShouldNotProcessedAnyEvents()
     {
-        //arrange
+        // Arrange
         var command = new SignUpCommand(UserId.New(), "test@test.pl", "Test123!",
             "first_name", "last_name");
 
-        _readUserRepository
-            .DoesEmailExistAsync(command.Email, default)
+        _readWriteUserRepository
+            .DoesEmailExistAsync(command.Email, CancellationToken.None)
             .Returns(true);
         
-        //act
-        await Record.ExceptionAsync(async () => await Act(command));
+        // Act
+        _ = await Record.ExceptionAsync(async () => await Act(command));
 
-        //assert
+        // Assert
         await _eventProcessor
             .Received(0)
             .PublishAsync(Arg.Any<IEvent>());
@@ -110,35 +110,35 @@ public sealed class SignUpCommandHandlerTests
 
     [Theory]
     [MemberData(nameof(GetInvalidSignUpCommand))]
-    public async Task HandleAsync_GivenInvalidArguments_ShouldNotAddByRepository(SignUpCommand command)
+    public async Task GivenInvalidArguments_WhenHandleAsync_ThenShouldNotAddByRepository(SignUpCommand command)
     {
-        //arrange
-        _readUserRepository
-            .DoesEmailExistAsync(command.Email, default)
+        // Arrange
+        _readWriteUserRepository
+            .DoesEmailExistAsync(command.Email, CancellationToken.None)
             .Returns(false);
         
-        //act
-        await Record.ExceptionAsync(async () => await Act(command));
+        // Act
+        _ = await Record.ExceptionAsync(() => Act(command));
         
-        //assert
-        await _writeUserRepository
+        // Assert
+        await _readWriteUserRepository
             .Received(0)
-            .AddAsync(Arg.Any<User>(), default);
+            .AddAsync(Arg.Any<User>(), CancellationToken.None);
     }
     
     [Theory]
     [MemberData(nameof(GetInvalidSignUpCommand))]
-    public async Task HandleAsync_GivenInvalidArguments_ShouldNotProcessAnyEvents(SignUpCommand command)
+    public async Task GivenInvalidArguments_WhenHandleAsync_ThenShouldNotProcessAnyEvents(SignUpCommand command)
     {
-        //arrange
-        _readUserRepository
-            .DoesEmailExistAsync(command.Email, default)
+        // Arrange
+        _readWriteUserRepository
+            .DoesEmailExistAsync(command.Email, CancellationToken.None)
             .Returns(false);
         
-        //act
-        await Record.ExceptionAsync(async () => await Act(command));
+        // Act
+        _ = await Record.ExceptionAsync(() => Act(command));
 
-        //assert
+        // Assert
         await _eventProcessor
             .Received(0)
             .PublishAsync(Arg.Any<IEvent>());
@@ -219,20 +219,17 @@ public sealed class SignUpCommandHandlerTests
         ];
     }
 
-    #region arrange
+    #region Arrange
 
-    private readonly IReadUserRepository _readUserRepository;
-    private readonly IWriteUserRepository _writeUserRepository;
+    private readonly IReadWriteUserRepository _readWriteUserRepository;
     private readonly IEventProcessor _eventProcessor;
     private readonly ICommandHandler<SignUpCommand> _handler;
 
     public SignUpCommandHandlerTests()
     {
-        _readUserRepository = Substitute.For<IReadUserRepository>();
-        _writeUserRepository = Substitute.For<IWriteUserRepository>();
+        _readWriteUserRepository = Substitute.For<IReadWriteUserRepository>();
         _eventProcessor = Substitute.For<IEventProcessor>();
-        _handler = new SignUpCommandHandler(_readUserRepository,
-            _writeUserRepository, _eventProcessor);
+        _handler = new SignUpCommandHandler(_readWriteUserRepository, _eventProcessor);
     }
     #endregion
 }

@@ -12,7 +12,7 @@ namespace discipline.centre.users.infrastructure.DAL.Users.Repositories;
 
 internal sealed class MongoUserRepository(
     UsersMongoContext context,
-    IPasswordManager passwordManager) : IWriteUserRepository, IReadUserRepository
+    IPasswordManager passwordManager) : IReadWriteUserRepository
 {
     public async Task AddAsync(User user, CancellationToken cancellationToken = default)
         => await context.GetCollection<UserDocument>()
