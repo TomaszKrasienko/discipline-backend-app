@@ -1,6 +1,6 @@
 using discipline.centre.shared.abstractions.SharedKernel;
 
-namespace discipline.centre.calendar.domain;
+namespace discpline.centre.calendar.domain;
 
 public sealed class CalendarEventContent : ValueObject
 {

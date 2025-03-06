@@ -1,7 +1,7 @@
 using discipline.centre.shared.abstractions.SharedKernel;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 
-namespace discipline.centre.calendar.domain.Rules.BaseCalendarEvents;
+namespace discpline.centre.calendar.domain.Rules.BaseCalendarEvents;
 
 internal sealed class DayCannotBeDefaultRule(DateOnly value) : IBusinessRule
 {

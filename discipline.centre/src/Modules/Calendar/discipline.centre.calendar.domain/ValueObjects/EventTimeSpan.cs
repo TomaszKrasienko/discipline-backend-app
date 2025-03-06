@@ -1,44 +1,35 @@
-using discipline.centre.calendar.domain.Rules.TimeEvents;
 using discipline.centre.shared.abstractions.SharedKernel;
+using discpline.centre.calendar.domain.Rules.TimeEvents;
 
-namespace discipline.centre.calendar.domain.ValueObjects;
+namespace discpline.centre.calendar.domain.ValueObjects;
 
 public sealed class EventTimeSpan : ValueObject
 {
-    private readonly TimeSpan _from;
-    private readonly TimeSpan? _to;
-    
-    public TimeSpan From
-    {
-        get => _from;
-        private init
-        {
-            CheckRule(new EventTimeSpanValueCannotBeDefaultRule(value));
-            _from = value;
-        }
-    }
+    private readonly TimeOnly? _to;
 
-    public TimeSpan? To
+    public TimeOnly From { get; }
+    
+    public TimeOnly? To
     {
-        get => _from;
+        get => _to;
         private init
         {
-            if (value is not null)
-            {
-                CheckRule(new EventTimeSpanValueCannotBeDefaultRule(value.Value));
-            }
+            CheckRule(new EventTimeFromValueCannotBeLaterThanToValueRule(From, value));
             _to = value;
         }
     }
 
-    private EventTimeSpan(TimeSpan from, TimeSpan? to)
+    private EventTimeSpan(TimeOnly from, TimeOnly? to)
     {
         From = from;
         To = to;
     }
 
+    internal static EventTimeSpan Create(TimeOnly from, TimeOnly? to)
+        => new (from, to);
+
     protected override IEnumerable<object?> GetAtomicValues()
-    {
+    { 
         yield return From;
         yield return To;
     }

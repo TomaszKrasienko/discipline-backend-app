@@ -1,6 +1,7 @@
+using discipline.centre.calendar.domain;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-namespace discipline.centre.calendar.domain;
+namespace discpline.centre.calendar.domain;
 
 public sealed class ImportantDateEvent : BaseCalendarEvent
 {
