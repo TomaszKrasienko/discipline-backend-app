@@ -116,6 +116,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Calendar", "Calendar", "{F8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.calendar.domain.unit_tests", "tests\Modules\Calendar\discipline.centre.calendar.domain.unit_tests\discipline.centre.calendar.domain.unit_tests.csproj", "{428ED1DA-AB00-4875-8011-0EBDB9817B3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "discipline.centre.calendar.application", "src\Modules\Calendar\discipline.centre.calendar.application\discipline.centre.calendar.application.csproj", "{42E0CA3C-FDB5-4C57-BAC1-252D65B1C44B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,7 @@ Global
 		{51B16C25-29BD-414B-A94F-8BC5BD3E9C99} = {5AB20EE6-980B-4441-9869-367D2BBF1DE5}
 		{F827DCB0-E379-4C65-A41C-13C5AA791BD1} = {16137903-C380-47EC-B4E8-FAA2A29AEE5B}
 		{428ED1DA-AB00-4875-8011-0EBDB9817B3C} = {F827DCB0-E379-4C65-A41C-13C5AA791BD1}
+		{42E0CA3C-FDB5-4C57-BAC1-252D65B1C44B} = {5AB20EE6-980B-4441-9869-367D2BBF1DE5}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E8D4460A-0BBA-4AC1-B492-F5FF10286113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -307,5 +310,9 @@ Global
 		{428ED1DA-AB00-4875-8011-0EBDB9817B3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{428ED1DA-AB00-4875-8011-0EBDB9817B3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{428ED1DA-AB00-4875-8011-0EBDB9817B3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42E0CA3C-FDB5-4C57-BAC1-252D65B1C44B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42E0CA3C-FDB5-4C57-BAC1-252D65B1C44B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42E0CA3C-FDB5-4C57-BAC1-252D65B1C44B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42E0CA3C-FDB5-4C57-BAC1-252D65B1C44B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,7 +1,7 @@
+using discipline.centre.calendar.domain.Rules.BaseCalendarEvents;
 using discipline.centre.shared.abstractions.SharedKernel;
-using discpline.centre.calendar.domain.Rules.BaseCalendarEvents;
 
-namespace discpline.centre.calendar.domain.ValueObjects;
+namespace discipline.centre.calendar.domain.ValueObjects;
 
 public sealed class Day : ValueObject
 {

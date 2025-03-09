@@ -1,15 +1,28 @@
-using discipline.centre.calendar.domain;
+using discipline.centre.calendar.domain.ValueObjects;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
-using discpline.centre.calendar.domain.ValueObjects;
 
-namespace discpline.centre.calendar.domain;
+namespace discipline.centre.calendar.domain;
 
 public sealed class TimeEvent : BaseCalendarEvent
 {
     public EventTimeSpan TimeSpan { get; }
 
-    private TimeEvent(CalendarEventId id, EventTimeSpan timeSpan, DateOnly day, CalendarEventContent content) :  base(id, day, content) 
+    private TimeEvent(CalendarEventId id, 
+        EventTimeSpan timeSpan, 
+        CalendarEventContent content) :  base(id, content) 
     {
         TimeSpan = timeSpan;
+    }
+
+    public static TimeEvent Create(CalendarEventId id,
+        TimeOnly timeFrom, 
+        TimeOnly? timeTo, 
+        string title, 
+        string? description)
+    {
+        var eventTimeSpan = EventTimeSpan.Create(timeFrom, timeTo);
+        var eventContent = CalendarEventContent.Create(title, description);
+
+        return new TimeEvent(id, eventTimeSpan, eventContent);
     }
 }

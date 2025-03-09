@@ -1,5 +1,5 @@
+using discipline.centre.calendar.domain.ValueObjects;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
-using discpline.centre.calendar.domain.ValueObjects;
 using Shouldly;
 
 namespace discipline.centre.calendar.domain.unit_tests.ValueObjects;

@@ -1,7 +1,7 @@
 using discipline.centre.shared.abstractions.SharedKernel;
 using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 
-namespace discpline.centre.calendar.domain.Rules.TimeEvents;
+namespace discipline.centre.calendar.domain.Rules.TimeEvents;
 
 internal sealed class EventTimeFromValueCannotBeLaterThanToValueRule(TimeOnly from, 
     TimeOnly? to) : IBusinessRule

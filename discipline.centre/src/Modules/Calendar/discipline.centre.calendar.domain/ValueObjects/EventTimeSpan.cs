@@ -1,7 +1,7 @@
+using discipline.centre.calendar.domain.Rules.TimeEvents;
 using discipline.centre.shared.abstractions.SharedKernel;
-using discpline.centre.calendar.domain.Rules.TimeEvents;
 
-namespace discpline.centre.calendar.domain.ValueObjects;
+namespace discipline.centre.calendar.domain.ValueObjects;
 
 public sealed class EventTimeSpan : ValueObject
 {

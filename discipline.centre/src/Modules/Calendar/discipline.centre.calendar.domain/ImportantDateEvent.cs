@@ -1,12 +1,16 @@
-using discipline.centre.calendar.domain;
+using discipline.centre.calendar.domain.ValueObjects;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 
-namespace discpline.centre.calendar.domain;
+namespace discipline.centre.calendar.domain;
 
 public sealed class ImportantDateEvent : BaseCalendarEvent
 {
-    private ImportantDateEvent(CalendarEventId id, DateOnly day, CalendarEventContent content) : base(id, day, content)
+    private ImportantDateEvent(CalendarEventId id, CalendarEventContent content) : base(id, content)
+    { }
+
+    public static ImportantDateEvent Create(CalendarEventId id, string title, string? description)
     {
-        
+        var content = CalendarEventContent.Create(title, description);
+        return new ImportantDateEvent(id, content);
     }
 }
