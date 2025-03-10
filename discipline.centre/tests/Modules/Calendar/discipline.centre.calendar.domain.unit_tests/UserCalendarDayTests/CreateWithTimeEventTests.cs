@@ -1,3 +1,4 @@
+using discipline.centre.shared.abstractions.SharedKernel.Exceptions;
 using discipline.centre.shared.abstractions.SharedKernel.TypeIdentifiers;
 using Shouldly;
 
@@ -32,5 +33,17 @@ public class CreateWithTimeEventTests
                && @event.Content is { Title: title, Description: description }
                && @event.TimeSpan.From == from 
                && @event.TimeSpan.To == to).ShouldBeTrue();
+    }
+
+    [Fact]
+    public void GivenDefaultDayDateOnly_WhenCreateWithTimeEvent_ThenShouldThrowDomainExceptionWithCodeDomainExceptionWithCodeCalendarEventDayDefault()
+    {
+        // Act
+        var exception = Record.Exception(() => UserCalendarDay.CreateWithTimeEvent(UserCalendarId.New(), UserId.New(), default, CalendarEventId.New(), 
+            "Title", "Description", new TimeOnly(10, 00), new TimeOnly(20, 00)));
+        
+        // Arrange
+        exception.ShouldBeOfType<DomainException>();
+        ((DomainException)exception).Code.ShouldBe("CalendarEvent.Day.Default");
     }
 }
