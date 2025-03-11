@@ -10,7 +10,6 @@ namespace discipline.centre.dailytrackers.api;
 internal sealed class DailyTrackersModule : IModule
 {
     internal const string ModuleName = "daily-trackers-module";
-    
     public string Name => "DailyTrackers";
     
     public void Register(IServiceCollection services, IConfiguration configuration)

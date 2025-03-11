@@ -16,5 +16,9 @@
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.centre.calendar.application.unit_tests"/>
     </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" />
+    </ItemGroup>
 
 </Project>
