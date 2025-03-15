@@ -4,9 +4,9 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>discipline.centre.calendar.infrastructure.unit_tests</RootNamespace>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
-        <RootNamespace>discipline.centre.calendar.application.unit_tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,7 +14,6 @@
         <PackageReference Include="Microsoft.NET.Test.Sdk"/>
         <PackageReference Include="xunit"/>
         <PackageReference Include="xunit.runner.visualstudio"/>
-        <PackageReference Include="NSubstitute"/>
         <PackageReference Include="Shouldly"/>
     </ItemGroup>
 
@@ -23,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\..\src\Modules\Calendar\discipline.centre.calendar.application\discipline.centre.calendar.application.csproj" />
+      <ProjectReference Include="..\..\..\..\src\Modules\Calendar\discipline.centre.calendar.infrastructure\discipline.centre.calendar.infrastructure.csproj" />
       <ProjectReference Include="..\..\..\Shared\discipline.centre.calendar.tests.sharedkernel\discipline.centre.calendar.tests.sharedkernel.csproj" />
     </ItemGroup>
 

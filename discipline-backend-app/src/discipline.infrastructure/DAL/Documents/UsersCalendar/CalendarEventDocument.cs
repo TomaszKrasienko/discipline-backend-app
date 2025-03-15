@@ -1,4 +1,4 @@
-namespace discipline.infrastructure.DAL.Documents.UsersCalendar;
+Bnamespace discipline.infrastructure.DAL.Documents.UsersCalendar;
 
 internal sealed class CalendarEventDocument : EventDocument, IDocument
 {
