@@ -11,6 +11,7 @@ internal static class LoggingServicesConfigurationExtensions
 {
     internal static IServiceCollection AddLogging(this IServiceCollection services, IConfiguration configuration)
         => services
+            .AddSingleton<UserContextEnrichmentMiddleware>()
             .AddOptions(configuration)
             .AddDistributedTracing();
 

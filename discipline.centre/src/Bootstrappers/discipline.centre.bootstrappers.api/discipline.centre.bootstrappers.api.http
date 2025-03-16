@@ -49,6 +49,8 @@ Content-Type: application/json
   "subscriptionId": "01JDEMJMBP7DMM3GMNWCE62FS2"
 }
 
+### Activity Rules
+
 ###
 # @name create_activity_rule
 POST {{host_address}}/api/activity-rules-module/activity-rules
@@ -57,11 +59,10 @@ Content-Type: application/json
 
 {
   "details": {
-      "title": "rule 2 first day",
+      "title": "rule 10first day",
       "note": "string"
     },
-  "mode": "FirstDayOfWeek",
-  "selectedDays":null
+  "mode": "FirstDayOfWeek"
 }
 
 ###
