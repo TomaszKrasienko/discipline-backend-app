@@ -16,6 +16,7 @@
       <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.abstractions\discipline.centre.shared.abstractions.csproj" />
       <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj" />
       <ProjectReference Include="..\discipline.centre.calendar.application\discipline.centre.calendar.application.csproj" />
+      <ProjectReference Include="..\discipline.centre.calendar.infrastructure\discipline.centre.calendar.infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

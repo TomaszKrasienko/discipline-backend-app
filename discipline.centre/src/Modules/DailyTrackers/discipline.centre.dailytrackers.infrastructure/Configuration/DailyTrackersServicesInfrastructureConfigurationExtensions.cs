@@ -10,10 +10,9 @@ public static class DailyTrackersServicesInfrastructureConfigurationExtensions
     /// Adds infrastructure services to DI container
     /// </summary>
     /// <param name="services">DI container, for more see <see cref="IServiceCollection"/></param>
-    /// <param name="assemblyName">Module assembly name</param>
     /// <returns></returns>
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string assemblyName)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         => services
-            .AddDal(assemblyName)
+            .AddDal()
             .AddApiClients();
 }

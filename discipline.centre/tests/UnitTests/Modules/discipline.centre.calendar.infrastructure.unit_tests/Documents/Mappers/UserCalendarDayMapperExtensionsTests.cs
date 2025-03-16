@@ -1,5 +1,6 @@
 using discipline.centre.calendar.domain;
 using discipline.centre.calendar.infrastructure.DAL.Calendar.Documents;
+using discipline.centre.calendar.infrastructure.DAL.Documents;
 using discipline.centre.calendar.tests.sharedkernel.Domain;
 using Shouldly;
 
@@ -28,10 +29,12 @@ public sealed class UserCalendarDayMapperExtensionsTests
         result.UserId.ShouldBe(userCalendarDay.UserId.ToString());
 
         var resultImportantDate = result.Events.Single(x => x is ImportantDateEventDocument);
+        resultImportantDate.EventId.ShouldBe(importantDateEvent.Id.ToString());
         resultImportantDate.Content.Title.ShouldBe(importantDateEvent.Content.Title);
         resultImportantDate.Content.Description.ShouldBe(importantDateEvent.Content.Description);
         
         var resultTimeEvent = (TimeEventDocument)result.Events.Single(x => x is TimeEventDocument);
+        resultTimeEvent.EventId.ShouldBe(timeEvent.Id.ToString());
         resultTimeEvent.Content.Title.ShouldBe(timeEvent.Content.Title);
         resultTimeEvent.Content.Description.ShouldBe(timeEvent.Content.Description);
         resultTimeEvent.TimeSpan.From.ShouldBe(timeEvent.TimeSpan.From);

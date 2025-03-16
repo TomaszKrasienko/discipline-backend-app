@@ -12,6 +12,7 @@ internal sealed class CalendarModule : IModule
     
     public void Register(IServiceCollection services, IConfiguration configuration)
     {
+        services.AddInfrastructure();
     }
 
     public void Use(WebApplication app)

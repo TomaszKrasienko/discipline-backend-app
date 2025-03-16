@@ -20,7 +20,7 @@ public sealed class AddTimeEventTests
             new TimeOnly(20,00), null);
         
         // Assert
-        userCalendarDay.Events.Any(x => x is ImportantDateEvent && x.Content.Title == title)
+        userCalendarDay.Events.Any(x => x is TimeEvent && x.Content.Title == title)
             .ShouldBeTrue();
     }
 

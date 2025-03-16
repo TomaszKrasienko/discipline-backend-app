@@ -12,5 +12,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\src\Modules\Calendar\discipline.centre.calendar.application\discipline.centre.calendar.application.csproj" />
+      <ProjectReference Include="..\..\..\src\Modules\Calendar\discipline.centre.calendar.infrastructure\discipline.centre.calendar.infrastructure.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.calendar.infrastructure.unit_tests"/>
+    </ItemGroup>
+    
 </Project>

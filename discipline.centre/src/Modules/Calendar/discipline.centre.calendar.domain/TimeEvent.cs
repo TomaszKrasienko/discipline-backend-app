@@ -7,7 +7,10 @@ public sealed class TimeEvent : BaseCalendarEvent
 {
     public EventTimeSpan TimeSpan { get; }
 
-    private TimeEvent(CalendarEventId id, 
+    /// <summary>
+    /// Use only for mongo purpose!
+    /// </summary>
+    public TimeEvent(CalendarEventId id, 
         EventTimeSpan timeSpan, 
         CalendarEventContent content) :  base(id, content) 
     {

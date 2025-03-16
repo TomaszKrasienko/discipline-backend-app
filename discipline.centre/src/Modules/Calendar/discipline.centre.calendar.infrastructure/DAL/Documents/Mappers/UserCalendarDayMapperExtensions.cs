@@ -1,4 +1,5 @@
 using discipline.centre.calendar.infrastructure.DAL.Calendar.Documents;
+using discipline.centre.calendar.infrastructure.DAL.Documents;
 
 // ReSharper disable once CheckNamespace
 namespace discipline.centre.calendar.domain;
@@ -24,6 +25,7 @@ internal static class UserCalendarDayMapperExtensions
     private static TimeEventDocument AsDocument(this TimeEvent @event)
         => new()
         {
+            EventId = @event.Id.ToString(),
             Content = new()
             {
                 Title = @event.Content.Title,
@@ -39,6 +41,7 @@ internal static class UserCalendarDayMapperExtensions
     private static ImportantDateEventDocument AsDocument(this ImportantDateEvent @event)
         => new()
         {
+            EventId = @event.Id.ToString(),
             Content = new()
             {
                 Title = @event.Content.Title,

@@ -7,15 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Configuration\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\..\Shared\discipline.centre.shared.infrastructure\discipline.centre.shared.infrastructure.csproj" />
       <ProjectReference Include="..\discipline.centre.calendar.application\discipline.centre.calendar.application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <InternalsVisibleTo Include="discipline.centre.calendar.infrastructure.unit_tests"/>
+        <InternalsVisibleTo Include="discipline.centre.calendar.tests.sharedkernel"/>
     </ItemGroup>
 </Project>

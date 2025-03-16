@@ -18,6 +18,15 @@ public sealed class UserCalendarDay : AggregateRoot<UserCalendarId, Ulid>
         Day = day;
     }
 
+    /// <summary>
+    /// Use only for Mongo purpose!
+    /// </summary>
+    public UserCalendarDay(UserCalendarId id, UserId userId, Day day, HashSet<BaseCalendarEvent> events)
+        : this(id, userId, day)
+    {
+        _events = events;
+    }
+
     public static UserCalendarDay CreateWithImportantDate(UserCalendarId id,
         UserId userId, 
         DateOnly day,

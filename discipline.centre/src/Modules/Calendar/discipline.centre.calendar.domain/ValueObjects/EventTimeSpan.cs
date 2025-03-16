@@ -25,7 +25,7 @@ public sealed class EventTimeSpan : ValueObject
         To = to;
     }
 
-    internal static EventTimeSpan Create(TimeOnly from, TimeOnly? to)
+    public static EventTimeSpan Create(TimeOnly from, TimeOnly? to)
         => new (from, to);
 
     protected override IEnumerable<object?> GetAtomicValues()

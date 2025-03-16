@@ -7,7 +7,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 internal static class DalServicesConfigurationExtensions
 {
-    internal static IServiceCollection AddDal(this IServiceCollection services, string assemblyName)
+    internal static IServiceCollection AddDal(this IServiceCollection services)
         => services
             .AddMongoContext<DailyTrackersMongoContext>()
             .AddScoped<IReadDailyTrackerRepository, MongoDailyTrackerRepository>()

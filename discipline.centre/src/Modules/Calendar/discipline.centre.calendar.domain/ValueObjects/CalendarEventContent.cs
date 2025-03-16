@@ -24,7 +24,7 @@ public sealed class CalendarEventContent : ValueObject
         Description = description;
     }
     
-    internal static CalendarEventContent Create(string title, string? description) 
+    public static CalendarEventContent Create(string title, string? description) 
         => new(title, description);
 
     protected override IEnumerable<object?> GetAtomicValues()

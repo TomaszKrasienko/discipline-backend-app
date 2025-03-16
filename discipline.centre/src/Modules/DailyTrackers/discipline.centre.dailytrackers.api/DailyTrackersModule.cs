@@ -14,7 +14,7 @@ internal sealed class DailyTrackersModule : IModule
     
     public void Register(IServiceCollection services, IConfiguration configuration)
         => services
-            .AddInfrastructure(ModuleName)
+            .AddInfrastructure()
             .AddRedisConsumerService<CreateActivityFromActivityRuleCommand>();
 
     public void Use(WebApplication app)
