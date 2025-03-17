@@ -14,8 +14,9 @@ internal static class LoggingWebApplicationBuilderConfigurationExtensions
         app.Host.UseSerilog((context, configuration) =>
         {
             configuration
+                .ReadFrom.Configuration(context.Configuration)
                 .Enrich.FromLogContext()
-                .WriteTo.Console(outputTemplate:"[{Timestamp:HH:mm:ss} {Level:u3}] {Message}")
+                .WriteTo.Console(outputTemplate:"[{Timestamp:HH:mm:ss} {Level:u3}] {Message}{NewLine}")
                 .WriteTo.Seq(options.Url);
         });
 
