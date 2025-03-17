@@ -23,6 +23,6 @@ internal sealed class CqrsDispatcher(
         var handler = scope.ServiceProvider.GetRequiredService(handlerType);
         return await ((Task<TResult>) handlerType
             .GetMethod(nameof(IQueryHandler<IQuery<TResult>, TResult>.HandleAsync))?
-            .Invoke(handler, new object[]{query, cancellationToken})!)!;
+            .Invoke(handler, [query, cancellationToken])!)!;
     }
 }

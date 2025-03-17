@@ -40,6 +40,16 @@ services:
       - 6023:14250
     environment:
       COLLECTOR_ZIPKIN_HOST_PORT: ":9411"
+  seq:
+    image: datalust/seq
+    container_name: Seq
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - 6024:80
+    networks:
+      - discipline-network
 
 volumes:
   mongo:
