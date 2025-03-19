@@ -11,6 +11,7 @@ internal static class DistributedCacheServicesConfigurationExtensions
     internal static IServiceCollection AddDistributedCache(this IServiceCollection services, IConfiguration configuration)
         => services
             .ValidateAndBind<RedisCacheOptions, RedisCacheOptionsValidator>(configuration)
+            .Configure<CacheOptions>(configuration.GetSection(nameof(CacheOptions)))
             .AddSingleton<ICacheFacade, CacheFacade>()
             .AddStackExchangeRedisCache(redisOptions =>
             {
