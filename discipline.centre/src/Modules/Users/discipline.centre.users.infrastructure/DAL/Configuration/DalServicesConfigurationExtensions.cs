@@ -14,8 +14,8 @@ internal static class DalServicesConfigurationExtensions
         => services
             .AddMongoContext<UsersMongoContext>()
             .AddScoped<IReadUserRepository, MongoUserRepository>()
-            .AddScoped<IWriteUserRepository, MongoUserRepository>()
+            .AddScoped<IReadWriteUserRepository, MongoUserRepository>()
             .AddScoped<IReadSubscriptionRepository, MongoSubscriptionRepository>()
-            .AddScoped<IWriteSubscriptionRepository, MongoSubscriptionRepository>()
+            .AddScoped<IReadWriteSubscriptionRepository, MongoSubscriptionRepository>()
             .AddHostedService<SubscriptionInitializer>();
 }

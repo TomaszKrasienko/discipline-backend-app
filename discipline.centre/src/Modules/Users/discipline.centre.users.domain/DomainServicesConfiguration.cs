@@ -1,7 +1,7 @@
 using discipline.centre.users.domain.Users.Services;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace discipline.centre.users.domain;
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DomainServicesConfiguration
 {

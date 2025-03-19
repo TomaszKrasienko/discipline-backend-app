@@ -27,7 +27,7 @@ public sealed class DeleteActivityStageCommandHandlerTests
             [new StageSpecification("test_title", 1)]);
         var stage = dailyTracker.Activities.Single().Stages!.Single();
 
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByIdAsync(userId, dailyTrackerId, CancellationToken.None)
             .Returns(dailyTracker);
 
@@ -37,7 +37,7 @@ public sealed class DeleteActivityStageCommandHandlerTests
         await Act(command);
         
         // Assert
-        await _writeReadDailyTrackerRepository
+        await _readWriteDailyTrackerRepository
             .Received(1)
             .UpdateAsync(dailyTracker, CancellationToken.None);
     }
@@ -55,7 +55,7 @@ public sealed class DeleteActivityStageCommandHandlerTests
             [new StageSpecification("test_title", 1)]);
         var stage = dailyTracker.Activities.Single().Stages!.Single();
 
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByIdAsync(userId, dailyTrackerId, CancellationToken.None)
             .Returns(dailyTracker);
 
@@ -83,7 +83,7 @@ public sealed class DeleteActivityStageCommandHandlerTests
         await Act(command);
         
         // Assert
-        await _writeReadDailyTrackerRepository
+        await _readWriteDailyTrackerRepository
             .Received(0)
             .UpdateAsync(Arg.Any<DailyTracker>(), CancellationToken.None);
     }
@@ -100,7 +100,7 @@ public sealed class DeleteActivityStageCommandHandlerTests
             userId, activityId, new ActivityDetailsSpecification("test_title", null), null,
             [new StageSpecification("test_title", 1)]);
 
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByIdAsync(userId, dailyTrackerId, CancellationToken.None)
             .Returns(dailyTracker);
 
@@ -110,19 +110,19 @@ public sealed class DeleteActivityStageCommandHandlerTests
         await Act(command);
         
         // Assert
-        await _writeReadDailyTrackerRepository
+        await _readWriteDailyTrackerRepository
             .Received(0)
             .UpdateAsync(dailyTracker, CancellationToken.None);
     }
     
     #region Arrange
-    private readonly IReadWriteDailyTrackerRepository _writeReadDailyTrackerRepository;
+    private readonly IReadWriteDailyTrackerRepository _readWriteDailyTrackerRepository;
     private readonly DeleteActivityStageCommandHandler _handler;
 
     public DeleteActivityStageCommandHandlerTests()
     {
-        _writeReadDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
-        _handler = new DeleteActivityStageCommandHandler(_writeReadDailyTrackerRepository);
+        _readWriteDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
+        _handler = new DeleteActivityStageCommandHandler(_readWriteDailyTrackerRepository);
     }
     #endregion
 }

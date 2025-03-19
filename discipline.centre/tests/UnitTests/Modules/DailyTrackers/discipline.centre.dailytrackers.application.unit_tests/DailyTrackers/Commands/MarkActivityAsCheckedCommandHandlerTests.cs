@@ -20,7 +20,7 @@ public sealed class MarkActivityAsCheckedCommandHandlerTests
         var activity = ActivityFakeDataFactory.Get();
         var dailyTracker = DailyTrackerFakeDataFactory.Get(activity);
 
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByIdAsync(dailyTracker.UserId, dailyTracker.Id, CancellationToken.None)
             .Returns(dailyTracker);
 
@@ -30,7 +30,7 @@ public sealed class MarkActivityAsCheckedCommandHandlerTests
         await Act(command);
         
         // Assert
-        await _writeReadDailyTrackerRepository
+        await _readWriteDailyTrackerRepository
             .Received(1)
             .UpdateAsync(dailyTracker, CancellationToken.None);
     }
@@ -42,7 +42,7 @@ public sealed class MarkActivityAsCheckedCommandHandlerTests
         var activity = ActivityFakeDataFactory.Get();
         var dailyTracker = DailyTrackerFakeDataFactory.Get(activity);
 
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByIdAsync(dailyTracker.UserId, dailyTracker.Id, CancellationToken.None)
             .Returns(dailyTracker);
 
@@ -72,13 +72,13 @@ public sealed class MarkActivityAsCheckedCommandHandlerTests
     }
     
     #region arrange
-    private readonly IReadWriteDailyTrackerRepository _writeReadDailyTrackerRepository;
+    private readonly IReadWriteDailyTrackerRepository _readWriteDailyTrackerRepository;
     private readonly MarkActivityAsCheckedCommandHandler _handler;
 
     public MarkActivityAsCheckedCommandHandlerTests()
     {
-        _writeReadDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
-        _handler = new MarkActivityAsCheckedCommandHandler(_writeReadDailyTrackerRepository);
+        _readWriteDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
+        _handler = new MarkActivityAsCheckedCommandHandler(_readWriteDailyTrackerRepository);
     }
 
     #endregion

@@ -24,7 +24,7 @@ public sealed class CheckActivityStageCommandHandlerTests
 
         var command = new CheckActivityStageCommand(dailyTracker.UserId, dailyTracker.Id, activity.Id, stage.Id);
         
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByIdAsync(command.UserId, command.DailyTrackerId, CancellationToken.None)
             .Returns(dailyTracker);
         
@@ -34,7 +34,7 @@ public sealed class CheckActivityStageCommandHandlerTests
         //assert
         stage.IsChecked.Value.ShouldBeTrue();
         
-        await _writeReadDailyTrackerRepository
+        await _readWriteDailyTrackerRepository
             .Received(1)
             .UpdateAsync(dailyTracker, CancellationToken.None);
     }
@@ -54,13 +54,13 @@ public sealed class CheckActivityStageCommandHandlerTests
     }
     
     #region arrange
-    private readonly IReadWriteDailyTrackerRepository _writeReadDailyTrackerRepository;
+    private readonly IReadWriteDailyTrackerRepository _readWriteDailyTrackerRepository;
     private readonly CheckActivityStageCommandHandler _handler;
 
     public CheckActivityStageCommandHandlerTests()
     {
-        _writeReadDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
-        _handler = new CheckActivityStageCommandHandler(_writeReadDailyTrackerRepository);
+        _readWriteDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
+        _handler = new CheckActivityStageCommandHandler(_readWriteDailyTrackerRepository);
     }
     #endregion
 }

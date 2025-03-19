@@ -48,7 +48,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
         var dailyTracker = DailyTracker.Create(DailyTrackerId.New(), today, command.UserId, ActivityId.New(),
             new ActivityDetailsSpecification("test_title", null), null, null);
 
-        _repository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByDayAsync(command.UserId, today, CancellationToken.None)
             .Returns(dailyTracker);
         
@@ -56,7 +56,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
         await Act(command);
         
         //assert
-        await _repository
+        await _readWriteDailyTrackerRepository
             .Received(1)
             .UpdateAsync(dailyTracker, CancellationToken.None);
 
@@ -67,7 +67,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
                && x.Details.Title == activityRuleDto.Title
                && x.Details.Note == activityRuleDto.Note).ShouldBeTrue();
         
-        await _repository
+        await _readWriteDailyTrackerRepository
             .Received(0)
             .AddAsync(Arg.Any<DailyTracker>(), CancellationToken.None);
     }
@@ -105,7 +105,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .GetActivityRuleByIdAsync(command.ActivityRuleId, command.UserId)
             .Returns(activityRuleDto);
 
-        _repository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByDayAsync(command.UserId, today, CancellationToken.None)
             .ReturnsNull();
         
@@ -113,7 +113,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
         await Act(command);
         
         //assert
-        await _repository
+        await _readWriteDailyTrackerRepository
             .Received(1)
             .AddAsync(Arg.Is<DailyTracker>(arg
                 => arg.Day.Value == today
@@ -127,7 +127,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
                        && x.Stages!.First().Index == activityRuleDto.Stages[0].Index)
             ), CancellationToken.None);
         
-        await _repository
+        await _readWriteDailyTrackerRepository
             .Received(0)
             .UpdateAsync(Arg.Any<DailyTracker>(), CancellationToken.None);
     }
@@ -143,7 +143,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .DateNow()
             .Returns(today);
 
-        _repository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByDayAsync(command.UserId, today, CancellationToken.None)
             .ReturnsNull();
 
@@ -195,7 +195,7 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
             .DateNow()
             .Returns(today);
         
-        _repository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByDayAsync(command.UserId, today, CancellationToken.None)
             .Returns(dailyTracker);
         
@@ -209,15 +209,15 @@ public sealed class CreateActivityFromActivityRuleCommandHandlerTests
     #region arrange
     private readonly IClock _clock;
     private readonly IActivityRulesApiClient _apiClient;
-    private readonly IReadWriteDailyTrackerRepository _repository;
+    private readonly IReadWriteDailyTrackerRepository _readWriteDailyTrackerRepository;
     private readonly ICommandHandler<CreateActivityFromActivityRuleCommand> _handler;
 
     public CreateActivityFromActivityRuleCommandHandlerTests()
     {
         _clock = Substitute.For<IClock>();
         _apiClient = Substitute.For<IActivityRulesApiClient>();
-        _repository = Substitute.For<IReadWriteDailyTrackerRepository>();
-        _handler = new CreateActivityFromActivityRuleCommandHandler(_clock, _apiClient, _repository);
+        _readWriteDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
+        _handler = new CreateActivityFromActivityRuleCommandHandler(_clock, _apiClient, _readWriteDailyTrackerRepository);
     }
     #endregion
 }

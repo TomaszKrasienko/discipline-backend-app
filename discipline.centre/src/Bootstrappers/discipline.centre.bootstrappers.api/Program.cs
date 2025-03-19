@@ -11,6 +11,8 @@ var modules = ModuleLoader.GetModules(assemblies);
 builder.Services.AddInfrastructure(assemblies, builder.Configuration);
 builder.Services.AddModulesConfiguration(modules, builder.Configuration);
 
+builder.UseInfrastructure();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();

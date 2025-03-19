@@ -25,7 +25,7 @@ public sealed class CreateActivityCommandHandlerTests
         new ActivityDetailsSpecification("new_test_activity", null),
         null);
 
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByDayAsync(command.UserId, command.Day, CancellationToken.None)
             .ReturnsNull();
 
@@ -33,7 +33,7 @@ public sealed class CreateActivityCommandHandlerTests
         await Act(command);
         
         //assert
-        await _writeReadDailyTrackerRepository
+        await _readWriteDailyTrackerRepository
             .Received(1)
             .AddAsync(Arg.Is<DailyTracker>(arg
                 => arg.Day == command.Day
@@ -57,7 +57,7 @@ public sealed class CreateActivityCommandHandlerTests
             new ActivityDetailsSpecification("new_test_activity", null),
             null);
         
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByDayAsync( dailyTracker.UserId, command.Day, CancellationToken.None)
             .Returns(dailyTracker);
         
@@ -81,7 +81,7 @@ public sealed class CreateActivityCommandHandlerTests
             new ActivityDetailsSpecification("new_test_activity", null),
             null);
         
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByDayAsync(dailyTracker.UserId, command.Day, CancellationToken.None)
             .Returns(dailyTracker);
         
@@ -89,7 +89,7 @@ public sealed class CreateActivityCommandHandlerTests
         await Act(command);
         
         //assert
-        await _writeReadDailyTrackerRepository
+        await _readWriteDailyTrackerRepository
             .Received(1)
             .UpdateAsync(dailyTracker, CancellationToken.None);
     }
@@ -106,7 +106,7 @@ public sealed class CreateActivityCommandHandlerTests
             new ActivityDetailsSpecification(activity.Details.Title, null),
             null);
         
-        _writeReadDailyTrackerRepository
+        _readWriteDailyTrackerRepository
             .GetDailyTrackerByDayAsync(dailyTracker.UserId, command.Day, CancellationToken.None)
             .Returns(dailyTracker);
         
@@ -118,13 +118,13 @@ public sealed class CreateActivityCommandHandlerTests
     }
     
     #region arrange
-    private readonly IReadWriteDailyTrackerRepository _writeReadDailyTrackerRepository;
+    private readonly IReadWriteDailyTrackerRepository _readWriteDailyTrackerRepository;
     private readonly ICommandHandler<CreateActivityCommand> _handler;
 
     public CreateActivityCommandHandlerTests()
     {
-        _writeReadDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
-        _handler = new CreateActivityCommandHandler(_writeReadDailyTrackerRepository);
+        _readWriteDailyTrackerRepository = Substitute.For<IReadWriteDailyTrackerRepository>();
+        _handler = new CreateActivityCommandHandler(_readWriteDailyTrackerRepository);
     }
     #endregion
 }

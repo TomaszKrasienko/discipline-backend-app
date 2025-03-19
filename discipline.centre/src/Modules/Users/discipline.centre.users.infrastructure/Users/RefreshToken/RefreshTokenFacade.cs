@@ -21,7 +21,7 @@ internal sealed class RefreshTokenFacade(
     {
         var refreshToken = GenerateRandom(_refreshTokenLength);
         var dto = new RefreshTokenDto(refreshToken);
-        await cacheFacade.AddAsync(userId.Value.ToString(), dto, _expiry, cancellationToken);
+        await cacheFacade.AddOrUpdateAsync(userId.Value.ToString(), dto, _expiry, cancellationToken);
         return refreshToken;
     }
 

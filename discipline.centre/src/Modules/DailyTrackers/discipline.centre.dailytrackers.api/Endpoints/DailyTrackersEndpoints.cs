@@ -150,7 +150,7 @@ internal static class DailyTrackersEndpoints
             .RequireAuthorization()
             .RequireAuthorization(UserStatePolicy.Name);
         
-        app.MapDelete($"$api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/{{dailyTrackerId:ulid}}/activities/{{activityId:ulid}}",
+        app.MapDelete($"api/{DailyTrackersModule.ModuleName}/{DailyTrackersTag}/{{dailyTrackerId:ulid}}/activities/{{activityId:ulid}}",
                 async (Ulid dailyTrackerId, Ulid activityId, CancellationToken cancellationToken, IIdentityContext identityContext, ICqrsDispatcher dispatcher) =>
                 {
                     var stronglyDailyTrackerId = new DailyTrackerId(dailyTrackerId);

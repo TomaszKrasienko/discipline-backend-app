@@ -49,6 +49,8 @@ Content-Type: application/json
   "subscriptionId": "01JDEMJMBP7DMM3GMNWCE62FS2"
 }
 
+### Activity Rules
+
 ###
 # @name create_activity_rule
 POST {{host_address}}/api/activity-rules-module/activity-rules
@@ -57,11 +59,10 @@ Content-Type: application/json
 
 {
   "details": {
-      "title": "rule 2 first day",
+      "title": "rule 10f1irst1 day",
       "note": "string"
     },
-  "mode": "FirstDayOfWeek",
-  "selectedDays":null
+  "mode": "FirstDayOfWeek"
 }
 
 ###
@@ -89,9 +90,9 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "day": "2025-02-23",
+  "day": "2025-03-16",
   "details": {
-    "title": "Pierwsze zadanie to do1",
+    "title": "Pierwsze zadanie to do3",
     "note": "Pamiętać o odebraniu paczek, posprzątaniu i jedzeniu"
   },
   "stages": [
@@ -118,9 +119,13 @@ GET {{host_address}}/api/daily-trackers-module/daily-trackers/activities/{{activ
 Authorization: Bearer {{token}}
 
 ###
-GET {{host_address}}/api/daily-trackers-module/daily-trackers/2025-02-19
+GET {{host_address}}/api/daily-trackers-module/daily-trackers/2025-03-16
 Authorization: Bearer {{token}}
 
 ###
-PATCH {{host_address}}/api/daily-trackers-module/daily-trackers/01JMFXN33E64FZ5EN6WN3S9AF0/activities/01JMFXN31WSM5KQ2EK5PDP6HKA/stages/01JMFXN33T2EZ4HA2HA10CSBN8/check
+PATCH {{host_address}}/api/daily-trackers-module/daily-trackers/01JPQYQ6P35EXKSBXGMYRQEFH4/activities/01JPQYQ6NM03SVK4WAJ34M5NMZ/stages/01JPQYQ6P5MK16SK781CMQ0NDQ/check
+Authorization: Bearer {{token}}
+
+###
+DELETE {{host_address}}/api/daily-trackers-module/daily-trackers/01JPQY82R24CYBB25R15ESWHEN/activities/01JPQY82QGBRRH2V0796QVSSDD
 Authorization: Bearer {{token}}

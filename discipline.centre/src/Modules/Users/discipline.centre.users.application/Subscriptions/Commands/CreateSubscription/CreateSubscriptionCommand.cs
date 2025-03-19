@@ -33,12 +33,11 @@ internal sealed class CreateSubscriptionCommandValidator : AbstractValidator<Cre
 }
 
 internal sealed class CreateSubscriptionCommandHandler(
-    IReadSubscriptionRepository readSubscriptionRepository,
-    IWriteSubscriptionRepository writeSubscriptionRepository) : ICommandHandler<CreateSubscriptionCommand>
+    IReadWriteSubscriptionRepository readWriteSubscriptionRepository) : ICommandHandler<CreateSubscriptionCommand>
 {
     public async Task HandleAsync(CreateSubscriptionCommand command, CancellationToken cancellationToken = default)
     {
-        var doesEmailExist = await readSubscriptionRepository.DoesTitleExistAsync(command.Title, cancellationToken);
+        var doesEmailExist = await readWriteSubscriptionRepository.DoesTitleExistAsync(command.Title, cancellationToken);
         
         if (doesEmailExist)
         {
@@ -47,6 +46,6 @@ internal sealed class CreateSubscriptionCommandHandler(
 
         var subscription = Subscription.Create(command.Id, command.Title, command.PricePerMonth,
             command.PricePerYear, command.Features);
-        await writeSubscriptionRepository.AddAsync(subscription, cancellationToken);
+        await readWriteSubscriptionRepository.AddAsync(subscription, cancellationToken);
     }
 }

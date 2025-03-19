@@ -19,7 +19,7 @@ public sealed class RefreshTokenFacadeTests
     public async Task GenerateAndSaveAsync_ShouldGenerateRefreshTokenWithProperLength()
     {
         //act
-        var result = await _refreshTokenFacade.GenerateAndSaveAsync(UserId.New(), default);
+        var result = await _refreshTokenFacade.GenerateAndSaveAsync(UserId.New(), CancellationToken.None);
         
         //assert
         result.Length.ShouldBe(_options.Value.Length);
@@ -32,15 +32,16 @@ public sealed class RefreshTokenFacadeTests
         var userId = UserId.New();
         
         //act
-        var result = await _refreshTokenFacade.GenerateAndSaveAsync(userId, default);
+        var result = await _refreshTokenFacade.GenerateAndSaveAsync(userId, CancellationToken.None);
         
         //assert
         await _cacheFacade
             .Received(1)
-            .AddAsync(
+            .AddOrUpdateAsync(
                 userId.ToString(),
                 Arg.Is<RefreshTokenDto>(arg => arg.Value == result),
-                _options.Value.Expiry);
+                _options.Value.Expiry,
+                CancellationToken.None);
     }
     
     #region arrange

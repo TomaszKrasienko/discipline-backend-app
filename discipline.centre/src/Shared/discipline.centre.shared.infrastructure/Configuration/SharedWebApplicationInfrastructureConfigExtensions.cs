@@ -12,7 +12,8 @@ public static class SharedWebApplicationInfrastructureConfigExtensions
             .UseUiDocumentation()
             .UseExceptionsHandling()
             .UseCorsPolicy()
-            .UseAuth();
+            .UseAuth()
+            .UseLogging();
 
     private static IApplicationBuilder UseCorsPolicy(this IApplicationBuilder app)
     {

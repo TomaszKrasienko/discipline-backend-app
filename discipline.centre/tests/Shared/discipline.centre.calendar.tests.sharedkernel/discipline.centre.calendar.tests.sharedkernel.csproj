@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Bogus" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\Modules\Calendar\discipline.centre.calendar.application\discipline.centre.calendar.application.csproj" />
+      <ProjectReference Include="..\..\..\src\Modules\Calendar\discipline.centre.calendar.infrastructure\discipline.centre.calendar.infrastructure.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="discipline.centre.calendar.infrastructure.unit_tests"/>
+    </ItemGroup>
+    
+</Project>
