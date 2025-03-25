@@ -17,7 +17,8 @@ internal static class EventsMapExtensions
     /// <exception cref="InvalidOperationException">When domain event does not exists</exception>
     internal static IEvent MapAsIntegrationEvent(this DomainEvent domainEvent) => domainEvent switch
     {
-        ActivityRuleCreated @event => new ActivityRuleRegistered(@event.ActivityRuleId, @event.UserId),
+        ActivityRuleCreated @event => new ActivityRuleRegistered(@event.ActivityRuleId.ToString(), 
+            @event.UserId.ToString()),
         _ => throw new InvalidOperationException("Unknown event type")
     };
 }

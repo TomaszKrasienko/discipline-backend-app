@@ -25,6 +25,12 @@ COPY src/Modules/Users/discipline.centre.users.application/discipline.centre.use
 COPY src/Modules/Users/discipline.centre.users.domain/discipline.centre.users.domain.csproj ./discipline.centre.users.domain/
 COPY src/Modules/Users/discipline.centre.users.infrastructure/discipline.centre.users.infrastructure.csproj ./discipline.centre.users.infrastructure/
 
+# Calendar module
+COPY src/Modules/Calendar/discipline.centre.calendar.domain/discipline.centre.calendar.domain.csproj ./discipline.centre.calendar.domain/
+COPY src/Modules/Calendar/discipline.centre.calendar.application/discipline.centre.calendar.application.csproj ./discipline.centre.calendar.application/
+COPY src/Modules/Calendar/discipline.centre.calendar.infrastructure/discipline.centre.calendar.infrastructure.csproj ./discipline.centre.calendar.infrastructure/
+COPY src/Modules/Calendar/discipline.centre.calendar.api/discipline.centre.calendar.api.csproj ./discipline.centre.calendar.api/
+
 # Shared module
 COPY src/Shared/discipline.centre.shared.abstractions/discipline.centre.shared.abstractions.csproj ./discipline.centre.shared.abstractions/ 
 COPY src/Shared/discipline.centre.shared.infrastructure/discipline.centre.shared.infrastructure.csproj ./discipline.centre.shared.infrastructure/

@@ -59,7 +59,7 @@ Content-Type: application/json
 
 {
   "details": {
-      "title": "rule 10f1irst1 day",
+      "title": "Rule 165",
       "note": "string"
     },
   "mode": "FirstDayOfWeek"
@@ -129,3 +129,6 @@ Authorization: Bearer {{token}}
 ###
 DELETE {{host_address}}/api/daily-trackers-module/daily-trackers/01JPQY82R24CYBB25R15ESWHEN/activities/01JPQY82QGBRRH2V0796QVSSDD
 Authorization: Bearer {{token}}
+
+###
+GET http://localhost:7001/activity-rules-module/activity-rules-internal/01JPQTFWDB91AF1QVHYP8T8Z36/01JQ4RP49JFBE8NMDQSTTAZQWA

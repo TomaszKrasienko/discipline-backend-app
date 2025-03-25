@@ -7,6 +7,7 @@ using discipline.centre.activityrules.api;
 using discipline.centre.activityrules.application.ActivityRules.DTOs;
 using discipline.centre.shared.infrastructure.Auth.Const;
 using Microsoft.AspNetCore.Authorization;
+// ReSharper disable RouteTemplates.RouteParameterConstraintNotResolved
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.AspNetCore.Builder;
@@ -21,15 +22,17 @@ internal static class ActivityRulesInternalEndpoints
     internal static WebApplication MapActivityRulesInternalEndpoints(this WebApplication app)
     {
         app.MapGet($"/{ActivityRulesModule.ModuleName}/{ActivityRulesInternalTag}/{{userId:ulid}}/{{activityRuleId:ulid}}",
-            async (Ulid userId, Ulid activityRuleId, CancellationToken cancellationToken, ICqrsDispatcher dispatcher) =>
-            {
-                var stronglyUserId = new UserId(userId);
-                var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
+                async (Ulid userId, Ulid activityRuleId, CancellationToken cancellationToken,
+                    ICqrsDispatcher dispatcher) =>
+                {
+                    var stronglyUserId = new UserId(userId);
+                    var stronglyActivityRuleId = new ActivityRuleId(activityRuleId);
 
-                var result = await dispatcher.SendAsync(new GetActivityRuleByIdQuery(stronglyUserId, stronglyActivityRuleId), cancellationToken);
-                
-                return result is null ? Results.NotFound() : Results.Ok(result);
-            })
+                    var result = await dispatcher.SendAsync(
+                        new GetActivityRuleByIdQuery(stronglyUserId, stronglyActivityRuleId), cancellationToken);
+
+                    return result is null ? Results.NotFound() : Results.Ok(result);
+                })
             .Produces(StatusCodes.Status200OK, typeof(ActivityRuleDto))
             .Produces(StatusCodes.Status401Unauthorized, typeof(void))
             .Produces(StatusCodes.Status404NotFound, typeof(void))

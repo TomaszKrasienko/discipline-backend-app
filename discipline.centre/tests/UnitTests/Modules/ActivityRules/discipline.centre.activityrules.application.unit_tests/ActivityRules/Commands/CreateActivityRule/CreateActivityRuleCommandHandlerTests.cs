@@ -64,8 +64,8 @@ public partial class CreateActivityRuleCommandHandlerTests
         await _eventProcessor
             .Received(1)
             .PublishAsync(Arg.Is<ActivityRuleRegistered>(arg
-                => arg.ActivityRuleId == command.Id
-                   && arg.UserId == command.UserId));
+                => arg.ActivityRuleId == command.Id.ToString()
+                   && arg.UserId == command.UserId.ToString()));
     }
     
     [Fact]
@@ -98,7 +98,7 @@ public partial class CreateActivityRuleCommandHandlerTests
             .Returns(true);
 
         //act
-        await Record.ExceptionAsync(async () => await Act(command));
+        _ = await Record.ExceptionAsync(() => Act(command));
         
         //assert
         await _readWriteActivityRuleRepository
@@ -116,7 +116,7 @@ public partial class CreateActivityRuleCommandHandlerTests
             .Returns(false);
         
         //act
-        await Record.ExceptionAsync(async () => await Act(command));
+        _ = await Record.ExceptionAsync(() => Act(command));
         
         //assert
         await _readWriteActivityRuleRepository

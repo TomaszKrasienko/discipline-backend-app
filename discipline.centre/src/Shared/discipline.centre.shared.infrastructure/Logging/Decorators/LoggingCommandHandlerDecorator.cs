@@ -18,7 +18,7 @@ internal sealed class LoggingCommandHandlerDecorator<TCommand>(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, ex.Message);
             throw;
         }
     }

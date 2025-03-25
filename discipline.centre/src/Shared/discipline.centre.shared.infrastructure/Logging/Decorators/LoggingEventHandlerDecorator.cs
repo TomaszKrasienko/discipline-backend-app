@@ -10,13 +10,14 @@ internal sealed class LoggingEventHandlerDecorator<TEvent>(
     public async Task HandleAsync(TEvent @event, CancellationToken cancellationToken)
     {
         logger.LogInformation("Handling event: {0}", @event.GetType().Name);
+        
         try
         {
             await handler.HandleAsync(@event, cancellationToken);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, ex.Message);
             throw;
         }
     }

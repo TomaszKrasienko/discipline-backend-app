@@ -18,7 +18,7 @@ internal sealed class LoggingQueryHandlerDecorator<TQuery, TResult>(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex.Message);
+            logger.LogError(ex, ex.Message);
             throw;
         }
     }

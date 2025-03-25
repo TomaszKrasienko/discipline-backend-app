@@ -29,8 +29,9 @@ internal sealed class ExceptionHandler(ILogger<IExceptionHandler> logger) : IExc
             _ => (StatusCodes.Status500InternalServerError, "Exception", "There was an error")
         };
         
+        logger.LogError(exception, exception.Message);
+        
         httpContext.Response.StatusCode = status;
-
         var problemDetails = new ProblemDetails
         {
             Status = status,
@@ -39,8 +40,6 @@ internal sealed class ExceptionHandler(ILogger<IExceptionHandler> logger) : IExc
             Detail = message,
         };
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
-        
-        logger.LogError(exception.Message);
         
         return true;
     }

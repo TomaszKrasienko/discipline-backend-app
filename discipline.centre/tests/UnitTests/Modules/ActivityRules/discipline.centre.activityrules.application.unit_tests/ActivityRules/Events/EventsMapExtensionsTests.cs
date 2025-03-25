@@ -19,8 +19,8 @@ public sealed class EventsMapExtensionsTests
         var @event = domainEvent.MapAsIntegrationEvent();
         
         //assert
-        ((ActivityRuleRegistered)@event).ActivityRuleId.ShouldBe(domainEvent.ActivityRuleId);
-        ((ActivityRuleRegistered)@event).UserId.ShouldBe(domainEvent.UserId);
+        ((ActivityRuleRegistered)@event).ActivityRuleId.ShouldBe(domainEvent.ActivityRuleId.ToString());
+        ((ActivityRuleRegistered)@event).UserId.ShouldBe(domainEvent.UserId.ToString());
     }
     
     [Fact]
